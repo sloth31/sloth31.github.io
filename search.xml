@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>test2</title>
+      <link href="/2022/08/05/test2/"/>
+      <url>/2022/08/05/test2/</url>
+      
+        <content type="html"><![CDATA[<h5 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h5><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-title function_ invoke__">error_reporting</span>(<span class="hljs-number">0</span>);<br><span class="hljs-variable">$flag</span> = <span class="hljs-string">&#x27;flag&#123;V4ri4ble_M4y_Be_C0verEd&#125;&#x27;</span>;<br><span class="hljs-keyword">if</span> (<span class="hljs-keyword">empty</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;b&#x27;</span>])) &#123;<br>    <span class="hljs-title function_ invoke__">show_source</span>(<span class="hljs-keyword">__FILE__</span>);<br>    <span class="hljs-keyword">die</span>();<br>&#125;<span class="hljs-keyword">else</span>&#123;<br>    <span class="hljs-variable">$a</span> = <span class="hljs-string">&quot;www.sqlsec.com&quot;</span>;<br>    <span class="hljs-variable">$b</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;b&#x27;</span>];<br>    @<span class="hljs-title function_ invoke__">parse_str</span>(<span class="hljs-variable">$b</span>);<br>    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$a</span>[<span class="hljs-number">0</span>] != <span class="hljs-string">&#x27;QNKCDZO&#x27;</span> &amp;&amp; <span class="hljs-title function_ invoke__">md5</span>(<span class="hljs-variable">$a</span>[<span class="hljs-number">0</span>]) == <span class="hljs-title function_ invoke__">md5</span>(<span class="hljs-string">&#x27;QNKCDZO&#x27;</span>)) &#123;<br>        <span class="hljs-keyword">echo</span> <span class="hljs-variable">$flag</span>;<br>    &#125;<span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-keyword">exit</span>(<span class="hljs-string">&#x27;your answer is wrong~&#x27;</span>);<br>    &#125;<br>&#125;<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure><p>分析</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>test</title>
       <link href="/2022/08/05/test/"/>
       <url>/2022/08/05/test/</url>

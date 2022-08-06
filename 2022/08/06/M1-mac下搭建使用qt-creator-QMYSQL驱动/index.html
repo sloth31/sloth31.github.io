@@ -1,0 +1,730 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/fav.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Sloth">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="💡前提：安装Xcode安装homebrew1&#x2F;bin&#x2F;zsh -c &quot;$(curl -fsSL https:&#x2F;&#x2F;gitee.com&#x2F;cunkai&#x2F;HomebrewCN&#x2F;raw&#x2F;master&#x2F;Homebrew.sh)&quot;  选择中科大镜像，并安装弹窗中的命令行开发者工具，安装完再执行以上命令 切换国内安装源 1cd &quot;$(brew --repo)&quot; &amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="M1 mac下搭建使用qt creator + QMYSQL驱动">
+<meta property="og:url" content="http://sloth31.github.io/2022/08/06/M1-mac%E4%B8%8B%E6%90%AD%E5%BB%BA%E4%BD%BF%E7%94%A8qt-creator-QMYSQL%E9%A9%B1%E5%8A%A8/index.html">
+<meta property="og:site_name" content="Sloth&#39;s Blog">
+<meta property="og:description" content="💡前提：安装Xcode安装homebrew1&#x2F;bin&#x2F;zsh -c &quot;$(curl -fsSL https:&#x2F;&#x2F;gitee.com&#x2F;cunkai&#x2F;HomebrewCN&#x2F;raw&#x2F;master&#x2F;Homebrew.sh)&quot;  选择中科大镜像，并安装弹窗中的命令行开发者工具，安装完再执行以上命令 切换国内安装源 1cd &quot;$(brew --repo)&quot; &amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgru49nnj20vm0jq449.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgryr4v2j20bo086wej.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrwsih9j20ds0e6jsc.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrvze0ej21ef0u0dk0.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrr6pkzj21ce0ho7ay.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgry24r8j21f70u0gps.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrzaq0pj21dx0u0jul.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgs04ebej21n00u0jwh.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrwey08j21ni0u00va.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgs0nimij21c60u0wh0.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrt5qs9j218g0tcmzd.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrxekvaj218g0tc75o.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrsjahkj218g0tcwgj.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgruzyukj218g0tcdht.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrs1xyxj20tg0gqab0.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrtm3rdj20zu0sidgk.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrrggebj21ce0ho7ay.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrvgcclj20gk02yglv.jpg">
+<meta property="article:published_time" content="2022-08-06T15:29:13.000Z">
+<meta property="article:modified_time" content="2022-08-06T16:04:12.779Z">
+<meta property="article:author" content="Sloth">
+<meta property="article:tag" content="mac">
+<meta property="article:tag" content="qt">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgru49nnj20vm0jq449.jpg">
+  
+  
+  
+  <title>M1 mac下搭建使用qt creator + QMYSQL驱动 | Sloth&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"sloth31.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Sloth&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="M1 mac下搭建使用qt creator + QMYSQL驱动"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-08-06 23:29" pubdate>
+          2022年8月6日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          25 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">M1 mac下搭建使用qt creator + QMYSQL驱动</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="💡前提：安装Xcode"><a href="#💡前提：安装Xcode" class="headerlink" title="💡前提：安装Xcode"></a>💡前提：安装Xcode</h3><h2 id="安装homebrew"><a href="#安装homebrew" class="headerlink" title="安装homebrew"></a>安装homebrew</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/bin/</span>zsh -c <span class="hljs-string">&quot;$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>选择中科大镜像，并安装弹窗中的命令行开发者工具，安装完再执行以上命令</p>
+<p>切换国内安装源</p>
+<figure class="highlight dsconfig"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dsconfig"><span class="hljs-string">cd</span> <span class="hljs-string">&quot;$(brew --repo)&quot;</span> &amp;&amp; <span class="hljs-string">git</span> <span class="hljs-string">remote</span> <span class="hljs-built_in">set-url</span> <span class="hljs-string">origin</span> <span class="hljs-string">git</span>://<span class="hljs-string">mirrors</span>.<span class="hljs-string">ustc</span>.<span class="hljs-string">edu</span>.<span class="hljs-string">cn</span>/<span class="hljs-string">brew</span>.<span class="hljs-string">git</span> &amp;&amp; <span class="hljs-string">cd</span> <span class="hljs-string">&quot;$(brew --repo)/Library/Taps/homebrew/homebrew-core&quot;</span> &amp;&amp; <span class="hljs-string">git</span> <span class="hljs-string">remote</span> <span class="hljs-built_in">set-url</span> <span class="hljs-string">origin</span> <span class="hljs-string">https</span>://<span class="hljs-string">mirrors</span>.<span class="hljs-string">ustc</span>.<span class="hljs-string">edu</span>.<span class="hljs-string">cn</span>/<span class="hljs-string">homebrew-core</span>.<span class="hljs-string">git</span> &amp;&amp; <span class="hljs-string">cd</span> <span class="hljs-string">&quot;$(brew --repo)/Library/Taps/homebrew/homebrew-cask&quot;</span> &amp;&amp; <span class="hljs-string">git</span> <span class="hljs-string">remote</span> <span class="hljs-built_in">set-url</span> <span class="hljs-string">origin</span> <span class="hljs-string">https</span>://<span class="hljs-string">mirrors</span>.<span class="hljs-string">ustc</span>.<span class="hljs-string">edu</span>.<span class="hljs-string">cn</span>/<span class="hljs-string">homebrew-cask</span>.<span class="hljs-string">git</span> &amp;&amp; <span class="hljs-string">cd</span> <span class="hljs-string">&quot;$(brew --repo)&quot;</span>/<span class="hljs-string">Library</span>/<span class="hljs-string">Taps</span>/<span class="hljs-string">homebrew</span>/<span class="hljs-string">homebrew-cask-versions</span> &amp;&amp; <span class="hljs-string">git</span> <span class="hljs-string">remote</span> <span class="hljs-built_in">set-url</span> <span class="hljs-string">origin</span> <span class="hljs-string">https</span>://<span class="hljs-string">github</span>.<span class="hljs-string">com</span>/<span class="hljs-string">Homebrew</span>/<span class="hljs-string">homebrew-cask-versions</span>.<span class="hljs-string">git</span><br></code></pre></td></tr></table></figure>
+
+<p>重启终端，下载qt</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">brew </span><span class="hljs-keyword">install </span>qt<br></code></pre></td></tr></table></figure>
+
+<p>检验是否安装成功,执行以下命令，回显信息比较多，可以看见路径</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">brew</span> <span class="hljs-literal">info</span> qt<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgru49nnj20vm0jq449.jpg" srcset="/img/loading.gif" lazyload alt="image-20220502195334549"></p>
+<h2 id="安装HomeBrew-Cask"><a href="#安装HomeBrew-Cask" class="headerlink" title="安装HomeBrew-Cask"></a>安装HomeBrew-Cask</h2><p>cask可以安装.app的软件</p>
+<p>方法一：利用国内源手动clone下载（推荐）<br>创建homebrew-cask文件夹<br>进入homebrew目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> <span class="hljs-string">&quot;<span class="hljs-subst">$(brew --repo)</span>/Library/Taps/homebrew/&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>创建homebrew-cask文件夹</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">mkdir homebrew-cask<br></code></pre></td></tr></table></figure>
+
+<p>开始clone</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">git clone git:<span class="hljs-regexp">//mi</span>rrors.ustc.edu.cn<span class="hljs-regexp">/homebrew-cask.git/u</span>sr<span class="hljs-regexp">/local/</span>Homebrew<span class="hljs-regexp">/Library/</span>Taps<span class="hljs-regexp">/homebrew/</span>homebrew-cask<br></code></pre></td></tr></table></figure>
+
+<p>方法二：利用官网文件安装<br>从官网上下载<code>homebrew-cask-master.zip</code>压缩包，解压后将文件夹名改为<code>homebrew-cask</code><br>然后将其拷贝放入<code>/usr/local/Homebrew/Library/Taps/homebrew</code>中，与<code>homebrew-core</code>文件夹同级    </p>
+<blockquote>
+<p>官网: <a target="_blank" rel="noopener" href="https://github.com/Homebrew/homebrew-cask">https://github.com/Homebrew/homebrew-cask</a></p>
+</blockquote>
+<h2 id="安装qt-creator"><a href="#安装qt-creator" class="headerlink" title="安装qt creator"></a>安装qt creator</h2><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">brew </span><span class="hljs-keyword">install </span>qt-creator<br></code></pre></td></tr></table></figure>
+
+<p>安装完发现启动台多了一个软件，打开</p>
+<img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgryr4v2j20bo086wej.jpg" srcset="/img/loading.gif" lazyload alt="image-20220502195948110" style="zoom:33%;" />
+
+<h2 id="配置qt-creator"><a href="#配置qt-creator" class="headerlink" title="配置qt creator"></a>配置qt creator</h2><p>打开首选项<img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrwsih9j20ds0e6jsc.jpg" srcset="/img/loading.gif" lazyload alt="image-20220502200046137" style="zoom: 25%;" /></p>
+<p>配置kits，主要是Qt Version和Debuggers</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrvze0ej21ef0u0dk0.jpg" srcset="/img/loading.gif" lazyload alt="image-20220502203825921"></p>
+<h3 id="配置Qt-Version"><a href="#配置Qt-Version" class="headerlink" title="配置Qt Version"></a>配置Qt Version</h3><p>在终端先查看qt路径</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">brew</span> <span class="hljs-literal">info</span> qt<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrr6pkzj21ce0ho7ay.jpg" srcset="/img/loading.gif" lazyload alt="image-20220502204004785"></p>
+<blockquote>
+<p>以我这里为例是在<code>/opt/homebrew/Cellar/qt/6.2.3_1</code></p>
+</blockquote>
+<p>进入该文件夹，访问<code>bin</code>文件夹，找到qmake文件，最后将该路径填入Qt version</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/opt/</span>homebrew<span class="hljs-regexp">/Cellar/</span>qt<span class="hljs-regexp">/6.2.3_1/</span>bin/qmake<br></code></pre></td></tr></table></figure>
+
+<img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgry24r8j21f70u0gps.jpg" srcset="/img/loading.gif" lazyload alt="image-20220502204318206" style="zoom:33%;" />
+
+<h3 id="配置Debuggers"><a href="#配置Debuggers" class="headerlink" title="配置Debuggers"></a>配置Debuggers</h3><p>一般有默认自动检测到的LLDB，如果没有就添加我图示中Xcode下的LLDB(要先装Xcode)</p>
+<p>路径：<code>/Applications/Xcode.app/Contents/Developer/usr/bin/lldb</code></p>
+<img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrzaq0pj21dx0u0jul.jpg" srcset="/img/loading.gif" lazyload alt="image-20220502204540609" style="zoom: 33%;" />
+
+<h3 id="返回到Kits选择刚刚配置好的版本"><a href="#返回到Kits选择刚刚配置好的版本" class="headerlink" title="返回到Kits选择刚刚配置好的版本"></a>返回到Kits选择刚刚配置好的版本</h3><p>一般情况下这里的编译器(Compiler)都会自动检测到本机所带环境，不用更改</p>
+<img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgs04ebej21n00u0jwh.jpg" srcset="/img/loading.gif" lazyload alt="image-20220502204712696" style="zoom:33%;" />
+
+<h3 id="新建一个项目"><a href="#新建一个项目" class="headerlink" title="新建一个项目"></a>新建一个项目</h3><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrwey08j21ni0u00va.jpg" srcset="/img/loading.gif" lazyload alt="image-20220502204820989" style="zoom:33%;" />
+
+<h3 id="选择模版"><a href="#选择模版" class="headerlink" title="选择模版"></a>选择模版</h3><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgs0nimij21c60u0wh0.jpg" srcset="/img/loading.gif" lazyload alt="image-20220502204851354" style="zoom:33%;" />
+
+<h3 id="选择路径-不能带中文"><a href="#选择路径-不能带中文" class="headerlink" title="选择路径(不能带中文)"></a>选择路径(不能带中文)</h3><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrt5qs9j218g0tcmzd.jpg" srcset="/img/loading.gif" lazyload alt="image-20220502204942788" style="zoom:33%;" />
+
+<h3 id="选择qmake"><a href="#选择qmake" class="headerlink" title="选择qmake"></a>选择qmake</h3><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrxekvaj218g0tc75o.jpg" srcset="/img/loading.gif" lazyload alt="image-20220502205009419" style="zoom:33%;" />
+
+<h3 id="剩下一直都点继续，直到Kits-选择刚刚配置的"><a href="#剩下一直都点继续，直到Kits-选择刚刚配置的" class="headerlink" title="剩下一直都点继续，直到Kits,选择刚刚配置的"></a>剩下一直都点继续，直到Kits,选择刚刚配置的</h3><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrsjahkj218g0tcwgj.jpg" srcset="/img/loading.gif" lazyload alt="image-20220502205119326" style="zoom:33%;" />
+
+<h3 id="构建项目"><a href="#构建项目" class="headerlink" title="构建项目"></a>构建项目</h3><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgruzyukj218g0tcdht.jpg" srcset="/img/loading.gif" lazyload alt="image-20220502205149932" style="zoom:33%;" />
+
+<h3 id="运行项目，会自动生成一个默认的空白框"><a href="#运行项目，会自动生成一个默认的空白框" class="headerlink" title="运行项目，会自动生成一个默认的空白框"></a>运行项目，会自动生成一个默认的空白框</h3><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrs1xyxj20tg0gqab0.jpg" srcset="/img/loading.gif" lazyload alt="image-20220502205258877" style="zoom:33%;" />
+
+<img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrtm3rdj20zu0sidgk.jpg" srcset="/img/loading.gif" lazyload alt="image-20220502205333780" style="zoom:33%;" />
+
+<blockquote>
+<p>具体的使用可以去b站搜qt教程</p>
+</blockquote>
+<h2 id="Qt搭配mysql"><a href="#Qt搭配mysql" class="headerlink" title="Qt搭配mysql"></a>Qt搭配mysql</h2><h3 id="动态链接库下载"><a href="#动态链接库下载" class="headerlink" title="动态链接库下载"></a>动态链接库下载</h3><p>若要搭配mysql写项目，需要添加动态链接库<code>libqsqlmysql.dylib</code>，网上大部分教程都是下载qt源码进行编译，但由于M1是arm64架构，编译的过程会有很多报错以及路径不对的问题，网上能下载的动态链接库也大多不是arm架构的，因此不得不提到mac下的神器<code>homebrew</code>,终端执行命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">brew install qt-mysql<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>brew会自动匹配下载最新qt版本的动态链接库，因此建议qt也使用homebrew安装</p>
+</blockquote>
+<p>进入目录<code>/opt/homebrew/Cellar/qt-mysql/6.2.3/share/qt/plugins/sqldrivers</code>将这个动态链接库放到<code>/opt/homebrew/Cellar/qt/6.2.3_1/share/qt/plugins/sqldrivers</code>中</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrrggebj21ce0ho7ay.jpg" srcset="/img/loading.gif" lazyload alt="image-20220806225302322"></p>
+<blockquote>
+<p>注意版本号对应</p>
+</blockquote>
+<h3 id="引入SQL模块"><a href="#引入SQL模块" class="headerlink" title="引入SQL模块"></a>引入SQL模块</h3><p>在项目的.pro文件的首行加上sql</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp">QT       += core gui sql <span class="hljs-comment">//修改处</span><br><br><span class="hljs-built_in">greaterThan</span>(QT_MAJOR_VERSION, <span class="hljs-number">4</span>): QT += widgets<br><br>CONFIG += c++<span class="hljs-number">17</span><br><br><span class="hljs-comment">//...</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="连接mysql数据库"><a href="#连接mysql数据库" class="headerlink" title="连接mysql数据库"></a>连接mysql数据库</h3><p>进入qt项目执行以下代码打印数据库驱动</p>
+<p>mainwindow.cpp</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;mainwindow.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;ui_mainwindow.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;QSqlDatabase&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;QDebug&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;QMessageBox&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;QSqlError&gt;</span></span><br><span class="hljs-comment">//...</span><br><span class="hljs-built_in">qDebug</span>()&lt;&lt;QSqlDatabase::<span class="hljs-built_in">drivers</span>();<span class="hljs-comment">//查看当前可用驱动</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>可用驱动中有QMYSQL即为成功</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4xgrvgcclj20gk02yglv.jpg" srcset="/img/loading.gif" lazyload alt="image-20220806230407307"></p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp">QSqlDatabase db=QSqlDatabase::<span class="hljs-built_in">addDatabase</span>(<span class="hljs-string">&quot;QMYSQL&quot;</span>);<span class="hljs-comment">//添加一个数据库</span><br>db.<span class="hljs-built_in">setHostName</span>(<span class="hljs-string">&quot;127.0.0.1&quot;</span>);<span class="hljs-comment">//设置主机ip</span><br>db.<span class="hljs-built_in">setUserName</span>(<span class="hljs-string">&quot;username&quot;</span>);<span class="hljs-comment">//mysql数据库用户名</span><br>db.<span class="hljs-built_in">setPassword</span>(<span class="hljs-string">&quot;password&quot;</span>);<span class="hljs-comment">//密码</span><br>db.<span class="hljs-built_in">setDatabaseName</span>(<span class="hljs-string">&quot;db&quot;</span>);<span class="hljs-comment">//连接的数据库名</span><br><span class="hljs-keyword">if</span>(db.<span class="hljs-built_in">open</span>()==<span class="hljs-literal">false</span>)&#123;<span class="hljs-comment">//打开失败的警告</span><br>    QMessageBox::<span class="hljs-built_in">warning</span>(<span class="hljs-keyword">this</span>,<span class="hljs-string">&quot;waring&quot;</span>,db.<span class="hljs-built_in">lastError</span>().<span class="hljs-built_in">text</span>());<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>运行项目只要没有警告框弹出就说明连接数据库成功</p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="category-chain-item">环境搭建</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/mac/">#mac</a>
+      
+        <a href="/tags/qt/">#qt</a>
+      
+        <a href="/tags/mysql/">#mysql</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>M1 mac下搭建使用qt creator + QMYSQL驱动</div>
+      <div>http://sloth31.github.io/2022/08/06/M1-mac下搭建使用qt-creator-QMYSQL驱动/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Sloth</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年8月6日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

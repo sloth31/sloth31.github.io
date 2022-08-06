@@ -40,9 +40,9 @@
 <meta property="og:image" content="http://sloth31.github.io/images/e6c9d24egy1h1ucr1dk8zj20tg0gqdgs.png">
 <meta property="og:image" content="http://sloth31.github.io/images/e6c9d24egy1h1ucrjmkltj20zu0si750.png">
 <meta property="og:image" content="http://sloth31.github.io/images/e6c9d24ely1h4xfpipwhjj21fg0okgng.png">
-<meta property="og:image" content="http://sloth31.github.io/2022/08/06/images/e6c9d24ely1h4xg0zi3z4j20gk02yglv.png">
+<meta property="og:image" content="http://sloth31.github.io/images/e6c9d24ely1h4xg0zi3z4j20gk02yglv.png">
 <meta property="article:published_time" content="2022-08-06T15:29:13.000Z">
-<meta property="article:modified_time" content="2022-08-06T18:36:45.157Z">
+<meta property="article:modified_time" content="2022-08-06T18:44:24.979Z">
 <meta property="article:author" content="Sloth">
 <meta property="article:tag" content="mac">
 <meta property="article:tag" content="qt">
@@ -379,7 +379,7 @@
 
 <blockquote>
 <p>可用驱动中有QMYSQL即为成功</p>
-<img src="../images/e6c9d24ely1h4xg0zi3z4j20gk02yglv.png" srcset="/img/loading.gif" lazyload alt="1212" style="zoom:50%;" />
+<p><img src="/../images/e6c9d24ely1h4xg0zi3z4j20gk02yglv.png" srcset="/img/loading.gif" lazyload alt="."></p>
 </blockquote>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp">QSqlDatabase db=QSqlDatabase::<span class="hljs-built_in">addDatabase</span>(<span class="hljs-string">&quot;QMYSQL&quot;</span>);<span class="hljs-comment">//添加一个数据库</span><br>db.<span class="hljs-built_in">setHostName</span>(<span class="hljs-string">&quot;127.0.0.1&quot;</span>);<span class="hljs-comment">//设置主机ip</span><br>db.<span class="hljs-built_in">setUserName</span>(<span class="hljs-string">&quot;username&quot;</span>);<span class="hljs-comment">//mysql数据库用户名</span><br>db.<span class="hljs-built_in">setPassword</span>(<span class="hljs-string">&quot;password&quot;</span>);<span class="hljs-comment">//密码</span><br>db.<span class="hljs-built_in">setDatabaseName</span>(<span class="hljs-string">&quot;db&quot;</span>);<span class="hljs-comment">//连接的数据库名</span><br><span class="hljs-keyword">if</span>(db.<span class="hljs-built_in">open</span>()==<span class="hljs-literal">false</span>)&#123;<span class="hljs-comment">//打开失败的警告</span><br>    QMessageBox::<span class="hljs-built_in">warning</span>(<span class="hljs-keyword">this</span>,<span class="hljs-string">&quot;waring&quot;</span>,db.<span class="hljs-built_in">lastError</span>().<span class="hljs-built_in">text</span>());<br>&#125;<br></code></pre></td></tr></table></figure>
 

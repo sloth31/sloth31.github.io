@@ -1,0 +1,810 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/fav.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Sloth">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Tabby安装配置及使用0x00安装Neo4j Desktop官网直接下 Neo4j Desktop Download | Free Graph Database Download 下完打开初始化完可以看到数据库版本，下对应版本的APOC插件   新建Neo4j图数据库 可以选择更新数据库版本到5.4.0  打开数据库旁的···-&gt;Settings...更改以下配置 123456789#允许">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tabby安装配置及使用">
+<meta property="og:url" content="http://sloth31.github.io/2022/12/06/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%B7%A5%E5%85%B7Tabby%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Sloth&#39;s Blog">
+<meta property="og:description" content="Tabby安装配置及使用0x00安装Neo4j Desktop官网直接下 Neo4j Desktop Download | Free Graph Database Download 下完打开初始化完可以看到数据库版本，下对应版本的APOC插件   新建Neo4j图数据库 可以选择更新数据库版本到5.4.0  打开数据库旁的···-&gt;Settings...更改以下配置 123456789#允许">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041321216.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041321510.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041321584.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041321995.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041321885.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041321101.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041321272.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041321030.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041322228.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041322970.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041322071.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041322896.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041322187.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041322332.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041322538.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041322562.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041323091.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041323797.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041323020.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041323655.png">
+<meta property="article:published_time" content="2022-12-06T15:29:13.000Z">
+<meta property="article:modified_time" content="2023-12-07T14:11:45.005Z">
+<meta property="article:author" content="Sloth">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041321216.png">
+  
+  
+  
+  <title>Tabby安装配置及使用 | Sloth&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"sloth31.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"c8LjkMGtqBFlFQrpl65qUKoM-gzGzoHsz","app_key":"5MBWFG00GDY2LpteTo0bvyRu","server_url":"https://c8ljkmgt.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Sloth&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Tabby安装配置及使用"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-12-06 23:29" pubdate>
+          2022年12月6日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          31 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Tabby安装配置及使用</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Tabby安装配置及使用"><a href="#Tabby安装配置及使用" class="headerlink" title="Tabby安装配置及使用"></a>Tabby安装配置及使用</h1><h2 id="0x00安装"><a href="#0x00安装" class="headerlink" title="0x00安装"></a>0x00安装</h2><h3 id="Neo4j-Desktop"><a href="#Neo4j-Desktop" class="headerlink" title="Neo4j Desktop"></a>Neo4j Desktop</h3><p>官网直接下 <a target="_blank" rel="noopener" href="https://neo4j.com/download/">Neo4j Desktop Download | Free Graph Database Download</a></p>
+<p>下完打开初始化完可以看到数据库版本，下对应版本的APOC插件 </p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041321216.png" srcset="/img/loading.gif" lazyload alt="image-20230501151304382"></p>
+<h3 id="新建Neo4j图数据库"><a href="#新建Neo4j图数据库" class="headerlink" title="新建Neo4j图数据库"></a>新建Neo4j图数据库</h3><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041321510.png" srcset="/img/loading.gif" lazyload alt="image-20230501152338340"></p>
+<p>可以选择更新数据库版本到5.4.0</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041321584.png" srcset="/img/loading.gif" lazyload alt="image-20230501162942114"></p>
+<p>打开数据库旁的<code>···</code>-&gt;<code>Settings...</code>更改以下配置</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-comment">#允许从本地任意位置载入csv文件(大概在前面几行)</span><br><span class="hljs-comment">#server.directories.import=import</span><br><span class="hljs-comment">#允许 apoc扩展（大概在配置文件末尾部分）</span><br><span class="hljs-attr">dbms.security.procedures.unrestricted</span>=jwt.security.*,apoc.*<br><span class="hljs-comment"># 修改内存相关配置 </span><br><span class="hljs-comment"># 可以通过官方的neo4j-admin来推荐配置内存大小</span><br><span class="hljs-attr">dbms.memory.heap.initial_size</span>=<span class="hljs-number">1</span>G<br><span class="hljs-attr">dbms.memory.heap.max_size</span>=<span class="hljs-number">4</span>G<br><span class="hljs-attr">dbms.memory.pagecache.size</span>=<span class="hljs-number">4</span>G<br></code></pre></td></tr></table></figure>
+
+<p>配置 apoc 的配置，需要找到配置文件目录，在这个目录下新建 apoc.conf 文件，内容为</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041321995.png" srcset="/img/loading.gif" lazyload alt="image-20230501161001178"></p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">apoc.import.file.enabled</span>=<span class="hljs-literal">true</span><br><span class="hljs-attr">apoc.import.file.use_neo4j_config</span>=<span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure>
+
+<p>最后，配置一下 apoc 和 tabby 插件，打开 plugins 目录将对应的 jar 复制到与上面conf同目录下的plugins目录</p>
+<p>tabby插件：<a target="_blank" rel="noopener" href="https://github.com/wh1t3p1g/tabby/releases">Releases · wh1t3p1g&#x2F;tabby · GitHub</a> （在env目录里,同时把env里面几个apoc的jar包都<strong>复制</strong>到plugins里）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041321885.png" srcset="/img/loading.gif" lazyload alt="image-20230501163440727"></p>
+<h3 id="验证配置"><a href="#验证配置" class="headerlink" title="验证配置"></a>验证配置</h3><p>重启数据库后，open-&gt;Neo4j Browser,测试查询语句，查看一下apoc（有30项）和tabby（有两项）的配置</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041321101.png" srcset="/img/loading.gif" lazyload alt="image-20230501163735244"></p>
+<h3 id="简单启动"><a href="#简单启动" class="headerlink" title="简单启动"></a>简单启动</h3><p>在下载的tabby文件夹中新建一个case目录，下面放目标jar,同时修改config&#x2F;settings.properties</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041321272.png" srcset="/img/loading.gif" lazyload alt="image-20230501190832777"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041321030.png" srcset="/img/loading.gif" lazyload alt="image-20230501191148762"></p>
+<p>使用jdk8启动tabby.jar，命令行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">java -Xmx6g -jar tabby.jar<br></code></pre></td></tr></table></figure>
+
+<p>可能出现的报错</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs shell">java.lang.IllegalStateException: Failed to execute CommandLineRunner<br>	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:771) [spring-boot-2.7.7.jar!/:2.7.7]<br>	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:752) [spring-boot-2.7.7.jar!/:2.7.7]<br>	at org.springframework.boot.SpringApplication.run(SpringApplication.java:314) [spring-boot-2.7.7.jar!/:2.7.7]<br>	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303) [spring-boot-2.7.7.jar!/:2.7.7]<br>	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292) [spring-boot-2.7.7.jar!/:2.7.7]<br>	at tabby.App.main(App.java:28) [classes!/:na]<br>	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_341]<br>	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_341]<br>	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_341]<br>	....<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>把config&#x2F;settings.properties中的<code>tabby.cache.isDockerImportPath</code>设置为false，这个选项用于判断当前是否是docker环境,如果是本机直接使用，要设置成false</p>
+</blockquote>
+<h3 id="图数据库索引配置"><a href="#图数据库索引配置" class="headerlink" title="图数据库索引配置"></a>图数据库索引配置</h3><p>可以加快导入&#x2F;删除的速度，只要在Neo4j browser里运行即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs cql">CREATE CONSTRAINT c1 IF NOT EXISTS FOR (c:Class) REQUIRE c.ID IS UNIQUE;<br>CREATE CONSTRAINT c2 IF NOT EXISTS FOR (c:Class) REQUIRE c.NAME IS UNIQUE;<br>CREATE CONSTRAINT c3 IF NOT EXISTS FOR (m:Method) REQUIRE m.ID IS UNIQUE;<br>CREATE CONSTRAINT c4 IF NOT EXISTS FOR (m:Method) REQUIRE m.SIGNATURE IS UNIQUE;<br>CREATE INDEX index1 IF NOT EXISTS FOR (m:Method) ON (m.NAME);<br>CREATE INDEX index2 IF NOT EXISTS FOR (m:Method) ON (m.CLASSNAME);<br>CREATE INDEX index3 IF NOT EXISTS FOR (m:Method) ON (m.NAME, m.CLASSNAME);<br>CREATE INDEX index4 IF NOT EXISTS FOR (m:Method) ON (m.NAME, m.NAME0);<br>CREATE INDEX index5 IF NOT EXISTS FOR (m:Method) ON (m.SIGNATURE);<br>CREATE INDEX index6 IF NOT EXISTS FOR (m:Method) ON (m.NAME0);<br>CREATE INDEX index7 IF NOT EXISTS FOR (m:Method) ON (m.NAME0, m.CLASSNAME);<br>#之后可以运行下面命令来查看表库和数据库信息<br>:schema <br>:sysinfo <br></code></pre></td></tr></table></figure>
+
+<h2 id="0x01简单使用"><a href="#0x01简单使用" class="headerlink" title="0x01简单使用"></a>0x01简单使用</h2><h3 id="CC链"><a href="#CC链" class="headerlink" title="CC链"></a>CC链</h3><p>以找cc链为例，将tabby目录下的配置文件的tabby.build.target该成commons-collections jar所在位置</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041322228.png" srcset="/img/loading.gif" lazyload alt="image-20230504085113381"></p>
+<p>shell运行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">java -Xmx6g -jar tabby.jar<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意要使用java8</p>
+</blockquote>
+<p>成功连接数据库</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041322970.png" srcset="/img/loading.gif" lazyload alt="image-20230504085210709"></p>
+<h3 id="可能的报错"><a href="#可能的报错" class="headerlink" title="可能的报错"></a>可能的报错</h3><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041322071.png" srcset="/img/loading.gif" lazyload alt="image-20230504085257308"></p>
+<blockquote>
+<p>原因：Neo4j数据库未开启，即使数据库未开启，刚开始的info仍显示有”default”数据库</p>
+</blockquote>
+<p>出现下图即表示导入完毕</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041322896.png" srcset="/img/loading.gif" lazyload alt="image-20230504085512803"></p>
+<h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><p>打开Neo4j browser，用以下语句查询CC7</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cql">match path=(m1:Method &#123;SIGNATURE:&quot;&lt;java.util.Hashtable: void readObject(java.io.ObjectInputStream)&gt;&quot;&#125;)-[:CALL ]-&gt;(m2:Method &#123;NAME:&quot;reconstitutionPut&quot;&#125;)-[:CALL ]-&gt;(m3:Method &#123;NAME:&quot;equals&quot;&#125;)-[:ALIAS*..2]-(m4:Method)-[:CALL ]-&gt;(m5:Method &#123;NAME:&quot;get&quot;&#125;)-[:ALIAS*1..2]-(m6:Method &#123;NAME:&quot;get&quot;&#125;)-[:CALL]-&gt;(m7:Method &#123;NAME:&quot;transform&quot;&#125;)-[:ALIAS*]-(m8:Method)-[:CALL]-&gt;(m9:Method &#123;IS_SINK:true&#125;)  return path<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>可以很明显的看到是从Hashtable的readObject为起点，hashtable反序列化时调用<strong>reconstitutionPut方法</strong>，在这个方法的执行流程中会调用equals判断key是否重复，如果调用的是AbstractMap的equals，之后会触发LazyMap的get，之后就是常规的触发transform</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041322187.png" srcset="/img/loading.gif" lazyload alt="image-20230504091827921"></p>
+<blockquote>
+<p>查询结果节点以id显示，点击后可以在右框查看属性</p>
+</blockquote>
+<h4 id="语法分析"><a href="#语法分析" class="headerlink" title="语法分析"></a>语法分析</h4><ul>
+<li><p>Neo4j中有三种指向：<code>() - [] -&gt; ()</code>、<code>() &lt;- [] - ()</code>和<code>() - [] - ()</code>。顾名思义，前两种就是看箭头方向表示对应的单项关系；最后一种表示双向关系</p>
+</li>
+<li><p>形如<code>[:CALL]</code>的可以认为给调用边起一个别名CALL</p>
+</li>
+<li><p>对于每个节点，SIGNATURE属性存储着完整的方法名称</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041322332.png" srcset="/img/loading.gif" lazyload alt="image-20230504091725958"></p>
+</li>
+<li><p>上述查询语句中equals方法后为<code>[:ALIAS*..2]</code></p>
+<ul>
+<li><code>*1..N</code>的意思即为：如果在1到N层关系中存在路径，将返回开始点和结束点，若缺省开头，则默认从1开始，所以<code>[:ALIAS*..2]</code>表示找两层以内的方法</li>
+</ul>
+</li>
+<li><p>在Neo4j查询语句CQL中可以设定指定方向，如<code>-[:CALL ]-&gt;</code>,而<code>-[:ALIAS*1..2]-</code>没有指定方向，说明关系内的方法只能作为alias,可以理解为从当前节点向外广度延伸以搜索能调用到下一个方法节点的调用链</p>
+</li>
+<li><p>每个节点都有两个属性 IS_SINK IS_SOURCE ，分别代表是否是结尾节点和起始节点</p>
+</li>
+</ul>
+<p>根据查询结果很容易发现调用链</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041322538.png" srcset="/img/loading.gif" lazyload alt="image-20230504123909760"></p>
+<h2 id="0x02CTF中使用"><a href="#0x02CTF中使用" class="headerlink" title="0x02CTF中使用"></a>0x02CTF中使用</h2><p>上面找cc链的过程指向性比较强，在ctf中，可以利用该工具找到两个方法之间的调用链</p>
+<h3 id="长城杯-2022-b4bycoffee"><a href="#长城杯-2022-b4bycoffee" class="headerlink" title="[长城杯 2022]b4bycoffee"></a>[长城杯 2022]b4bycoffee</h3><p>题目给出源码，反编译一下，coffeeBean的toString有个字节码后门</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041322562.png" srcset="/img/loading.gif" lazyload alt="image-20230504124900205"></p>
+<p>反序列化入口，跟进一下AntObjectInputStream</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041323091.png" srcset="/img/loading.gif" lazyload alt="image-20230504125123715"></p>
+<p>在反序列化时设置了黑名单类，过滤了这些</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">BadAttributeValueExpException,ObjectBean,ToStringBean,TemplatesImpl,Runtime<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041323797.png" srcset="/img/loading.gif" lazyload alt="image-20230504125216104"></p>
+<p>现在只要触发toString，但是常用的BadAttributeValueExpException被ban了，注意到依赖中存在rome，可以用EqualsBean的hashcode方法可以触发到任意类的toString方法</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041323020.png" srcset="/img/loading.gif" lazyload alt="image-20230504125407054"></p>
+<p>但是这题也可以用tabby找一个readObject-&gt;toString的链子，写出以下查询语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cql">match (source:Method &#123;NAME:&quot;readObject&quot;,CLASSNAME:&quot;java.util.HashMap&quot;&#125;)<br>match (sink:Method &#123;NAME:&quot;toString&quot;&#125;)<br>with source, collect(sink) as sinks<br>call tabby.algo.findJavaGadget(source, sinks, 12, false,true) yield path where none(n in nodes(path) where n.CLASSNAME in [&quot;javax.management.BadAttributeValueExpException&quot;,&quot;com.sun.jmx.snmp.SnmpEngineId&quot;,&quot;com.sun.xml.internal.ws.api.BindingID&quot;,&quot;javax.swing.text.html.HTML$UnknownTag&quot;])<br>return path limit 1<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>设置起始节点为HashMap的readObject，结束节点为toString方法</p>
+<p>之后排除了BadAttributeValueExpException等方法</p>
+<p>tabby内的findJavaGadget接口会通过污点传播，根据java原生反序列化的规则来查找利用链，个参数分别表示起始节点、结束节点、路径的最大节点数、isBackward、depthFirst</p>
+</blockquote>
+<p>非常清晰的jdk原生利用链</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305041323655.png" srcset="/img/loading.gif" lazyload alt="image-20230504130444449"></p>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://www.ctfiot.com/64572.html">Java代码分析工具Tabby在CTF中的运用 | CTF导航 (ctfiot.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://m0d9.me/2022/10/22/Tabby-%E5%B7%A5%E5%85%B7%E5%88%86%E6%9E%90/">Tabby 源码分析 | m0d9’s blog</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ljhdo/p/10929702.html">Neo4j 第九篇：查询数据（Match） - 悦光阴 - 博客园 (cnblogs.com)</a></p>
+<p>[tabby&#x2F;Tabby 食用指北.md at master · wh1t3p1g&#x2F;tabby · GitHub](<a target="_blank" rel="noopener" href="https://github.com/wh1t3p1g/tabby/blob/master/doc/Tabby">https://github.com/wh1t3p1g/tabby/blob/master/doc/Tabby</a> 食用指北.md)</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/ctf/" class="category-chain-item">ctf</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/web/">#web</a>
+      
+        <a href="/tags/java/">#java</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Tabby安装配置及使用</div>
+      <div>http://sloth31.github.io/2022/12/06/Java反序列化工具Tabby使用/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Sloth</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年12月6日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                <i class="iconfont icon-nc"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                <i class="iconfont icon-sa"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/20/Java%E5%AE%89%E5%85%A8%E4%B9%8B%E5%86%85%E5%AD%98%E9%A9%AC/" title="JavaWeb内存马学习">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JavaWeb内存马学习</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/10/20/PHP%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%88%A9%E7%94%A8/" title="PHP垃圾回收器与反序列化利用">
+                        <span class="hidden-mobile">PHP垃圾回收器与反序列化利用</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

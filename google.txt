@@ -1,3 +1,4 @@
+http://sloth31.github.io/2022/08/23/Java%E5%8F%8D%E5%B0%84/
 http://sloth31.github.io/2022/07/20/Java-Web%E5%AD%A6%E4%B9%A0/
 http://sloth31.github.io/2023/03/13/GO-SSTI/
 http://sloth31.github.io/2023/02/01/fastjson%E5%AD%A6%E4%B9%A0/

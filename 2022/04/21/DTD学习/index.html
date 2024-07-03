@@ -1,0 +1,988 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/fav.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Sl0th">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="DTD简介文档类型定义（DTD）可定义合法的XML文档构建模块。它使用一系列合法的元素来定义文档的结构。 DTD 可被成行地声明于 XML 文档中，也可作为一个外部引用。 内部DOCTYPE声明语法 1&lt;!DOCTYPE 根元素 [元素声明]&gt;  &lt;!--根元素是xml文件的根元素--&gt;  带有 DTD 的 XML 文档实例 1234567891011121314&lt;?">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DTD学习">
+<meta property="og:url" content="http://sloth31.github.io/2022/04/21/DTD%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Sl0th&#39;s Blog">
+<meta property="og:description" content="DTD简介文档类型定义（DTD）可定义合法的XML文档构建模块。它使用一系列合法的元素来定义文档的结构。 DTD 可被成行地声明于 XML 文档中，也可作为一个外部引用。 内部DOCTYPE声明语法 1&lt;!DOCTYPE 根元素 [元素声明]&gt;  &lt;!--根元素是xml文件的根元素--&gt;  带有 DTD 的 XML 文档实例 1234567891011121314&lt;?">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032236978.jpg">
+<meta property="article:published_time" content="2022-04-21T04:35:43.000Z">
+<meta property="article:modified_time" content="2024-07-03T14:36:35.986Z">
+<meta property="article:author" content="Sl0th">
+<meta property="article:tag" content="xxe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032236978.jpg">
+  
+  
+  
+  <title>DTD学习 | Sl0th&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"sloth31.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"c8LjkMGtqBFlFQrpl65qUKoM-gzGzoHsz","app_key":"5MBWFG00GDY2LpteTo0bvyRu","server_url":"https://c8ljkmgt.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Sl0th&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="DTD学习"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-04-21 12:35" pubdate>
+          2022年4月21日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          32 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">DTD学习</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="DTD"><a href="#DTD" class="headerlink" title="DTD"></a>DTD</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><strong>文档类型定义（DTD）可定义合法的XML文档构建模块。它使用一系列合法的元素来定义文档的结构。</strong></p>
+<p><strong>DTD 可被成行地声明于 XML 文档中，也可作为一个外部引用。</strong></p>
+<h3 id="内部DOCTYPE声明"><a href="#内部DOCTYPE声明" class="headerlink" title="内部DOCTYPE声明"></a>内部DOCTYPE声明</h3><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!DOCTYPE 根元素 [元素声明]&gt;  &lt;!--根元素是xml文件的根元素--&gt;<br></code></pre></td></tr></table></figure>
+
+<p>带有 DTD 的 XML 文档实例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs xml-dtd">&lt;?xml version=&quot;1.0&quot;?&gt;<br>&lt;!DOCTYPE note [<br>  &lt;!ELEMENT note (to,from,heading,body)&gt;<br>  &lt;!ELEMENT to      (#PCDATA)&gt;<br>  &lt;!ELEMENT from    (#PCDATA)&gt;<br>  &lt;!ELEMENT heading (#PCDATA)&gt;<br>  &lt;!ELEMENT body    (#PCDATA)&gt;<br>]&gt;<br>&lt;note&gt;<br>  &lt;to&gt;George&lt;/to&gt;<br>  &lt;from&gt;John&lt;/from&gt;<br>  &lt;heading&gt;Reminder&lt;/heading&gt;<br>  &lt;body&gt;Do not forget the meeting!&lt;/body&gt;<br>&lt;/note&gt;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<h3 id="以上-DTD-解释如下："><a href="#以上-DTD-解释如下：" class="headerlink" title="以上 DTD 解释如下："></a>以上 DTD 解释如下：</h3><p><em>!DOCTYPE note</em> (第二行)定义此文档是 <em>note</em> 类型的文档。</p>
+<p><em>!ELEMENT note</em> (第三行)定义 <em>note</em> 元素有四个元素：”to、from、heading,、body”</p>
+<p><em>!ELEMENT to</em> (第四行)定义 <em>to</em> 元素为 “#PCDATA” 类型</p>
+<p><em>!ELEMENT from</em> (第五行)定义 <em>from</em> 元素为 “#PCDATA” 类型</p>
+<p><em>!ELEMENT heading</em> (第六行)定义 <em>heading</em> 元素为 “#PCDATA” 类型</p>
+<p><em>!ELEMENT body</em> (第七行)定义 <em>body</em> 元素为 “#PCDATA” 类型</p>
+</blockquote>
+<h3 id="外部文档声明"><a href="#外部文档声明" class="headerlink" title="外部文档声明"></a>外部文档声明</h3><p>DTD位于XML源文件外部,语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!DOCTYPE 根元素 SYSTEM &quot;文件名&quot;&gt;<br></code></pre></td></tr></table></figure>
+
+<p>实例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs xml-dtd">&lt;?xml version=&quot;1.0&quot;?&gt;<br>&lt;!DOCTYPE note SYSTEM &quot;note.dtd&quot;&gt;<br>&lt;note&gt;<br>&lt;to&gt;George&lt;/to&gt;<br>&lt;from&gt;John&lt;/from&gt;<br>&lt;heading&gt;Reminder&lt;/heading&gt;<br>&lt;body&gt;Do not forget the meeting!&lt;/body&gt;<br>&lt;/note&gt; <br></code></pre></td></tr></table></figure>
+
+<p>包含的note.dtd文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ELEMENT note (to,from,heading,body)&gt;<br>&lt;!ELEMENT to (#PCDATA)&gt;<br>&lt;!ELEMENT from (#PCDATA)&gt;<br>&lt;!ELEMENT heading (#PCDATA)&gt;<br>&lt;!ELEMENT body (#PCDATA)&gt;<br></code></pre></td></tr></table></figure>
+
+<h3 id="用处"><a href="#用处" class="headerlink" title="用处"></a>用处</h3><p>通过 DTD，每一个 XML 文件均可携带一个有关其自身格式的描述。</p>
+<p>通过 DTD，独立的团体可一致地使用某个标准的 DTD 来交换数据。</p>
+<h2 id="构建模块"><a href="#构建模块" class="headerlink" title="构建模块"></a>构建模块</h2><p>所有的 XML 文档（以及 HTML 文档）均由以下简单的构建模块构成：</p>
+<ul>
+<li>元素</li>
+<li>属性</li>
+<li>实体</li>
+<li>PCDATA </li>
+<li>CDATA</li>
+</ul>
+<h3 id="元素"><a href="#元素" class="headerlink" title="元素"></a>元素</h3><p>由闭合标签及内容(文本或空)构成</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>body text in between<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span>some message in between<span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h3><p>提供<em>有关元素的额外信息</em>。</p>
+<p>元素为空时</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;computer.gif&quot;</span> /&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>元素有内容时</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">person</span> <span class="hljs-attr">sex</span>=<span class="hljs-string">&quot;female&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">firstname</span>&gt;</span>Anna<span class="hljs-tag">&lt;/<span class="hljs-name">firstname</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">lastname</span>&gt;</span>Smith<span class="hljs-tag">&lt;/<span class="hljs-name">lastname</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">person</span>&gt;</span> <br></code></pre></td></tr></table></figure>
+
+<h3 id="实体"><a href="#实体" class="headerlink" title="实体"></a>实体</h3><p>实体是用来定义普通文本的变量。实体引用是对实体的引用。</p>
+<p><strong>下面的实体在 XML 中被预定义</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">实体引用</th>
+<th align="left">字符</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>&amp;lt;</code></td>
+<td align="left">&lt;</td>
+</tr>
+<tr>
+<td align="left"><code>&amp;gt;</code></td>
+<td align="left">&gt;</td>
+</tr>
+<tr>
+<td align="left"><code>&amp;amp;</code></td>
+<td align="left">&amp;</td>
+</tr>
+<tr>
+<td align="left"><code>&amp;quot;</code></td>
+<td align="left">“</td>
+</tr>
+<tr>
+<td align="left"><code>&amp;apos;</code></td>
+<td align="left">‘</td>
+</tr>
+</tbody></table>
+<h3 id="PCDATA"><a href="#PCDATA" class="headerlink" title="PCDATA"></a>PCDATA</h3><p>PCDATA 的意思是会被解析的字符数据（parsed character data）,字符数据就是闭合标签之间的文本内容</p>
+<p><strong>这些文本将被解析器检查实体以及标记。</strong>文本中的标签会被当作标记来处理，而实体会被展开。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span>此文本也会被解析<span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="CDATA"><a href="#CDATA" class="headerlink" title="CDATA"></a>CDATA</h3><p>CDATA 的意思是字符数据（character data）。<em>CDATA 是不会被解析器解析的文本。</em>在这些文本中的标签不会被当作标记来对待，其中的实体也不会被展开。</p>
+<p>CDATA 部分由 <code>&lt;![CDATA[</code> 开始，由<code>]]&gt;</code> 结束：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-handlebars"><span class="language-xml"></span></span><br><span class="language-xml"><span class="language-handlebars">&lt;![CDATA[</span></span><br><span class="language-xml"><span class="language-handlebars">function matchwo(a,b)</span></span><br><span class="language-xml"><span class="language-handlebars">&#123;</span></span><br><span class="language-xml"><span class="language-handlebars">if (a &lt; b &amp;&amp; a &lt; 0) then</span></span><br><span class="language-xml"><span class="language-handlebars">  &#123;</span></span><br><span class="language-xml"><span class="language-handlebars">  return 1;</span></span><br><span class="language-xml"><span class="language-handlebars">  &#125;</span></span><br><span class="language-xml"><span class="language-handlebars">else</span></span><br><span class="language-xml"><span class="language-handlebars">  &#123;</span></span><br><span class="language-xml"><span class="language-handlebars">  return 0;</span></span><br><span class="language-xml"><span class="language-handlebars">  &#125;</span></span><br><span class="language-xml"><span class="language-handlebars">&#125;</span></span><br><span class="language-xml"><span class="language-handlebars">]]&gt;</span></span><br><span class="language-xml"><span class="language-handlebars"></span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>CDATA 部分不能包含字符串 “]]&gt;”。也不允许嵌套的 CDATA 部分。</p>
+<p>标记 CDATA 部分结尾的 “]]&gt;” 不能包含空格或折行。</p>
+</blockquote>
+<h2 id="元素声明"><a href="#元素声明" class="headerlink" title="元素声明"></a>元素声明</h2><h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p>在 DTD 中，XML 元素通过元素声明来进行声明。元素声明使用下面的语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs xml-dtd">1⃣️&lt;!ELEMENT 元素名称 类别&gt;<br>2⃣️&lt;!ELEMENT 元素名称 (元素内容)&gt;<br></code></pre></td></tr></table></figure>
+
+<h3 id="空元素"><a href="#空元素" class="headerlink" title="空元素"></a>空元素</h3><p>利用关键字<code>EMPTY</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml-dtd">&lt;!ELEMENT 元素名称 EMPTY&gt;<br></code></pre></td></tr></table></figure>
+
+<p>案例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml-dtd">&lt;!--dtd中声明--&gt;<br>&lt;!ELEMENT br EMPTY&gt;<br>&lt;!--XML中--&gt;<br>&lt;br /&gt;<br></code></pre></td></tr></table></figure>
+
+<h3 id="只有PCDATA的元素"><a href="#只有PCDATA的元素" class="headerlink" title="只有PCDATA的元素"></a>只有PCDATA的元素</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ELEMENT 元素名称 (#PCDATA)&gt;<br></code></pre></td></tr></table></figure>
+
+<h3 id="带有任何内容的元素"><a href="#带有任何内容的元素" class="headerlink" title="带有任何内容的元素"></a>带有任何内容的元素</h3><p>关键词<code>ANY</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ELEMENT 元素名称 ANY&gt;<br></code></pre></td></tr></table></figure>
+
+<h3 id="带有子元素（序列）的元素"><a href="#带有子元素（序列）的元素" class="headerlink" title="带有子元素（序列）的元素"></a>带有子元素（序列）的元素</h3><p>带有一个或多个子元素的元素通过圆括号中的子元素名进行声明：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs dtd">1⃣️&lt;!ELEMENT 元素名称 (子元素名称 1)&gt;<br>2⃣️&lt;!ELEMENT 元素名称 (子元素名称 1,子元素名称 2,.....)&gt; &lt;!--由逗号分隔开的序列进行声明并且按照相同的顺序出现在XML文档中--&gt;<br></code></pre></td></tr></table></figure>
+
+<h4 id="不同的元素声明"><a href="#不同的元素声明" class="headerlink" title="不同的元素声明"></a>不同的元素声明</h4><ul>
+<li><p>子元素只出现一次：语法为：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ruby">&lt;!<span class="hljs-variable constant_">ELEMENT</span> 元素名称 (子元素名称)&gt;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>子元素出现零次或一次：语法为：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ruby">&lt;!<span class="hljs-variable constant_">ELEMENT</span> 元素名称 (子元素名称<span class="hljs-string">?)</span>&gt;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>子元素出现零次或多次：语法为：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ruby">&lt;!<span class="hljs-variable constant_">ELEMENT</span> 元素名称 (子元素名称*)&gt;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>子元素出现一次或多次：语法为：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ruby">&lt;!<span class="hljs-variable constant_">ELEMENT</span> 元素名称 (子元素名称+)&gt;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>子元素为多选一类型：语法为：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ruby">&lt;!<span class="hljs-variable constant_">ELEMENT</span> 元素名称 (子元素名称<span class="hljs-number">1</span>|<span class="hljs-params">元素名称2</span>|子元素名称<span class="hljs-number">3</span>|<span class="hljs-params">...)&gt;</span><br><span class="hljs-params"># 这里则不需要遵循子元素出现的顺序来写声明，只需包含所有可能出现的子元素即可（也可以添加一些不可能出现的元素，当然这样写并没有必要)</span><br><span class="hljs-params"># 只能出现一个，不然会报错</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>多种类型的子元素混合：举个例子：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ruby">&lt;!<span class="hljs-variable constant_">ELEMENT</span> book (name,author?,(price|<span class="hljs-params">press</span>|date)*)&gt;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>这个声明的含义为：<code>book</code>元素包含只出现一次的<code>name</code>子元素、出现零次或一次的<code>author</code>子元素以及出现零次或多次的<code>price</code>、<code>press</code>、<code>date</code>三个子元素中的一个</p>
+<blockquote>
+<p>对于<code>?</code>、<code>*</code>以及<code>+</code>这三个符号的含义，可以类比于正则表达式进行记忆</p>
+</blockquote>
+<h2 id="属性声明"><a href="#属性声明" class="headerlink" title="属性声明"></a>属性声明</h2><h3 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ATTLIST 元素名称 属性名称 属性类型 默认值&gt;<br></code></pre></td></tr></table></figure>
+
+<p>DTD 实例:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ATTLIST payment type CDATA &quot;check&quot;&gt;<br></code></pre></td></tr></table></figure>
+
+<p>XML 实例:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">payment</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;check&quot;</span> /&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>以下是<strong>属性类型</strong>的选项：</p>
+<table>
+<thead>
+<tr>
+<th align="left">类型</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">CDATA</td>
+<td align="left">值为字符数据 (character data)</td>
+</tr>
+<tr>
+<td align="left">(<em>en1</em>|<em>en2</em>|..)</td>
+<td align="left">此值是枚举列表中的一个值</td>
+</tr>
+<tr>
+<td align="left">ID</td>
+<td align="left">值为唯一的 id</td>
+</tr>
+<tr>
+<td align="left">IDREF</td>
+<td align="left">值为另外一个元素的 id</td>
+</tr>
+<tr>
+<td align="left">IDREFS</td>
+<td align="left">值为其他 id 的列表</td>
+</tr>
+<tr>
+<td align="left">NMTOKEN</td>
+<td align="left">值为合法的 XML 名称</td>
+</tr>
+<tr>
+<td align="left">NMTOKENS</td>
+<td align="left">值为合法的 XML 名称的列表</td>
+</tr>
+<tr>
+<td align="left">ENTITY</td>
+<td align="left">值是一个实体</td>
+</tr>
+<tr>
+<td align="left">ENTITIES</td>
+<td align="left">值是一个实体列表</td>
+</tr>
+<tr>
+<td align="left">NOTATION</td>
+<td align="left">此值是符号的名称</td>
+</tr>
+<tr>
+<td align="left">xml:</td>
+<td align="left">值是一个预定义的 XML 值</td>
+</tr>
+</tbody></table>
+<p>默认值参数可使用下列值：</p>
+<table>
+<thead>
+<tr>
+<th align="left">值</th>
+<th align="left">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">值</td>
+<td align="left">属性的默认值</td>
+</tr>
+<tr>
+<td align="left">#REQUIRED</td>
+<td align="left">属性值是必需的</td>
+</tr>
+<tr>
+<td align="left">#IMPLIED</td>
+<td align="left">属性不是必需的</td>
+</tr>
+<tr>
+<td align="left">#FIXED value</td>
+<td align="left">属性值是固定的</td>
+</tr>
+</tbody></table>
+<p>🌰–规定一个默认的属性值</p>
+<p>DTD: 给square元素规定了一个默认值为0的width属性,”square” 被定义为带有 CDATA 类型的 “width” 属性的空元素</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ELEMENT square EMPTY&gt;<br>&lt;!ATTLIST square width CDATA &quot;0&quot;&gt;<br></code></pre></td></tr></table></figure>
+
+<p>合法的 XML: 仍可以给被预定义的属性赋值</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">square</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100&quot;</span> /&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="IMPLIED"><a href="#IMPLIED" class="headerlink" title="#IMPLIED"></a>#IMPLIED</h3><p>属性不是必需的</p>
+<h4 id="语法-2"><a href="#语法-2" class="headerlink" title="语法"></a>语法</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ATTLIST 元素名称 属性名称 属性类型 #IMPLIED&gt;<br></code></pre></td></tr></table></figure>
+
+<p>🌰</p>
+<p>DTD:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ATTLIST contact fax CDATA #IMPLIED&gt;<br></code></pre></td></tr></table></figure>
+
+<p>合法的 XML:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">contact</span> <span class="hljs-attr">fax</span>=<span class="hljs-string">&quot;555-667788&quot;</span> /&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>合法的 XML:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">contact</span> /&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="REQUIRED"><a href="#REQUIRED" class="headerlink" title="#REQUIRED"></a>#REQUIRED</h3><p>属性是必需的,适用于没有默认值选项，但强制要求提交属性值</p>
+<h3 id="语法-3"><a href="#语法-3" class="headerlink" title="语法"></a>语法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ATTLIST 元素名称 属性名称 属性类型 #REQUIRED&gt;<br></code></pre></td></tr></table></figure>
+
+<p>🌰</p>
+<p>DTD:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ATTLIST person number CDATA #REQUIRED&gt;<br></code></pre></td></tr></table></figure>
+
+<p>合法的 XML:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">person</span> <span class="hljs-attr">number</span>=<span class="hljs-string">&quot;5677&quot;</span> /&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>非法的 XML:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">person</span> /&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="FIXED"><a href="#FIXED" class="headerlink" title="#FIXED"></a>#FIXED</h3><p>属性值固定,预先定义属性值，不可更改(类比const)</p>
+<h3 id="语法-4"><a href="#语法-4" class="headerlink" title="语法"></a>语法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ATTLIST 元素名称 属性名称 属性类型 #FIXED &quot;value&quot;&gt;<br></code></pre></td></tr></table></figure>
+
+<p>🌰</p>
+<p>DTD:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ATTLIST sender company CDATA #FIXED &quot;Microsoft&quot;&gt;<br></code></pre></td></tr></table></figure>
+
+<p>合法的 XML:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">sender</span> <span class="hljs-attr">company</span>=<span class="hljs-string">&quot;Microsoft&quot;</span> /&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>非法的 XML:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">sender</span> <span class="hljs-attr">company</span>=<span class="hljs-string">&quot;W3School&quot;</span> /&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="列举属性值"><a href="#列举属性值" class="headerlink" title="列举属性值"></a>列举属性值</h3><h3 id="语法："><a href="#语法：" class="headerlink" title="语法："></a>语法：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ATTLIST 元素名称 属性名称 (en1|en2|..) 默认值&gt;<br></code></pre></td></tr></table></figure>
+
+<p>DTD 例子:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ATTLIST payment type (check|cash) &quot;cash&quot;&gt;<br></code></pre></td></tr></table></figure>
+
+<p>XML 例子:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">payment</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;check&quot;</span> /&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">payment</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;cash&quot;</span> /&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="实体声明"><a href="#实体声明" class="headerlink" title="实体声明"></a>实体声明</h2><p>实体是用于定义引用普通文本或特殊字符的快捷方式的变量。</p>
+<p>实体引用是对实体的引用。</p>
+<p>实体可在内部或外部进行声明。</p>
+<h3 id="内部实体声明"><a href="#内部实体声明" class="headerlink" title="内部实体声明"></a>内部实体声明</h3><h3 id="语法：-1"><a href="#语法：-1" class="headerlink" title="语法："></a>语法：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ENTITY 实体名称 &quot;实体的值&quot;&gt;<br></code></pre></td></tr></table></figure>
+
+<p>🌰</p>
+<p>DTD 例子:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ENTITY writer &quot;Bill Gates&quot;&gt;<br>&lt;!ENTITY copyright &quot;Copyright W3School.com.cn&quot;&gt;<br></code></pre></td></tr></table></figure>
+
+<p>XML 例子:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">author</span>&gt;</span><span class="hljs-symbol">&amp;writer;</span><span class="hljs-symbol">&amp;copyright;</span><span class="hljs-tag">&lt;/<span class="hljs-name">author</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>一个实体由三部分构成: 一个和号 <code>&amp;</code>, 一个实体名称, 以及一个分号 <code>;</code></p>
+</blockquote>
+<h3 id="外部实体声明"><a href="#外部实体声明" class="headerlink" title="外部实体声明"></a>外部实体声明</h3><h3 id="语法：-2"><a href="#语法：-2" class="headerlink" title="语法："></a>语法：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ENTITY 实体名称 SYSTEM &quot;URI/URL&quot;&gt; &lt;!--也可以用协议--&gt;<br></code></pre></td></tr></table></figure>
+
+<p>💡不同环境下可用协议</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032236978.jpg" srcset="/img/loading.gif" lazyload alt="aaa"></p>
+<p>🌰</p>
+<p>DTD 例子:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ENTITY writer SYSTEM &quot;http://www.w3school.com.cn/dtd/entities.dtd&quot;&gt;<br>&lt;!ENTITY copyright SYSTEM &quot;http://www.w3school.com.cn/dtd/entities.dtd&quot;&gt;<br></code></pre></td></tr></table></figure>
+
+<p>XML 例子:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">author</span>&gt;</span><span class="hljs-symbol">&amp;writer;</span><span class="hljs-symbol">&amp;copyright;</span><span class="hljs-tag">&lt;/<span class="hljs-name">author</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="实体的嵌套"><a href="#实体的嵌套" class="headerlink" title="实体的嵌套"></a><strong>实体的嵌套</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ENTITY %实体名称 &quot;值&quot;&gt; &lt;!--内部--&gt;<br>&lt;!ENTITY %实体名称 SYSTEM &quot;URL&quot;&gt; &lt;!--外部--&gt;<br></code></pre></td></tr></table></figure>
+
+<h3 id="实体分类"><a href="#实体分类" class="headerlink" title="实体分类"></a>实体分类</h3><p>实体又分为一般实体和参数实体,字符实体,命名实体</p>
+<p>1，一般实体的声明语法:<!ENTITY 实体名 "实体内容"><br>引用实体的方式：&amp;实体名；</p>
+<p>2，参数实体只能在DTD中使用，参数实体的声明格式： <!ENTITY % 实体名 "实体内容"><br>引用实体的方式：%实体名；</p>
+<blockquote>
+<p>有SYSTEM关键字引用数据的实体就是参数实体</p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/ctf/" class="category-chain-item">ctf</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/xxe/">#xxe</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>DTD学习</div>
+      <div>http://sloth31.github.io/2022/04/21/DTD学习/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Sl0th</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年4月21日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                <i class="iconfont icon-nc"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                <i class="iconfont icon-sa"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/07/08/Mysql%E6%8F%90%E6%9D%83/" title="Mysql提权">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Mysql提权</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/01/23/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/" title="sql注入学习">
+                        <span class="hidden-mobile">sql注入学习</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

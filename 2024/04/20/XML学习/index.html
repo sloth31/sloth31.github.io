@@ -1,0 +1,1020 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/fav.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Sl0th">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="XML简介 XML 指可扩展标记语言(EXtensible Markup Language),被设计用来传输和存储数据 可以用在配置文件中、在网络中传输  HTML 被设计用来显示数据   XML 是一种标记语言，很类似 HTML,是对 HTML 的补充  XML 的设计宗旨是传输数据，而非显示数据  XML 标签没有被预定义。您需要自行定义标签。(通过 XML 可以发明自己的标签)  XML 被">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XML学习">
+<meta property="og:url" content="http://sloth31.github.io/2024/04/20/XML%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Sl0th&#39;s Blog">
+<meta property="og:description" content="XML简介 XML 指可扩展标记语言(EXtensible Markup Language),被设计用来传输和存储数据 可以用在配置文件中、在网络中传输  HTML 被设计用来显示数据   XML 是一种标记语言，很类似 HTML,是对 HTML 的补充  XML 的设计宗旨是传输数据，而非显示数据  XML 标签没有被预定义。您需要自行定义标签。(通过 XML 可以发明自己的标签)  XML 被">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h1o9tjk5xoj20l60bejs6.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4lrp1a2m5j21ho0q6n3h.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4lrrg091cj20mw0fcq3p.jpg">
+<meta property="article:published_time" content="2024-04-19T16:00:55.000Z">
+<meta property="article:modified_time" content="2024-07-03T16:02:01.537Z">
+<meta property="article:author" content="Sl0th">
+<meta property="article:tag" content="xxe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h1o9tjk5xoj20l60bejs6.jpg">
+  
+  
+  
+  <title>XML学习 | Sl0th&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"sloth31.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"c8LjkMGtqBFlFQrpl65qUKoM-gzGzoHsz","app_key":"5MBWFG00GDY2LpteTo0bvyRu","server_url":"https://c8ljkmgt.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Sl0th&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="XML学习"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-20 00:00" pubdate>
+          2024年4月20日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          11k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          60 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">XML学习</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p> XML 指可扩展标记语言(<em>EX</em>tensible <em>M</em>arkup <em>L</em>anguage),<strong>被设计用来<u>传输和存储数据</u></strong> 可以用在配置文件中、在网络中传输</p>
+<blockquote>
+<p><strong>HTML 被设计用来显示数据</strong></p>
+</blockquote>
+<ul>
+<li><p>XML 是一种<em>标记语言</em>，很类似 HTML,是对 HTML 的补充</p>
+</li>
+<li><p>XML 的设计宗旨是<strong>传输数据</strong>，而非显示数据</p>
+</li>
+<li><p>XML 标签没有被预定义。您需要<strong>自行定义标签</strong>。(通过 XML 可以发明自己的标签)</p>
+</li>
+<li><p>XML 被设计为具有<em>自我描述性</em>。</p>
+</li>
+<li><p>XML 是 <strong>W3C 的推荐标准</strong></p>
+</li>
+<li><p>XML 仅仅是纯文本</p>
+</li>
+<li><p>XML 独立于硬件、软件以及应用程序</p>
+</li>
+</ul>
+<h2 id="树结构"><a href="#树结构" class="headerlink" title="树结构"></a>树结构</h2><p>一个文档实例(John 给 George 的一张便签)</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;ISO-8859-1&quot;</span>?&gt;</span> <span class="hljs-comment">&lt;!--XML 声明。它定义 XML 的版本 (1.0) 和所使用的编码 (ISO-8859-1 = Latin-1/西欧字符集)--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">note</span>&gt;</span> <span class="hljs-comment">&lt;!--根元素--&gt;</span><br><span class="hljs-comment">&lt;!--4 行描述根的 4 个子元素（to, from, heading 以及 body）--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">to</span>&gt;</span>George<span class="hljs-tag">&lt;/<span class="hljs-name">to</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">from</span>&gt;</span>John<span class="hljs-tag">&lt;/<span class="hljs-name">from</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">heading</span>&gt;</span>Reminder<span class="hljs-tag">&lt;/<span class="hljs-name">heading</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>Don&#x27;t forget the meeting!<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">note</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>所有的XML元素都必须有一个关闭标签  e.g. <note> </note></p>
+<p>也可以使用自闭合标签 e.g.<code> &lt;br/&gt;</code></p>
+<h3 id="组成部分"><a href="#组成部分" class="headerlink" title="组成部分"></a>组成部分</h3><h4 id="⚠️注意：xml第一行必须定义为文档声明"><a href="#⚠️注意：xml第一行必须定义为文档声明" class="headerlink" title="⚠️注意：xml第一行必须定义为文档声明"></a>⚠️注意：xml第一行必须定义为文档声明</h4><p>格式：<?xml 属性列表 ?></p>
+<p>属性列表：</p>
+<ul>
+<li>version：版本号，必须的属性</li>
+<li>encoding：编码方式。告知解析引擎当前文档使用的字符集，默认值：ISO-8859-1 若存中文，用gbk</li>
+<li>standalone：是否独立<ul>
+<li>取值：<br>* yes：不依赖其他文件<ul>
+<li>no：依赖其他文件</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>指令(了解)：结合css的w<ul>
+<li><?xml-stylesheet type="text/css" href="a.css" ?> (给当前xml加样式)</li>
+</ul>
+</li>
+<li>标签：标签名称自定义的<br>* 规则：<br>              * 名称可以包含字母、数字以及其他的字符<br>* 名称不能以数字或者标点符号开始<br>* 名称不能以字母 xml（或者 XML、Xml 等等）开始<br>* 名称不能包含空格 </li>
+<li>属性：<br>id属性值唯一</li>
+<li>文本：<br>* CDATA区：在该区域中的数据会被原样展示<br>        * 格式：  <![CDATA[ 数据 ]]> （原样展示也就意味着不用实体代替特殊字符）</li>
+</ol>
+</blockquote>
+<h3 id="XML-文档形成一种树结构"><a href="#XML-文档形成一种树结构" class="headerlink" title="XML 文档形成一种树结构"></a>XML 文档形成一种树结构</h3><p>XML 文档必须包含<em>根元素</em>。该元素是所有其他元素的父元素。</p>
+<p>XML 文档中的元素形成了一棵文档树。这棵树从根部开始，并扩展到树的最底端。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">root</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">child</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">subchild</span>&gt;</span>.....<span class="hljs-tag">&lt;/<span class="hljs-name">subchild</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">child</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">root</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>所有元素都可以有子元素</p>
+</blockquote>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><h3 id="大小写敏感"><a href="#大小写敏感" class="headerlink" title="大小写敏感"></a>大小写敏感</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">Message</span>&gt;</span>这是错误的。<span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span>这是正确的。<span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span> <br></code></pre></td></tr></table></figure>
+
+<h3 id="正确嵌套"><a href="#正确嵌套" class="headerlink" title="正确嵌套"></a>正确嵌套</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">b</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">i</span>&gt;</span>错误<span class="hljs-tag">&lt;/<span class="hljs-name">b</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">b</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">i</span>&gt;</span>正确<span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">b</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="必须有一个根元素（子元素间可以并列）"><a href="#必须有一个根元素（子元素间可以并列）" class="headerlink" title="必须有一个根元素（子元素间可以并列）"></a>必须有一个根元素（子元素间可以并列）</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">root</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">child</span> <span class="hljs-attr">category</span>=<span class="hljs-string">&quot;COOKING&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">subchild</span>&gt;</span>.....<span class="hljs-tag">&lt;/<span class="hljs-name">subchild</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">child</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">child</span> <span class="hljs-attr">category</span>=<span class="hljs-string">&quot;WEB&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">subchild</span>&gt;</span>.....<span class="hljs-tag">&lt;/<span class="hljs-name">subchild</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">child</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">root</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="属性值要加引号"><a href="#属性值要加引号" class="headerlink" title="属性值要加引号"></a>属性值要加引号</h3><p>单双都可以</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">note</span> <span class="hljs-attr">date</span>=<span class="hljs-string">&quot;08/08/2008&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">to</span>&gt;</span>George<span class="hljs-tag">&lt;/<span class="hljs-name">to</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">from</span>&gt;</span>John<span class="hljs-tag">&lt;/<span class="hljs-name">from</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">note</span>&gt;</span> <br></code></pre></td></tr></table></figure>
+
+<h3 id="实体引用"><a href="#实体引用" class="headerlink" title="实体引用"></a>实体引用</h3><p>特殊符号转义</p>
+<table>
+<thead>
+<tr>
+<th><code>&amp;lt;</code></th>
+<th>&lt;</th>
+<th>小于</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&amp;gt;</code></td>
+<td>&gt;</td>
+<td>大于</td>
+</tr>
+<tr>
+<td><code>&amp;amp;</code></td>
+<td>&amp;</td>
+<td>和号</td>
+</tr>
+<tr>
+<td><code>&amp;apos;</code></td>
+<td>‘</td>
+<td>单引号</td>
+</tr>
+<tr>
+<td><code>&amp;quot;</code></td>
+<td>“</td>
+<td>引号</td>
+</tr>
+</tbody></table>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span>if salary &lt; 1000 then<span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span>if salary <span class="hljs-symbol">&amp;lt;</span> 1000 then<span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span>  ✅<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在 XML 中，只有字符 “&lt;” 和 “&amp;” 确实是非法的。大于号是合法的，但是用实体引用来代替它是一个好习惯。</p>
+</blockquote>
+<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><p>使用<code>&lt;!--</code>与<code>--&gt;</code> (都是两个短横杠)</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- This is a comment --&gt;</span>  <br></code></pre></td></tr></table></figure>
+
+<h3 id="保留空格"><a href="#保留空格" class="headerlink" title="保留空格"></a>保留空格</h3><p>在 XML 中，文档中的空格不会被删节。</p>
+<blockquote>
+<p>HTML 会把多个连续的空格字符裁减（合并）为一个：</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs applescript">HTML:	Hello           <span class="hljs-keyword">my</span> <span class="hljs-built_in">name</span> <span class="hljs-keyword">is</span> David.<br>输出:	Hello <span class="hljs-keyword">my</span> <span class="hljs-built_in">name</span> <span class="hljs-keyword">is</span> David.<br></code></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="LF存储换行"><a href="#LF存储换行" class="headerlink" title="LF存储换行"></a>LF存储换行</h3><p>在 Windows 应用程序中，换行通常以一对字符来存储：回车符 (CR) 和换行符 (LF)。这对字符与打字机设置新行的动作有相似之处。在 Unix 应用程序中，新行以 LF 字符存储。而 Macintosh 应用程序使用 CR 来存储新行。</p>
+<h2 id="元素"><a href="#元素" class="headerlink" title="元素"></a>元素</h2><p><strong>XML 元素</strong>指的是从（且包括）开始标签直到（且包括）结束标签的部分。</p>
+<h3 id="命名规则"><a href="#命名规则" class="headerlink" title="命名规则"></a>命名规则</h3><ul>
+<li>名称可以含字母、数字以及其他的字符</li>
+<li>名称不能以数字或者标点符号开始 </li>
+<li>名称不能以字符 “xml”（或者 XML、Xml）开始 </li>
+<li>名称不能包含空格</li>
+<li>可使用任何名称，没有保留的字词</li>
+</ul>
+<blockquote>
+<p>避免 “-“ 字符。如果您按照这样的方式进行命名：”first-name”，一些软件会认为你需要提取第一个单词。</p>
+<p>避免 “.” 字符。如果您按照这样的方式进行命名：”first.name”，一些软件会认为 “name” 是对象 “first” 的属性。</p>
+<p>避免 “:” 字符。冒号会被转换为命名空间来使用。</p>
+<p>XML 文档经常有一个对应的数据库，其中的字段会对应 XML 文档中的元素。有一个实用的经验，即使用数据库的名称规则来命名 XML 文档中的元素。</p>
+</blockquote>
+<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><p><strong>属性 (Attribute) 提供关于元素的额外（附加）信息。</strong></p>
+<p>属性值必须被引号包围，不过单引号和双引号均可使用。比如一个人的性别，person 标签可以这样写：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">person</span> <span class="hljs-attr">sex</span>=<span class="hljs-string">&quot;female&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">person</span> <span class="hljs-attr">sex</span>=<span class="hljs-string">&#x27;female&#x27;</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>如果属性值本身包含双引号，那么有必要使用单引号包围它，就像这个例子：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">gangster</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&#x27;George &quot;Shotgun&quot; Ziegler&#x27;</span>&gt;</span><br><span class="hljs-comment">&lt;!--或者使用实体引用--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">gangster</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;George <span class="hljs-symbol">&amp;quot;</span>Shotgun<span class="hljs-symbol">&amp;quot;</span> Ziegler&quot;</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>属性与元素的使用没有规定，可以按照自己喜欢的方式</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">person</span> <span class="hljs-attr">sex</span>=<span class="hljs-string">&quot;female&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">firstname</span>&gt;</span>Anna<span class="hljs-tag">&lt;/<span class="hljs-name">firstname</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">lastname</span>&gt;</span>Smith<span class="hljs-tag">&lt;/<span class="hljs-name">lastname</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">person</span>&gt;</span> <br><br><span class="hljs-tag">&lt;<span class="hljs-name">person</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">sex</span>&gt;</span>female<span class="hljs-tag">&lt;/<span class="hljs-name">sex</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">firstname</span>&gt;</span>Anna<span class="hljs-tag">&lt;/<span class="hljs-name">firstname</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">lastname</span>&gt;</span>Smith<span class="hljs-tag">&lt;/<span class="hljs-name">lastname</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">person</span>&gt;</span> <br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>因使用属性而引起的一些问题：</p>
+<ul>
+<li>属性无法包含多重的值（元素可以）</li>
+<li>属性无法描述树结构（元素可以）</li>
+<li>属性不易扩展（为未来的变化）</li>
+<li>属性难以阅读和维护</li>
+</ul>
+</blockquote>
+<p><strong>元数据（有关数据的数据）应当存储为属性，而数据本身应当存储为元素</strong></p>
+<p>有时候会向元素分配 ID 引用。这些 ID 索引可用于标识 XML 元素，它起作用的方式与 HTML 中 ID 属性是一样的</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">messages</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">note</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;501&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">to</span>&gt;</span>George<span class="hljs-tag">&lt;/<span class="hljs-name">to</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">from</span>&gt;</span>John<span class="hljs-tag">&lt;/<span class="hljs-name">from</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">heading</span>&gt;</span>Reminder<span class="hljs-tag">&lt;/<span class="hljs-name">heading</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>Don&#x27;t forget the meeting!<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">note</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">note</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;502&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">to</span>&gt;</span>John<span class="hljs-tag">&lt;/<span class="hljs-name">to</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">from</span>&gt;</span>George<span class="hljs-tag">&lt;/<span class="hljs-name">from</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">heading</span>&gt;</span>Re: Reminder<span class="hljs-tag">&lt;/<span class="hljs-name">heading</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>I will not<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">note</span>&gt;</span> <br><span class="hljs-tag">&lt;/<span class="hljs-name">messages</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="XML验证"><a href="#XML验证" class="headerlink" title="XML验证"></a>XML验证</h2><p>拥有正确语法的 XML 被称为“形式良好”的 XML。</p>
+<p>通过 DTD 验证的 XML 是“合法”的 XML。</p>
+<h3 id="XML-Schema"><a href="#XML-Schema" class="headerlink" title="XML Schema"></a>XML Schema</h3><p>W3C 支持一种基于 XML 的 DTD 代替者，它名为 XML Schema：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;note&quot;</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">xs:complexType</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">xs:sequence</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;to&quot;</span>      <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;xs:string&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;from&quot;</span>    <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;xs:string&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;heading&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;xs:string&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;body&quot;</span>    <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;xs:string&quot;</span>/&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">xs:sequence</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">xs:element</span>&gt;</span> <br></code></pre></td></tr></table></figure>
+
+<h3 id="XML-DTD"><a href="#XML-DTD" class="headerlink" title="XML DTD"></a>XML DTD</h3><p>DTD 的作用是定义 XML 文档的结构。它使用一系列合法的元素来定义文档结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!DOCTYPE note [ &lt;!--DOCTYPE 声明是对外部 DTD 文件的引用--&gt;<br>  &lt;!ELEMENT note (to,from,heading,body)&gt;<br>  &lt;!ELEMENT to      (#PCDATA)&gt;<br>  &lt;!ELEMENT from    (#PCDATA)&gt;<br>  &lt;!ELEMENT heading (#PCDATA)&gt;<br>  &lt;!ELEMENT body    (#PCDATA)&gt;<br>]&gt; <br></code></pre></td></tr></table></figure>
+
+<h2 id="XML-CSS"><a href="#XML-CSS" class="headerlink" title="XML CSS"></a>XML CSS</h2><p>XML可以连接到CSS文件并被其格式化，呈现在网页上 </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;ISO-8859-1&quot;</span>?&gt;</span><br><span class="hljs-meta">&lt;?xml-stylesheet type=<span class="hljs-string">&quot;text/css&quot;</span> href=<span class="hljs-string">&quot;cd_catalog.css&quot;</span>?&gt;</span> <span class="hljs-comment">&lt;!--把这个XML文件链接到CSS文件--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">CATALOG</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">CD</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">TITLE</span>&gt;</span>Empire Burlesque<span class="hljs-tag">&lt;/<span class="hljs-name">TITLE</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">ARTIST</span>&gt;</span>Bob Dylan<span class="hljs-tag">&lt;/<span class="hljs-name">ARTIST</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">COUNTRY</span>&gt;</span>USA<span class="hljs-tag">&lt;/<span class="hljs-name">COUNTRY</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">COMPANY</span>&gt;</span>Columbia<span class="hljs-tag">&lt;/<span class="hljs-name">COMPANY</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">PRICE</span>&gt;</span>10.90<span class="hljs-tag">&lt;/<span class="hljs-name">PRICE</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">YEAR</span>&gt;</span>1985<span class="hljs-tag">&lt;/<span class="hljs-name">YEAR</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">CD</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">CD</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">TITLE</span>&gt;</span>Hide your heart<span class="hljs-tag">&lt;/<span class="hljs-name">TITLE</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">ARTIST</span>&gt;</span>Bonnie Tyler<span class="hljs-tag">&lt;/<span class="hljs-name">ARTIST</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">COUNTRY</span>&gt;</span>UK<span class="hljs-tag">&lt;/<span class="hljs-name">COUNTRY</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">COMPANY</span>&gt;</span>CBS Records<span class="hljs-tag">&lt;/<span class="hljs-name">COMPANY</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">PRICE</span>&gt;</span>9.90<span class="hljs-tag">&lt;/<span class="hljs-name">PRICE</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">YEAR</span>&gt;</span>1988<span class="hljs-tag">&lt;/<span class="hljs-name">YEAR</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">CD</span>&gt;</span><br>.<br>.<br>.<br>.<br><span class="hljs-tag">&lt;/<span class="hljs-name">CATALOG</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>使用 CSS 格式化 XML 不是常用的方法，更不能代表 XML 文档样式化的未来。W3C 推荐使用 XSLT</p>
+</blockquote>
+<h2 id="XML-XSLT"><a href="#XML-XSLT" class="headerlink" title="XML XSLT"></a>XML XSLT</h2><p>XSLT 是首选的 XML 样式表语言。</p>
+<p>XSLT (eXtensible Stylesheet Language Transformations) 远比 CSS 更加完善。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;ISO-8859-1&quot;</span>?&gt;</span><br><span class="hljs-meta">&lt;?xml-stylesheet type=<span class="hljs-string">&quot;text/xsl&quot;</span> href=<span class="hljs-string">&quot;simple.xsl&quot;</span>?&gt;</span> <span class="hljs-comment">&lt;!--把这个XML文件链接到XSL文件--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">breakfast_menu</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">food</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Belgian Waffles<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">price</span>&gt;</span>$5.95<span class="hljs-tag">&lt;/<span class="hljs-name">price</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><br>       two of our famous Belgian Waffles<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">calories</span>&gt;</span>650<span class="hljs-tag">&lt;/<span class="hljs-name">calories</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">food</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">breakfast_menu</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在使用 XSLT 来转换 XML 时，不同的浏览器可能会产生不同结果。为了减少这种问题，可以在服务器上进行 XSLT 转换。</p>
+</blockquote>
+<p>DOM 将 XML 文档作为一个树形结构，而树叶被定义为<strong>节点</strong></p>
+<p>以书店文档为例</p>
+<img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h1o9tjk5xoj20l60bejs6.jpg" srcset="/img/loading.gif" lazyload alt="image-20220427143813504" style="zoom: 50%;" />
+
+<h2 id="XML约束"><a href="#XML约束" class="headerlink" title="XML约束"></a>XML约束</h2><ul>
+<li><p>约束：规定xml文档的书写规则</p>
+<ul>
+<li><p>作为框架的使用者(程序员)：</p>
+<ol>
+<li>能够在xml中引入约束文档</li>
+<li>能够简单的读懂约束文档</li>
+</ol>
+</li>
+<li><p>分类：</p>
+<ol>
+<li>DTD:一种简单的约束技术</li>
+<li>Schema:一种复杂的约束技术</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="DTD："><a href="#DTD：" class="headerlink" title="DTD："></a>DTD：</h3><ul>
+<li>引入dtd文档到xml文档中<ul>
+<li>内部dtd：将约束规则定义在xml文档中</li>
+<li>外部dtd：将约束的规则定义在外部的dtd文件中<ul>
+<li>本地：<!DOCTYPE 根标签名 SYSTEM "dtd文件的位置"></li>
+<li>网络：<!DOCTYPE 根标签名 PUBLIC "dtd文件名字" "dtd文件的位置URL"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Schema"><a href="#Schema" class="headerlink" title="Schema:"></a>Schema:</h3><p>可以自定义类型，给标签内容更多的规定</p>
+<ul>
+<li>引入：<ol>
+<li>填写xml文档的根元素</li>
+<li>引入xsi命名空间(xsi标准命名空间，有多种取值 分别对应不同版本).  xmlns:xsi&#x3D;”<a target="_blank" rel="noopener" href="http://www.w3.org/2001/XMLSchema-instance&quot;">http://www.w3.org/2001/XMLSchema-instance&quot;</a></li>
+<li>为每个命名空间指定具体的schema文件 两两一对  <code>xsi:schemaLocation=&quot;http://www.itcast.cn/xml student.xsd&quot;</code> </li>
+<li>为每一个xsd约束声明一个前缀,作为标识  xmlns&#x3D;”<a target="_blank" rel="noopener" href="http://www.itcast.cn/xml&quot;">http://www.itcast.cn/xml&quot;</a> (xmlns定义默认命名空间，只引一个约束文档时，可以不加前缀，为空前缀，可以直接使用标签，默认所有标签都用这个文档)<ul>
+<li>加前缀版(自定义命名空间，给命名空间取别名，其赋值必须是个命名空间文件 必须在xsi命名空间内指定其对应的schema文件)：xmlns:a&#x3D;”<a target="_blank" rel="noopener" href="http://www.itcast.cn/xml1&quot;">http://www.itcast.cn/xml1&quot;</a>  使用该约束文档的标签都要加前缀 如<code>&lt;a:age&gt;&lt;/a:age&gt;</code></li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p>根标签内引入</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">students</span>   <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span><br><span class="hljs-tag">				<span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://www.itcast.cn/xml&quot;</span> </span><br><span class="hljs-tag">				<span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://www.itcast.cn/xml  student.xsd&quot;</span>&gt;</span><br></code></pre></td></tr></table></figure>
+</blockquote>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4lrp1a2m5j21ho0q6n3h.jpg" srcset="/img/loading.gif" lazyload alt="image-20220727204100444"></p>
+<h2 id="XML解析"><a href="#XML解析" class="headerlink" title="XML解析"></a>XML解析</h2><p>解析：操作xml文档，将文档中的数据读取到内存中</p>
+<ul>
+<li><p>操作xml文档</p>
+<ol>
+<li>解析(读取)：将文档中的数据读取到内存中</li>
+<li>写入：将内存中的数据保存到xml文档中。持久化的存储</li>
+</ol>
+</li>
+<li><p>解析xml的方式：</p>
+<ol>
+<li>DOM：将标记语言文档一次性加载进内存，在内存中形成一颗dom树</li>
+</ol>
+<p>  <img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4lrrg091cj20mw0fcq3p.jpg" srcset="/img/loading.gif" lazyload alt="image-20220727204321916"></p>
+<ul>
+<li>优点：操作方便，可以对文档进行CRUD的所有操作</li>
+<li>缺点：占内存</li>
+</ul>
+<ol start="2">
+<li>SAX：逐行读取(自动释放上一行)，基于事件驱动的。</li>
+</ol>
+<ul>
+<li>优点：不占内存。</li>
+<li>缺点：只能读取，不能增删改</li>
+</ul>
+</li>
+</ul>
+<h3 id="xml常见的解析器："><a href="#xml常见的解析器：" class="headerlink" title="xml常见的解析器："></a>xml常见的解析器：</h3><p>​    1. JAXP：sun公司提供的解析器，支持dom和sax两种思想<br>​    2. DOM4J：一款非常优秀的解析器<br>​    3. Jsoup：jsoup 是一款Java 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于jQuery的操作方法来取出和操作数据。<br>​    4. PULL：Android操作系统内置的解析器，sax方式的。</p>
+<h3 id="Jsoup"><a href="#Jsoup" class="headerlink" title="Jsoup"></a>Jsoup</h3><p>jsoup 是一款Java 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于jQuery的操作方法来取出和操作数据。</p>
+<ul>
+<li><p>快速入门：</p>
+<ul>
+<li>步骤：<ol>
+<li>导入jar包</li>
+<li>获取Document对象</li>
+<li>获取对应的标签Element对象</li>
+<li>获取数据</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//获取Document对象,根据xml文档获取</span><br><span class="hljs-comment">//获取student.xml的path</span><br>String path= JsoupDemo1.class.getClassLoader().getResource(<span class="hljs-string">&quot;student.xml&quot;</span>).toURI().getPath();<br><span class="hljs-comment">//解析xml文档，加载文档进内存，获取dom树--&gt;Document</span><br><span class="hljs-type">Document</span> <span class="hljs-variable">document</span> <span class="hljs-operator">=</span> Jsoup.parse(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(path), <span class="hljs-string">&quot;utf-8&quot;</span>);<br><span class="hljs-comment">//获取元素对象 Element</span><br><span class="hljs-type">Elements</span> <span class="hljs-variable">elements</span> <span class="hljs-operator">=</span> document.getElementsByTag(<span class="hljs-string">&quot;name&quot;</span>);<span class="hljs-comment">//Elements是ArrayList&lt;Element&gt;</span><br>System.out.println(elements.size());<br><span class="hljs-comment">//获取第一个name的Element对象</span><br><span class="hljs-type">Element</span> <span class="hljs-variable">element</span> <span class="hljs-operator">=</span> elements.get(<span class="hljs-number">0</span>);<br><span class="hljs-comment">//获取数据</span><br><span class="hljs-type">String</span> <span class="hljs-variable">text</span> <span class="hljs-operator">=</span> element.text();<br>System.out.println(text);<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>路径中有中文或空格时，要先toURI再getPath</p>
+</blockquote>
+</li>
+<li><p>对象的使用：</p>
+<ol>
+<li>Jsoup：工具类，可以解析html或xml文档，返回Document<ul>
+<li>parse：解析html或xml文档，返回Document<ul>
+<li>parse(File in, String charsetName)：解析xml或html文件的。</li>
+<li>parse(String html)：解析xml或html字符串</li>
+<li>parse(URL url, int timeoutMillis)：通过网络路径获取指定的html或xml的文档对象</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Document：文档对象。代表内存中的dom树<ul>
+<li>获取Element对象<ul>
+<li>getElementById(String id)：根据id属性值获取唯一的element对象</li>
+<li>getElementsByTag(String tagName)：根据标签名称获取元素对象集合</li>
+<li>getElementsByAttribute(String key)：根据属性名称获取元素对象集合</li>
+<li>getElementsByAttributeValue(String key, String value)：根据对应的属性名和属性值获取元素对象集合</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Elements：元素Element对象的集合。可以当做 ArrayList<Element>来使用</li>
+<li>Element：元素对象<ol>
+<li><p>获取子元素对象</p>
+<ul>
+<li>getElementById(String id)：根据id属性值获取唯一的element对象</li>
+<li>getElementsByTag(String tagName)：根据标签名称获取元素对象集合</li>
+<li>getElementsByAttribute(String key)：根据属性名称获取元素对象集合</li>
+<li>getElementsByAttributeValue(String key, String value)：根据对应的属性名和属性值获取元素对象集合</li>
+</ul>
+</li>
+<li><p>获取属性值</p>
+<ul>
+<li>String attr(String key)：根据属性名称(大小写不敏感)获取属性值</li>
+</ul>
+</li>
+<li><p>获取文本内容</p>
+<ul>
+<li>String text():获取文本内容（所有子标签的纯文本内容拼接，不包含标签名及&lt;&gt;）</li>
+<li>String html():获取标签体的所有内容(包括子标签的字符串内容,包含标签名及&lt;&gt;)</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>Node：节点对象<ul>
+<li>是Document和Element的父类</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><p>快捷查询方式：</p>
+<ol>
+<li><p>selector:选择器</p>
+<ul>
+<li><p>使用的方法：Elements    select(String cssQuery) </p>
+<ul>
+<li>语法：参考Selector类中定义的语法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//选择器查询</span><br><span class="hljs-type">String</span> <span class="hljs-variable">path</span> <span class="hljs-operator">=</span> JsoupDemo1.class.getClassLoader().getResource(<span class="hljs-string">&quot;student.xml&quot;</span>).toURI().getPath();<br><span class="hljs-type">Document</span> <span class="hljs-variable">document</span> <span class="hljs-operator">=</span> Jsoup.parse(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(path), <span class="hljs-string">&quot;utf-8&quot;</span>);<br><span class="hljs-comment">//获取name标签</span><br><span class="hljs-type">Elements</span> <span class="hljs-variable">elements</span> <span class="hljs-operator">=</span> document.select(<span class="hljs-string">&quot;name&quot;</span>);<br>System.out.println(elements);<br><span class="hljs-comment">//获取id=&quot;itcast&quot;的元素</span><br><span class="hljs-type">Elements</span> <span class="hljs-variable">elements1</span> <span class="hljs-operator">=</span> document.select(<span class="hljs-string">&quot;#itcast&quot;</span>);<br>System.out.println(elements1);<br>System.out.println(<span class="hljs-string">&quot;-------&quot;</span>);<br><span class="hljs-comment">//获取student标签下number=&quot;heima_0001的age子标签</span><br><span class="hljs-type">Elements</span> <span class="hljs-variable">elements2</span> <span class="hljs-operator">=</span> document.select(<span class="hljs-string">&quot;student[number=&#x27;heima_0001&#x27;]&quot;</span>);<br>System.out.println(elements2);<br><span class="hljs-type">Elements</span> <span class="hljs-variable">elements3</span> <span class="hljs-operator">=</span> document.select(<span class="hljs-string">&quot;student[number=&#x27;heima_0001&#x27;] &gt; age&quot;</span>);<br><span class="hljs-comment">//得到age</span><br>System.out.println(elements3);<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>XPath：XPath即为XML路径语言，它是一种用来确定XML（标准通用标记语言的子集）文档中某部分位置的语言</p>
+<ul>
+<li>使用Jsoup的Xpath需要额外导入jar包。</li>
+<li>查询w3cshool参考手册，使用xpath的语法完成查询</li>
+<li>代码：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">path</span> <span class="hljs-operator">=</span> JsoupDemo1.class.getClassLoader().getResource(<span class="hljs-string">&quot;student.xml&quot;</span>).toURI().getPath();<br><span class="hljs-type">Document</span> <span class="hljs-variable">document</span> <span class="hljs-operator">=</span> Jsoup.parse(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(path), <span class="hljs-string">&quot;utf-8&quot;</span>);<br><span class="hljs-comment">//根据document对象，创建JXDocument对象</span><br>JXDocument jxDocument=<span class="hljs-keyword">new</span> <span class="hljs-title class_">JXDocument</span>(document);<br><span class="hljs-comment">//结合Xpath语法查询</span><br>List&lt;JXNode&gt; jxNodes = jxDocument.selN(<span class="hljs-string">&quot;//student&quot;</span>); <span class="hljs-comment">// &#x27;//&#x27;表示当前节点</span><br><span class="hljs-keyword">for</span> (JXNode jxNode: jxNodes) &#123;<br>    System.out.println(jxNode);<br>&#125;<br><span class="hljs-comment">//查询所有student标签下的name标签</span><br>List&lt;JXNode&gt; jxNodes1 = jxDocument.selN(<span class="hljs-string">&quot;//student/name&quot;</span>);<br><span class="hljs-keyword">for</span> (JXNode j: jxNodes1) &#123;<br>    System.out.println(j);<br>&#125;<br><span class="hljs-comment">//查询student标签下带有id属性的name标签</span><br>List&lt;JXNode&gt; jxNodes3 = jxDocument.selN(<span class="hljs-string">&quot;//student/name[@id]&quot;</span>);<br><span class="hljs-keyword">for</span> (JXNode jxNode : jxNodes3) &#123;<br>    System.out.println(jxNode);<br>&#125;<br><span class="hljs-comment">//查询student标签下带有id属性的name标签 并且id属性值为itcast</span><br>List&lt;JXNode&gt; jxNodes4 = jxDocument.selN(<span class="hljs-string">&quot;//student/name[@id=&#x27;itcast&#x27;]&quot;</span>);<br><span class="hljs-keyword">for</span> (JXNode jxNode : jxNodes4) &#123;<br>    System.out.println(jxNode);<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/foundation/" class="category-chain-item">foundation</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/xxe/">#xxe</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>XML学习</div>
+      <div>http://sloth31.github.io/2024/04/20/XML学习/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Sl0th</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月20日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                <i class="iconfont icon-nc"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                <i class="iconfont icon-sa"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/07/05/PHP%E5%86%85%E6%A0%B8%E5%B1%82%E8%A7%A3%E6%9E%90%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" title="PHP内核层解析反序列化漏洞">
+                        <span class="hidden-mobile">PHP内核层解析反序列化漏洞</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

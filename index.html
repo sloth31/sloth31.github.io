@@ -244,6 +244,191 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2024/09/23/%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90-%E8%BF%87%E7%A8%8B%E9%97%B4%E5%88%86%E6%9E%90/" target="_self">
+          软件分析-过程间分析
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/23/%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90-%E8%BF%87%E7%A8%8B%E9%97%B4%E5%88%86%E6%9E%90/" target="_self">
+        <div>
+          过程间分析寻找可能被调用的方法Dispatch(c,m) c是类，m是方法  两种返回值  c.m c’.m(c’是c的父类，当然如果这个父类也没有method方法，还会继续往上找父类的父类)   special call对应唯一方法，virtual call会调用dispatch Resolve(cs)  比较tricky的virtual，对c和c的所有子类都采用dispatch，子类包括直接子
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-09-23 12:26" pubdate>
+              2024-09-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/program-analysis/" class="category-chain-item">program analysis</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/static-analysis/">#static analysis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/09/17/%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90-%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/" target="_self">
+          软件分析-数据流分析
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/17/%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90-%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/" target="_self">
+        <div>
+          数据流分析数据流主要研究数据怎么在CFG(程序流程图 BB+边)中流动 基本术语input and output states汇聚的时候那个符号没有限制，可能是交集也可能是并集   states会被关联一个value  Reaching Definitions注意：对于Entry的IN和OUT不作更新 根据算法得出在每个边里对每个destination是否能reach的抽象表达值  当前块中的D，
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-09-17 15:41" pubdate>
+              2024-09-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/program-analysis/" class="category-chain-item">program analysis</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/static-analysis/">#static analysis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/07/17/%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90-%E6%8C%87%E9%92%88%E5%88%86%E6%9E%90/" target="_self">
+          软件分析-指针分析
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/07/17/%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90-%E6%8C%87%E9%92%88%E5%88%86%E6%9E%90/" target="_self">
+        <div>
+          指针分析Foundationsrules指针分析需要关注的域   变量 V 属性 F 对象 O 对象的成员属性  指针 包括变量+对象的field  处理规则  横线上是前提条件，下面是推到出的   New 直接把x指向oi Assign y指向的加入x的集合 Store x指向oi，y指向oj，同时把y存到x.f里，就把oj指到oi.f Load x指向oi，把x.f赋值给y，且oi.f指向oj
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-07-17 18:47" pubdate>
+              2024-07-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/program-analysis/" class="category-chain-item">program analysis</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/static-analysis/">#static analysis</a>
+            
+              <a href="/tags/pointer-analysis/">#pointer analysis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2023/09/07/%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90-IR/" target="_self">
           软件分析-IR
         </a>
@@ -699,202 +884,11 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/01/20/Java%E5%AE%89%E5%85%A8%E4%B9%8B%E5%86%85%E5%AD%98%E9%A9%AC/" target="_self">
-          JavaWeb内存马学习
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/20/Java%E5%AE%89%E5%85%A8%E4%B9%8B%E5%86%85%E5%AD%98%E9%A9%AC/" target="_self">
-        <div>
-          JavaWeb内存马0x00 前置知识简介内存马又名无文件马，见名知意，也就是无文件落地的 webshell 技术，是由于 webshell 特征识别、防篡改、目录监控等等针对 web 应用目录或服务器文件防御手段的介入，导致的文件 shell 难以写入和持久而衍生出的一种“概念型”木马。这种技术的核心思想非常简单，一句话就能概括，那就是对访问路径映射及相关处理代码的动态注册。 Tomcat中的三
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-01-20 23:29" pubdate>
-              2023-01-20
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/JavaSec/" class="category-chain-item">JavaSec</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/web/">#web</a>
-            
-              <a href="/tags/java/">#java</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/01/16/jinjia2-%E8%BF%87%E6%BB%A4%E5%99%A8/" target="_self">
-          jinjia2 过滤器
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/16/jinjia2-%E8%BF%87%E6%BB%A4%E5%99%A8/" target="_self">
-        <div>
-          jinjia2  过滤器奇安信攻防社区-flask SSTI学习与总结 (butian.net) flask 过滤器flask过滤器和其它语言的过滤器作用几乎一致，对数据进行过滤 使用 123变量|过滤器variable|filter(args)    variable|filter        &#x2F;&#x2F;如果过滤器没有参数可以不加括号  常用过滤器**int()**：将值转换为int类型； **fl
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-01-16 22:57" pubdate>
-              2023-01-16
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/ctf/" class="category-chain-item">ctf</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/web/">#web</a>
-            
-              <a href="/tags/ssti/">#ssti</a>
-            
-              <a href="/tags/python/">#python</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/12/27/log4j%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/" target="_self">
-          log4j2漏洞学习
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/12/27/log4j%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/" target="_self">
-        <div>
-          log4j2漏洞学习log4j与log4j2区别配置文件log4j用.properties的文件作为主配置文件的，而现在的log4j 2则已经弃用了这种方式，采用的是.xml，.json或者.jsn这种方式来做 核心jar包log4j只需要引入一个jar包即可， 12345&lt;dependency&gt;&lt;groupId&gt;log4j&lt;&#x2F;groupId&gt;&lt;artif
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-12-27 23:29" pubdate>
-              2022-12-27
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/JavaSec/" class="category-chain-item">JavaSec</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/web/">#web</a>
-            
-              <a href="/tags/java/">#java</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/#board">5</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

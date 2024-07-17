@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>软件分析-IR</title>
+      <link href="/2023/09/07/%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90-IR/"/>
+      <url>/2023/09/07/%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90-IR/</url>
+      
+        <content type="html"><![CDATA[<h1 id="中间表示"><a href="#中间表示" class="headerlink" title="中间表示"></a>中间表示</h1><h2 id="编译过程"><a href="#编译过程" class="headerlink" title="编译过程"></a>编译过程</h2><p>源代码</p><p>  ｜词法分析</p><p>生成tokens</p><p>  ｜语法分析</p><p>AST抽象语法树</p><p>  ｜语义分析（类型检查之类的，编译器做的比较简单）</p><p>修饰后的AST语法树</p><p>  ｜转换器</p><p>  IR（可以进行静态分析）</p><p>  ｜生成器</p><p>机器码</p><h2 id="AST-vs-IR"><a href="#AST-vs-IR" class="headerlink" title="AST vs IR"></a>AST vs IR</h2><h3 id="AST"><a href="#AST" class="headerlink" title="AST"></a>AST</h3><p>将代码拆解成树形</p><ul><li>可以快速进行类型检查</li><li>看不出控制流信息</li></ul><h3 id="IR（静态分析适用）–-3-Address-Code"><a href="#IR（静态分析适用）–-3-Address-Code" class="headerlink" title="IR（静态分析适用）– 3-Address Code"></a>IR（静态分析适用）– 3-Address Code</h3><p>将代码拆解成一行一行的，同时用到goto</p><ul><li>控制流信息比较明显</li><li>较清晰</li></ul><blockquote><p>三地址码：每个三地址码最多包含3哥地址 </p><p>地址形式</p><ul><li>变量名</li><li>常量</li><li>编译器生成的静态变量</li></ul></blockquote><h2 id="三地址码"><a href="#三地址码" class="headerlink" title="三地址码"></a>三地址码</h2><h3 id="常见符号"><a href="#常见符号" class="headerlink" title="常见符号"></a>常见符号</h3><ul><li>二元操作符</li><li>一元操作符 </li><li>goto L 无条件跳转</li><li>if … goto L 有条件跳转</li></ul><h3 id="真实世界中的3地址码"><a href="#真实世界中的3地址码" class="headerlink" title="真实世界中的3地址码"></a>真实世界中的3地址码</h3><p>Soot：分析java程序对静态分析器</p><p>Jimple：Soot的三地址码</p><h2 id="Jimple"><a href="#Jimple" class="headerlink" title="Jimple"></a>Jimple</h2><h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>java源码</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ForLoop3AC</span>&#123;<br>  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span>&#123;<br>    <span class="hljs-type">int</span> x=<span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-number">10</span>;i++)&#123;<br>      x=x+<span class="hljs-number">1</span>;<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure><h2 id="Basic-Blocks"><a href="#Basic-Blocks" class="headerlink" title="Basic Blocks"></a>Basic Blocks</h2><p>基本块中限定了进入语句和离开语句(跳转)，</p><ul><li>入口语句可以是顺序执行时选定的，也可以是其他语句goto过来的</li></ul><h3 id="分割算法"><a href="#分割算法" class="headerlink" title="分割算法"></a>分割算法</h3><ul><li><p>入口</p><ul><li>第一句指令</li><li>如果某个指令是goto语句的target，则肯定是baseblock的入口</li><li>紧跟在一个goto语句的下一条</li></ul></li><li><p>出口</p><ul><li>如果某个指令中含有goto，则为bb的出口</li><li>return</li></ul></li></ul><h3 id="添边"><a href="#添边" class="headerlink" title="添边"></a>添边</h3><p>goto自动加边，如果是紧跟着的两个块之间(可能前一个块的最后一句是有条件goto)，也要添边</p><blockquote><p>例外：如果前一块最后一句是无条件goto，那就不需要添边</p></blockquote><p>前驱-&gt;后继</p><blockquote><p>bb之间连完，一般会加一个entry虚拟节点、exit虚拟节点</p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> program analysis </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> static analysis </tag>
+            
+            <tag> IR </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>PHP内核层解析反序列化漏洞</title>
       <link href="/2023/07/05/PHP%E5%86%85%E6%A0%B8%E5%B1%82%E8%A7%A3%E6%9E%90%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/"/>
       <url>/2023/07/05/PHP%E5%86%85%E6%A0%B8%E5%B1%82%E8%A7%A3%E6%9E%90%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/</url>

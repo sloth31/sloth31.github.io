@@ -4,31 +4,6 @@
   
     
     <entry>
-      <title>软件分析-数据流分析</title>
-      <link href="/2024/09/17/%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90-%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/"/>
-      <url>/2024/09/17/%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90-%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/</url>
-      
-        <content type="html"><![CDATA[<h1 id="数据流分析"><a href="#数据流分析" class="headerlink" title="数据流分析"></a>数据流分析</h1><p>数据流主要研究数据怎么在CFG(程序流程图 BB+边)中流动</p><h2 id="基本术语"><a href="#基本术语" class="headerlink" title="基本术语"></a>基本术语</h2><h3 id="input-and-output-states"><a href="#input-and-output-states" class="headerlink" title="input and output states"></a>input and output states</h3><p>汇聚的时候那个符号没有限制，可能是交集也可能是并集</p><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162158663.png" alt="83744840e76eb367512eaae50ced66b9_0"></p><blockquote><p>states会被关联一个value</p></blockquote><h2 id="Reaching-Definitions"><a href="#Reaching-Definitions" class="headerlink" title="Reaching Definitions"></a>Reaching Definitions</h2><p>注意：对于Entry的IN和OUT不作更新</p><p>根据算法得出在每个边里对每个destination是否能reach的抽象表达值</p><ul><li>当前块中的D，-&gt;1</li><li>当前块中的D的左值，在其它块的D中也是左值时，kill掉 -&gt;0</li></ul><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162158180.png" alt="image-20231008152249586"></p><blockquote><p>算法的结束条件是每个out和上一轮一致</p><p>每个out的变化规律：只会不变或增长有0-&gt;1 或 1-&gt;1,不会有1-&gt;0</p><p>因此算法一定会结束，会到达一个不动点</p></blockquote><h2 id="Live-Variables"><a href="#Live-Variables" class="headerlink" title="Live Variables"></a>Live Variables</h2><p>注意：对于Exit的IN和OUT不作更新</p><h3 id="live"><a href="#live" class="headerlink" title="live"></a>live</h3><p>当一个变量在一条path里没有被redefine，则称为live的</p><h3 id="抽象表示"><a href="#抽象表示" class="headerlink" title="抽象表示"></a>抽象表示</h3><p>与reaching destination类似，用一些列二进制数表示一些列变量</p><h3 id="backward-or-forward"><a href="#backward-or-forward" class="headerlink" title="backward or forward"></a>backward or forward</h3><p>为了设计算法简便，使用backward</p><blockquote><p>forward会使得判断live比较麻烦</p></blockquote><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162159683.png" alt="image-20231008154741475"></p><blockquote><p>对于S1 和 S2 使用may analysis，把in 取并集，OUT[B]&#x3D;IN[S2] U IN[S1]</p><p>这些in和out都是变量的集合，</p><h4 id="in-gt-out的算法"><a href="#in-gt-out的算法" class="headerlink" title="in-&gt;out的算法"></a>in-&gt;out的算法</h4><ul><li>IN[B]&#x3D;$use_B$ U (OUT[B]-$def_B$)</li><li>如果use在redefine之前，也认为live</li><li>出现在左值说明被redefine</li><li>出现在右值说明被use</li><li>当IN不变时结束</li><li>先kill define再加use</li></ul><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162159255.png" alt="image-20231008161552115"></p><h4 id="一般情况下，may-analysis初始化是空，must-analysis初始化是all"><a href="#一般情况下，may-analysis初始化是空，must-analysis初始化是all" class="headerlink" title="一般情况下，may analysis初始化是空，must analysis初始化是all"></a>一般情况下，may analysis初始化是空，must analysis初始化是all</h4></blockquote><h2 id="Available-Expression"><a href="#Available-Expression" class="headerlink" title="Available Expression"></a>Available Expression</h2><p>注意：对于Entry的IN和OUT不作更新</p><p>判断表达式是否available（是否还能用，与前一个块相比，表示的值是否变化）</p><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162159844.png" alt="image-20231008165300469"></p><h3 id="数据抽象"><a href="#数据抽象" class="headerlink" title="数据抽象"></a>数据抽象</h3><p>1bit表示一个expression</p><h3 id="forward"><a href="#forward" class="headerlink" title="forward"></a>forward</h3><h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><ul><li>如果有变量被define，要kill掉含有该变量的表达式</li><li>加上出现的表达式</li><li>初始化时除了entry的out，其它都是全集</li></ul><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162159385.png" alt="image-20231008165552249"></p><blockquote><p>must analysis</p></blockquote><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162159204.png" alt="image-20231008170945074"></p><h2 id="常量传播"><a href="#常量传播" class="headerlink" title="常量传播"></a>常量传播</h2><h3 id="meetvalue规则"><a href="#meetvalue规则" class="headerlink" title="meetvalue规则"></a>meetvalue规则</h3><ul><li>NAC：not a const</li><li>UNDEF：未定义</li><li>c：常量</li></ul><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162159277.png" alt="image-20231019194129111" style="zoom:25%;" /><blockquote><p>UNDEF⊓v&#x3D;v 解释：可能v是const，但这样一meet就成了const，似乎漏报了一个undef，但这关注的是常量传播，并不是live variables，</p><p>在做常量传播时，会假设程序是正确的，因此如果这里真的meet到了UNDEF，其实是不会走这条path的</p></blockquote><h3 id="transfer函数"><a href="#transfer函数" class="headerlink" title="transfer函数"></a>transfer函数</h3><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162200944.png" alt="image-20231019213608402"></p><blockquote><ul><li>删除x变量（redefine了）</li></ul></blockquote>]]></content>
-      
-      
-      <categories>
-          
-          <category> program analysis </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> static analysis </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>软件分析-指针分析</title>
       <link href="/2023/10/17/%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90-%E6%8C%87%E9%92%88%E5%88%86%E6%9E%90/"/>
       <url>/2023/10/17/%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90-%E6%8C%87%E9%92%88%E5%88%86%E6%9E%90/</url>
@@ -61,6 +36,31 @@
       <url>/2023/09/23/%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90-%E8%BF%87%E7%A8%8B%E9%97%B4%E5%88%86%E6%9E%90/</url>
       
         <content type="html"><![CDATA[<h1 id="过程间分析"><a href="#过程间分析" class="headerlink" title="过程间分析"></a>过程间分析</h1><h2 id="寻找可能被调用的方法"><a href="#寻找可能被调用的方法" class="headerlink" title="寻找可能被调用的方法"></a>寻找可能被调用的方法</h2><p>Dispatch(c,m) c是类，m是方法</p><blockquote><p>两种返回值</p><ul><li>c.m</li><li>c’.m(c’是c的父类，当然如果这个父类也没有method方法，还会继续往上找父类的父类)</li></ul></blockquote><p>special call对应唯一方法，virtual call会调用dispatch</p><h3 id="Resolve-cs"><a href="#Resolve-cs" class="headerlink" title="Resolve(cs)"></a>Resolve(cs)</h3><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162156090.png" alt="image-20231017185458682"></p><blockquote><p>比较tricky的virtual，对c和c的所有子类都采用dispatch，子类包括直接子类和间接子类，所以会一直延伸到树的叶子结点</p><p>java编译出的字节码可以判断这三种call方法</p></blockquote><h2 id="CHA"><a href="#CHA" class="headerlink" title="CHA"></a>CHA</h2><p>举个🌰</p><p>c没有子类，所以就返回自己的foo方法</p><p>a自己有foo会返回，再往下还会找子类的foo，所以cd也加进去了</p><p>b自己没有foo，但其父类A有foo，所以dispatch(b,foo)会返回A.foo()，且子类C、D的也会加进去</p><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162156587.png" alt="image-20231017190308693"></p><blockquote><p>暴露的漏洞，当规定了b就是B对象时调用b.foo()时其实不会调用C.foo(),D.foo()</p><p>所以CHA不太准</p></blockquote><h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><p>快速：只看继承树</p><p>不准</p><blockquote><p>应用场景：ide函数方法提示</p><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162156601.png" alt="image-20231017192938184"></p></blockquote><h2 id="调用图"><a href="#调用图" class="headerlink" title="调用图"></a>调用图</h2><p>有向图</p><h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p><strong><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162156885.png" alt="image-20231017193319093"></strong></p><blockquote><p>RM：存储可达方法</p><p>WL：存储方法</p><p>CG：调用图</p></blockquote><h2 id="过程间控制流图–ICFG"><a href="#过程间控制流图–ICFG" class="headerlink" title="过程间控制流图–ICFG"></a>过程间控制流图–ICFG</h2><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162156700.png" alt="image-20231017194814707"></p><h2 id="过程间数据流分析"><a href="#过程间数据流分析" class="headerlink" title="过程间数据流分析"></a>过程间数据流分析</h2><h3 id="常量传播"><a href="#常量传播" class="headerlink" title="常量传播"></a>常量传播</h3><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162157872.png" alt="image-20231017201825006"></p><blockquote><p>与之前类似，常量有重定义的情况会kill掉（比如b&#x3D;ten()那里）</p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> program analysis </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> static analysis </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>软件分析-数据流分析</title>
+      <link href="/2023/09/17/%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90-%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/"/>
+      <url>/2023/09/17/%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90-%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/</url>
+      
+        <content type="html"><![CDATA[<h1 id="数据流分析"><a href="#数据流分析" class="headerlink" title="数据流分析"></a>数据流分析</h1><p>数据流主要研究数据怎么在CFG(程序流程图 BB+边)中流动</p><h2 id="基本术语"><a href="#基本术语" class="headerlink" title="基本术语"></a>基本术语</h2><h3 id="input-and-output-states"><a href="#input-and-output-states" class="headerlink" title="input and output states"></a>input and output states</h3><p>汇聚的时候那个符号没有限制，可能是交集也可能是并集</p><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162158663.png" alt="83744840e76eb367512eaae50ced66b9_0"></p><blockquote><p>states会被关联一个value</p></blockquote><h2 id="Reaching-Definitions"><a href="#Reaching-Definitions" class="headerlink" title="Reaching Definitions"></a>Reaching Definitions</h2><p>注意：对于Entry的IN和OUT不作更新</p><p>根据算法得出在每个边里对每个destination是否能reach的抽象表达值</p><ul><li>当前块中的D，-&gt;1</li><li>当前块中的D的左值，在其它块的D中也是左值时，kill掉 -&gt;0</li></ul><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162158180.png" alt="image-20231008152249586"></p><blockquote><p>算法的结束条件是每个out和上一轮一致</p><p>每个out的变化规律：只会不变或增长有0-&gt;1 或 1-&gt;1,不会有1-&gt;0</p><p>因此算法一定会结束，会到达一个不动点</p></blockquote><h2 id="Live-Variables"><a href="#Live-Variables" class="headerlink" title="Live Variables"></a>Live Variables</h2><p>注意：对于Exit的IN和OUT不作更新</p><h3 id="live"><a href="#live" class="headerlink" title="live"></a>live</h3><p>当一个变量在一条path里没有被redefine，则称为live的</p><h3 id="抽象表示"><a href="#抽象表示" class="headerlink" title="抽象表示"></a>抽象表示</h3><p>与reaching destination类似，用一些列二进制数表示一些列变量</p><h3 id="backward-or-forward"><a href="#backward-or-forward" class="headerlink" title="backward or forward"></a>backward or forward</h3><p>为了设计算法简便，使用backward</p><blockquote><p>forward会使得判断live比较麻烦</p></blockquote><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162159683.png" alt="image-20231008154741475"></p><blockquote><p>对于S1 和 S2 使用may analysis，把in 取并集，OUT[B]&#x3D;IN[S2] U IN[S1]</p><p>这些in和out都是变量的集合，</p><h4 id="in-gt-out的算法"><a href="#in-gt-out的算法" class="headerlink" title="in-&gt;out的算法"></a>in-&gt;out的算法</h4><ul><li>IN[B]&#x3D;$use_B$ U (OUT[B]-$def_B$)</li><li>如果use在redefine之前，也认为live</li><li>出现在左值说明被redefine</li><li>出现在右值说明被use</li><li>当IN不变时结束</li><li>先kill define再加use</li></ul><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162159255.png" alt="image-20231008161552115"></p><h4 id="一般情况下，may-analysis初始化是空，must-analysis初始化是all"><a href="#一般情况下，may-analysis初始化是空，must-analysis初始化是all" class="headerlink" title="一般情况下，may analysis初始化是空，must analysis初始化是all"></a>一般情况下，may analysis初始化是空，must analysis初始化是all</h4></blockquote><h2 id="Available-Expression"><a href="#Available-Expression" class="headerlink" title="Available Expression"></a>Available Expression</h2><p>注意：对于Entry的IN和OUT不作更新</p><p>判断表达式是否available（是否还能用，与前一个块相比，表示的值是否变化）</p><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162159844.png" alt="image-20231008165300469"></p><h3 id="数据抽象"><a href="#数据抽象" class="headerlink" title="数据抽象"></a>数据抽象</h3><p>1bit表示一个expression</p><h3 id="forward"><a href="#forward" class="headerlink" title="forward"></a>forward</h3><h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><ul><li>如果有变量被define，要kill掉含有该变量的表达式</li><li>加上出现的表达式</li><li>初始化时除了entry的out，其它都是全集</li></ul><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162159385.png" alt="image-20231008165552249"></p><blockquote><p>must analysis</p></blockquote><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162159204.png" alt="image-20231008170945074"></p><h2 id="常量传播"><a href="#常量传播" class="headerlink" title="常量传播"></a>常量传播</h2><h3 id="meetvalue规则"><a href="#meetvalue规则" class="headerlink" title="meetvalue规则"></a>meetvalue规则</h3><ul><li>NAC：not a const</li><li>UNDEF：未定义</li><li>c：常量</li></ul><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162159277.png" alt="image-20231019194129111" style="zoom:25%;" /><blockquote><p>UNDEF⊓v&#x3D;v 解释：可能v是const，但这样一meet就成了const，似乎漏报了一个undef，但这关注的是常量传播，并不是live variables，</p><p>在做常量传播时，会假设程序是正确的，因此如果这里真的meet到了UNDEF，其实是不会走这条path的</p></blockquote><h3 id="transfer函数"><a href="#transfer函数" class="headerlink" title="transfer函数"></a>transfer函数</h3><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162200944.png" alt="image-20231019213608402"></p><blockquote><ul><li>删除x变量（redefine了）</li></ul></blockquote>]]></content>
       
       
       <categories>

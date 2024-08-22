@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162159277.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162200944.png">
 <meta property="article:published_time" content="2023-09-17T07:41:04.000Z">
-<meta property="article:modified_time" content="2024-07-29T13:22:41.799Z">
+<meta property="article:modified_time" content="2024-08-03T15:33:58.258Z">
 <meta property="article:author" content="Sl0th">
 <meta property="article:tag" content="static analysis">
 <meta name="twitter:card" content="summary_large_image">
@@ -330,7 +330,7 @@
 <p>每个out的变化规律：只会不变或增长有0-&gt;1 或 1-&gt;1,不会有1-&gt;0</p>
 <p>因此算法一定会结束，会到达一个不动点</p>
 </blockquote>
-<h2 id="Live-Variables"><a href="#Live-Variables" class="headerlink" title="Live Variables"></a>Live Variables</h2><p>注意：对于Exit的IN和OUT不作更新</p>
+<h2 id="Live-Variables"><a href="#Live-Variables" class="headerlink" title="Live Variables"></a>Live Variables</h2><p> 注意：对于Exit的IN和OUT不作更新</p>
 <h3 id="live"><a href="#live" class="headerlink" title="live"></a>live</h3><p>当一个变量在一条path里没有被redefine，则称为live的</p>
 <h3 id="抽象表示"><a href="#抽象表示" class="headerlink" title="抽象表示"></a>抽象表示</h3><p>与reaching destination类似，用一些列二进制数表示一些列变量</p>
 <h3 id="backward-or-forward"><a href="#backward-or-forward" class="headerlink" title="backward or forward"></a>backward or forward</h3><p>为了设计算法简便，使用backward</p>

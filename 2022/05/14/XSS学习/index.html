@@ -18,12 +18,12 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="XSS基础简介攻击者在网页中嵌入客户端脚本，主要利用js编写的恶意代码来执行一些想要的功能 同源策略同源策略是指在Web浏览器中，允许某个网页脚本访问另一个网页的数据，但前提是这两个网页必须有相同的URI、主机名和端口号，一旦两个网站满足上述条件，这两个网站就被认定为具有相同来源  分类依据效果可分为三类  反射型: 非持久性XSS攻击，当用户访问已被插入攻击代码的链接时，服务器端就会接收并处理带">
+        <meta name="description" content="XSS基础简介攻击者在网页中嵌入客户端脚本，主要利用js编写的恶意代码来执行一些想要的功能 同源策略同源策略是指在Web浏览器中，允许某个网页脚本访问另一个网页的数据，但前提是这两个网页必须有相同的URI、主机名和端口号，一旦两个网站满足上述条件，这两个网站就被认定为具有相同来源 image-20220818210936052 分类依据效果可分为三类  反射型: 非持久性XSS攻击，当用户访问已被">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XSS学习">
 <meta property="og:url" content="http://sloth31.github.io/2022/05/14/XSS%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="Sl0th&#39;s Blog">
-<meta property="og:description" content="XSS基础简介攻击者在网页中嵌入客户端脚本，主要利用js编写的恶意代码来执行一些想要的功能 同源策略同源策略是指在Web浏览器中，允许某个网页脚本访问另一个网页的数据，但前提是这两个网页必须有相同的URI、主机名和端口号，一旦两个网站满足上述条件，这两个网站就被认定为具有相同来源  分类依据效果可分为三类  反射型: 非持久性XSS攻击，当用户访问已被插入攻击代码的链接时，服务器端就会接收并处理带">
+<meta property="og:description" content="XSS基础简介攻击者在网页中嵌入客户端脚本，主要利用js编写的恶意代码来执行一些想要的功能 同源策略同源策略是指在Web浏览器中，允许某个网页脚本访问另一个网页的数据，但前提是这两个网页必须有相同的URI、主机名和端口号，一旦两个网站满足上述条件，这两个网站就被认定为具有相同来源 image-20220818210936052 分类依据效果可分为三类  反射型: 非持久性XSS攻击，当用户访问已被">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407040011036.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/006y8mN6gy1h6q3ghe79bj31dv0u0jub.jpg">
@@ -39,10 +39,10 @@
     
     
     <!--- Icon Part-->
-    <link rel="icon" type="image/png" href="/img/fav.ico" sizes="192x192">
-    <link rel="apple-touch-icon" sizes="180x180" href="/img/fav.ico">
+    <link rel="icon" type="image/png" href="/images/fav.ico" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/fav.ico">
     <meta name="theme-color" content="#A31F34">
-    <link rel="shortcut icon" href="/img/fav.ico">
+    <link rel="shortcut icon" href="/images/fav.ico">
     <!--- Page Info-->
     
     <title>
@@ -84,7 +84,7 @@
 
     <script id="hexo-configurations">
     window.config = {"hostname":"sloth31.github.io","root":"/","language":"zh-CN","path":"search.xml"};
-    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/img/night.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/img/day.jpg","dark":"/img/night.jpg"},"title":"Welcome to Sl0th's Blog","subtitle":{"text":["There is no royal road to learning"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#4D5356","dark":"#fff"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":"enable","style":"default","links":{"github":"https://github.com/sloth31","instagram":null,"zhihu":null,"twitter":null,"email":"z694081360@gmail.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.7.3","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/sloth31","Blog":"http://sl0th.top/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/night.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/day.jpg","dark":"/images/night.jpg"},"title":"Welcome to Sl0th's Blog","subtitle":{"text":["There is no royal road to learning"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#4D5356","dark":"#fff"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":"enable","style":"default","links":{"github":"https://github.com/sloth31","instagram":null,"zhihu":null,"twitter":null,"email":"z694081360@gmail.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.7.3","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/sloth31","Blog":"http://sl0th.top/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
     window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
     window.data = {"masonry":false};
   </script>
@@ -136,7 +136,7 @@
         <div class="left">
             
                 <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
-                    <img src="/img/fav.ico" class="w-full h-full rounded-sm">
+                    <img src="/images/fav.ico" class="w-full h-full rounded-sm">
                 </a>
             
             <a class="logo-title" href="/">
@@ -448,7 +448,7 @@
         
             <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
                 <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
-                    <img src="/img/avatar.JPG">
+                    <img src="/images/avatar.JPG">
                 </div>
                 <div class="info flex flex-col justify-between">
                     <div class="author flex items-center">
@@ -525,12 +525,12 @@
         <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
             <h1 id="XSS"><a href="#XSS" class="headerlink" title="XSS"></a>XSS</h1><h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>攻击者在网页中嵌入客户端脚本，主要利用js编写的恶意代码来执行一些想要的功能</p>
 <h3 id="同源策略"><a href="#同源策略" class="headerlink" title="同源策略"></a>同源策略</h3><p>同源策略是指在Web浏览器中，允许某个网页脚本访问另一个网页的数据，但前提是这两个网页必须有相同的URI、主机名和端口号，一旦两个网站满足上述条件，这两个网站就被认定为具有相同来源</p>
-<p><img  
+<p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407040011036.jpg"
                       alt="image-20220818210936052"
-                ></p>
+                ><figcaption>image-20220818210936052</figcaption></figure></p>
 <h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>依据效果可分为三类</p>
 <ul>
 <li><p>反射型: 非持久性XSS攻击，当用户访问已被插入攻击代码的链接时，服务器端就会接收并处理带有攻击代码的数据，然后返回到浏览器中，完成攻击，这个过程就像一次反射。此类 XSS 通常出现在网站的搜索栏、用户登录口等地方，常用来窃取客户端 Cookies 或进行钓鱼欺骗</p>
@@ -629,29 +629,29 @@
 <div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">social-engineer-toolkit  </span><br><span class="line">sudo setoolkit</span><br></pre></td></tr></table></figure></div>
 </blockquote>
 <h3 id="Flash钓鱼"><a href="#Flash钓鱼" class="headerlink" title="Flash钓鱼"></a>Flash钓鱼</h3><p>模仿的 Flash Player 中文官网的页面</p>
-<p><a target="_blank" rel="noopener" href="https://image.3001.net/images/20201029/16039798083018.png"><img  
+<p><a target="_blank" rel="noopener" href="https://image.3001.net/images/20201029/16039798083018.png"><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://tva1.sinaimg.cn/large/006y8mN6gy1h6q3ghe79bj31dv0u0jub.jpg"
                       alt="img"
-                ></a></p>
+                ><figcaption>img</figcaption></figure></a></p>
 <blockquote>
 <p>点击会下载准备好的CS马</p>
 </blockquote>
 <h3 id="CS钓鱼"><a href="#CS钓鱼" class="headerlink" title="CS钓鱼"></a>CS钓鱼</h3><p> Cobalt Strike 也是可以轻松构建出一个钓鱼网站的，操作也比较简单：</p>
 <p>「攻击」-「钓鱼攻击」-「克隆网站」：</p>
-<p><a target="_blank" rel="noopener" href="https://image.3001.net/images/20201031/1604132838976.png"><img  
+<p><a target="_blank" rel="noopener" href="https://image.3001.net/images/20201031/1604132838976.png"><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://tva1.sinaimg.cn/large/006y8mN6ly1h6q3lqohldj30ey0c6gmj.jpg"
                       alt="img"
-                ></a></p>
-<p><img  
+                ><figcaption>img</figcaption></figure></a></p>
+<p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://tva1.sinaimg.cn/large/006y8mN6gy1h6q3m2lj0dj311e0u0wi8.jpg"
                       alt="image-20221001211618566"
-                ></p>
+                ><figcaption>image-20221001211618566</figcaption></figure></p>
 
         </div>
 

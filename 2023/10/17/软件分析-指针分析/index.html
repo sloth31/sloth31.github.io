@@ -18,12 +18,12 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="指针分析Foundationsrules指针分析需要关注的域   变量 V 属性 F 对象 O 对象的成员属性  指针 包括变量+对象的field  处理规则  横线上是前提条件，下面是推到出的   New 直接把x指向oi Assign y指向的加入x的集合 Store x指向oi，y指向oj，同时把y存到x.f里，就把oj指到oi.f Load x指向oi，把x.f赋值给y，且oi.f指向oj">
+        <meta name="description" content="指针分析Foundationsrules指针分析需要关注的域 image-20231029160720840  变量 V 属性 F 对象 O 对象的成员属性  指针 包括变量+对象的field  处理规则image-20231029162403026  横线上是前提条件，下面是推到出的   New 直接把x指向oi Assign y指向的加入x的集合 Store x指向oi，y指向oj，同时把y存">
 <meta property="og:type" content="article">
 <meta property="og:title" content="软件分析-指针分析">
 <meta property="og:url" content="http://sloth31.github.io/2023/10/17/%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90-%E6%8C%87%E9%92%88%E5%88%86%E6%9E%90/index.html">
 <meta property="og:site_name" content="Sl0th&#39;s Blog">
-<meta property="og:description" content="指针分析Foundationsrules指针分析需要关注的域   变量 V 属性 F 对象 O 对象的成员属性  指针 包括变量+对象的field  处理规则  横线上是前提条件，下面是推到出的   New 直接把x指向oi Assign y指向的加入x的集合 Store x指向oi，y指向oj，同时把y存到x.f里，就把oj指到oi.f Load x指向oi，把x.f赋值给y，且oi.f指向oj">
+<meta property="og:description" content="指针分析Foundationsrules指针分析需要关注的域 image-20231029160720840  变量 V 属性 F 对象 O 对象的成员属性  指针 包括变量+对象的field  处理规则image-20231029162403026  横线上是前提条件，下面是推到出的   New 直接把x指向oi Assign y指向的加入x的集合 Store x指向oi，y指向oj，同时把y存">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222337482.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222337583.png">
@@ -63,10 +63,10 @@
     
     
     <!--- Icon Part-->
-    <link rel="icon" type="image/png" href="/img/fav.ico" sizes="192x192">
-    <link rel="apple-touch-icon" sizes="180x180" href="/img/fav.ico">
+    <link rel="icon" type="image/png" href="/images/fav.ico" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/fav.ico">
     <meta name="theme-color" content="#A31F34">
-    <link rel="shortcut icon" href="/img/fav.ico">
+    <link rel="shortcut icon" href="/images/fav.ico">
     <!--- Page Info-->
     
     <title>
@@ -108,7 +108,7 @@
 
     <script id="hexo-configurations">
     window.config = {"hostname":"sloth31.github.io","root":"/","language":"zh-CN","path":"search.xml"};
-    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/img/night.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/img/day.jpg","dark":"/img/night.jpg"},"title":"Welcome to Sl0th's Blog","subtitle":{"text":["There is no royal road to learning"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#4D5356","dark":"#fff"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":"enable","style":"default","links":{"github":"https://github.com/sloth31","instagram":null,"zhihu":null,"twitter":null,"email":"z694081360@gmail.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.7.3","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/sloth31","Blog":"http://sl0th.top/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/night.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/day.jpg","dark":"/images/night.jpg"},"title":"Welcome to Sl0th's Blog","subtitle":{"text":["There is no royal road to learning"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#4D5356","dark":"#fff"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":"enable","style":"default","links":{"github":"https://github.com/sloth31","instagram":null,"zhihu":null,"twitter":null,"email":"z694081360@gmail.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.7.3","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/sloth31","Blog":"http://sl0th.top/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
     window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
     window.data = {"masonry":false};
   </script>
@@ -160,7 +160,7 @@
         <div class="left">
             
                 <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
-                    <img src="/img/fav.ico" class="w-full h-full rounded-sm">
+                    <img src="/images/fav.ico" class="w-full h-full rounded-sm">
                 </a>
             
             <a class="logo-title" href="/">
@@ -472,7 +472,7 @@
         
             <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
                 <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
-                    <img src="/img/avatar.JPG">
+                    <img src="/images/avatar.JPG">
                 </div>
                 <div class="info flex flex-col justify-between">
                     <div class="author flex items-center">
@@ -548,12 +548,12 @@
 
         <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
             <h1 id="指针分析"><a href="#指针分析" class="headerlink" title="指针分析"></a>指针分析</h1><h2 id="Foundations"><a href="#Foundations" class="headerlink" title="Foundations"></a>Foundations</h2><h3 id="rules"><a href="#rules" class="headerlink" title="rules"></a>rules</h3><p>指针分析需要关注的域</p>
-<p><img  
+<p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222337482.png"
                       alt="image-20231029160720840"
-                ></p>
+                ><figcaption>image-20231029160720840</figcaption></figure></p>
 <ul>
 <li>变量 V</li>
 <li>属性 F</li>
@@ -561,12 +561,12 @@
 <li>对象的成员属性 </li>
 <li>指针 包括变量+对象的field</li>
 </ul>
-<h4 id="处理规则"><a href="#处理规则" class="headerlink" title="处理规则"></a>处理规则</h4><p><img  
+<h4 id="处理规则"><a href="#处理规则" class="headerlink" title="处理规则"></a>处理规则</h4><p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222337583.png"
                       alt="image-20231029162403026"
-                ></p>
+                ><figcaption>image-20231029162403026</figcaption></figure></p>
 <blockquote>
 <p>横线上是前提条件，下面是推到出的</p>
 </blockquote>
@@ -580,12 +580,12 @@
 <h4 id="关键：当一个指针集合变化、更新时，要把变化的部分传播给与它相关的其他指针"><a href="#关键：当一个指针集合变化、更新时，要把变化的部分传播给与它相关的其他指针" class="headerlink" title="关键：当一个指针集合变化、更新时，要把变化的部分传播给与它相关的其他指针"></a>关键：当一个指针集合变化、更新时，要把变化的部分传播给与它相关的其他指针</h4><h3 id="PFG-指针流图"><a href="#PFG-指针流图" class="headerlink" title="PFG 指针流图"></a>PFG 指针流图</h3><p>有向图</p>
 <p>节点：程序中的指针</p>
 <p>边：指针指向的对象在指针间的流动</p>
-<h3 id="PFG建边"><a href="#PFG建边" class="headerlink" title="PFG建边"></a>PFG建边</h3><p><img  
+<h3 id="PFG建边"><a href="#PFG建边" class="headerlink" title="PFG建边"></a>PFG建边</h3><p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222337834.png"
                       alt="image-20231029172931068"
-                ></p>
+                ><figcaption>image-20231029172931068</figcaption></figure></p>
 <ul>
 <li>premises   c-&gt;oi  d-&gt;oi</li>
 <li>a&#x3D;b   a&lt;-b</li>
@@ -598,12 +598,12 @@
 <p>一个边只表示一步的的传播</p>
 <p>指针分析要在图上找传递闭包</p>
 </blockquote>
-<h3 id="algorithm–只有new和assign的情况"><a href="#algorithm–只有new和assign的情况" class="headerlink" title="algorithm–只有new和assign的情况"></a>algorithm–只有new和assign的情况</h3><p><img  
+<h3 id="algorithm–只有new和assign的情况"><a href="#algorithm–只有new和assign的情况" class="headerlink" title="algorithm–只有new和assign的情况"></a>algorithm–只有new和assign的情况</h3><p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222337351.png"
                       alt="image-20231029174120726"
-                ></p>
+                ><figcaption>image-20231029174120726</figcaption></figure></p>
 <h4 id="相关数据结构"><a href="#相关数据结构" class="headerlink" title="相关数据结构"></a>相关数据结构</h4><ul>
 <li>WL：待处理的项<ul>
 <li>相当于pair的List，&lt;pointer,P(O)&gt;,前面是指针，后面是指某个集合</li>
@@ -624,20 +624,20 @@
 <li><p>对WL的处理</p>
 <ul>
 <li><p>每次取一个pair ，取出&lt;n,pts&gt;，先删除pts集合中与n指针指向的集合重复的元素，把得到的集合传到propgate函数中，同时还要把n指针传进去</p>
-<p><img  
+<p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222338428.png"
                       alt="image-20231029175417544"
-                ></p>
+                ><figcaption>image-20231029175417544</figcaption></figure></p>
 </li>
 <li><p>prpgate函数：首先拓展n指针指向的集合，再把n的所有后继找出来，把pts加入他们指向的集合（先）</p>
-<p><img  
+<p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222338173.png"
                       alt="image-20231029175627084"
-                ></p>
+                ><figcaption>image-20231029175627084</figcaption></figure></p>
 </li>
 </ul>
 </li>
@@ -645,12 +645,12 @@
 <blockquote>
 <p>添加了计算差集的原因：差集是真正要传播的，这样做可以避免冗余操作</p>
 </blockquote>
-<h3 id="algorithm–store和load的情况"><a href="#algorithm–store和load的情况" class="headerlink" title="algorithm–store和load的情况"></a>algorithm–store和load的情况</h3><img  
+<h3 id="algorithm–store和load的情况"><a href="#algorithm–store和load的情况" class="headerlink" title="algorithm–store和load的情况"></a>algorithm–store和load的情况</h3><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222338341.png"
                       alt="image-20231030195356238" style="zoom:50%;" 
-                >
+                ><figcaption>image-20231030195356238</figcaption></figure>
 
 <ul>
 <li>store<ul>
@@ -669,12 +669,12 @@
 </ul>
 </li>
 </ul>
-<h3 id="algorithm–总体"><a href="#algorithm–总体" class="headerlink" title="algorithm–总体"></a>algorithm–总体</h3><p><img  
+<h3 id="algorithm–总体"><a href="#algorithm–总体" class="headerlink" title="algorithm–总体"></a>algorithm–总体</h3><p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222338789.png"
                       alt="image-20231030200607462"
-                ></p>
+                ><figcaption>image-20231030200607462</figcaption></figure></p>
 <h3 id="一个例子"><a href="#一个例子" class="headerlink" title="一个例子"></a>一个例子</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1 b = new C();</span><br><span class="line">2 a = b;</span><br><span class="line">3 c = new C();</span><br><span class="line">4 c.f = a;</span><br><span class="line">5 d = c;</span><br><span class="line">6 c.f = d;</span><br><span class="line">7 e = d.f;</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
@@ -711,27 +711,27 @@
 </ul>
 </li>
 </ol>
-<img  
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222338856.png"
                       alt="image-20231030202638246" style="zoom:50%;" 
-                >
+                ><figcaption>image-20231030202638246</figcaption></figure>
 
 <h2 id="方法调用"><a href="#方法调用" class="headerlink" title="方法调用"></a>方法调用</h2><p>针对的是在那些方法中的变量，由于方法在不同地方调用不同，同时传入的参数也不同，这使得处理方法调用比较麻烦</p>
-<img  
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222339449.png"
                       alt="image-20231030203317349" style="zoom:50%;" 
-                >
+                ><figcaption>image-20231030203317349</figcaption></figure>
 
-<p><img  
+<p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222339433.png"
                       alt="image-20231031101934668"
-                ></p>
+                ><figcaption>image-20231031101934668</figcaption></figure></p>
 <ol>
 <li><p>dispatch找到真正调用的方法</p>
 <ul>
@@ -742,28 +742,28 @@
 <li><p>传receiver object （调用方法的对象）</p>
 <ul>
 <li><p>虚线，但是x到this指针不是直接建立pfg中的边</p>
-<img  
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222339692.png"
                       alt="image-20231031101710618" style="zoom:33%;" 
-                >
+                ><figcaption>image-20231031101710618</figcaption></figure>
 </li>
 <li><p>因为x可能指向多个对象，下图这种情况，如果直接建立x-&gt;this,会导致三个类的this都指向ABC（明显各类中通过dispatch找foo方法时，this只会是本身）</p>
-<p><img  
+<p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222339402.png"
                       alt="image-20231031102313325"
-                ></p>
+                ><figcaption>image-20231031102313325</figcaption></figure></p>
 </li>
 <li><p>解决方法：特殊处理，只传该传的</p>
-<p><img  
+<p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222339227.png"
                       alt="image-20231031102959408"
-                ></p>
+                ><figcaption>image-20231031102959408</figcaption></figure></p>
 </li>
 </ul>
 </li>
@@ -780,12 +780,12 @@
 </li>
 </ol>
 <h3 id="algorithm"><a href="#algorithm" class="headerlink" title="algorithm"></a>algorithm</h3><p>分析可达方法</p>
-<p><img  
+<p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222339317.png"
                       alt="image-20231031103610480"
-                ></p>
+                ><figcaption>image-20231031103610480</figcaption></figure></p>
 <blockquote>
 <p>输入为程序的entry方法，可以理解为main方法</p>
 <p>S为可达语句的集合</p>
@@ -813,49 +813,49 @@
 </ol>
 <h2 id="上下文敏感指针分析"><a href="#上下文敏感指针分析" class="headerlink" title="上下文敏感指针分析"></a>上下文敏感指针分析</h2><h3 id="motivation"><a href="#motivation" class="headerlink" title="motivation"></a>motivation</h3><p>使用上下文不敏感指针分析，分析出来i时1</p>
 <p>根据常量传播，分析出来是NAC</p>
-<p><img  
+<p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222339039.png"
                       alt="image-20231031144945307"
-                ></p>
-<p><img  
+                ><figcaption>image-20231031144945307</figcaption></figure></p>
+<p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222340568.png"
                       alt="image-20231031145340357"
-                ></p>
+                ><figcaption>image-20231031145340357</figcaption></figure></p>
 <p>上下文敏感，方法调用时分开分析</p>
-<img  
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222340741.png"
                       alt="image-20231031145454890" style="zoom: 50%;" 
-                >
+                ><figcaption>image-20231031145454890</figcaption></figure>
 
 <h3 id="克隆"><a href="#克隆" class="headerlink" title="克隆"></a>克隆</h3><p>给每个方法加以上下文修饰</p>
 <p>以上面的程序为例，id有两个上下文，给id克隆两份</p>
-<img  
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222340777.png"
                       alt="image-20231031190623874" style="zoom:50%;" 
-                >
+                ><figcaption>image-20231031190623874</figcaption></figure>
 
 <h3 id="上下文敏感的Heap"><a href="#上下文敏感的Heap" class="headerlink" title="上下文敏感的Heap"></a>上下文敏感的Heap</h3><p>上下文敏感还要加在堆抽象中，得到更细粒度的堆抽象</p>
-<p><img  
+<p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222340035.png"
                       alt="image-20231031190855453"
-                ></p>
+                ><figcaption>image-20231031190855453</figcaption></figure></p>
 <p>不同上下文创建的X，里面的field不一定一样</p>
-<img  
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222340066.png"
                       alt="image-20231031191041314" style="zoom:33%;" 
-                >
+                ><figcaption>image-20231031191041314</figcaption></figure>
 
 <h3 id="Heap–an-example"><a href="#Heap–an-example" class="headerlink" title="Heap–an example"></a>Heap–an example</h3><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>  n1 = <span class="keyword">new</span> <span class="title class_">One</span>();</span><br><span class="line"><span class="number">2</span>  n2 = <span class="keyword">new</span> <span class="title class_">Two</span>();</span><br><span class="line"><span class="number">3</span>  x1 = newX(n1);</span><br><span class="line"><span class="number">4</span>  x2 = newX(n2);</span><br><span class="line"><span class="number">5</span>  n = x1.f;<span class="comment">// n动态执行时指向n1</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span> X <span class="title function_">newX</span><span class="params">(Number p)</span> &#123; </span><br><span class="line"><span class="number">8</span> Xx=newX();</span><br><span class="line"><span class="number">9</span> x.f=p;</span><br><span class="line"><span class="number">10</span> <span class="keyword">return</span> x;</span><br><span class="line"><span class="number">11</span> &#125;</span><br><span class="line"><span class="number">12</span> <span class="keyword">class</span> <span class="title class_">X</span> &#123;</span><br><span class="line"><span class="number">13</span>    Number f;</span><br><span class="line"><span class="number">14</span> &#125;</span><br></pre></td></tr></table></figure></div>
 
@@ -877,29 +877,29 @@
 <li>5 <code>&lt;n,o1&gt;</code></li>
 </ol>
 <h4 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h4><p>提升了指针分析的精度</p>
-<img  
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222340621.png"
                       alt="image-20231031193052049" style="zoom:50%;" 
-                >
+                ><figcaption>image-20231031193052049</figcaption></figure>
 
 <h4 id="上下文敏感Heap，变量上下文不敏感"><a href="#上下文敏感Heap，变量上下文不敏感" class="headerlink" title="上下文敏感Heap，变量上下文不敏感"></a>上下文敏感Heap，变量上下文不敏感</h4><p>说明二者缺一不可</p>
-<img  
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222340871.png"
                       alt="image-20231031193242899" style="zoom:50%;" 
-                >
+                ><figcaption>image-20231031193242899</figcaption></figure>
 
 <h3 id="相关符号"><a href="#相关符号" class="headerlink" title="相关符号"></a>相关符号</h3><p>用c、c’、c’’表示不同上下文</p>
 <p>CSPointer上下文敏感的指针</p>
-<img  
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222340782.png"
                       alt="image-20231031193939250" style="zoom: 33%;" 
-                >
+                ><figcaption>image-20231031193939250</figcaption></figure>
 
 <h3 id="Rules"><a href="#Rules" class="headerlink" title="Rules"></a>Rules</h3><ul>
 <li><p>new语句 i: x &#x3D; new T();  c:oi&lt;-c:x</p>
@@ -920,12 +920,12 @@
 <li><p>找目标方法，dispatch，然后根据调用点的信息算出来一个上下文c^t&#x3D;Select(c,l,c’:oi,m)</p>
 <ul>
 <li><p>相当于克隆，每遇到一个新的调用点，就会新增一个callee context</p>
-<img  
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222341305.png"
                       alt="image-20231031201855315" style="zoom: 33%;" 
-                ></li>
+                ><figcaption>image-20231031201855315</figcaption></figure></li>
 </ul>
 </li>
 <li><p>实参和形参的对应</p>
@@ -937,25 +937,25 @@
 </ul>
 <h3 id="带有上下文信息的PFG"><a href="#带有上下文信息的PFG" class="headerlink" title="带有上下文信息的PFG"></a>带有上下文信息的PFG</h3><p>node:CSPointer</p>
 <p>edges:CSPointer x CSPoniter</p>
-<p><img  
+<p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222341127.png"
                       alt="image-20231031203607920"
-                ></p>
-<h4 id="Call"><a href="#Call" class="headerlink" title="Call"></a>Call</h4><p><img  
+                ><figcaption>image-20231031203607920</figcaption></figure></p>
+<h4 id="Call"><a href="#Call" class="headerlink" title="Call"></a>Call</h4><p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222341973.png"
                       alt="image-20231031203724602"
-                ></p>
+                ><figcaption>image-20231031203724602</figcaption></figure></p>
 <h3 id="上下文敏感指针分析算法"><a href="#上下文敏感指针分析算法" class="headerlink" title="上下文敏感指针分析算法"></a>上下文敏感指针分析算法</h3><p>主题框架和上下文不敏感指针分析算法一致</p>
-<p><img  
+<p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202406222341369.png"
                       alt="image-20231031212845276"
-                ></p>
+                ><figcaption>image-20231031212845276</figcaption></figure></p>
 <ul>
 <li>首先给入口函数的上下文为[]</li>
 <li>entry方法加入可达方法<ul>

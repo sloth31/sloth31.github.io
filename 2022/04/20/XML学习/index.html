@@ -1,22 +1,24 @@
-
-
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=dark>
-
-
-
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
-  <link rel="icon" href="/img/fav.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="Sl0th">
-  <meta name="keywords" content="">
-  
-    <meta name="description" content="XML简介 XML 指可扩展标记语言(EXtensible Markup Language),被设计用来传输和存储数据 可以用在配置文件中、在网络中传输  HTML 被设计用来显示数据   XML 是一种标记语言，很类似 HTML,是对 HTML 的补充  XML 的设计宗旨是传输数据，而非显示数据  XML 标签没有被预定义。您需要自行定义标签。(通过 XML 可以发明自己的标签)  XML 被">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Sl0th">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://sloth31.github.io/2022/04/20/xml学习/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="XML简介 XML 指可扩展标记语言(EXtensible Markup Language),被设计用来传输和存储数据 可以用在配置文件中、在网络中传输  HTML 被设计用来显示数据   XML 是一种标记语言，很类似 HTML,是对 HTML 的补充  XML 的设计宗旨是传输数据，而非显示数据  XML 标签没有被预定义。您需要自行定义标签。(通过 XML 可以发明自己的标签)  XML 被">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XML学习">
 <meta property="og:url" content="http://sloth31.github.io/2022/04/20/XML%E5%AD%A6%E4%B9%A0/index.html">
@@ -30,283 +32,496 @@
 <meta property="article:modified_time" content="2024-07-03T16:12:34.466Z">
 <meta property="article:author" content="Sl0th">
 <meta property="article:tag" content="xxe">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h1o9tjk5xoj20l60bejs6.jpg">
-  
-  
-  
-  <title>XML学习 | Sl0th&#39;s Blog</title>
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
-
-
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
-
-
-
-  
-<link rel="stylesheet" href="/css/macpanel.css">
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"sloth31.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"c8LjkMGtqBFlFQrpl65qUKoM-gzGzoHsz","app_key":"5MBWFG00GDY2LpteTo0bvyRu","server_url":"https://c8ljkmgt.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
-
-    if (CONFIG.web_analytics.follow_dnt) {
-      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
-    }
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
     
-  
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/img/fav.ico" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/fav.ico">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/img/fav.ico">
+    <!--- Page Info-->
+    
+    <title>
+        
+            XML学习 | Sl0th&#39;s Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
 
 
+    <!--- Inject Part-->
+    
 
-  
-<meta name="generator" content="Hexo 6.1.0"></head>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"sloth31.github.io","root":"/","language":"zh-CN","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/img/night.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/img/day.jpg","dark":"/img/night.jpg"},"title":"👋Welcome to Sl0th's Blog🎉","subtitle":{"text":["There is no royal road to learning"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#4D5356","dark":"#fff"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":"enable","style":"default","links":{"github":"https://github.com/sloth31","instagram":null,"zhihu":null,"twitter":null,"email":"z694081360@gmail.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.7.3","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/sloth31","Blog":"http://sl0th.top/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
-  
-
-  <header>
+<div class="progress-bar-container">
     
 
-<div class="header-inner" style="height: 70vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>Sl0th&#39;s blog</strong>
-    </a>
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
 
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
 
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="iconfont icon-home-fill"></i>
-                首页
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                分类
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                标签
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/">
-                <i class="iconfont icon-user-fill"></i>
-                关于
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container flex flex-col justify-between min-h-dvh">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+                <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
+                    <img src="/img/fav.ico" class="w-full h-full rounded-sm">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                Sl0th&#39;s Blog
+                
             </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
-                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-  
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle" data-typed-text="XML学习"></span>
-          
         </div>
 
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-04-20 00:00" pubdate>
-          2022年4月20日 凌晨
-        </time>
-      </span>
-    
-  </div>
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
 
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          11k 字
-        
-      </span>
-    
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
 
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          60 分钟
-        
-      </span>
-    
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-    
-    
-      
-        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
-          <i class="iconfont icon-eye" aria-hidden="true"></i>
-          <span id="leancloud-page-views"></span> 次
-        </span>
-        
-      
-    
-  </div>
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
 
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-        
-      </div>
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-regular fa-tags fa-fw"></i>
+                                    标签
+                                    
+                                </a>
 
-      
-    </div>
-  </div>
-</div>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-</div>
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
 
-  </header>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-  <main>
-    
-      
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
 
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">XML学习</h1>
-            
-            
-              <div class="markdown-body">
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a href="/about">
+                                                    ME
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://github.com/sloth31">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="http://sl0th.top/">
+                                                    BLOG
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
                 
-                <h1 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p> XML 指可扩展标记语言(<em>EX</em>tensible <em>M</em>arkup <em>L</em>anguage),<strong>被设计用来<u>传输和存储数据</u></strong> 可以用在配置文件中、在网络中传输</p>
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                标签
+                            </span>
+                            
+                                <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/about">ME</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://github.com/sloth31">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="http://sl0th.top/">BLOG</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">27</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">10</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">44</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">XML学习</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/img/avatar.JPG">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Sl0th</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2022-04-20 00:55</span>
+        <span class="mobile">2022-04-20 00:55</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-07-04 00:12:34</span>
+            <span class="mobile">2024-07-04 00:12:34</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/foundation/">foundation</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/xxe/">xxe</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h1 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p> XML 指可扩展标记语言(<em>EX</em>tensible <em>M</em>arkup <em>L</em>anguage),<strong>被设计用来<u>传输和存储数据</u></strong> 可以用在配置文件中、在网络中传输</p>
 <blockquote>
 <p><strong>HTML 被设计用来显示数据</strong></p>
 </blockquote>
@@ -327,7 +542,7 @@
 </li>
 </ul>
 <h2 id="树结构"><a href="#树结构" class="headerlink" title="树结构"></a>树结构</h2><p>一个文档实例(John 给 George 的一张便签)</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;ISO-8859-1&quot;</span>?&gt;</span> <span class="hljs-comment">&lt;!--XML 声明。它定义 XML 的版本 (1.0) 和所使用的编码 (ISO-8859-1 = Latin-1/西欧字符集)--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">note</span>&gt;</span> <span class="hljs-comment">&lt;!--根元素--&gt;</span><br><span class="hljs-comment">&lt;!--4 行描述根的 4 个子元素（to, from, heading 以及 body）--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">to</span>&gt;</span>George<span class="hljs-tag">&lt;/<span class="hljs-name">to</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">from</span>&gt;</span>John<span class="hljs-tag">&lt;/<span class="hljs-name">from</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">heading</span>&gt;</span>Reminder<span class="hljs-tag">&lt;/<span class="hljs-name">heading</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>Don&#x27;t forget the meeting!<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">note</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;ISO-8859-1&quot;</span>?&gt;</span> <span class="comment">&lt;!--XML 声明。它定义 XML 的版本 (1.0) 和所使用的编码 (ISO-8859-1 = Latin-1/西欧字符集)--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">note</span>&gt;</span> <span class="comment">&lt;!--根元素--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--4 行描述根的 4 个子元素（to, from, heading 以及 body）--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">to</span>&gt;</span>George<span class="tag">&lt;/<span class="name">to</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">from</span>&gt;</span>John<span class="tag">&lt;/<span class="name">from</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">heading</span>&gt;</span>Reminder<span class="tag">&lt;/<span class="name">heading</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span>Don&#x27;t forget the meeting!<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">note</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>所有的XML元素都必须有一个关闭标签  e.g. <note> </note></p>
@@ -357,19 +572,19 @@
 </blockquote>
 <h3 id="XML-文档形成一种树结构"><a href="#XML-文档形成一种树结构" class="headerlink" title="XML 文档形成一种树结构"></a>XML 文档形成一种树结构</h3><p>XML 文档必须包含<em>根元素</em>。该元素是所有其他元素的父元素。</p>
 <p>XML 文档中的元素形成了一棵文档树。这棵树从根部开始，并扩展到树的最底端。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">root</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">child</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">subchild</span>&gt;</span>.....<span class="hljs-tag">&lt;/<span class="hljs-name">subchild</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">child</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">root</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">root</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">child</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">subchild</span>&gt;</span>.....<span class="tag">&lt;/<span class="name">subchild</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>所有元素都可以有子元素</p>
 </blockquote>
-<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><h3 id="大小写敏感"><a href="#大小写敏感" class="headerlink" title="大小写敏感"></a>大小写敏感</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">Message</span>&gt;</span>这是错误的。<span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span>这是正确的。<span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span> <br></code></pre></td></tr></table></figure>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><h3 id="大小写敏感"><a href="#大小写敏感" class="headerlink" title="大小写敏感"></a>大小写敏感</h3><div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Message</span>&gt;</span>这是错误的。<span class="tag">&lt;/<span class="name">message</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">message</span>&gt;</span>这是正确的。<span class="tag">&lt;/<span class="name">message</span>&gt;</span> </span><br></pre></td></tr></table></figure></div>
 
-<h3 id="正确嵌套"><a href="#正确嵌套" class="headerlink" title="正确嵌套"></a>正确嵌套</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">b</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">i</span>&gt;</span>错误<span class="hljs-tag">&lt;/<span class="hljs-name">b</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">b</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">i</span>&gt;</span>正确<span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">b</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h3 id="正确嵌套"><a href="#正确嵌套" class="headerlink" title="正确嵌套"></a>正确嵌套</h3><div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">i</span>&gt;</span>错误<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">i</span>&gt;</span>正确<span class="tag">&lt;/<span class="name">i</span>&gt;</span><span class="tag">&lt;/<span class="name">b</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
 
-<h3 id="必须有一个根元素（子元素间可以并列）"><a href="#必须有一个根元素（子元素间可以并列）" class="headerlink" title="必须有一个根元素（子元素间可以并列）"></a>必须有一个根元素（子元素间可以并列）</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">root</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">child</span> <span class="hljs-attr">category</span>=<span class="hljs-string">&quot;COOKING&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">subchild</span>&gt;</span>.....<span class="hljs-tag">&lt;/<span class="hljs-name">subchild</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">child</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">child</span> <span class="hljs-attr">category</span>=<span class="hljs-string">&quot;WEB&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">subchild</span>&gt;</span>.....<span class="hljs-tag">&lt;/<span class="hljs-name">subchild</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">child</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">root</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h3 id="必须有一个根元素（子元素间可以并列）"><a href="#必须有一个根元素（子元素间可以并列）" class="headerlink" title="必须有一个根元素（子元素间可以并列）"></a>必须有一个根元素（子元素间可以并列）</h3><div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">root</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">child</span> <span class="attr">category</span>=<span class="string">&quot;COOKING&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">subchild</span>&gt;</span>.....<span class="tag">&lt;/<span class="name">subchild</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">child</span> <span class="attr">category</span>=<span class="string">&quot;WEB&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">subchild</span>&gt;</span>.....<span class="tag">&lt;/<span class="name">subchild</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
 
 <h3 id="属性值要加引号"><a href="#属性值要加引号" class="headerlink" title="属性值要加引号"></a>属性值要加引号</h3><p>单双都可以</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">note</span> <span class="hljs-attr">date</span>=<span class="hljs-string">&quot;08/08/2008&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">to</span>&gt;</span>George<span class="hljs-tag">&lt;/<span class="hljs-name">to</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">from</span>&gt;</span>John<span class="hljs-tag">&lt;/<span class="hljs-name">from</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">note</span>&gt;</span> <br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">note</span> <span class="attr">date</span>=<span class="string">&quot;08/08/2008&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">to</span>&gt;</span>George<span class="tag">&lt;/<span class="name">to</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">from</span>&gt;</span>John<span class="tag">&lt;/<span class="name">from</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">note</span>&gt;</span> </span><br></pre></td></tr></table></figure></div>
 
 <h3 id="实体引用"><a href="#实体引用" class="headerlink" title="实体引用"></a>实体引用</h3><p>特殊符号转义</p>
 <table>
@@ -401,18 +616,18 @@
 <td>引号</td>
 </tr>
 </tbody></table>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span>if salary &lt; 1000 then<span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span>if salary <span class="hljs-symbol">&amp;lt;</span> 1000 then<span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span>  ✅<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">message</span>&gt;</span>if salary &lt; 1000 then<span class="tag">&lt;/<span class="name">message</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">message</span>&gt;</span>if salary <span class="symbol">&amp;lt;</span> 1000 then<span class="tag">&lt;/<span class="name">message</span>&gt;</span>  ✅</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>在 XML 中，只有字符 “&lt;” 和 “&amp;” 确实是非法的。大于号是合法的，但是用实体引用来代替它是一个好习惯。</p>
 </blockquote>
 <h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><p>使用<code>&lt;!--</code>与<code>--&gt;</code> (都是两个短横杠)</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- This is a comment --&gt;</span>  <br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- This is a comment --&gt;</span>  </span><br></pre></td></tr></table></figure></div>
 
 <h3 id="保留空格"><a href="#保留空格" class="headerlink" title="保留空格"></a>保留空格</h3><p>在 XML 中，文档中的空格不会被删节。</p>
 <blockquote>
 <p>HTML 会把多个连续的空格字符裁减（合并）为一个：</p>
-<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs applescript">HTML:	Hello           <span class="hljs-keyword">my</span> <span class="hljs-built_in">name</span> <span class="hljs-keyword">is</span> David.<br>输出:	Hello <span class="hljs-keyword">my</span> <span class="hljs-built_in">name</span> <span class="hljs-keyword">is</span> David.<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HTML:	Hello           my name is David.</span><br><span class="line">输出:	Hello my name is David.</span><br></pre></td></tr></table></figure></div>
 </blockquote>
 <h3 id="LF存储换行"><a href="#LF存储换行" class="headerlink" title="LF存储换行"></a>LF存储换行</h3><p>在 Windows 应用程序中，换行通常以一对字符来存储：回车符 (CR) 和换行符 (LF)。这对字符与打字机设置新行的动作有相似之处。在 Unix 应用程序中，新行以 LF 字符存储。而 Macintosh 应用程序使用 CR 来存储新行。</p>
 <h2 id="元素"><a href="#元素" class="headerlink" title="元素"></a>元素</h2><p><strong>XML 元素</strong>指的是从（且包括）开始标签直到（且包括）结束标签的部分。</p>
@@ -431,15 +646,15 @@
 </blockquote>
 <h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><p><strong>属性 (Attribute) 提供关于元素的额外（附加）信息。</strong></p>
 <p>属性值必须被引号包围，不过单引号和双引号均可使用。比如一个人的性别，person 标签可以这样写：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">person</span> <span class="hljs-attr">sex</span>=<span class="hljs-string">&quot;female&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">person</span> <span class="hljs-attr">sex</span>=<span class="hljs-string">&#x27;female&#x27;</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">person</span> <span class="attr">sex</span>=<span class="string">&quot;female&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">person</span> <span class="attr">sex</span>=<span class="string">&#x27;female&#x27;</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
 
 <p>如果属性值本身包含双引号，那么有必要使用单引号包围它，就像这个例子：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">gangster</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&#x27;George &quot;Shotgun&quot; Ziegler&#x27;</span>&gt;</span><br><span class="hljs-comment">&lt;!--或者使用实体引用--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">gangster</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;George <span class="hljs-symbol">&amp;quot;</span>Shotgun<span class="hljs-symbol">&amp;quot;</span> Ziegler&quot;</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">gangster</span> <span class="attr">name</span>=<span class="string">&#x27;George &quot;Shotgun&quot; Ziegler&#x27;</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--或者使用实体引用--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">gangster</span> <span class="attr">name</span>=<span class="string">&quot;George <span class="symbol">&amp;quot;</span>Shotgun<span class="symbol">&amp;quot;</span> Ziegler&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
 
 
 
 <p>属性与元素的使用没有规定，可以按照自己喜欢的方式</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">person</span> <span class="hljs-attr">sex</span>=<span class="hljs-string">&quot;female&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">firstname</span>&gt;</span>Anna<span class="hljs-tag">&lt;/<span class="hljs-name">firstname</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">lastname</span>&gt;</span>Smith<span class="hljs-tag">&lt;/<span class="hljs-name">lastname</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">person</span>&gt;</span> <br><br><span class="hljs-tag">&lt;<span class="hljs-name">person</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">sex</span>&gt;</span>female<span class="hljs-tag">&lt;/<span class="hljs-name">sex</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">firstname</span>&gt;</span>Anna<span class="hljs-tag">&lt;/<span class="hljs-name">firstname</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">lastname</span>&gt;</span>Smith<span class="hljs-tag">&lt;/<span class="hljs-name">lastname</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">person</span>&gt;</span> <br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">person</span> <span class="attr">sex</span>=<span class="string">&quot;female&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">firstname</span>&gt;</span>Anna<span class="tag">&lt;/<span class="name">firstname</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">lastname</span>&gt;</span>Smith<span class="tag">&lt;/<span class="name">lastname</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">person</span>&gt;</span> </span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">person</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">sex</span>&gt;</span>female<span class="tag">&lt;/<span class="name">sex</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">firstname</span>&gt;</span>Anna<span class="tag">&lt;/<span class="name">firstname</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">lastname</span>&gt;</span>Smith<span class="tag">&lt;/<span class="name">lastname</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">person</span>&gt;</span> </span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>因使用属性而引起的一些问题：</p>
@@ -452,32 +667,37 @@
 </blockquote>
 <p><strong>元数据（有关数据的数据）应当存储为属性，而数据本身应当存储为元素</strong></p>
 <p>有时候会向元素分配 ID 引用。这些 ID 索引可用于标识 XML 元素，它起作用的方式与 HTML 中 ID 属性是一样的</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">messages</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">note</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;501&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">to</span>&gt;</span>George<span class="hljs-tag">&lt;/<span class="hljs-name">to</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">from</span>&gt;</span>John<span class="hljs-tag">&lt;/<span class="hljs-name">from</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">heading</span>&gt;</span>Reminder<span class="hljs-tag">&lt;/<span class="hljs-name">heading</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>Don&#x27;t forget the meeting!<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">note</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">note</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;502&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">to</span>&gt;</span>John<span class="hljs-tag">&lt;/<span class="hljs-name">to</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">from</span>&gt;</span>George<span class="hljs-tag">&lt;/<span class="hljs-name">from</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">heading</span>&gt;</span>Re: Reminder<span class="hljs-tag">&lt;/<span class="hljs-name">heading</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>I will not<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">note</span>&gt;</span> <br><span class="hljs-tag">&lt;/<span class="hljs-name">messages</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">messages</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">note</span> <span class="attr">id</span>=<span class="string">&quot;501&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">to</span>&gt;</span>George<span class="tag">&lt;/<span class="name">to</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">from</span>&gt;</span>John<span class="tag">&lt;/<span class="name">from</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">heading</span>&gt;</span>Reminder<span class="tag">&lt;/<span class="name">heading</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span>Don&#x27;t forget the meeting!<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">note</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">note</span> <span class="attr">id</span>=<span class="string">&quot;502&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">to</span>&gt;</span>John<span class="tag">&lt;/<span class="name">to</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">from</span>&gt;</span>George<span class="tag">&lt;/<span class="name">from</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">heading</span>&gt;</span>Re: Reminder<span class="tag">&lt;/<span class="name">heading</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span>I will not<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">note</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">messages</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
 
 <h2 id="XML验证"><a href="#XML验证" class="headerlink" title="XML验证"></a>XML验证</h2><p>拥有正确语法的 XML 被称为“形式良好”的 XML。</p>
 <p>通过 DTD 验证的 XML 是“合法”的 XML。</p>
 <h3 id="XML-Schema"><a href="#XML-Schema" class="headerlink" title="XML Schema"></a>XML Schema</h3><p>W3C 支持一种基于 XML 的 DTD 代替者，它名为 XML Schema：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;note&quot;</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">xs:complexType</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">xs:sequence</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;to&quot;</span>      <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;xs:string&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;from&quot;</span>    <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;xs:string&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;heading&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;xs:string&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;body&quot;</span>    <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;xs:string&quot;</span>/&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">xs:sequence</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">xs:element</span>&gt;</span> <br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">xs:element</span> <span class="attr">name</span>=<span class="string">&quot;note&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">xs:complexType</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">xs:sequence</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xs:element</span> <span class="attr">name</span>=<span class="string">&quot;to&quot;</span>      <span class="attr">type</span>=<span class="string">&quot;xs:string&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xs:element</span> <span class="attr">name</span>=<span class="string">&quot;from&quot;</span>    <span class="attr">type</span>=<span class="string">&quot;xs:string&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xs:element</span> <span class="attr">name</span>=<span class="string">&quot;heading&quot;</span> <span class="attr">type</span>=<span class="string">&quot;xs:string&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xs:element</span> <span class="attr">name</span>=<span class="string">&quot;body&quot;</span>    <span class="attr">type</span>=<span class="string">&quot;xs:string&quot;</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">xs:sequence</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">xs:complexType</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">xs:element</span>&gt;</span> </span><br></pre></td></tr></table></figure></div>
 
 <h3 id="XML-DTD"><a href="#XML-DTD" class="headerlink" title="XML DTD"></a>XML DTD</h3><p>DTD 的作用是定义 XML 文档的结构。它使用一系列合法的元素来定义文档结构：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!DOCTYPE note [ &lt;!--DOCTYPE 声明是对外部 DTD 文件的引用--&gt;<br>  &lt;!ELEMENT note (to,from,heading,body)&gt;<br>  &lt;!ELEMENT to      (#PCDATA)&gt;<br>  &lt;!ELEMENT from    (#PCDATA)&gt;<br>  &lt;!ELEMENT heading (#PCDATA)&gt;<br>  &lt;!ELEMENT body    (#PCDATA)&gt;<br>]&gt; <br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE note [ &lt;!--DOCTYPE 声明是对外部 DTD 文件的引用--&gt;</span><br><span class="line">  &lt;!ELEMENT note (to,from,heading,body)&gt;</span><br><span class="line">  &lt;!ELEMENT to      (#PCDATA)&gt;</span><br><span class="line">  &lt;!ELEMENT from    (#PCDATA)&gt;</span><br><span class="line">  &lt;!ELEMENT heading (#PCDATA)&gt;</span><br><span class="line">  &lt;!ELEMENT body    (#PCDATA)&gt;</span><br><span class="line">]&gt; </span><br></pre></td></tr></table></figure></div>
 
 <h2 id="XML-CSS"><a href="#XML-CSS" class="headerlink" title="XML CSS"></a>XML CSS</h2><p>XML可以连接到CSS文件并被其格式化，呈现在网页上 </p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;ISO-8859-1&quot;</span>?&gt;</span><br><span class="hljs-meta">&lt;?xml-stylesheet type=<span class="hljs-string">&quot;text/css&quot;</span> href=<span class="hljs-string">&quot;cd_catalog.css&quot;</span>?&gt;</span> <span class="hljs-comment">&lt;!--把这个XML文件链接到CSS文件--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">CATALOG</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">CD</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">TITLE</span>&gt;</span>Empire Burlesque<span class="hljs-tag">&lt;/<span class="hljs-name">TITLE</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">ARTIST</span>&gt;</span>Bob Dylan<span class="hljs-tag">&lt;/<span class="hljs-name">ARTIST</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">COUNTRY</span>&gt;</span>USA<span class="hljs-tag">&lt;/<span class="hljs-name">COUNTRY</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">COMPANY</span>&gt;</span>Columbia<span class="hljs-tag">&lt;/<span class="hljs-name">COMPANY</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">PRICE</span>&gt;</span>10.90<span class="hljs-tag">&lt;/<span class="hljs-name">PRICE</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">YEAR</span>&gt;</span>1985<span class="hljs-tag">&lt;/<span class="hljs-name">YEAR</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">CD</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">CD</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">TITLE</span>&gt;</span>Hide your heart<span class="hljs-tag">&lt;/<span class="hljs-name">TITLE</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">ARTIST</span>&gt;</span>Bonnie Tyler<span class="hljs-tag">&lt;/<span class="hljs-name">ARTIST</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">COUNTRY</span>&gt;</span>UK<span class="hljs-tag">&lt;/<span class="hljs-name">COUNTRY</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">COMPANY</span>&gt;</span>CBS Records<span class="hljs-tag">&lt;/<span class="hljs-name">COMPANY</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">PRICE</span>&gt;</span>9.90<span class="hljs-tag">&lt;/<span class="hljs-name">PRICE</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">YEAR</span>&gt;</span>1988<span class="hljs-tag">&lt;/<span class="hljs-name">YEAR</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">CD</span>&gt;</span><br>.<br>.<br>.<br>.<br><span class="hljs-tag">&lt;/<span class="hljs-name">CATALOG</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;ISO-8859-1&quot;</span>?&gt;</span></span><br><span class="line"><span class="meta">&lt;?xml-stylesheet type=<span class="string">&quot;text/css&quot;</span> href=<span class="string">&quot;cd_catalog.css&quot;</span>?&gt;</span> <span class="comment">&lt;!--把这个XML文件链接到CSS文件--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">CATALOG</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">CD</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TITLE</span>&gt;</span>Empire Burlesque<span class="tag">&lt;/<span class="name">TITLE</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ARTIST</span>&gt;</span>Bob Dylan<span class="tag">&lt;/<span class="name">ARTIST</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">COUNTRY</span>&gt;</span>USA<span class="tag">&lt;/<span class="name">COUNTRY</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">COMPANY</span>&gt;</span>Columbia<span class="tag">&lt;/<span class="name">COMPANY</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PRICE</span>&gt;</span>10.90<span class="tag">&lt;/<span class="name">PRICE</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">YEAR</span>&gt;</span>1985<span class="tag">&lt;/<span class="name">YEAR</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">CD</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">CD</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TITLE</span>&gt;</span>Hide your heart<span class="tag">&lt;/<span class="name">TITLE</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ARTIST</span>&gt;</span>Bonnie Tyler<span class="tag">&lt;/<span class="name">ARTIST</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">COUNTRY</span>&gt;</span>UK<span class="tag">&lt;/<span class="name">COUNTRY</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">COMPANY</span>&gt;</span>CBS Records<span class="tag">&lt;/<span class="name">COMPANY</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PRICE</span>&gt;</span>9.90<span class="tag">&lt;/<span class="name">PRICE</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">YEAR</span>&gt;</span>1988<span class="tag">&lt;/<span class="name">YEAR</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">CD</span>&gt;</span></span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line"><span class="tag">&lt;/<span class="name">CATALOG</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>使用 CSS 格式化 XML 不是常用的方法，更不能代表 XML 文档样式化的未来。W3C 推荐使用 XSLT</p>
 </blockquote>
 <h2 id="XML-XSLT"><a href="#XML-XSLT" class="headerlink" title="XML XSLT"></a>XML XSLT</h2><p>XSLT 是首选的 XML 样式表语言。</p>
 <p>XSLT (eXtensible Stylesheet Language Transformations) 远比 CSS 更加完善。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;ISO-8859-1&quot;</span>?&gt;</span><br><span class="hljs-meta">&lt;?xml-stylesheet type=<span class="hljs-string">&quot;text/xsl&quot;</span> href=<span class="hljs-string">&quot;simple.xsl&quot;</span>?&gt;</span> <span class="hljs-comment">&lt;!--把这个XML文件链接到XSL文件--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">breakfast_menu</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">food</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Belgian Waffles<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">price</span>&gt;</span>$5.95<span class="hljs-tag">&lt;/<span class="hljs-name">price</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><br>       two of our famous Belgian Waffles<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">calories</span>&gt;</span>650<span class="hljs-tag">&lt;/<span class="hljs-name">calories</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">food</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">breakfast_menu</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;ISO-8859-1&quot;</span>?&gt;</span></span><br><span class="line"><span class="meta">&lt;?xml-stylesheet type=<span class="string">&quot;text/xsl&quot;</span> href=<span class="string">&quot;simple.xsl&quot;</span>?&gt;</span> <span class="comment">&lt;!--把这个XML文件链接到XSL文件--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">breakfast_menu</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">food</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>Belgian Waffles<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">price</span>&gt;</span>$5.95<span class="tag">&lt;/<span class="name">price</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span></span><br><span class="line">       two of our famous Belgian Waffles</span><br><span class="line">    <span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">calories</span>&gt;</span>650<span class="tag">&lt;/<span class="name">calories</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">food</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">breakfast_menu</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>在使用 XSLT 来转换 XML 时，不同的浏览器可能会产生不同结果。为了减少这种问题，可以在服务器上进行 XSLT 转换。</p>
 </blockquote>
 <p>DOM 将 XML 文档作为一个树形结构，而树叶被定义为<strong>节点</strong></p>
 <p>以书店文档为例</p>
-<img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h1o9tjk5xoj20l60bejs6.jpg" srcset="/img/loading.gif" lazyload alt="image-20220427143813504" style="zoom: 50%;" />
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://tva1.sinaimg.cn/large/e6c9d24egy1h1o9tjk5xoj20l60bejs6.jpg"
+                      alt="image-20220427143813504" style="zoom: 50%;" 
+                >
 
 <h2 id="XML约束"><a href="#XML约束" class="headerlink" title="XML约束"></a>XML约束</h2><ul>
 <li><p>约束：规定xml文档的书写规则</p>
@@ -512,10 +732,10 @@
 <ul>
 <li>引入：<ol>
 <li>填写xml文档的根元素</li>
-<li>引入xsi命名空间(xsi标准命名空间，有多种取值 分别对应不同版本).  xmlns:xsi&#x3D;”<a target="_blank" rel="noopener" href="http://www.w3.org/2001/XMLSchema-instance&quot;">http://www.w3.org/2001/XMLSchema-instance&quot;</a></li>
+<li>引入xsi命名空间(xsi标准命名空间，有多种取值 分别对应不同版本).  xmlns:xsi&#x3D;”<a class="link"   target="_blank" rel="noopener" href="http://www.w3.org/2001/XMLSchema-instance" >http://www.w3.org/2001/XMLSchema-instance <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>“</li>
 <li>为每个命名空间指定具体的schema文件 两两一对  <code>xsi:schemaLocation=&quot;http://www.itcast.cn/xml student.xsd&quot;</code> </li>
-<li>为每一个xsd约束声明一个前缀,作为标识  xmlns&#x3D;”<a target="_blank" rel="noopener" href="http://www.itcast.cn/xml&quot;">http://www.itcast.cn/xml&quot;</a> (xmlns定义默认命名空间，只引一个约束文档时，可以不加前缀，为空前缀，可以直接使用标签，默认所有标签都用这个文档)<ul>
-<li>加前缀版(自定义命名空间，给命名空间取别名，其赋值必须是个命名空间文件 必须在xsi命名空间内指定其对应的schema文件)：xmlns:a&#x3D;”<a target="_blank" rel="noopener" href="http://www.itcast.cn/xml1&quot;">http://www.itcast.cn/xml1&quot;</a>  使用该约束文档的标签都要加前缀 如<code>&lt;a:age&gt;&lt;/a:age&gt;</code></li>
+<li>为每一个xsd约束声明一个前缀,作为标识  xmlns&#x3D;”<a class="link"   target="_blank" rel="noopener" href="http://www.itcast.cn/xml" >http://www.itcast.cn/xml <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>“ (xmlns定义默认命名空间，只引一个约束文档时，可以不加前缀，为空前缀，可以直接使用标签，默认所有标签都用这个文档)<ul>
+<li>加前缀版(自定义命名空间，给命名空间取别名，其赋值必须是个命名空间文件 必须在xsi命名空间内指定其对应的schema文件)：xmlns:a&#x3D;”<a class="link"   target="_blank" rel="noopener" href="http://www.itcast.cn/xml1" >http://www.itcast.cn/xml1 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>“  使用该约束文档的标签都要加前缀 如<code>&lt;a:age&gt;&lt;/a:age&gt;</code></li>
 </ul>
 </li>
 </ol>
@@ -523,9 +743,14 @@
 </ul>
 <blockquote>
 <p>根标签内引入</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">students</span>   <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span><br><span class="hljs-tag">				<span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://www.itcast.cn/xml&quot;</span> </span><br><span class="hljs-tag">				<span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://www.itcast.cn/xml  student.xsd&quot;</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">students</span>   <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">				<span class="attr">xmlns</span>=<span class="string">&quot;http://www.itcast.cn/xml&quot;</span> </span></span><br><span class="line"><span class="tag">				<span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.itcast.cn/xml  student.xsd&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
 </blockquote>
-<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4lrp1a2m5j21ho0q6n3h.jpg" srcset="/img/loading.gif" lazyload alt="image-20220727204100444"></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4lrp1a2m5j21ho0q6n3h.jpg"
+                      alt="image-20220727204100444"
+                ></p>
 <h2 id="XML解析"><a href="#XML解析" class="headerlink" title="XML解析"></a>XML解析</h2><p>解析：操作xml文档，将文档中的数据读取到内存中</p>
 <ul>
 <li><p>操作xml文档</p>
@@ -538,7 +763,12 @@
 <ol>
 <li>DOM：将标记语言文档一次性加载进内存，在内存中形成一颗dom树</li>
 </ol>
-<p>  <img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4lrrg091cj20mw0fcq3p.jpg" srcset="/img/loading.gif" lazyload alt="image-20220727204321916"></p>
+<p>  <img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4lrrg091cj20mw0fcq3p.jpg"
+                      alt="image-20220727204321916"
+                ></p>
 <ul>
 <li>优点：操作方便，可以对文档进行CRUD的所有操作</li>
 <li>缺点：占内存</li>
@@ -552,7 +782,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="xml常见的解析器："><a href="#xml常见的解析器：" class="headerlink" title="xml常见的解析器："></a>xml常见的解析器：</h3><p>​    1. JAXP：sun公司提供的解析器，支持dom和sax两种思想<br>​    2. DOM4J：一款非常优秀的解析器<br>​    3. Jsoup：jsoup 是一款Java 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于jQuery的操作方法来取出和操作数据。<br>​    4. PULL：Android操作系统内置的解析器，sax方式的。</p>
+<h3 id="xml常见的解析器："><a href="#xml常见的解析器：" class="headerlink" title="xml常见的解析器："></a>xml常见的解析器：</h3><p>​	1. JAXP：sun公司提供的解析器，支持dom和sax两种思想<br>​	2. DOM4J：一款非常优秀的解析器<br>​	3. Jsoup：jsoup 是一款Java 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于jQuery的操作方法来取出和操作数据。<br>​	4. PULL：Android操作系统内置的解析器，sax方式的。</p>
 <h3 id="Jsoup"><a href="#Jsoup" class="headerlink" title="Jsoup"></a>Jsoup</h3><p>jsoup 是一款Java 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于jQuery的操作方法来取出和操作数据。</p>
 <ul>
 <li><p>快速入门：</p>
@@ -567,7 +797,7 @@
 </ul>
 </li>
 <li><p>代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//获取Document对象,根据xml文档获取</span><br><span class="hljs-comment">//获取student.xml的path</span><br>String path= JsoupDemo1.class.getClassLoader().getResource(<span class="hljs-string">&quot;student.xml&quot;</span>).toURI().getPath();<br><span class="hljs-comment">//解析xml文档，加载文档进内存，获取dom树--&gt;Document</span><br><span class="hljs-type">Document</span> <span class="hljs-variable">document</span> <span class="hljs-operator">=</span> Jsoup.parse(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(path), <span class="hljs-string">&quot;utf-8&quot;</span>);<br><span class="hljs-comment">//获取元素对象 Element</span><br><span class="hljs-type">Elements</span> <span class="hljs-variable">elements</span> <span class="hljs-operator">=</span> document.getElementsByTag(<span class="hljs-string">&quot;name&quot;</span>);<span class="hljs-comment">//Elements是ArrayList&lt;Element&gt;</span><br>System.out.println(elements.size());<br><span class="hljs-comment">//获取第一个name的Element对象</span><br><span class="hljs-type">Element</span> <span class="hljs-variable">element</span> <span class="hljs-operator">=</span> elements.get(<span class="hljs-number">0</span>);<br><span class="hljs-comment">//获取数据</span><br><span class="hljs-type">String</span> <span class="hljs-variable">text</span> <span class="hljs-operator">=</span> element.text();<br>System.out.println(text);<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取Document对象,根据xml文档获取</span></span><br><span class="line"><span class="comment">//获取student.xml的path</span></span><br><span class="line">String path= JsoupDemo1.class.getClassLoader().getResource(<span class="string">&quot;student.xml&quot;</span>).toURI().getPath();</span><br><span class="line"><span class="comment">//解析xml文档，加载文档进内存，获取dom树--&gt;Document</span></span><br><span class="line"><span class="type">Document</span> <span class="variable">document</span> <span class="operator">=</span> Jsoup.parse(<span class="keyword">new</span> <span class="title class_">File</span>(path), <span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line"><span class="comment">//获取元素对象 Element</span></span><br><span class="line"><span class="type">Elements</span> <span class="variable">elements</span> <span class="operator">=</span> document.getElementsByTag(<span class="string">&quot;name&quot;</span>);<span class="comment">//Elements是ArrayList&lt;Element&gt;</span></span><br><span class="line">System.out.println(elements.size());</span><br><span class="line"><span class="comment">//获取第一个name的Element对象</span></span><br><span class="line"><span class="type">Element</span> <span class="variable">element</span> <span class="operator">=</span> elements.get(<span class="number">0</span>);</span><br><span class="line"><span class="comment">//获取数据</span></span><br><span class="line"><span class="type">String</span> <span class="variable">text</span> <span class="operator">=</span> element.text();</span><br><span class="line">System.out.println(text);</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>路径中有中文或空格时，要先toURI再getPath</p>
@@ -629,11 +859,11 @@
 <ol>
 <li><p>selector:选择器</p>
 <ul>
-<li><p>使用的方法：Elements    select(String cssQuery) </p>
+<li><p>使用的方法：Elements	select(String cssQuery) </p>
 <ul>
 <li>语法：参考Selector类中定义的语法</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//选择器查询</span><br><span class="hljs-type">String</span> <span class="hljs-variable">path</span> <span class="hljs-operator">=</span> JsoupDemo1.class.getClassLoader().getResource(<span class="hljs-string">&quot;student.xml&quot;</span>).toURI().getPath();<br><span class="hljs-type">Document</span> <span class="hljs-variable">document</span> <span class="hljs-operator">=</span> Jsoup.parse(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(path), <span class="hljs-string">&quot;utf-8&quot;</span>);<br><span class="hljs-comment">//获取name标签</span><br><span class="hljs-type">Elements</span> <span class="hljs-variable">elements</span> <span class="hljs-operator">=</span> document.select(<span class="hljs-string">&quot;name&quot;</span>);<br>System.out.println(elements);<br><span class="hljs-comment">//获取id=&quot;itcast&quot;的元素</span><br><span class="hljs-type">Elements</span> <span class="hljs-variable">elements1</span> <span class="hljs-operator">=</span> document.select(<span class="hljs-string">&quot;#itcast&quot;</span>);<br>System.out.println(elements1);<br>System.out.println(<span class="hljs-string">&quot;-------&quot;</span>);<br><span class="hljs-comment">//获取student标签下number=&quot;heima_0001的age子标签</span><br><span class="hljs-type">Elements</span> <span class="hljs-variable">elements2</span> <span class="hljs-operator">=</span> document.select(<span class="hljs-string">&quot;student[number=&#x27;heima_0001&#x27;]&quot;</span>);<br>System.out.println(elements2);<br><span class="hljs-type">Elements</span> <span class="hljs-variable">elements3</span> <span class="hljs-operator">=</span> document.select(<span class="hljs-string">&quot;student[number=&#x27;heima_0001&#x27;] &gt; age&quot;</span>);<br><span class="hljs-comment">//得到age</span><br>System.out.println(elements3);<br></code></pre></td></tr></table></figure></li>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//选择器查询</span></span><br><span class="line"><span class="type">String</span> <span class="variable">path</span> <span class="operator">=</span> JsoupDemo1.class.getClassLoader().getResource(<span class="string">&quot;student.xml&quot;</span>).toURI().getPath();</span><br><span class="line"><span class="type">Document</span> <span class="variable">document</span> <span class="operator">=</span> Jsoup.parse(<span class="keyword">new</span> <span class="title class_">File</span>(path), <span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line"><span class="comment">//获取name标签</span></span><br><span class="line"><span class="type">Elements</span> <span class="variable">elements</span> <span class="operator">=</span> document.select(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">System.out.println(elements);</span><br><span class="line"><span class="comment">//获取id=&quot;itcast&quot;的元素</span></span><br><span class="line"><span class="type">Elements</span> <span class="variable">elements1</span> <span class="operator">=</span> document.select(<span class="string">&quot;#itcast&quot;</span>);</span><br><span class="line">System.out.println(elements1);</span><br><span class="line">System.out.println(<span class="string">&quot;-------&quot;</span>);</span><br><span class="line"><span class="comment">//获取student标签下number=&quot;heima_0001的age子标签</span></span><br><span class="line"><span class="type">Elements</span> <span class="variable">elements2</span> <span class="operator">=</span> document.select(<span class="string">&quot;student[number=&#x27;heima_0001&#x27;]&quot;</span>);</span><br><span class="line">System.out.println(elements2);</span><br><span class="line"><span class="type">Elements</span> <span class="variable">elements3</span> <span class="operator">=</span> document.select(<span class="string">&quot;student[number=&#x27;heima_0001&#x27;] &gt; age&quot;</span>);</span><br><span class="line"><span class="comment">//得到age</span></span><br><span class="line">System.out.println(elements3);</span><br></pre></td></tr></table></figure></div></li>
 </ul>
 </li>
 <li><p>XPath：XPath即为XML路径语言，它是一种用来确定XML（标准通用标记语言的子集）文档中某部分位置的语言</p>
@@ -642,385 +872,429 @@
 <li>查询w3cshool参考手册，使用xpath的语法完成查询</li>
 <li>代码：</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">path</span> <span class="hljs-operator">=</span> JsoupDemo1.class.getClassLoader().getResource(<span class="hljs-string">&quot;student.xml&quot;</span>).toURI().getPath();<br><span class="hljs-type">Document</span> <span class="hljs-variable">document</span> <span class="hljs-operator">=</span> Jsoup.parse(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(path), <span class="hljs-string">&quot;utf-8&quot;</span>);<br><span class="hljs-comment">//根据document对象，创建JXDocument对象</span><br>JXDocument jxDocument=<span class="hljs-keyword">new</span> <span class="hljs-title class_">JXDocument</span>(document);<br><span class="hljs-comment">//结合Xpath语法查询</span><br>List&lt;JXNode&gt; jxNodes = jxDocument.selN(<span class="hljs-string">&quot;//student&quot;</span>); <span class="hljs-comment">// &#x27;//&#x27;表示当前节点</span><br><span class="hljs-keyword">for</span> (JXNode jxNode: jxNodes) &#123;<br>    System.out.println(jxNode);<br>&#125;<br><span class="hljs-comment">//查询所有student标签下的name标签</span><br>List&lt;JXNode&gt; jxNodes1 = jxDocument.selN(<span class="hljs-string">&quot;//student/name&quot;</span>);<br><span class="hljs-keyword">for</span> (JXNode j: jxNodes1) &#123;<br>    System.out.println(j);<br>&#125;<br><span class="hljs-comment">//查询student标签下带有id属性的name标签</span><br>List&lt;JXNode&gt; jxNodes3 = jxDocument.selN(<span class="hljs-string">&quot;//student/name[@id]&quot;</span>);<br><span class="hljs-keyword">for</span> (JXNode jxNode : jxNodes3) &#123;<br>    System.out.println(jxNode);<br>&#125;<br><span class="hljs-comment">//查询student标签下带有id属性的name标签 并且id属性值为itcast</span><br>List&lt;JXNode&gt; jxNodes4 = jxDocument.selN(<span class="hljs-string">&quot;//student/name[@id=&#x27;itcast&#x27;]&quot;</span>);<br><span class="hljs-keyword">for</span> (JXNode jxNode : jxNodes4) &#123;<br>    System.out.println(jxNode);<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">path</span> <span class="operator">=</span> JsoupDemo1.class.getClassLoader().getResource(<span class="string">&quot;student.xml&quot;</span>).toURI().getPath();</span><br><span class="line"><span class="type">Document</span> <span class="variable">document</span> <span class="operator">=</span> Jsoup.parse(<span class="keyword">new</span> <span class="title class_">File</span>(path), <span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line"><span class="comment">//根据document对象，创建JXDocument对象</span></span><br><span class="line">JXDocument jxDocument=<span class="keyword">new</span> <span class="title class_">JXDocument</span>(document);</span><br><span class="line"><span class="comment">//结合Xpath语法查询</span></span><br><span class="line">List&lt;JXNode&gt; jxNodes = jxDocument.selN(<span class="string">&quot;//student&quot;</span>); <span class="comment">// &#x27;//&#x27;表示当前节点</span></span><br><span class="line"><span class="keyword">for</span> (JXNode jxNode: jxNodes) &#123;</span><br><span class="line">    System.out.println(jxNode);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//查询所有student标签下的name标签</span></span><br><span class="line">List&lt;JXNode&gt; jxNodes1 = jxDocument.selN(<span class="string">&quot;//student/name&quot;</span>);</span><br><span class="line"><span class="keyword">for</span> (JXNode j: jxNodes1) &#123;</span><br><span class="line">    System.out.println(j);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//查询student标签下带有id属性的name标签</span></span><br><span class="line">List&lt;JXNode&gt; jxNodes3 = jxDocument.selN(<span class="string">&quot;//student/name[@id]&quot;</span>);</span><br><span class="line"><span class="keyword">for</span> (JXNode jxNode : jxNodes3) &#123;</span><br><span class="line">    System.out.println(jxNode);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//查询student标签下带有id属性的name标签 并且id属性值为itcast</span></span><br><span class="line">List&lt;JXNode&gt; jxNodes4 = jxDocument.selN(<span class="string">&quot;//student/name[@id=&#x27;itcast&#x27;]&quot;</span>);</span><br><span class="line"><span class="keyword">for</span> (JXNode jxNode : jxNodes4) &#123;</span><br><span class="line">    System.out.println(jxNode);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
 </ol>
 </li>
 </ul>
 
-                
-              </div>
-            
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
+        </div>
 
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
         
-  <a href="/categories/foundation/" class="category-chain-item">foundation</a>
-  
-  
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> XML学习</li>
+        <li><strong>作者:</strong> Sl0th</li>
+        <li><strong>创建于
+                :</strong> 2022-04-20 00:00:55</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2024-07-04 00:12:34
+            </li>
+        
+        <li>
+            <strong>链接:</strong> http://sl0th.top/2022/04/20/XML学习/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
 
-      </span>
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/xxe/">#xxe</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2022/04/21/DTD%E5%AD%A6%E4%B9%A0/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">DTD学习</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2022/04/03/SSTI%E5%8E%9F%E7%90%86%E5%AD%A6%E4%B9%A0/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">SSTI原理学习</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
     
-  
-</span>
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          reaction: false,
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">目录</div>
+        <div class="page-title">XML学习</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#XML"><span class="nav-text">XML</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%91%E7%BB%93%E6%9E%84"><span class="nav-text">树结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86"><span class="nav-text">组成部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XML-%E6%96%87%E6%A1%A3%E5%BD%A2%E6%88%90%E4%B8%80%E7%A7%8D%E6%A0%91%E7%BB%93%E6%9E%84"><span class="nav-text">XML 文档形成一种树结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-text">语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E5%B0%8F%E5%86%99%E6%95%8F%E6%84%9F"><span class="nav-text">大小写敏感</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E7%A1%AE%E5%B5%8C%E5%A5%97"><span class="nav-text">正确嵌套</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%85%E9%A1%BB%E6%9C%89%E4%B8%80%E4%B8%AA%E6%A0%B9%E5%85%83%E7%B4%A0%EF%BC%88%E5%AD%90%E5%85%83%E7%B4%A0%E9%97%B4%E5%8F%AF%E4%BB%A5%E5%B9%B6%E5%88%97%EF%BC%89"><span class="nav-text">必须有一个根元素（子元素间可以并列）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E5%80%BC%E8%A6%81%E5%8A%A0%E5%BC%95%E5%8F%B7"><span class="nav-text">属性值要加引号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BD%93%E5%BC%95%E7%94%A8"><span class="nav-text">实体引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A"><span class="nav-text">注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%9D%E7%95%99%E7%A9%BA%E6%A0%BC"><span class="nav-text">保留空格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LF%E5%AD%98%E5%82%A8%E6%8D%A2%E8%A1%8C"><span class="nav-text">LF存储换行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%83%E7%B4%A0"><span class="nav-text">元素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99"><span class="nav-text">命名规则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7"><span class="nav-text">属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XML%E9%AA%8C%E8%AF%81"><span class="nav-text">XML验证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#XML-Schema"><span class="nav-text">XML Schema</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XML-DTD"><span class="nav-text">XML DTD</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XML-CSS"><span class="nav-text">XML CSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XML-XSLT"><span class="nav-text">XML XSLT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XML%E7%BA%A6%E6%9D%9F"><span class="nav-text">XML约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DTD%EF%BC%9A"><span class="nav-text">DTD：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Schema"><span class="nav-text">Schema:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XML%E8%A7%A3%E6%9E%90"><span class="nav-text">XML解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#xml%E5%B8%B8%E8%A7%81%E7%9A%84%E8%A7%A3%E6%9E%90%E5%99%A8%EF%BC%9A"><span class="nav-text">xml常见的解析器：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Jsoup"><span class="nav-text">Jsoup</span></a></li></ol></li></ol></li></ol>
 
     </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/xxe/">#xxe</a>
-      
-    </div>
-  
+</div>
+        </div>
+    
 </div>
 
 
-              
-  
 
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>XML学习</div>
-      <div>http://sloth31.github.io/2022/04/20/XML学习/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>Sl0th</div>
-        </div>
-      
-      
-        <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2022年4月20日</div>
-        </div>
-      
-      
-      <div class="license-meta-item">
-        <div>许可协议</div>
-        <div>
-          
-            
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-              <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                <i class="iconfont icon-by"></i>
-              </span>
-              </a>
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-              <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
-                <i class="iconfont icon-nc"></i>
-              </span>
-              </a>
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-              <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
-                <i class="iconfont icon-sa"></i>
-              </span>
-              </a>
-            
-          
-        </div>
-      </div>
-    </div>
-    <div class="license-icon iconfont"></div>
-  </div>
+                
 
-
-
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2022/04/21/DTD%E5%AD%A6%E4%B9%A0/" title="DTD学习">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">DTD学习</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2022/04/03/SSTI%E5%8E%9F%E7%90%86%E5%AD%A6%E4%B9%A0/" title="SSTI原理学习">
-                        <span class="hidden-mobile">SSTI原理学习</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
             </div>
 
             
-          </article>
+
         </div>
-      </div>
-    </div>
 
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
-  </aside>
-
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-
-
-
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Sl0th</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 44 篇文章
+                    </span>
+                    
+                </p>
+            
         </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.7.3</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
     </div>
-  </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
 </div>
 
+        </div>
     
 
-    
-  </main>
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
 
-  <footer>
-    <div class="footer-inner">
-  
-    <div class="footer-content">
-       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
     </div>
-  
-  
-    <div class="statistics">
-  
-  
 
-  
-    
-      <span id="leancloud-site-pv-container" style="display: none">
-        总访问量 
-        <span id="leancloud-site-pv"></span>
-         次
-      </span>
-    
-    
-      <span id="leancloud-site-uv-container" style="display: none">
-        总访客数 
-        <span id="leancloud-site-uv"></span>
-         人
-      </span>
-    
-    
-
-  
+    <div class="image-viewer-container">
+    <img src="">
 </div>
 
-  
-  
-  
-</div>
 
-  </footer>
+    
 
-  <!-- Scripts -->
-  
-  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
+</main>
 
 
-<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
-<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
+    
+<script src="/js/libs/Swup.min.js"></script>
 
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
 
-  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var subtitle = document.getElementById('subtitle');
-      if (!subtitle || !typing) {
-        return;
-      }
-      var text = subtitle.getAttribute('data-typed-text');
-      
-        typing(text);
-      
-    })(window, document);
-  </script>
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
 
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
 
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
 
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
 
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
-
-
-
-
-  
 <script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    window.tocbot.init({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      collapseDepth   : CONFIG.toc.collapseDepth || 0,
-      scrollSmooth    : true,
-      headingsOffset  : -boardTop
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
     });
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-  });
 </script>
 
 
-  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
-
-  <script>Fluid.plugins.codeWidget();</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
-    }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
-    }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
-    }
-    window.anchors.add(res.join(', '));
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
-
-
-  <script>Fluid.plugins.imageCaption();</script>
-
-  <script defer src="/js/leancloud.js" ></script>
-
-  <script  src="/js/local-search.js" ></script>
 
 
 
 
 
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
 
 
   
+<script src="/js/libs/Typed.min.js"></script>
 
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
 </body>
 </html>

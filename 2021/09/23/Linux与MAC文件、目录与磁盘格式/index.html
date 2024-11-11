@@ -1,22 +1,24 @@
-
-
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=dark>
-
-
-
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
-  <link rel="icon" href="/img/fav.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="Sl0th">
-  <meta name="keywords" content="">
-  
-    <meta name="description" content="Linux与MAC OS文件、目录学习笔记0x01 文件权限用户与用户组在Linux或MAC下多个用户可以共用一个系统&#x2F;一台服务器，因此系统既要包含各用户共用文件及各自私有文件，在这种情况下权限配置显得极其重要。但是若用户间是合作团队关系，可以互相访问各自私有文件，若还是采用分别对用户进行文件访问授权，显得效率低下，因此产生了用户组，使得组内用户获得与组相同权限，用户组实质上是具有相同特">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Sl0th">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://sloth31.github.io/2021/09/23/linux与mac文件、目录与磁盘格式/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="Linux与MAC OS文件、目录学习笔记0x01 文件权限用户与用户组在Linux或MAC下多个用户可以共用一个系统&#x2F;一台服务器，因此系统既要包含各用户共用文件及各自私有文件，在这种情况下权限配置显得极其重要。但是若用户间是合作团队关系，可以互相访问各自私有文件，若还是采用分别对用户进行文件访问授权，显得效率低下，因此产生了用户组，使得组内用户获得与组相同权限，用户组实质上是具有相同特">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux与MAC文件、目录与磁盘格式">
 <meta property="og:url" content="http://sloth31.github.io/2021/09/23/Linux%E4%B8%8EMAC%E6%96%87%E4%BB%B6%E3%80%81%E7%9B%AE%E5%BD%95%E4%B8%8E%E7%A3%81%E7%9B%98%E6%A0%BC%E5%BC%8F/index.html">
@@ -29,290 +31,503 @@
 <meta property="article:modified_time" content="2024-07-03T15:00:55.602Z">
 <meta property="article:author" content="Sl0th">
 <meta property="article:tag" content="linux">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h27plpvekkj20m609ewf6.jpg">
-  
-  
-  
-  <title>Linux与MAC文件、目录与磁盘格式 | Sl0th&#39;s Blog</title>
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
-
-
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
-
-
-
-  
-<link rel="stylesheet" href="/css/macpanel.css">
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"sloth31.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"c8LjkMGtqBFlFQrpl65qUKoM-gzGzoHsz","app_key":"5MBWFG00GDY2LpteTo0bvyRu","server_url":"https://c8ljkmgt.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
-
-    if (CONFIG.web_analytics.follow_dnt) {
-      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
-    }
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
     
-  
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/img/fav.ico" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/fav.ico">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/img/fav.ico">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Linux与MAC文件、目录与磁盘格式 | Sl0th&#39;s Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
 
 
+    <!--- Inject Part-->
+    
 
-  
-<meta name="generator" content="Hexo 6.1.0"></head>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"sloth31.github.io","root":"/","language":"zh-CN","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/img/night.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/img/day.jpg","dark":"/img/night.jpg"},"title":"👋Welcome to Sl0th's Blog🎉","subtitle":{"text":["There is no royal road to learning"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#4D5356","dark":"#fff"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":"enable","style":"default","links":{"github":"https://github.com/sloth31","instagram":null,"zhihu":null,"twitter":null,"email":"z694081360@gmail.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.7.3","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/sloth31","Blog":"http://sl0th.top/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
-  
-
-  <header>
+<div class="progress-bar-container">
     
 
-<div class="header-inner" style="height: 70vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>Sl0th&#39;s blog</strong>
-    </a>
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
 
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
 
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="iconfont icon-home-fill"></i>
-                首页
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                分类
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                标签
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/">
-                <i class="iconfont icon-user-fill"></i>
-                关于
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container flex flex-col justify-between min-h-dvh">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+                <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
+                    <img src="/img/fav.ico" class="w-full h-full rounded-sm">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                Sl0th&#39;s Blog
+                
             </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
-                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-  
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle" data-typed-text="Linux与MAC文件、目录与磁盘格式"></span>
-          
         </div>
 
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2021-09-23 22:59" pubdate>
-          2021年9月23日 晚上
-        </time>
-      </span>
-    
-  </div>
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
 
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          10k 字
-        
-      </span>
-    
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
 
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          58 分钟
-        
-      </span>
-    
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-    
-    
-      
-        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
-          <i class="iconfont icon-eye" aria-hidden="true"></i>
-          <span id="leancloud-page-views"></span> 次
-        </span>
-        
-      
-    
-  </div>
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
 
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-        
-      </div>
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-regular fa-tags fa-fw"></i>
+                                    标签
+                                    
+                                </a>
 
-      
-    </div>
-  </div>
-</div>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-</div>
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
 
-  </header>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-  <main>
-    
-      
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
 
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">Linux与MAC文件、目录与磁盘格式</h1>
-            
-            
-              <div class="markdown-body">
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a href="/about">
+                                                    ME
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://github.com/sloth31">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="http://sl0th.top/">
+                                                    BLOG
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
                 
-                <h1 id="Linux与MAC-OS文件、目录学习笔记"><a href="#Linux与MAC-OS文件、目录学习笔记" class="headerlink" title="Linux与MAC OS文件、目录学习笔记"></a>Linux与MAC OS文件、目录学习笔记</h1><h2 id="0x01-文件权限"><a href="#0x01-文件权限" class="headerlink" title="0x01 文件权限"></a>0x01 文件权限</h2><h3 id="用户与用户组"><a href="#用户与用户组" class="headerlink" title="用户与用户组"></a>用户与用户组</h3><p>在Linux或MAC下多个用户可以共用一个系统&#x2F;一台服务器，因此系统既要包含各用户<strong>共用文件</strong>及各自<strong>私有文件</strong>，在这种情况下权限配置显得极其重要。但是若用户间是合作团队关系，可以互相访问各自私有文件，若还是采用分别对用户进行文件访问授权，显得效率低下，因此产生了用户组，使得组内用户获得与组相同权限，用户组实质上是具有相同特征用户的逻辑集合。</p>
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                标签
+                            </span>
+                            
+                                <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/about">ME</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://github.com/sloth31">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="http://sl0th.top/">BLOG</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">27</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">10</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">44</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Linux与MAC文件、目录与磁盘格式</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/img/avatar.JPG">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Sl0th</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2021-09-23 22:59:56</span>
+        <span class="mobile">2021-09-23 22:59:56</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-07-03 23:55</span>
+            <span class="mobile">2024-07-03 23:55</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/foundation/">foundation</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/linux/">linux</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h1 id="Linux与MAC-OS文件、目录学习笔记"><a href="#Linux与MAC-OS文件、目录学习笔记" class="headerlink" title="Linux与MAC OS文件、目录学习笔记"></a>Linux与MAC OS文件、目录学习笔记</h1><h2 id="0x01-文件权限"><a href="#0x01-文件权限" class="headerlink" title="0x01 文件权限"></a>0x01 文件权限</h2><h3 id="用户与用户组"><a href="#用户与用户组" class="headerlink" title="用户与用户组"></a>用户与用户组</h3><p>在Linux或MAC下多个用户可以共用一个系统&#x2F;一台服务器，因此系统既要包含各用户<strong>共用文件</strong>及各自<strong>私有文件</strong>，在这种情况下权限配置显得极其重要。但是若用户间是合作团队关系，可以互相访问各自私有文件，若还是采用分别对用户进行文件访问授权，显得效率低下，因此产生了用户组，使得组内用户获得与组相同权限，用户组实质上是具有相同特征用户的逻辑集合。</p>
 <h4 id="root用户及其用户组"><a href="#root用户及其用户组" class="headerlink" title="root用户及其用户组"></a>root用户及其用户组</h4><p>Linux中，对于任何一个文件都有”User,Group,Others”3种身份，而对于文件来说root用户便是与User拥有等同权限的特殊Others。root用户组与普通用户组也一样受权限限制，组内用户并没有与root用户等同甚至更高权限。</p>
 <p>而MAC下由于引入系统完整性保护（SIP）机制，连root用户都无法在&#x2F;、&#x2F;usr目录下新建文件</p>
 <blockquote>
 <p>SIP机制一般不建议关闭，在不关闭前提下仍可以利用软链接的方式在根目录下创建替身</p>
 </blockquote>
 <h3 id="文件权限"><a href="#文件权限" class="headerlink" title="文件权限"></a>文件权限</h3><p>操作文件时，若看见<code>Permission deny</code>字样，一般是文件权限配置问题。可以通过以下命令通过查看文件属性来查看权限</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">ls -al   # 可以查看该目录下所有文件包括隐藏文件(.开头)<br><span class="hljs-meta prompt_"># </span><span class="language-bash">回显</span><br>-rw-r--r--    1   sloth  staff     12288      Nov 26 09:41 .bash_profile.swm<br><span class="hljs-meta prompt_">#</span><span class="language-bash">[文件权限] [连接数][所有者][用户组] [文件容量/B]  [创建/修改日期]      [文件名]</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ls -al   # 可以查看该目录下所有文件包括隐藏文件(.开头)</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">回显</span></span><br><span class="line">-rw-r--r--    1   sloth  staff     12288      Nov 26 09:41 .bash_profile.swm</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">[文件权限] [连接数][所有者][用户组] [文件容量/B]  [创建/修改日期]      [文件名]</span></span><br></pre></td></tr></table></figure></div>
 
 <p>表示为文件权限的字符串由10个字符组成</p>
 <ul>
@@ -325,31 +540,36 @@
 <p>文件名以<code>.</code>开头的称为隐藏文件，mac下显示隐藏文件快捷键:<code>command+shift+.</code> </p>
 <p>⚠️mac下创建隐藏文件会提示.开头文件以及被系统预留，不能创建</p>
 <p>解决方法：终端输入</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">defaults write com.apple.finder AppleShowAllFiles -bool YES<br>killall Finder   <br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool YES</span><br><span class="line">killall Finder   </span><br></pre></td></tr></table></figure></div>
 
 <p>创建完输入</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">defaults write com.apple.finder AppleShowAllFiles -bool YES<br>killall Finder <br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool YES</span><br><span class="line">killall Finder </span><br></pre></td></tr></table></figure></div>
 </blockquote>
 <h3 id="文件权限及属性的修改"><a href="#文件权限及属性的修改" class="headerlink" title="文件权限及属性的修改"></a>文件权限及属性的修改</h3><ul>
 <li><p>chgrp：改变文件所属用户组 </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">chgrp [-R] dirname/filename        # -R:递归更改，改变子目录下所有文件、目录<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chgrp [-R] dirname/filename        # -R:递归更改，改变子目录下所有文件、目录</span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p>chown：改变文件所有者</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">chown [-R] 用户名称[:用户组名] dirname/filename    # 用户名与用户组间连接也可用&#x27;.&#x27;但在用户名中含&#x27;.&#x27;时会造成系统误判，因此不建议<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown [-R] 用户名称[:用户组名] dirname/filename    # 用户名与用户组间连接也可用&#x27;.&#x27;但在用户名中含&#x27;.&#x27;时会造成系统误判，因此不建议</span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p>chmod：改变文件权限</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">chmod [-R] [u/g/o/a][+/-/=][r/w/x]/权限分数 dirname/filename    # +与-更多是修改，而=相当于重置(会清空原来设置)<br><span class="hljs-meta prompt_"># </span><span class="language-bash">权限分数的计算</span><br>-rw-r-xr--    <br>[4+2+0][4+0+1][4+0+0]=654   # rwx表示分数分别为4 2 1<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">chmod [-R] [u/g/o/a][+/-/=][r/w/x]/权限分数 dirname/filename    # +与-更多是修改，而=相当于重置(会清空原来设置)</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">权限分数的计算</span></span><br><span class="line">-rw-r-xr--    </span><br><span class="line">[4+2+0][4+0+1][4+0+0]=654   # rwx表示分数分别为4 2 1</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>对于设置<code>4 2 1</code>的理解：421利于计算机存储，4–100 2–010 1–001 如果设置成<code>3 2 1</code>由于系统只接受了和，而当系统接收到3时，无法判断是赋予读权限还是写+执行权限，会造成歧义</p>
 <p>💡除输入以上命令外，mac下有一种略微简便的修改文件<strong>读写</strong>权限方式，在<code>文件简介</code>中可以修改user、group、all的<u>读写权限</u>(目前还未发现可以加入执行权限的文件类别),递归选项隐藏在左下角</p>
-<img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h27plpvekkj20m609ewf6.jpg" srcset="/img/loading.gif" lazyload alt="image-20220514101004553" style="zoom:50%;" />
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://tva1.sinaimg.cn/large/e6c9d24egy1h27plpvekkj20m609ewf6.jpg"
+                      alt="image-20220514101004553" style="zoom:50%;" 
+                >
 
 <p>💡mac终端使用小技巧：直接将文件拖入终端会转换成绝对路径(不带引号)</p>
 </blockquote>
 </li>
 </ul>
-<h4 id="终端切换root用户权限"><a href="#终端切换root用户权限" class="headerlink" title="终端切换root用户权限"></a>终端切换root用户权限</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell">su -root<br>su -<br>su<br><span class="hljs-meta prompt_"># </span><span class="language-bash">以上三种要求输入root用户密码</span><br>sudo su  # 要求输入当前用户密码，切换到root用户<br></code></pre></td></tr></table></figure>
+<h4 id="终端切换root用户权限"><a href="#终端切换root用户权限" class="headerlink" title="终端切换root用户权限"></a>终端切换root用户权限</h4><div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">su -root</span><br><span class="line">su -</span><br><span class="line">su</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">以上三种要求输入root用户密码</span></span><br><span class="line">sudo su  # 要求输入当前用户密码，切换到root用户</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>sudo是一种权限管理机制，依赖于&#x2F;etc&#x2F;sudoers ⚠️⚠️mac上不要轻易修改sudoers文件权限，这会导致终端无法切换root用户，sudo命令失效⚠️⚠️</p>
@@ -539,7 +759,12 @@
 </tbody></table>
 <hr>
 <h3 id="mac下根目录结构"><a href="#mac下根目录结构" class="headerlink" title="mac下根目录结构"></a>mac下根目录结构</h3><p>mac根目录一般指<code>macintosh HD</code>,一般情况下可见的只有4个文件夹Applications、Library、System、Users，显示隐藏文件夹后可以看见完整结构</p>
-<img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h2807nwmzlj21f40o8wh4.jpg" srcset="/img/loading.gif" lazyload alt="image-20220514161710097" style="zoom: 50%;" />
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://tva1.sinaimg.cn/large/e6c9d24egy1h2807nwmzlj21f40o8wh4.jpg"
+                      alt="image-20220514161710097" style="zoom: 50%;" 
+                >
 
 <p>可以发现大部分文件都与Linux上一致，不同的有</p>
 <table>
@@ -595,52 +820,52 @@
 <li><code>~</code> –当前用户主文件夹</li>
 <li><code>~example</code> –example用户主文件夹</li>
 </ul>
-<h4 id="处理目录的命令"><a href="#处理目录的命令" class="headerlink" title="处理目录的命令"></a>处理目录的命令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd 目录的绝对路径/相对路径 # 切换目录 change directory<br>pwd [-P] # 显示当前目录 -P:显示实际目录(原身)，而不是连接文件(替身)<br>mkdir [-m 权限][-p] # 新建目录 -m:配置权限  -p:创建多层目录<br>rmdir [-p] # 删除一个空目录(删除非空目录会报错)  -p:一次性删除多层空目录 <br></code></pre></td></tr></table></figure>
+<h4 id="处理目录的命令"><a href="#处理目录的命令" class="headerlink" title="处理目录的命令"></a>处理目录的命令</h4><div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd 目录的绝对路径/相对路径 # 切换目录 change directory</span><br><span class="line">pwd [-P] # 显示当前目录 -P:显示实际目录(原身)，而不是连接文件(替身)</span><br><span class="line">mkdir [-m 权限][-p] # 新建目录 -m:配置权限  -p:创建多层目录</span><br><span class="line">rmdir [-p] # 删除一个空目录(删除非空目录会报错)  -p:一次性删除多层空目录 </span><br></pre></td></tr></table></figure></div>
 
 <h3 id="环境变量-PATH"><a href="#环境变量-PATH" class="headerlink" title="环境变量$PATH"></a>环境变量$PATH</h3><p>$PATH的值一般是多个目录下的集合，当前用户可以执行这些目录存储的命令，Linux下这些目录以<code>:</code>分隔，而mac下以空格分隔</p>
 <h4 id="执行非环境变量中的命令"><a href="#执行非环境变量中的命令" class="headerlink" title="执行非环境变量中的命令"></a>执行非环境变量中的命令</h4><p>可以采用命令的绝对路径来执行</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">/sbin/ifconfig eth0<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/sbin/ifconfig eth0</span><br></pre></td></tr></table></figure></div>
 
 <p>采用命令添加</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">PATH=&quot;$PATH&quot;:命令路径    # 一般是一个bin文件目录<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PATH=&quot;$PATH&quot;:命令路径    # 一般是一个bin文件目录</span><br></pre></td></tr></table></figure></div>
 
 <p>配置文件添加，mac下也有许多环境变量相关配置文件,可以添加语句</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">export PATH=$PATH:命令路径<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$PATH:命令路径</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>使用前记得执行</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">source 配置文件名路径<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source 配置文件名路径</span><br></pre></td></tr></table></figure></div>
 
 <p>注：如果有两个相同名字的命令存在PATH中，则执行PATH先查询到的目录下的命令</p>
 </blockquote>
-<h2 id="0x04-文件与目录管理"><a href="#0x04-文件与目录管理" class="headerlink" title="0x04 文件与目录管理"></a>0x04 文件与目录管理</h2><h3 id="常见文件-x2F-目录操作命令"><a href="#常见文件-x2F-目录操作命令" class="headerlink" title="常见文件&#x2F;目录操作命令"></a>常见文件&#x2F;目录操作命令</h3><h4 id="ls命令–查看文件与目录"><a href="#ls命令–查看文件与目录" class="headerlink" title="ls命令–查看文件与目录"></a>ls命令–查看文件与目录</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs shell">ls [options] 目录名称<br><span class="hljs-meta prompt_"># </span><span class="language-bash">常用option</span><br>-a  显示全部包括隐藏文件(还显示.与..)<br>-d  仅列出目录本身(.)一般要搭配其他option一起使用<br>-l  打印表示文件属性、权限的字符串<br>-A  同-a ，但不列出 &quot;.&quot; 及 &quot;..&quot;<br>-F  在列出的文件名称后加一符号标识 例如可执行档则加 &quot;*&quot;, 目录则加 &quot;/&quot;, sockert加&quot;=&quot;,FIFO文件加&quot;|&quot;<br>-R  连同子目录下文件依序列出<br>-r  将文件以相反次序显示(原定依英文字母次序)<br>-t  将文件依建立时间之先后次序列出<br>-n  列出UID与GID<br></code></pre></td></tr></table></figure>
+<h2 id="0x04-文件与目录管理"><a href="#0x04-文件与目录管理" class="headerlink" title="0x04 文件与目录管理"></a>0x04 文件与目录管理</h2><h3 id="常见文件-x2F-目录操作命令"><a href="#常见文件-x2F-目录操作命令" class="headerlink" title="常见文件&#x2F;目录操作命令"></a>常见文件&#x2F;目录操作命令</h3><h4 id="ls命令–查看文件与目录"><a href="#ls命令–查看文件与目录" class="headerlink" title="ls命令–查看文件与目录"></a>ls命令–查看文件与目录</h4><div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ls [options] 目录名称</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">常用option</span></span><br><span class="line">-a  显示全部包括隐藏文件(还显示.与..)</span><br><span class="line">-d  仅列出目录本身(.)一般要搭配其他option一起使用</span><br><span class="line">-l  打印表示文件属性、权限的字符串</span><br><span class="line">-A  同-a ，但不列出 &quot;.&quot; 及 &quot;..&quot;</span><br><span class="line">-F  在列出的文件名称后加一符号标识 例如可执行档则加 &quot;*&quot;, 目录则加 &quot;/&quot;, sockert加&quot;=&quot;,FIFO文件加&quot;|&quot;</span><br><span class="line">-R  连同子目录下文件依序列出</span><br><span class="line">-r  将文件以相反次序显示(原定依英文字母次序)</span><br><span class="line">-t  将文件依建立时间之先后次序列出</span><br><span class="line">-n  列出UID与GID</span><br></pre></td></tr></table></figure></div>
 
-<h4 id="cp命令–复制"><a href="#cp命令–复制" class="headerlink" title="cp命令–复制"></a>cp命令–复制</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs shell">cp [options] source1 source2 …… destination<br><span class="hljs-meta prompt_"># </span><span class="language-bash">常用参数</span><br>-d  若源文件为连接文件，则复制连接属性<br>-p  连同文件的属性一起复制过去，而非使用默认属性(备份常用)<br>-r  递归持续复制<br>-a  相当于上面提到的三个options一起用(-pdr)<br>-i  若目标文件已经存在时，在覆盖时会先询问动作的进行<br>-u  用于更新，若destination比source旧才升级destination<br>-f  为强制(force)的意思，若目标文件已经存在且无法开启，则移除后再尝试一次<br>-l  建立硬连接<br>-s  复制为符号连接文件 软连接<br></code></pre></td></tr></table></figure>
+<h4 id="cp命令–复制"><a href="#cp命令–复制" class="headerlink" title="cp命令–复制"></a>cp命令–复制</h4><div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cp [options] source1 source2 …… destination</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">常用参数</span></span><br><span class="line">-d  若源文件为连接文件，则复制连接属性</span><br><span class="line">-p  连同文件的属性一起复制过去，而非使用默认属性(备份常用)</span><br><span class="line">-r  递归持续复制</span><br><span class="line">-a  相当于上面提到的三个options一起用(-pdr)</span><br><span class="line">-i  若目标文件已经存在时，在覆盖时会先询问动作的进行</span><br><span class="line">-u  用于更新，若destination比source旧才升级destination</span><br><span class="line">-f  为强制(force)的意思，若目标文件已经存在且无法开启，则移除后再尝试一次</span><br><span class="line">-l  建立硬连接</span><br><span class="line">-s  复制为符号连接文件 软连接</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>source有两个及以上时，目标文件必须是目录</p>
 </blockquote>
-<h4 id="rm命令–移除"><a href="#rm命令–移除" class="headerlink" title="rm命令–移除"></a>rm命令–移除</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell">rm [options] 文件或目录<br><span class="hljs-meta prompt_">#</span><span class="language-bash">常用options</span><br>-f  强制移除，忽略不存在文件，不出现警告<br>-i  互动模式，删除前询问<br>-r  递归删除<br></code></pre></td></tr></table></figure>
+<h4 id="rm命令–移除"><a href="#rm命令–移除" class="headerlink" title="rm命令–移除"></a>rm命令–移除</h4><div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rm [options] 文件或目录</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">常用options</span></span><br><span class="line">-f  强制移除，忽略不存在文件，不出现警告</span><br><span class="line">-i  互动模式，删除前询问</span><br><span class="line">-r  递归删除</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <ul>
 <li>删除文件名以<code>-</code>开头文件，由于直接删除会被系统误判为option，因此只要加上<code>./</code></li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">rm ./-example<br><span class="hljs-meta prompt_"># </span><span class="language-bash">或</span><br>rm -- -example<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rm ./-example</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">或</span></span><br><span class="line">rm -- -example</span><br></pre></td></tr></table></figure></div>
 
 <ul>
 <li><p>没有options时，直接rm是无法删除目录的,一定要-r</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">rm -r 目录<br></code></pre></td></tr></table></figure></li>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -r 目录</span><br></pre></td></tr></table></figure></div></li>
 </ul>
 </blockquote>
-<h4 id="mv命令–移动或更名"><a href="#mv命令–移动或更名" class="headerlink" title="mv命令–移动或更名"></a>mv命令–移动或更名</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell">mv [options] source1 source2 …… destination<br><span class="hljs-meta prompt_"># </span><span class="language-bash">参数</span><br>-f  不询问直接覆盖<br>-i  覆盖前询问<br>-u  更新，source比destination新才会更新<br><span class="hljs-meta prompt_">#</span><span class="language-bash">重命名操作</span><br>mv old_name new_name   # 处于同一目录下<br></code></pre></td></tr></table></figure>
+<h4 id="mv命令–移动或更名"><a href="#mv命令–移动或更名" class="headerlink" title="mv命令–移动或更名"></a>mv命令–移动或更名</h4><div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mv [options] source1 source2 …… destination</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">参数</span></span><br><span class="line">-f  不询问直接覆盖</span><br><span class="line">-i  覆盖前询问</span><br><span class="line">-u  更新，source比destination新才会更新</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">重命名操作</span></span><br><span class="line">mv old_name new_name   # 处于同一目录下</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>mv移动默认删除原文件</p>
 </blockquote>
-<h4 id="利用以上命令实现文件移动新目录，不删除原文件"><a href="#利用以上命令实现文件移动新目录，不删除原文件" class="headerlink" title="利用以上命令实现文件移动新目录，不删除原文件"></a>利用以上命令实现文件移动新目录，不删除原文件</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">cp source1 source1_1<br>cd 新路径<br>mkdir 新目录<br>mv source1_1完整路径 新目录<br></code></pre></td></tr></table></figure>
+<h4 id="利用以上命令实现文件移动新目录，不删除原文件"><a href="#利用以上命令实现文件移动新目录，不删除原文件" class="headerlink" title="利用以上命令实现文件移动新目录，不删除原文件"></a>利用以上命令实现文件移动新目录，不删除原文件</h4><div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cp source1 source1_1</span><br><span class="line">cd 新路径</span><br><span class="line">mkdir 新目录</span><br><span class="line">mv source1_1完整路径 新目录</span><br></pre></td></tr></table></figure></div>
 
-<h4 id="basename与dirname"><a href="#basename与dirname" class="headerlink" title="basename与dirname"></a>basename与dirname</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">basename 路径  # 返回文件名<br>dirname 路径   # 返回目录名<br></code></pre></td></tr></table></figure>
+<h4 id="basename与dirname"><a href="#basename与dirname" class="headerlink" title="basename与dirname"></a>basename与dirname</h4><div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">basename 路径  # 返回文件名</span><br><span class="line">dirname 路径   # 返回目录名</span><br></pre></td></tr></table></figure></div>
 
 <h3 id="文件内容查阅命令"><a href="#文件内容查阅命令" class="headerlink" title="文件内容查阅命令"></a>文件内容查阅命令</h3><ul>
 <li>cat ：从第一行开始</li>
@@ -657,24 +882,24 @@
 <li>ctime :文件状态(属性权限等)改变时更新(cp时无法复制的属性)</li>
 <li>atime :文件内容被取用时(如用cat读取)时更新</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">touch [options] 文件<br>-a  仅修改访问时间<br>-c  仅修改文件时间，若文件不存在则新建<br>-d  后接日期(不同于当前)，同 --date=&quot;日期或时间&quot;<br>-m  仅修改mtime<br>-t  后接时间(不同于当前)，格式为[YYMMDDhhmm]<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">touch [options] 文件</span><br><span class="line">-a  仅修改访问时间</span><br><span class="line">-c  仅修改文件时间，若文件不存在则新建</span><br><span class="line">-d  后接日期(不同于当前)，同 --date=&quot;日期或时间&quot;</span><br><span class="line">-m  仅修改mtime</span><br><span class="line">-t  后接时间(不同于当前)，格式为[YYMMDDhhmm]</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>可以通过<code>touch+文件名</code>在当前目录下新建一个文件，注意与mkdir区分(新建目录)</p>
 <p>也可以通过<code>touch+文件名</code>将文件时间(mtime、atime)修改到现在</p>
 </blockquote>
 <h2 id="0x05-文件与目录的默认权限与隐藏权限"><a href="#0x05-文件与目录的默认权限与隐藏权限" class="headerlink" title="0x05 文件与目录的默认权限与隐藏权限"></a>0x05 文件与目录的默认权限与隐藏权限</h2><h3 id="文件默认权限：umask"><a href="#文件默认权限：umask" class="headerlink" title="文件默认权限：umask"></a>文件默认权限：umask</h3><p>Linux下输入会返回4个数字，与权限相关的是后三个，而mac下只返回后三个数字，而两者返回的代表权限的数字都等于<code>默认值-权限分数</code></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell">umask   #在～下执行,加-S会以字母形式回显 u=rwx,g=rx,o=rx<br>022     #回显 Linux下是0022<br>cd /<br>ls -al | grep sloth<br>drwxr-xr-x   5 sloth  wheel   160 May  9 18:51 opt # 回显 可见权限分数是755<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">umask   #在～下执行,加-S会以字母形式回显 u=rwx,g=rx,o=rx</span><br><span class="line">022     #回显 Linux下是0022</span><br><span class="line">cd /</span><br><span class="line">ls -al | grep sloth</span><br><span class="line">drwxr-xr-x   5 sloth  wheel   160 May  9 18:51 opt # 回显 可见权限分数是755</span><br></pre></td></tr></table></figure></div>
 
 <h4 id="两种默认值"><a href="#两种默认值" class="headerlink" title="两种默认值"></a>两种默认值</h4><ul>
 <li>新建文件时，默认值(rw-rw-rw-)为666，默认没有可执行权限,因此新建的文件权限分数为<code>666-022=644</code> <code>022</code>为umask，可设置</li>
 <li>新建目录时，默认值(rwxrwxrwx)为777，因为x权限与进入此目录有关，因此新建的目录权限分数为<code>777-022=755</code></li>
 </ul>
 <h3 id="文件隐藏属性"><a href="#文件隐藏属性" class="headerlink" title="文件隐藏属性"></a>文件隐藏属性</h3><p>设置</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs shell">chattr [+-=][ASacdistu] 文件或目录<br>A  设置后访问文件或目录后，atime不改变<br>S  设置后所有改动同步写入磁盘<br>a  设置后只能增加数据，root才能设置(常用)<br>c  设置后自动压缩<br>d  设置后改文件或目录不会被dump备份<br>i  设置后该文件不能被删除、改名、无法写入添加数据，只有root可以设置(常用)<br>s  设置后若被删除，会被完全从磁盘空间中删除<br>u  与s相反，若被删除还会保留在磁盘中，可找回<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">chattr [+-=][ASacdistu] 文件或目录</span><br><span class="line">A  设置后访问文件或目录后，atime不改变</span><br><span class="line">S  设置后所有改动同步写入磁盘</span><br><span class="line">a  设置后只能增加数据，root才能设置(常用)</span><br><span class="line">c  设置后自动压缩</span><br><span class="line">d  设置后改文件或目录不会被dump备份</span><br><span class="line">i  设置后该文件不能被删除、改名、无法写入添加数据，只有root可以设置(常用)</span><br><span class="line">s  设置后若被删除，会被完全从磁盘空间中删除</span><br><span class="line">u  与s相反，若被删除还会保留在磁盘中，可找回</span><br></pre></td></tr></table></figure></div>
 
 <p>显示</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">lsattr [-adR] 文件或目录<br>-a  隐藏文件的属性也显示<br>-d  若操作目录，仅列出目录本身属性，不递归<br>-R  递归<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lsattr [-adR] 文件或目录</span><br><span class="line">-a  隐藏文件的属性也显示</span><br><span class="line">-d  若操作目录，仅列出目录本身属性，不递归</span><br><span class="line">-R  递归</span><br></pre></td></tr></table></figure></div>
 
 <h3 id="文件特殊权限"><a href="#文件特殊权限" class="headerlink" title="文件特殊权限"></a>文件特殊权限</h3><h4 id="SUID"><a href="#SUID" class="headerlink" title="SUID"></a>SUID</h4><p>当s出现在user权限的x位置上，e.g. -rwsr-xr-x</p>
 <ul>
@@ -695,34 +920,34 @@
 <li>用户在该目录下创建文件或目录时，只有自己与root才有权删除该文件，也无法改动他人文件</li>
 </ul>
 <h4 id="特殊权限的设置"><a href="#特殊权限的设置" class="headerlink" title="特殊权限的设置"></a>特殊权限的设置</h4><p>前面所提的权限分数都是三位数字，我们可以在设置权限分数时在开头加上代表特殊权限的第四位数字(特殊权限可叠加)</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs shell">4  SUID<br>2  SGID<br>1  SBIT<br>chmod 4775 test1 #加上SUID<br><span class="hljs-meta prompt_"># </span><span class="language-bash">drwsrwxr-x</span><br>chmod 7666 test2 #加上三种<br><span class="hljs-meta prompt_"># </span><span class="language-bash">drwSrwSrwT</span><br>chmod 4666 test3 <br><span class="hljs-meta prompt_"># </span><span class="language-bash">drwSrw-rw-</span><br>chmod 6666 test4<br><span class="hljs-meta prompt_"># </span><span class="language-bash">drwSrwSrw-</span><br>chmod 1666 test5<br><span class="hljs-meta prompt_"># </span><span class="language-bash">drw-rw-rwT</span><br>chmod 1766 test5<br><span class="hljs-meta prompt_"># </span><span class="language-bash">drwxrw-rwT</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">符号法</span><br>u+s #SUID<br>g+s #SGID<br>o+t #SBIT<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">4  SUID</span><br><span class="line">2  SGID</span><br><span class="line">1  SBIT</span><br><span class="line">chmod 4775 test1 #加上SUID</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">drwsrwxr-x</span></span><br><span class="line">chmod 7666 test2 #加上三种</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">drwSrwSrwT</span></span><br><span class="line">chmod 4666 test3 </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">drwSrw-rw-</span></span><br><span class="line">chmod 6666 test4</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">drwSrwSrw-</span></span><br><span class="line">chmod 1666 test5</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">drw-rw-rwT</span></span><br><span class="line">chmod 1766 test5</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">drwxrw-rwT</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">符号法</span></span><br><span class="line">u+s #SUID</span><br><span class="line">g+s #SGID</span><br><span class="line">o+t #SBIT</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>从上面的案例可以看出，当user没有x时加上SUID会用S填充表示空，同理当group权限没有x时加SGID会用S填充表示空，而SBIT在others没有x时以T填充表示空</p>
 </blockquote>
-<h3 id="查看文件类型-file"><a href="#查看文件类型-file" class="headerlink" title="查看文件类型:file"></a>查看文件类型:file</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">file 文件或目录路径<br><span class="hljs-meta prompt_"># </span><span class="language-bash">回显</span><br>路径:格式类型信息(包括有没有使用到动态函数库等信息)  (这里的路径取决于你输入命令中的路径，不一定是绝对路径)<br></code></pre></td></tr></table></figure>
+<h3 id="查看文件类型-file"><a href="#查看文件类型-file" class="headerlink" title="查看文件类型:file"></a>查看文件类型:file</h3><div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">file 文件或目录路径</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">回显</span></span><br><span class="line">路径:格式类型信息(包括有没有使用到动态函数库等信息)  (这里的路径取决于你输入命令中的路径，不一定是绝对路径)</span><br></pre></td></tr></table></figure></div>
 
-<h2 id="0x06-命令与文件的查询"><a href="#0x06-命令与文件的查询" class="headerlink" title="0x06 命令与文件的查询"></a>0x06 命令与文件的查询</h2><h3 id="脚本文件名查询"><a href="#脚本文件名查询" class="headerlink" title="脚本文件名查询"></a>脚本文件名查询</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">which [-a] command<br>-a:列出所有同名命令<br></code></pre></td></tr></table></figure>
+<h2 id="0x06-命令与文件的查询"><a href="#0x06-命令与文件的查询" class="headerlink" title="0x06 命令与文件的查询"></a>0x06 命令与文件的查询</h2><h3 id="脚本文件名查询"><a href="#脚本文件名查询" class="headerlink" title="脚本文件名查询"></a>脚本文件名查询</h3><div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">which [-a] command</span><br><span class="line">-a:列出所有同名命令</span><br></pre></td></tr></table></figure></div>
 
-<h3 id="文件名查找"><a href="#文件名查找" class="headerlink" title="文件名查找"></a>文件名查找</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell">whereis [options] 文件或目录名<br>-b:只找二进制文件<br>-m:只找在说明文件manual路径下的文件<br>-s:只找source源文件<br>-u:除以上三种外的其他特殊文件<br></code></pre></td></tr></table></figure>
+<h3 id="文件名查找"><a href="#文件名查找" class="headerlink" title="文件名查找"></a>文件名查找</h3><div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">whereis [options] 文件或目录名</span><br><span class="line">-b:只找二进制文件</span><br><span class="line">-m:只找在说明文件manual路径下的文件</span><br><span class="line">-s:只找source源文件</span><br><span class="line">-u:除以上三种外的其他特殊文件</span><br></pre></td></tr></table></figure></div>
 
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">locate [options] keyword<br>-i:忽略大小写差异<br>-r:后面可接正则<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">locate [options] keyword</span><br><span class="line">-i:忽略大小写差异</span><br><span class="line">-r:后面可接正则</span><br></pre></td></tr></table></figure></div>
 
-<h4 id="find命令–磁盘中查找，时间较长，功能强大"><a href="#find命令–磁盘中查找，时间较长，功能强大" class="headerlink" title="find命令–磁盘中查找，时间较长，功能强大"></a>find命令–磁盘中查找，时间较长，功能强大</h4><p><a target="_blank" rel="noopener" href="https://wangchujiang.com/linux-command/c/find.html">https://wangchujiang.com/linux-command/c/find.html</a></p>
+<h4 id="find命令–磁盘中查找，时间较长，功能强大"><a href="#find命令–磁盘中查找，时间较长，功能强大" class="headerlink" title="find命令–磁盘中查找，时间较长，功能强大"></a>find命令–磁盘中查找，时间较长，功能强大</h4><p><a class="link"   target="_blank" rel="noopener" href="https://wangchujiang.com/linux-command/c/find.html" >https://wangchujiang.com/linux-command/c/find.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 <p>时间相关参数</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs shell">find [PATH] [option] [action]<br><span class="hljs-meta prompt_"># </span><span class="language-bash">可加与时间相关参数，下面以-mtime为例</span><br>-mtime n : n天之前的“一天内”被更改文件<br>-mtime +n : n天之前(不含n本身，包括往前所有时间)被更改文件<br>-mtime -n : n天之内(含n本身)被更改文件<br>-newer 文件: 列出比该文件更新的文件<br><span class="hljs-meta prompt_">#</span><span class="language-bash">列出过去24小时内被修改文件</span><br>find / -mtime 0<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">find [PATH] [option] [action]</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">可加与时间相关参数，下面以-mtime为例</span></span><br><span class="line">-mtime n : n天之前的“一天内”被更改文件</span><br><span class="line">-mtime +n : n天之前(不含n本身，包括往前所有时间)被更改文件</span><br><span class="line">-mtime -n : n天之内(含n本身)被更改文件</span><br><span class="line">-newer 文件: 列出比该文件更新的文件</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">列出过去24小时内被修改文件</span></span><br><span class="line">find / -mtime 0</span><br></pre></td></tr></table></figure></div>
 
 <p>用户、用户组相关参数</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">-uid n <br>-gid n<br>-user name<br>-group name<br>-nouser   :找出文件所有者不在/etc/passwd中的<br>-nogroup  :找出文件所有用户组不在/etc/passwd中的<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-uid n </span><br><span class="line">-gid n</span><br><span class="line">-user name</span><br><span class="line">-group name</span><br><span class="line">-nouser   :找出文件所有者不在/etc/passwd中的</span><br><span class="line">-nogroup  :找出文件所有用户组不在/etc/passwd中的</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>找到不属于系统任何人的文件，可能是曾经下载用于编译软件的源码</p>
 </blockquote>
 <p>文件权限、名称相关参数</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">-name filename<br>-size [+-]SIZE :找比SIZE大(+)或小(-)的,c表示byte，k表示KB，e.g. -size +50k<br>-type TYPE: 正规文件(f)、设备文件(b,c)、目录(d)、连接文件(l)、socket(s)、FIFO(p)等<br>-perm 权限分数<br>-perm -mode :找出权限分数比mode大的文件   e.g. -perm -0744<br>-perm +mode :找出权限中包含任一mode权限的<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-name filename</span><br><span class="line">-size [+-]SIZE :找比SIZE大(+)或小(-)的,c表示byte，k表示KB，e.g. -size +50k</span><br><span class="line">-type TYPE: 正规文件(f)、设备文件(b,c)、目录(d)、连接文件(l)、socket(s)、FIFO(p)等</span><br><span class="line">-perm 权限分数</span><br><span class="line">-perm -mode :找出权限分数比mode大的文件   e.g. -perm -0744</span><br><span class="line">-perm +mode :找出权限中包含任一mode权限的</span><br></pre></td></tr></table></figure></div>
 
 <p>其他参数</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell">-exec command &#123;&#125;\;  :后接command处理查询结果，但不支持命令别名alias<br>-print : 打印，这是默认操作<br><span class="hljs-meta prompt_">#</span><span class="language-bash">范例</span><br>find / -perm +7000 -exec ls -l &#123;&#125;\;<br><span class="hljs-meta prompt_">#</span><span class="language-bash">将含有隐藏权限的文件找出并以<span class="hljs-built_in">ls</span> -l方式列出来</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-exec command &#123;&#125;\;  :后接command处理查询结果，但不支持命令别名alias</span><br><span class="line">-print : 打印，这是默认操作</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">范例</span></span><br><span class="line">find / -perm +7000 -exec ls -l &#123;&#125;\;</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将含有隐藏权限的文件找出并以<span class="built_in">ls</span> -l方式列出来</span></span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>find的结果被放入’{}’中，命令以’;‘为结束标志,因为’;’在bash下有特殊意义要转义</p>
@@ -749,14 +974,14 @@
 <li>文件所需权限：至少是x</li>
 </ul>
 <h3 id="范例"><a href="#范例" class="headerlink" title="范例"></a>范例</h3><p>用户能执行以下命令</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">cp /dir1/file1  /dir2<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /dir1/file1  /dir2</span><br></pre></td></tr></table></figure></div>
 
 <ul>
 <li>dir1目录:至少有x</li>
 <li>file1文件:至少有r</li>
 <li>dir2目录:至少有w、x</li>
 </ul>
-<h1 id="文件系统的简单操作"><a href="#文件系统的简单操作" class="headerlink" title="文件系统的简单操作"></a>文件系统的简单操作</h1><h2 id="查看磁盘与目录的容量"><a href="#查看磁盘与目录的容量" class="headerlink" title="查看磁盘与目录的容量"></a>查看磁盘与目录的容量</h2><h3 id="df"><a href="#df" class="headerlink" title="df"></a>df</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs shell">df [options] [目录名/文件名]<br>-a: 列出所有，包括特有的/proc<br>-k: 以KB单位显示<br>-m: 以MB单位<br>-h: 自动加上单位(如显示12K)<br>-H: 使用M=1000K的换算<br>-T: 连同该分区的文件系统名称也列出<br>-i: 以inode数量显示<br></code></pre></td></tr></table></figure>
+<h1 id="文件系统的简单操作"><a href="#文件系统的简单操作" class="headerlink" title="文件系统的简单操作"></a>文件系统的简单操作</h1><h2 id="查看磁盘与目录的容量"><a href="#查看磁盘与目录的容量" class="headerlink" title="查看磁盘与目录的容量"></a>查看磁盘与目录的容量</h2><h3 id="df"><a href="#df" class="headerlink" title="df"></a>df</h3><div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">df [options] [目录名/文件名]</span><br><span class="line">-a: 列出所有，包括特有的/proc</span><br><span class="line">-k: 以KB单位显示</span><br><span class="line">-m: 以MB单位</span><br><span class="line">-h: 自动加上单位(如显示12K)</span><br><span class="line">-H: 使用M=1000K的换算</span><br><span class="line">-T: 连同该分区的文件系统名称也列出</span><br><span class="line">-i: 以inode数量显示</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <ul>
@@ -765,9 +990,9 @@
 <li>super block: 记录此文件系统的整体信息</li>
 </ul>
 </blockquote>
-<h3 id="du"><a href="#du" class="headerlink" title="du"></a>du</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell">du [options] 文件或目录名<br>-a: 所有<br>-h: 自动加上单位<br>-s: 列出总量<br>-S: 列出总量，但不包括子目录<br>-k: kb<br>-m: mb<br></code></pre></td></tr></table></figure>
+<h3 id="du"><a href="#du" class="headerlink" title="du"></a>du</h3><div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">du [options] 文件或目录名</span><br><span class="line">-a: 所有</span><br><span class="line">-h: 自动加上单位</span><br><span class="line">-s: 列出总量</span><br><span class="line">-S: 列出总量，但不包括子目录</span><br><span class="line">-k: kb</span><br><span class="line">-m: mb</span><br></pre></td></tr></table></figure></div>
 
-<h2 id="连接文件"><a href="#连接文件" class="headerlink" title="连接文件"></a>连接文件</h2><h3 id="ln"><a href="#ln" class="headerlink" title="ln"></a>ln</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">ln [options] 源文件 目标文件<br>-s: 不加-s就是硬连接，加-s就是symbolic link<br>-f: 如果目标文件存在，主动将目标文件直接删除任何再创建<br></code></pre></td></tr></table></figure>
+<h2 id="连接文件"><a href="#连接文件" class="headerlink" title="连接文件"></a>连接文件</h2><h3 id="ln"><a href="#ln" class="headerlink" title="ln"></a>ln</h3><div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ln [options] 源文件 目标文件</span><br><span class="line">-s: 不加-s就是硬连接，加-s就是symbolic link</span><br><span class="line">-f: 如果目标文件存在，主动将目标文件直接删除任何再创建</span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <ul>
@@ -784,374 +1009,409 @@
 </ul>
 </blockquote>
 
-                
-              </div>
-            
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
+        </div>
 
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
         
-  <a href="/categories/foundation/" class="category-chain-item">foundation</a>
-  
-  
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> Linux与MAC文件、目录与磁盘格式</li>
+        <li><strong>作者:</strong> Sl0th</li>
+        <li><strong>创建于
+                :</strong> 2021-09-23 22:59:56</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2024-07-03 23:00:55
+            </li>
+        
+        <li>
+            <strong>链接:</strong> http://sl0th.top/2021/09/23/Linux与MAC文件、目录与磁盘格式/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
 
-      </span>
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/linux/">#linux</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2021/10/07/Linux%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Linux定时任务</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
     
-  
-</span>
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          reaction: false,
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">目录</div>
+        <div class="page-title">Linux与MAC文件、目录与磁盘格式</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux%E4%B8%8EMAC-OS%E6%96%87%E4%BB%B6%E3%80%81%E7%9B%AE%E5%BD%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="nav-text">Linux与MAC OS文件、目录学习笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90"><span class="nav-text">0x01 文件权限</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E4%B8%8E%E7%94%A8%E6%88%B7%E7%BB%84"><span class="nav-text">用户与用户组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90"><span class="nav-text">文件权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E5%8F%8A%E5%B1%9E%E6%80%A7%E7%9A%84%E4%BF%AE%E6%94%B9"><span class="nav-text">文件权限及属性的修改</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-text">0x02 目录结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E9%85%8D%E7%BD%AE%E2%80%93FHS%E6%A0%87%E5%87%86"><span class="nav-text">目录配置–FHS标准</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mac%E4%B8%8B%E6%A0%B9%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-text">mac下根目录结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E7%9B%AE%E5%BD%95%E4%B8%8E%E8%B7%AF%E5%BE%84"><span class="nav-text">0x03 目录与路径</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E5%AF%B9%E8%B7%AF%E5%BE%84%E4%B8%8E%E7%BB%9D%E5%AF%B9%E8%B7%AF%E5%BE%84"><span class="nav-text">相对路径与绝对路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C"><span class="nav-text">目录相关操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F-PATH"><span class="nav-text">环境变量$PATH</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E6%96%87%E4%BB%B6%E4%B8%8E%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86"><span class="nav-text">0x04 文件与目录管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E6%96%87%E4%BB%B6-x2F-%E7%9B%AE%E5%BD%95%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4"><span class="nav-text">常见文件&#x2F;目录操作命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9%E6%9F%A5%E9%98%85%E5%91%BD%E4%BB%A4"><span class="nav-text">文件内容查阅命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E6%97%B6%E9%97%B4%E6%88%96%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6%E2%80%93touch"><span class="nav-text">修改文件时间或创建文件–touch</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-%E6%96%87%E4%BB%B6%E4%B8%8E%E7%9B%AE%E5%BD%95%E7%9A%84%E9%BB%98%E8%AE%A4%E6%9D%83%E9%99%90%E4%B8%8E%E9%9A%90%E8%97%8F%E6%9D%83%E9%99%90"><span class="nav-text">0x05 文件与目录的默认权限与隐藏权限</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E9%BB%98%E8%AE%A4%E6%9D%83%E9%99%90%EF%BC%9Aumask"><span class="nav-text">文件默认权限：umask</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E9%9A%90%E8%97%8F%E5%B1%9E%E6%80%A7"><span class="nav-text">文件隐藏属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%89%B9%E6%AE%8A%E6%9D%83%E9%99%90"><span class="nav-text">文件特殊权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B-file"><span class="nav-text">查看文件类型:file</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-%E5%91%BD%E4%BB%A4%E4%B8%8E%E6%96%87%E4%BB%B6%E7%9A%84%E6%9F%A5%E8%AF%A2"><span class="nav-text">0x06 命令与文件的查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%E5%90%8D%E6%9F%A5%E8%AF%A2"><span class="nav-text">脚本文件名查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%90%8D%E6%9F%A5%E6%89%BE"><span class="nav-text">文件名查找</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x07-%E6%9D%83%E9%99%90%E4%B8%8E%E5%91%BD%E4%BB%A4%E9%97%B4%E5%85%B3%E7%B3%BB"><span class="nav-text">0x07 权限与命令间关系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E5%8F%AF%E8%BF%9B%E5%85%A5%E7%9B%AE%E5%BD%95%E6%88%90%E4%B8%BA%E5%8F%AF%E5%B7%A5%E4%BD%9C%E7%9B%AE%E5%BD%95"><span class="nav-text">用户可进入目录成为可工作目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E8%AF%BB%E5%8F%96%E7%9B%AE%E5%BD%95%E5%86%85%E5%86%85%E6%9F%90%E4%B8%80%E6%96%87%E4%BB%B6"><span class="nav-text">用户读取目录内内某一文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E4%BF%AE%E6%94%B9%E6%9F%90%E4%B8%80%E6%96%87%E4%BB%B6"><span class="nav-text">用户修改某一文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%96%87%E4%BB%B6"><span class="nav-text">用户创建一个文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8C%83%E4%BE%8B"><span class="nav-text">范例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%AE%80%E5%8D%95%E6%93%8D%E4%BD%9C"><span class="nav-text">文件系统的简单操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A3%81%E7%9B%98%E4%B8%8E%E7%9B%AE%E5%BD%95%E7%9A%84%E5%AE%B9%E9%87%8F"><span class="nav-text">查看磁盘与目录的容量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#df"><span class="nav-text">df</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#du"><span class="nav-text">du</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E6%96%87%E4%BB%B6"><span class="nav-text">连接文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ln"><span class="nav-text">ln</span></a></li></ol></li></ol></li></ol>
 
     </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/linux/">#linux</a>
-      
-    </div>
-  
+</div>
+        </div>
+    
 </div>
 
 
-              
-  
 
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>Linux与MAC文件、目录与磁盘格式</div>
-      <div>http://sloth31.github.io/2021/09/23/Linux与MAC文件、目录与磁盘格式/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>Sl0th</div>
-        </div>
-      
-      
-        <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2021年9月23日</div>
-        </div>
-      
-      
-      <div class="license-meta-item">
-        <div>许可协议</div>
-        <div>
-          
-            
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-              <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                <i class="iconfont icon-by"></i>
-              </span>
-              </a>
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-              <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
-                <i class="iconfont icon-nc"></i>
-              </span>
-              </a>
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-              <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
-                <i class="iconfont icon-sa"></i>
-              </span>
-              </a>
-            
-          
-        </div>
-      </div>
-    </div>
-    <div class="license-icon iconfont"></div>
-  </div>
+                
 
-
-
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2021/10/07/Linux%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/" title="Linux定时任务">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Linux定时任务</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                  </article>
-                </div>
-              
             </div>
 
             
-          </article>
+
         </div>
-      </div>
-    </div>
 
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
-  </aside>
-
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-
-
-
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Sl0th</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 44 篇文章
+                    </span>
+                    
+                </p>
+            
         </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.7.3</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
     </div>
-  </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
 </div>
 
+        </div>
     
 
-    
-  </main>
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
 
-  <footer>
-    <div class="footer-inner">
-  
-    <div class="footer-content">
-       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
     </div>
-  
-  
-    <div class="statistics">
-  
-  
 
-  
-    
-      <span id="leancloud-site-pv-container" style="display: none">
-        总访问量 
-        <span id="leancloud-site-pv"></span>
-         次
-      </span>
-    
-    
-      <span id="leancloud-site-uv-container" style="display: none">
-        总访客数 
-        <span id="leancloud-site-uv"></span>
-         人
-      </span>
-    
-    
-
-  
+    <div class="image-viewer-container">
+    <img src="">
 </div>
 
-  
-  
-  
-</div>
 
-  </footer>
+    
 
-  <!-- Scripts -->
-  
-  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
+</main>
 
 
-<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
-<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
+    
+<script src="/js/libs/Swup.min.js"></script>
 
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
 
-  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var subtitle = document.getElementById('subtitle');
-      if (!subtitle || !typing) {
-        return;
-      }
-      var text = subtitle.getAttribute('data-typed-text');
-      
-        typing(text);
-      
-    })(window, document);
-  </script>
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
 
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
 
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
 
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
 
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
-
-
-
-
-  
 <script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    window.tocbot.init({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      collapseDepth   : CONFIG.toc.collapseDepth || 0,
-      scrollSmooth    : true,
-      headingsOffset  : -boardTop
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
     });
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-  });
 </script>
 
 
-  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
-
-  <script>Fluid.plugins.codeWidget();</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
-    }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
-    }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
-    }
-    window.anchors.add(res.join(', '));
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
-
-
-  <script>Fluid.plugins.imageCaption();</script>
-
-  <script defer src="/js/leancloud.js" ></script>
-
-  <script  src="/js/local-search.js" ></script>
 
 
 
 
 
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
 
 
   
+<script src="/js/libs/Typed.min.js"></script>
 
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
 </body>
 </html>

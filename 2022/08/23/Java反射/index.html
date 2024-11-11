@@ -25,18 +25,18 @@
 <meta property="og:site_name" content="Sl0th&#39;s Blog">
 <meta property="og:description" content="JAVA反射类加载器类加载&#x2F;类初始化三个步骤  类的加载： 将class文件读入内存，并为之创建一个java.lang.Class对象  任何类被使用时，系统都会为之建立一个java.lang.Class对象 系统中所有的类都是java.lang.Class的实例。   类的连接  验证阶段：检验被加载类是否有正确的内部结构，并和其他类协调一致 准备阶段：负责为类的类变量分配内存，并设置">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032250456.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032251426.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032251807.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032251759.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032251236.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032250456.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032251426.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032251807.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032251759.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032251236.jpg">
 <meta property="article:published_time" content="2022-08-23T14:50:09.000Z">
-<meta property="article:modified_time" content="2024-07-03T14:51:37.044Z">
+<meta property="article:modified_time" content="2024-11-11T10:23:06.371Z">
 <meta property="article:author" content="Sl0th">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="web">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032250456.jpg">
+<meta name="twitter:image" content="http://sloth31.github.io/images/202407032250456.jpg">
     
     
     <!--- Icon Part-->
@@ -469,8 +469,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-07-03 22:51:37</span>
-            <span class="mobile">2024-07-03 22:51:37</span>
+            <span class="desktop">2024-11-11 18:23:06</span>
+            <span class="mobile">2024-11-11 18:23:06</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -575,7 +575,7 @@
 <h3 id="java虚拟机的类加载机制"><a href="#java虚拟机的类加载机制" class="headerlink" title="java虚拟机的类加载机制"></a>java虚拟机的类加载机制</h3><p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032250456.jpg"
+                     data-src="/../images/202407032250456.jpg"
                       alt="image-20220715194607363"
                 ><figcaption>image-20220715194607363</figcaption></figure></p>
 <blockquote>
@@ -586,7 +586,7 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032251426.jpg"
+                     data-src="/../images/202407032251426.jpg"
                       alt="image-20220715195009312"
                 ><figcaption>image-20220715195009312</figcaption></figure></p>
 <h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>指在运行时获取一个类的变量和方法信息，然后通过获取到的信息来创建对象，调用方法的一种机制。由于这种动态性，程序不用在编译器就完成确定，在运行起仍可以拓展</p>
@@ -600,7 +600,7 @@
 <h3 id="反射构造方法"><a href="#反射构造方法" class="headerlink" title="反射构造方法"></a>反射构造方法</h3><p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032251807.jpg"
+                     data-src="/../images/202407032251807.jpg"
                       alt="image-20220715214817907"
                 ><figcaption>image-20220715214817907</figcaption></figure></p>
 <div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//反射构造方法并使用</span></span><br><span class="line">Class&lt;?&gt; c=Class.forName(<span class="string">&quot;com.itheima.Student&quot;</span>);</span><br><span class="line"><span class="comment">//得到所有public权限构造函数（私有默认的不能）</span></span><br><span class="line">Constructor&lt;?&gt;[] cons=c.getConstructors();</span><br><span class="line"><span class="keyword">for</span>(Constructor con:cons)&#123;</span><br><span class="line">  System.out.println(con);</span><br><span class="line">&#125;</span><br><span class="line">Constructor&lt;?&gt;[] cons2=c.getDeclaredConstructors();<span class="comment">//得到所有权限的构造函数</span></span><br><span class="line"><span class="keyword">for</span>(Constructor con:cons2)</span><br><span class="line">&#123;</span><br><span class="line">  System.out.println(con);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//获得指定构造函数</span></span><br><span class="line"><span class="comment">//参数</span></span><br><span class="line">Constructor&lt;?&gt; con=c.getConstructor();<span class="comment">//得到单个构造方法</span></span><br><span class="line"><span class="comment">//提供单个构造函数信息和访问权限</span></span><br><span class="line">Object obj=con.newInstance();<span class="comment">//根据构造方法创建对象</span></span><br><span class="line">System.out.println(obj);</span><br></pre></td></tr></table></figure></div>
@@ -621,7 +621,7 @@
 <h3 id="通过反射得到成员变量"><a href="#通过反射得到成员变量" class="headerlink" title="通过反射得到成员变量"></a>通过反射得到成员变量</h3><p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032251759.jpg"
+                     data-src="/../images/202407032251759.jpg"
                       alt="image-20220716012613059"
                 ><figcaption>image-20220716012613059</figcaption></figure></p>
 <div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//反射获取成员变量</span></span><br><span class="line">Class&lt;?&gt; c = Class.forName(<span class="string">&quot;com.itheima.Student&quot;</span>);</span><br><span class="line"><span class="comment">//getFields方法，获取该Class对象表示的类或接口的所有可访问的public字段</span></span><br><span class="line"><span class="comment">//getDeclaredFields方法，获取该Class对象表示的类或接口的所有字段</span></span><br><span class="line">Field[] fields = c.getFields();</span><br><span class="line"><span class="keyword">for</span>(Field filed: fields)&#123;</span><br><span class="line">  System.out.println(filed);<span class="comment">//只得到public的变量</span></span><br><span class="line">&#125;</span><br><span class="line">Field[] fields1 = c.getDeclaredFields();</span><br><span class="line"><span class="keyword">for</span>(Field f:fields1)</span><br><span class="line">&#123;</span><br><span class="line">  System.out.println(f);<span class="comment">//得到所有成员变量</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//根据指定名称</span></span><br><span class="line"><span class="type">Field</span> <span class="variable">ad</span> <span class="operator">=</span> c.getField(<span class="string">&quot;address&quot;</span>);<span class="comment">//要抛出异常</span></span><br><span class="line">Constructor&lt;?&gt; con = c.getConstructor();</span><br><span class="line">Object obj=con.newInstance();</span><br><span class="line">ad.set(obj,<span class="string">&quot;339&quot;</span>);<span class="comment">//给obj的成员变量ad赋值为&quot;339&quot;</span></span><br><span class="line">System.out.println(obj);</span><br></pre></td></tr></table></figure></div>
@@ -631,7 +631,7 @@
 <h3 id="反射获取成员方法"><a href="#反射获取成员方法" class="headerlink" title="反射获取成员方法"></a>反射获取成员方法</h3><p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032251236.jpg"
+                     data-src="/../images/202407032251236.jpg"
                       alt="image-20220716014440272"
                 ><figcaption>image-20220716014440272</figcaption></figure></p>
 <blockquote>
@@ -662,7 +662,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2024-07-03 22:51:37
+                    :</strong> 2024-11-11 18:23:06
             </li>
         
         <li>

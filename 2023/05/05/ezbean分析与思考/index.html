@@ -25,41 +25,41 @@
 <meta property="og:site_name" content="Sl0th&#39;s Blog">
 <meta property="og:description" content="aliyun CTF ezbean分析与思考0x00 前言复现阿里云的时候发现了一个很奇怪、很玄学的点，官方和冠军wp都是一笔带过了，官方也没给exp，就试着自己硬调，调着调着有点上头，应该没人发过吧，我猜的😂 前置知识FastJson反序列化中有常见的链，BadAttributeValueExpException触发的JSON#toString-》getter方法，这个过程有点复杂，也不是本文">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050236105.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050236187.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050236143.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050236065.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050237675.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050237433.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050237274.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050237845.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050237915.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050238540.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050238797.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050238509.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050247946.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050238031.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050238335.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239359.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239280.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239992.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239172.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239392.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239543.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239596.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239279.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050240664.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050240513.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050240832.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050240730.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050236105.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050236187.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050236143.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050236065.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050237675.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050237433.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050237274.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050237845.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050237915.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050238540.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050238797.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050238509.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050247946.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050238031.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050238335.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050239359.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050239280.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050239992.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050239172.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050239392.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050239543.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050239596.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050239279.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050240664.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050240513.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050240832.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202305050240730.png">
 <meta property="article:published_time" content="2023-05-05T15:29:13.000Z">
-<meta property="article:modified_time" content="2024-07-03T15:59:53.895Z">
+<meta property="article:modified_time" content="2024-11-11T10:23:06.448Z">
 <meta property="article:author" content="Sl0th">
 <meta property="article:tag" content="fastjson">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="web">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050236105.png">
+<meta name="twitter:image" content="http://sloth31.github.io/images/202305050236105.png">
     
     
     <!--- Icon Part-->
@@ -492,8 +492,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-07-03 23:59:53</span>
-            <span class="mobile">2024-07-03 23:59:53</span>
+            <span class="desktop">2024-11-11 18:23:06</span>
+            <span class="mobile">2024-11-11 18:23:06</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -558,7 +558,7 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050236105.png"
+                     data-src="/../images/202305050236105.png"
                       alt="image-20230504230327231"
                 ><figcaption>image-20230504230327231</figcaption></figure></p>
 <blockquote>
@@ -566,7 +566,7 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050236187.png"
+                     data-src="/../images/202305050236187.png"
                       alt="image-20230504233800680"
                 ><figcaption>image-20230504233800680</figcaption></figure></p>
 </blockquote>
@@ -581,7 +581,7 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050236143.png"
+                     data-src="/../images/202305050236143.png"
                       alt="image-20230504234209559"
                 ><figcaption>image-20230504234209559</figcaption></figure></p>
 </blockquote>
@@ -591,7 +591,7 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050236065.png"
+                     data-src="/../images/202305050236065.png"
                       alt="image-20230504235432194"
                 ><figcaption>image-20230504235432194</figcaption></figure></p>
 <p>之后的过程感兴趣可以调一下看下调用栈，几个节点如下（太多了，只选了其中几个）</p>
@@ -618,7 +618,7 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050237675.png"
+                     data-src="/../images/202305050237675.png"
                       alt="image-20230505012846237"
                 ><figcaption>image-20230505012846237</figcaption></figure></p>
 <p>一开始以为三次只是巧合，后来每次验证都是三次。并且第一次是<code>default constructor not found. class xxx.RMIConnector</code>第二次是<code>default constructor not found. class xxx.JMXServiceURL</code></p>
@@ -660,28 +660,28 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050237433.png"
+                     data-src="/../images/202305050237433.png"
                       alt="image-20230505020221637"
                 ><figcaption>image-20230505020221637</figcaption></figure></p>
 <p>直接来到最关键的checkAutoType方法，可以看到先找的是MyBean</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050237274.png"
+                     data-src="/../images/202305050237274.png"
                       alt="image-20230505020313917"
                 ><figcaption>image-20230505020313917</figcaption></figure></p>
 <p>跟进checkAutoType方法，前面部分跳过，直接来个经典三个方法寻找类</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050237845.png"
+                     data-src="/../images/202305050237845.png"
                       alt="image-20230505020425672"
                 ><figcaption>image-20230505020425672</figcaption></figure></p>
 <p>这里可以先跟进一下getClassFromMapping方法，可以看到此时的Mappings（size：107）</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050237915.png"
+                     data-src="/../images/202305050237915.png"
                       alt="image-20230505020521779"
                 ><figcaption>image-20230505020521779</figcaption></figure></p>
 <p>经过三个方法，仍然没有找到类，这也就意味着接下来一定会去到JavaBeanInfo的build方法中(异常抛出点)，不过在这之前会先通过Typeutils的loadClass方法找到类，并添加mappings的数量</p>
@@ -691,14 +691,14 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050238540.png"
+                     data-src="/../images/202305050238540.png"
                       alt="image-20230505020903956"
                 ><figcaption>image-20230505020903956</figcaption></figure></p>
 <p>之后就来到了这个死亡异常抛出点JavaBeanInfo的build方法，但你会惊奇的发现，并没有抛出异常，程序继续走到了下一个类RMIConnector传入checkAutoType方法，其实是因为这个if的条件不满足，build函数提前返回</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050238797.png"
+                     data-src="/../images/202305050238797.png"
                       alt="image-20230505021125948"
                 ><figcaption>image-20230505021125948</figcaption></figure></p>
 <blockquote>
@@ -706,7 +706,7 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050238509.png"
+                     data-src="/../images/202305050238509.png"
                       alt="image-20230505015849391"
                 ><figcaption>image-20230505015849391</figcaption></figure></p>
 </blockquote>
@@ -714,41 +714,41 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050247946.png"
+                     data-src="/../images/202305050247946.png"
                       alt="image-20230505021320328"
                 ><figcaption>image-20230505021320328</figcaption></figure></p>
 <p>后面都是一样的操作，三个方法都找不到类，被添加进mappings，size+1</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050238031.png"
+                     data-src="/../images/202305050238031.png"
                       alt="image-20230505021419699"
                 ><figcaption>image-20230505021419699</figcaption></figure></p>
 <p>然后来到死亡异常抛出点JavaBeanInfo的build方法，没有无参构造函数</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050238335.png"
+                     data-src="/../images/202305050238335.png"
                       alt="image-20230505021538934"
                 ><figcaption>image-20230505021538934</figcaption></figure></p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239359.png"
+                     data-src="/../images/202305050239359.png"
                       alt="image-20230505021549225"
                 ><figcaption>image-20230505021549225</figcaption></figure></p>
 <p>迎来第一次报错</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239280.png"
+                     data-src="/../images/202305050239280.png"
                       alt="image-20230505021625294"
                 ><figcaption>image-20230505021625294</figcaption></figure></p>
 <h3 id="第二次反序列化"><a href="#第二次反序列化" class="headerlink" title="第二次反序列化"></a>第二次反序列化</h3><p>接着进行第二次，发送payload</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239992.png"
+                     data-src="/../images/202305050239992.png"
                       alt="image-20230505021702771"
                 ><figcaption>image-20230505021702771</figcaption></figure></p>
 <p>MyBean和RMIConnector的checkAutoType就先跳过，这两类以及被加入mappings了，是可以通过三个方法后的这部分代码提前退出的,就不再跟进</p>
@@ -758,63 +758,63 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239172.png"
+                     data-src="/../images/202305050239172.png"
                       alt="image-20230505021939903"
                 ><figcaption>image-20230505021939903</figcaption></figure></p>
 <p>加入mappings， size+1，至此，可以支持反序列化成功的mappigns已经装填好</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239392.png"
+                     data-src="/../images/202305050239392.png"
                       alt="image-20230505022008745"
                 ><figcaption>image-20230505022008745</figcaption></figure></p>
 <p>之后又因为没有无参构造方法抛出异常</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239543.png"
+                     data-src="/../images/202305050239543.png"
                       alt="image-20230505022107758"
                 ><figcaption>image-20230505022107758</figcaption></figure></p>
 <p>迎来第二个报错</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239596.png"
+                     data-src="/../images/202305050239596.png"
                       alt="image-20230505022142322"
                 ><figcaption>image-20230505022142322</figcaption></figure></p>
 <h3 id="第三次反序列化（也是反序列化成功的开始）"><a href="#第三次反序列化（也是反序列化成功的开始）" class="headerlink" title="第三次反序列化（也是反序列化成功的开始）"></a>第三次反序列化（也是反序列化成功的开始）</h3><p>先提前架起ldap服务和vps监听</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050239279.png"
+                     data-src="/../images/202305050239279.png"
                       alt="image-20230505022409515"
                 ><figcaption>image-20230505022409515</figcaption></figure></p>
 <p>发送payload</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050240664.png"
+                     data-src="/../images/202305050240664.png"
                       alt="image-20230505022432324"
                 ><figcaption>image-20230505022432324</figcaption></figure></p>
 <p>通过了前面三个类的checkAutoType方法，来到BadAttributeValueExpException的readObject方法</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050240513.png"
+                     data-src="/../images/202305050240513.png"
                       alt="image-20230505022631154"
                 ><figcaption>image-20230505022631154</figcaption></figure></p>
 <p>接着触发getter</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050240832.png"
+                     data-src="/../images/202305050240832.png"
                       alt="image-20230505022649684"
                 ><figcaption>image-20230505022649684</figcaption></figure></p>
 <p>成功反弹shell</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202305050240730.png"
+                     data-src="/../images/202305050240730.png"
                       alt="image-20230505022721373"
                 ><figcaption>image-20230505022721373</figcaption></figure></p>
 
@@ -831,7 +831,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2024-07-03 23:59:53
+                    :</strong> 2024-11-11 18:23:06
             </li>
         
         <li>

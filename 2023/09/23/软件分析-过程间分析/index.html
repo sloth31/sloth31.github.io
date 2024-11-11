@@ -25,18 +25,18 @@
 <meta property="og:site_name" content="Sl0th&#39;s Blog">
 <meta property="og:description" content="过程间分析寻找可能被调用的方法Dispatch(c,m) c是类，m是方法  两种返回值  c.m c’.m(c’是c的父类，当然如果这个父类也没有method方法，还会继续往上找父类的父类)   special call对应唯一方法，virtual call会调用dispatch Resolve(cs)image-20231017185458682  比较tricky的virtual，对c和c的">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162156090.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162156587.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162156601.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162156885.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162156700.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162157872.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202407162156090.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202407162156587.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202407162156601.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202407162156885.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202407162156700.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202407162157872.png">
 <meta property="article:published_time" content="2023-09-23T04:26:05.000Z">
-<meta property="article:modified_time" content="2024-07-17T11:28:37.537Z">
+<meta property="article:modified_time" content="2024-11-11T10:23:06.453Z">
 <meta property="article:author" content="Sl0th">
 <meta property="article:tag" content="static analysis">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162156090.png">
+<meta name="twitter:image" content="http://sloth31.github.io/images/202407162156090.png">
     
     
     <!--- Icon Part-->
@@ -469,8 +469,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-07-17 19:28:37</span>
-            <span class="mobile">2024-07-17 19:28:37</span>
+            <span class="desktop">2024-11-11 18:23:06</span>
+            <span class="mobile">2024-11-11 18:23:06</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -532,7 +532,7 @@
 <h3 id="Resolve-cs"><a href="#Resolve-cs" class="headerlink" title="Resolve(cs)"></a>Resolve(cs)</h3><p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162156090.png"
+                     data-src="/../images/202407162156090.png"
                       alt="image-20231017185458682"
                 ><figcaption>image-20231017185458682</figcaption></figure></p>
 <blockquote>
@@ -546,7 +546,7 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162156587.png"
+                     data-src="/../images/202407162156587.png"
                       alt="image-20231017190308693"
                 ><figcaption>image-20231017190308693</figcaption></figure></p>
 <blockquote>
@@ -560,7 +560,7 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162156601.png"
+                     data-src="/../images/202407162156601.png"
                       alt="image-20231017192938184"
                 ><figcaption>image-20231017192938184</figcaption></figure></p>
 </blockquote>
@@ -568,7 +568,7 @@
 <h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p><strong><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162156885.png"
+                     data-src="/../images/202407162156885.png"
                       alt="image-20231017193319093"
                 ><figcaption>image-20231017193319093</figcaption></figure></strong></p>
 <blockquote>
@@ -579,13 +579,13 @@
 <h2 id="过程间控制流图–ICFG"><a href="#过程间控制流图–ICFG" class="headerlink" title="过程间控制流图–ICFG"></a>过程间控制流图–ICFG</h2><p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162156700.png"
+                     data-src="/../images/202407162156700.png"
                       alt="image-20231017194814707"
                 ><figcaption>image-20231017194814707</figcaption></figure></p>
 <h2 id="过程间数据流分析"><a href="#过程间数据流分析" class="headerlink" title="过程间数据流分析"></a>过程间数据流分析</h2><h3 id="常量传播"><a href="#常量传播" class="headerlink" title="常量传播"></a>常量传播</h3><p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407162157872.png"
+                     data-src="/../images/202407162157872.png"
                       alt="image-20231017201825006"
                 ><figcaption>image-20231017201825006</figcaption></figure></p>
 <blockquote>
@@ -605,7 +605,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2024-07-17 19:28:37
+                    :</strong> 2024-11-11 18:23:06
             </li>
         
         <li>

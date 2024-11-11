@@ -25,23 +25,23 @@
 <meta property="og:site_name" content="Sl0th&#39;s Blog">
 <meta property="og:description" content="php利用math函数rce相关思考与理解0x00题目背景来自2019国赛love math，以及[NESTCTF 2019]Love Math 2，两题的区别在于对payload的长度限制不同 相关过滤长度限制 1234$content &#x3D; $_GET[&amp;#x27;c&amp;#x27;];if (strlen($content) &gt;&#x3D; 60) &amp;#123;&#x2F;&#x2F;国赛限制80    die(&amp;quo">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072214590.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072214171.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072214513.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072226764.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072228668.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072227751.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072229986.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072227919.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072227457.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202312072214590.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202312072214171.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202312072214513.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202312072226764.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202312072228668.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202312072227751.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202312072229986.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202312072227919.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202312072227457.jpg">
 <meta property="article:published_time" content="2022-01-20T15:29:13.000Z">
-<meta property="article:modified_time" content="2023-12-07T14:40:03.766Z">
+<meta property="article:modified_time" content="2024-11-11T10:23:06.316Z">
 <meta property="article:author" content="Sl0th">
 <meta property="article:tag" content="web">
 <meta property="article:tag" content="php">
 <meta property="article:tag" content="rce">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072214590.jpg">
+<meta name="twitter:image" content="http://sloth31.github.io/images/202312072214590.jpg">
     
     
     <!--- Icon Part-->
@@ -474,8 +474,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2023-12-07 22:40:03</span>
-            <span class="mobile">2023-12-07 22:40:03</span>
+            <span class="desktop">2024-11-11 18:23:06</span>
+            <span class="mobile">2024-11-11 18:23:06</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -604,13 +604,13 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072214590.jpg"
+                     data-src="/../images/202312072214590.jpg"
                       alt="1"
                 ><figcaption>1</figcaption></figure></p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072214171.jpg"
+                     data-src="/../images/202312072214171.jpg"
                       alt="2"
                 ><figcaption>2</figcaption></figure></p>
 <p>因此需要像eval这样的函数执行字符串php代码</p>
@@ -632,7 +632,7 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072214513.jpg"
+                     data-src="/../images/202312072214513.jpg"
                       alt="image-20220809211543165"
                 ><figcaption>image-20220809211543165</figcaption></figure></p>
 <blockquote>
@@ -645,7 +645,7 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072226764.jpg"
+                     data-src="/../images/202312072226764.jpg"
                       alt="4"
                 ><figcaption>4</figcaption></figure></p>
 <h3 id="无花括号payload"><a href="#无花括号payload" class="headerlink" title="无花括号payload"></a>无花括号payload</h3><p>由于传入的是字符串，反引号不能被识别为系统命令执行，因此使用名称较短的exec函数</p>
@@ -656,7 +656,7 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072228668.jpg"
+                     data-src="/../images/202312072228668.jpg"
                       alt="6"
                 ><figcaption>6</figcaption></figure></p>
 <blockquote>
@@ -677,27 +677,27 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072227751.jpg"
+                     data-src="/../images/202312072227751.jpg"
                       alt="7"
                 ><figcaption>7</figcaption></figure></p>
 <p>本地php7.4以上也能成功执行(但是php8以后有个fatal error 不能使用未定义常量，直接用函数名异或的时候会识别成常量)</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072229986.jpg"
+                     data-src="/../images/202312072229986.jpg"
                       alt="9"
                 ><figcaption>9</figcaption></figure></p>
 <p>不过这边尝试了下带花括号的，似乎也能成功，花括号只在php8以后才被定义为<strong>Fatal error</strong></p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072227919.jpg"
+                     data-src="/../images/202312072227919.jpg"
                       alt="11"
                 ><figcaption>11</figcaption></figure></p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072227457.jpg"
+                     data-src="/../images/202312072227457.jpg"
                       alt="12"
                 ><figcaption>12</figcaption></figure></p>
 
@@ -714,7 +714,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2023-12-07 22:40:03
+                    :</strong> 2024-11-11 18:23:06
             </li>
         
         <li>

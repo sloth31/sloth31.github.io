@@ -25,24 +25,24 @@
 <meta property="og:site_name" content="Sl0th&#39;s Blog">
 <meta property="og:description" content="Hessian 反序列化基础RPCRemote Procedure Call Protocol，远程过程调用协议，和 RMI（Remote Method Invocation，远程方法调用）类似，都能通过网络调用远程服务，但 RPC 是以标准的二进制格式来定义请求的信息，可用实现跨语言和跨操作系统通讯。 通讯过程： 1.客户端发起请求，并按照 RPC 协议格式填充信息2.填充完毕后将二进制格式文件">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072236138.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072235712.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072235097.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072236935.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072236365.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072236540.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072236941.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072236500.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072236710.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072236799.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072236183.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202312072236138.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202312072235712.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202312072235097.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202312072236935.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202312072236365.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202312072236540.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202312072236941.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202312072236500.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202312072236710.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202312072236799.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202312072236183.png">
 <meta property="article:published_time" content="2023-01-30T15:29:13.000Z">
-<meta property="article:modified_time" content="2024-07-03T15:51:40.940Z">
+<meta property="article:modified_time" content="2024-11-11T10:23:06.444Z">
 <meta property="article:author" content="Sl0th">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="web">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072236138.png">
+<meta name="twitter:image" content="http://sloth31.github.io/images/202312072236138.png">
     
     
     <!--- Icon Part-->
@@ -475,8 +475,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-07-03 23:51:40</span>
-            <span class="mobile">2024-07-03 23:51:40</span>
+            <span class="desktop">2024-11-11 18:23:06</span>
+            <span class="mobile">2024-11-11 18:23:06</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -545,7 +545,7 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072236138.png"
+                     data-src="/../images/202312072236138.png"
                       alt="image-20230126221405110"
                 ><figcaption>image-20230126221405110</figcaption></figure></p>
 <p>Hessian序列化反序列化</p>
@@ -554,7 +554,7 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072235712.png"
+                     data-src="/../images/202312072235712.png"
                       alt="image-20230126222015375"
                 ><figcaption>image-20230126222015375</figcaption></figure></p>
 <blockquote>
@@ -570,21 +570,21 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072235097.png"
+                     data-src="/../images/202312072235097.png"
                       alt="image-20230126224841023"
                 ><figcaption>image-20230126224841023</figcaption></figure></p>
 <p>可以看到确实调用了<code>put</code>方法，这时看到<code>HashMap</code>的<code>put</code>方法</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072236935.png"
+                     data-src="/../images/202312072236935.png"
                       alt="image-20230130233718255"
                 ><figcaption>image-20230130233718255</figcaption></figure></p>
 <p>对<code>key</code>调用<code>hash</code>方法进行处理</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072236365.png"
+                     data-src="/../images/202312072236365.png"
                       alt="image-20230126225301457"
                 ><figcaption>image-20230126225301457</figcaption></figure></p>
 <p>只要<code>key</code>不为空，就会调用其<code>hashCode</code>方法，思路一下就打开了，之前看过的利用链中有部分就用到了<code>hashCode</code>方法，比如<code>rome</code>，又比如cc6等。</p>
@@ -618,40 +618,40 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072236540.png"
+                     data-src="/../images/202312072236540.png"
                       alt="image-20230124203554850"
                 ><figcaption>image-20230124203554850</figcaption></figure></p>
 <p>接着会触发 ToStringBean 的 toString 方法（这里就有很多其它延申了，比如可以接一个 CC5）</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072236941.png"
+                     data-src="/../images/202312072236941.png"
                       alt="image-20230124203614807"
                 ><figcaption>image-20230124203614807</figcaption></figure></p>
 <p>接着进入 JdbcRowSetImp 的 toString 方法，在其中会调用 JdbcRowSetImp 的 getter</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072236500.png"
+                     data-src="/../images/202312072236500.png"
                       alt="image-20230124203639615"
                 ><figcaption>image-20230124203639615</figcaption></figure></p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072236710.png"
+                     data-src="/../images/202312072236710.png"
                       alt="image-20230124203654578"
                 ><figcaption>image-20230124203654578</figcaption></figure></p>
 <p>当调用到 getDatabaseMetaData 的时候，会进入 connect 方法，进而调用 lookup 触发 jndi 注入。</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072236799.png"
+                     data-src="/../images/202312072236799.png"
                       alt="image-20230124203716717"
                 ><figcaption>image-20230124203716717</figcaption></figure></p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202312072236183.png"
+                     data-src="/../images/202312072236183.png"
                       alt="image-20230124203736906"
                 ><figcaption>image-20230124203736906</figcaption></figure></p>
 <h2 id="不出网打法（ROME）"><a href="#不出网打法（ROME）" class="headerlink" title="不出网打法（ROME）"></a>不出网打法（ROME）</h2><p><code>hessian</code>反序列化依赖<code>rome</code>的不出网利用方式</p>
@@ -678,7 +678,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2024-07-03 23:51:40
+                    :</strong> 2024-11-11 18:23:06
             </li>
         
         <li>

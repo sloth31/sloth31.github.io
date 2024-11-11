@@ -25,22 +25,22 @@
 <meta property="og:site_name" content="Sl0th&#39;s Blog">
 <meta property="og:description" content="0x00 序言校赛出的一道php的wp，记录一下 0x01 解析考点：反序列化、php8新特性、软链接读文件、opcache伪造 首先是反序列化，源码中给了A、B、C三个类，入口点是C的wakeup，可以触发$this-&gt;file的toString,选择B类的toString触发。B类的toString是链式调用，可以用于触发get，跟进的B的get中的$func()可以设置function">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202408230242254.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202408230242923.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202408230242581.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202408230242108.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202408230242262.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202408230242261.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202408230243585.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202408230243579.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202408230243021.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202408230242254.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202408230242923.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202408230242581.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202408230242108.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202408230242262.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202408230242261.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202408230243585.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202408230243579.png">
+<meta property="og:image" content="http://sloth31.github.io/images/202408230243021.png">
 <meta property="article:published_time" content="2023-10-22T11:40:13.000Z">
-<meta property="article:modified_time" content="2024-11-11T09:41:44.821Z">
+<meta property="article:modified_time" content="2024-11-11T10:23:06.526Z">
 <meta property="article:author" content="Sl0th">
 <meta property="article:tag" content="php">
 <meta property="article:tag" content="opcache">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/sloth31/images@main//202408230242254.png">
+<meta name="twitter:image" content="http://sloth31.github.io/images/202408230242254.png">
     
     
     <!--- Icon Part-->
@@ -473,8 +473,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-11-11 17:41:44</span>
-            <span class="mobile">2024-11-11 17:41:44</span>
+            <span class="desktop">2024-11-11 18:23:06</span>
+            <span class="mobile">2024-11-11 18:23:06</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -557,26 +557,26 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202408230242254.png"
+                     data-src="/../images/202408230242254.png"
                       alt="image-20230809041723178"
                 ><figcaption>image-20230809041723178</figcaption></figure></p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202408230242923.png"
+                     data-src="/../images/202408230242923.png"
                       alt="image-20230809041715238"
                 ><figcaption>image-20230809041715238</figcaption></figure></p>
 <h2 id="0x02-poc"><a href="#0x02-poc" class="headerlink" title="0x02 poc"></a>0x02 poc</h2><p>总体思路是伪造一个opcache的缓存传输上去来RCE，根据配置可以知道缓存存储路径,如index.php就在 <code>/tmp/[system_id]/var/www/html/index.php.bin</code>,而其中system_id需要通过当前Zend和PHP的版本号计算得出，同时为了通过时间戳验证，还需要读取下载题目环境上的.bin文件，system_id的计算虽然github上有脚本，但都是php7的版本,计算的system_id与题目不符合，因此需要本地使用docker搭建php8.2.2+apache来得到system_id,题目用的是最容易找到的镜像，根据回显报文，在dockerhub的php镜像中搜索8.2.2-apache的tag</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202408230242581.png"
+                     data-src="/../images/202408230242581.png"
                       alt="image-20230809044627212"
                 ><figcaption>image-20230809044627212</figcaption></figure></p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202408230242108.png"
+                     data-src="/../images/202408230242108.png"
                       alt="image-20230809044710032"
                 ><figcaption>image-20230809044710032</figcaption></figure></p>
 <p>本地拉取</p>
@@ -620,14 +620,14 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202408230242262.png"
+                     data-src="/../images/202408230242262.png"
                       alt="image-20230809065217256"
                 ><figcaption>image-20230809065217256</figcaption></figure></p>
 <p>时间戳信息在第49字节处</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202408230242261.png"
+                     data-src="/../images/202408230242261.png"
                       alt="image-20230809070116002"
                 ><figcaption>image-20230809070116002</figcaption></figure></p>
 <p>在自己的实验容器中写一个一句话马index.php,访问得到其缓存index.php.bin，修改时间戳</p>
@@ -636,7 +636,7 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202408230243585.png"
+                     data-src="/../images/202408230243585.png"
                       alt="image-20230809070616488"
                 ><figcaption>image-20230809070616488</figcaption></figure></p>
 <blockquote>
@@ -653,13 +653,13 @@
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202408230243579.png"
+                     data-src="/../images/202408230243579.png"
                       alt="image-20230809071031779"
                 ><figcaption>image-20230809071031779</figcaption></figure></p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://cdn.jsdelivr.net/gh/sloth31/images@main//202408230243021.png"
+                     data-src="/../images/202408230243021.png"
                       alt="image-20230809074242084"
                 ><figcaption>image-20230809074242084</figcaption></figure></p>
 
@@ -676,7 +676,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2024-11-11 17:41:44
+                    :</strong> 2024-11-11 18:23:06
             </li>
         
         <li>

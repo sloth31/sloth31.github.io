@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Sl0th">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://sloth31.github.io/2024/11/12/v8-pwn入门-1-——对象模型、特性/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="0x00 前言💬下面说的都是chrome80以前的v8，无sandbox、指针压缩 image-20241115181353869 0x01 基础🪨JS Engine CTF的常见模式 由出题⼈⾃⼰编写的patch引⼊的漏洞  历史漏洞的CVE被出题⼈重新引⼊   攻略方法 创建⼀个⽤于调试的js环境，如果有出题⼈提供的引⼊漏洞的patch，那么打上这个patch  分析这个patch并判断这">
+<meta property="og:type" content="article">
+<meta property="og:title" content="V8-pwn入门(1)——对象模型、特性">
+<meta property="og:url" content="http://sloth31.github.io/2024/11/12/V8-pwn%E5%85%A5%E9%97%A8-1-%E2%80%94%E2%80%94%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B%E3%80%81%E7%89%B9%E6%80%A7/index.html">
+<meta property="og:site_name" content="Sl0th&#39;s Blog">
+<meta property="og:description" content="0x00 前言💬下面说的都是chrome80以前的v8，无sandbox、指针压缩 image-20241115181353869 0x01 基础🪨JS Engine CTF的常见模式 由出题⼈⾃⼰编写的patch引⼊的漏洞  历史漏洞的CVE被出题⼈重新引⼊   攻略方法 创建⼀个⽤于调试的js环境，如果有出题⼈提供的引⼊漏洞的patch，那么打上这个patch  分析这个patch并判断这">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://sloth31.github.io/images/image-20241115181353869.png">
+<meta property="og:image" content="http://sloth31.github.io/images/image-20241115181225550.png">
+<meta property="og:image" content="http://sloth31.github.io/images/image-20241115181237410.png">
+<meta property="og:image" content="http://sloth31.github.io/images/image-20241115181255404.png">
+<meta property="article:published_time" content="2024-11-12T13:21:50.000Z">
+<meta property="article:modified_time" content="2024-11-21T08:01:10.809Z">
+<meta property="article:author" content="Sl0th">
+<meta property="article:tag" content="js-engine">
+<meta property="article:tag" content="v8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://sloth31.github.io/images/image-20241115181353869.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/fav.ico" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/fav.ico">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/fav.ico">
+    <!--- Page Info-->
+    
+    <title>
+        
+            V8-pwn入门(1)——对象模型、特性 | Sl0th&#39;s Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"sloth31.github.io","root":"/","language":"zh-CN","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/night.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/day.jpg","dark":"/images/night.jpg"},"title":"Welcome to Sl0th's Blog","subtitle":{"text":["There is no royal road to learning"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#4D5356","dark":"#fff"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":"enable","style":"default","links":{"github":"https://github.com/sloth31","instagram":null,"zhihu":null,"twitter":null,"email":"z694081360@gmail.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.7.3","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/sloth31","Blog":"http://sl0th.top/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container flex flex-col justify-between min-h-dvh">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+                <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
+                    <img src="/images/fav.ico" class="w-full h-full rounded-sm">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                Sl0th&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-regular fa-tags fa-fw"></i>
+                                    标签
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a href="/about">
+                                                    ME
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://github.com/sloth31">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="http://sl0th.top/">
+                                                    BLOG
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                标签
+                            </span>
+                            
+                                <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/about">ME</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://github.com/sloth31">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="http://sl0th.top/">BLOG</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">29</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">12</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">47</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">V8-pwn入门(1)——对象模型、特性</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/avatar.JPG">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Sl0th</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-11-12 21:21:50</span>
+        <span class="mobile">2024-11-12 21:21:50</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-11-21 16:01:10</span>
+            <span class="mobile">2024-11-21 16:01:10</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/js-engine/">js-engine</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/v8/">v8</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="0x00-前言💬"><a href="#0x00-前言💬" class="headerlink" title="0x00 前言💬"></a>0x00 前言💬</h2><p>下面说的都是chrome80以前的v8，无sandbox、指针压缩</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/image-20241115181353869.png"
+                      alt="image-20241115181353869"
+                ><figcaption>image-20241115181353869</figcaption></figure></p>
+<h2 id="0x01-基础🪨"><a href="#0x01-基础🪨" class="headerlink" title="0x01 基础🪨"></a>0x01 基础🪨</h2><h3 id="JS-Engine-CTF的常见模式"><a href="#JS-Engine-CTF的常见模式" class="headerlink" title="JS Engine CTF的常见模式"></a>JS Engine CTF的常见模式</h3><ol>
+<li><p>由出题⼈⾃⼰编写的patch引⼊的漏洞</p>
+</li>
+<li><p>历史漏洞的CVE被出题⼈重新引⼊</p>
+</li>
+</ol>
+<h4 id="攻略方法"><a href="#攻略方法" class="headerlink" title="攻略方法"></a>攻略方法</h4><ol>
+<li><p>创建⼀个⽤于调试的js环境，如果有出题⼈提供的引⼊漏洞的patch，那么打上这个patch</p>
+</li>
+<li><p>分析这个patch并判断这个patch引⼊的是js引擎的哪个阶段</p>
+</li>
+</ol>
+<p>​	a. Runtime(CSA or Torque), TurboFan, Ignition, AST, InlineCache, …</p>
+<ol start="3">
+<li><p>构造poc去触发漏洞</p>
+</li>
+<li><p>利⽤漏洞去构造任意地址读写&#x2F;任意对象地址的泄露&#x2F;伪造任意对象等原语</p>
+</li>
+<li><p>getshell，常⽤的⽅法是利⽤v8⾥的rwx地址区域（wasm中就有）直接写⼊shellcode代码来实现任意代码执⾏</p>
+</li>
+</ol>
+<h2 id="0x02-V8对象模型⚙️"><a href="#0x02-V8对象模型⚙️" class="headerlink" title="0x02 V8对象模型⚙️"></a>0x02 V8对象模型⚙️</h2><h3 id="objects-h"><a href="#objects-h" class="headerlink" title="objects.h"></a>objects.h</h3><p>v8源码中的objects.h里写了对象模型的结构，可以看出最大的是Object，Object总体上分为两类<code>Smi</code>和<code>HeapObject</code></p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Most object types in the V8 JavaScript are described in this file.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Inheritance hierarchy:</span></span><br><span class="line"><span class="comment">// - Object</span></span><br><span class="line"><span class="comment">//   - Smi          (immediate small integer)</span></span><br><span class="line"><span class="comment">//   - HeapObject   (superclass for everything allocated in the heap)</span></span><br><span class="line"><span class="comment">//     - JSReceiver  (suitable for property access)</span></span><br><span class="line"><span class="comment">//       - JSObject</span></span><br><span class="line"><span class="comment">//         - JSArray</span></span><br><span class="line"><span class="comment">//         - JSArrayBuffer</span></span><br><span class="line"><span class="comment">//        .........</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Formats of Object::ptr_:</span></span><br><span class="line"><span class="comment">//  Smi:        [31 bit signed int] 0</span></span><br><span class="line"><span class="comment">//  HeapObject: [32 bit direct pointer] (4 byte aligned) | 01</span></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>凡是分配在v8堆上的，都会继承自<code>HeapObject</code>,<code>Smi</code>类似于cpu中的立即数</p>
+</blockquote>
+<p>v8中的各种类不是c++语法实现的，因此没有构造和析构函数，也没有任何的字段&#x2F;成员属性，是直接在<strong>v8 heap</strong>上通过<code>AllocateRaw</code>函数分配出来的内存</p>
+<blockquote>
+<p>再根据不同object的结构，对不同偏移的内存写入值，🧐这样的目的是为了通过v8 heap来管理内存、实现精准GC</p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://fa1lr4in.com/2021/12/09/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E4%B8%8E%E5%AE%9E%E7%8E%B0/" >《垃圾回收的算法与实现》v8篇 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+</blockquote>
+<h3 id="V8-Object分类"><a href="#V8-Object分类" class="headerlink" title="V8-Object分类"></a>V8-Object分类</h3><p>分为Smi和HeapObject</p>
+<ul>
+<li>smi表示有符号的31&#x2F;32位小整数</li>
+<li>指向HeapObject的指针，由于内存对齐（8&#x2F;4字节）所以指针的最低位为0</li>
+</ul>
+<blockquote>
+<p>这里为了更方便使用smi，意思是不另外用一个指针指向一块内存空间，里面再存smi，而且直接用32&#x2F;64bit表示，具体来说，HeapObject指针最低位肯定为0，但是由于smi的使用更频繁点，所以选择让smi左移一位让最低位变成0，而HeapObject指针则是把最低位置1，使用时再恢复。这种区分Smi和指向HeapObject的指针的方法叫<code>Tagged Values</code></p>
+</blockquote>
+<h4 id="Smi（小整数）"><a href="#Smi（小整数）" class="headerlink" title="Smi（小整数）"></a>Smi（小整数）</h4><ul>
+<li>LSB始终为0</li>
+<li>在32位上，smi右移1位可以获得原始值，64位要右移32位。smi表示的整数范围是有符号的31&#x2F;32位整数</li>
+</ul>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">  A[&quot;Signed Value (31 bit) ｜ 0&quot;] </span><br><span class="line">  C[&quot;Signed Value (32 bit) ｜ 0-Padding (31 bit) ｜ 0&quot;] </span><br></pre></td></tr></table></figure></div>
+
+<h4 id="指向HeapObject的指针"><a href="#指向HeapObject的指针" class="headerlink" title="指向HeapObject的指针"></a>指向HeapObject的指针</h4><ul>
+<li>LSB为1</li>
+<li>下图为32&#x2F;64位示例</li>
+</ul>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">  A[&quot;Pointer (31 bit) ｜ 1&quot;] --&gt; B[&quot;HeapObject&quot;] </span><br><span class="line">  C[&quot;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Pointer (63 bit)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;｜ 1&quot;]  --&gt; D[&quot;HeapObject&quot;] </span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>🤓👆🏻使用<code>Tagged Value</code>区分smi和指向HeapObject的指针可以节省堆空间</p>
+</blockquote>
+<h2 id="0x03-关键的HeapObject🧐"><a href="#0x03-关键的HeapObject🧐" class="headerlink" title="0x03 关键的HeapObject🧐"></a>0x03 关键的HeapObject🧐</h2><h3 id="HeapNumber"><a href="#HeapNumber" class="headerlink" title="HeapNumber"></a>HeapNumber</h3><p>前面也提到smi只能表示有符号的31&#x2F;32位整数，超过这个范围的整数可以以double值的形式保存在HeapNumber里面,HeapNumber结构如下</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">  C[&quot;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Pointer (63 bit)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;｜ 1&quot;]  --&gt; D[&quot;Map* | Value&quot;] </span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>其中<code>Map*</code>表示整个<code>HeapObject</code>的类型,表示的整数就以double的形式存在<code>Value</code>中</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 存储了数字的堆对象</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">HeapNumber</span> : <span class="keyword">public</span> HeapObject &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 返回存储的 double 类型的值</span></span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="type">double</span> <span class="title">value</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">READ_DOUBLE_FIELD</span>(<span class="keyword">this</span>, kValueOffset);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 写入 double 值到对象</span></span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">set_value</span><span class="params">(<span class="type">double</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">WRITE_DOUBLE_FIELD</span>(<span class="keyword">this</span>, kValueOffset, value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 将对象转换为 HeapNumber 指针</span></span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="keyword">inline</span> HeapNumber* <span class="title">cast</span><span class="params">(Object* obj)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将 HeapNumber 转换为布尔值</span></span><br><span class="line">    <span class="function">Object* <span class="title">HeapNumberToBoolean</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 内存布局描述</span></span><br><span class="line">    <span class="comment">// kSize 之前的空间存储 map 对象的指针</span></span><br><span class="line">    <span class="type">static</span> <span class="type">const</span> <span class="type">int</span> kValueOffset = HeapObject::kSize; <span class="comment">//偏移</span></span><br><span class="line">    <span class="comment">// kValueOffset 表示存储数字值的偏移量，类型为 double</span></span><br><span class="line">    <span class="type">static</span> <span class="type">const</span> <span class="type">int</span> kSize = kValueOffset + kDoubleSize;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">// 禁止隐式构造函数</span></span><br><span class="line">    <span class="built_in">DISALLOW_IMPLICIT_CONSTRUCTORS</span>(HeapNumber);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+</blockquote>
+<p>举个例子🌰</p>
+<p>写一个object array，第一个元素是smi，第二个超过smi范围，第三个是字符串</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr =[<span class="number">0xdeadbee</span>,<span class="number">0xdeadbeef</span>,<span class="string">&quot;sloth&quot;</span>];</span><br><span class="line">%<span class="title class_">DebugPrint</span>(arr);</span><br><span class="line">%<span class="title class_">SystemBreak</span>();</span><br><span class="line"><span class="comment">//output</span></span><br><span class="line"><span class="number">0x02aaab84dda9</span> &lt;<span class="title class_">JSArray</span>[<span class="number">3</span>]&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>gdb看一下这块内存(-1是因为tagged value),这里可能是版本问题，这个版本的v8把array又做了一层封装，封装到FixedArray中</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; x/<span class="number">4</span>gx <span class="number">0x02aaab84dda9</span><span class="number">-1</span></span><br><span class="line"><span class="number">0x2aaab84dda8</span>:	<span class="number">0x00000a0c4dc82f79</span>(Map*)	<span class="number">0x00001179f91c0c71</span>(FixedArray)</span><br><span class="line"><span class="number">0x2aaab84ddb8</span>:	<span class="number">0x000002aaab84dd09</span>(指向真实array的pointer)	<span class="number">0x0000000300000000</span>(表示长度)</span><br></pre></td></tr></table></figure></div>
+
+<p>继续访问真实的数组</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; x/<span class="number">8</span>gx <span class="number">0x000002aaab84dd09</span><span class="number">-1</span></span><br><span class="line"><span class="number">0x2aaab84dd08</span>:	<span class="number">0x00001179f91c0851</span>(Map*)	<span class="number">0x0000000300000000</span>(数组长度)</span><br><span class="line"><span class="number">0x2aaab84dd18</span>:	<span class="number">0x0deadbee00000000</span>(Smi)	<span class="number">0x0000064aeec1f311</span>(HeapNumber Pointer)</span><br><span class="line"><span class="number">0x2aaab84dd28</span>:	<span class="number">0x0000064aeec1f229</span>(<span class="string">&quot;sloth&quot;</span>)	<span class="number">0x00001179f91c0851</span></span><br><span class="line"><span class="number">0x2aaab84dd38</span>:	<span class="number">0x0000000400000000</span>	<span class="number">0x000013ab2a603b29</span></span><br><span class="line">pwndbg&gt; job <span class="number">0x0000064aeec1f229</span></span><br><span class="line"><span class="meta">#sloth</span></span><br></pre></td></tr></table></figure></div>
+
+<p>跟进HeapNumber</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; x/<span class="number">2</span>gx <span class="number">0x0000064aeec1f311</span><span class="number">-1</span></span><br><span class="line"><span class="number">0x64aeec1f310</span>:	<span class="number">0x00001179f91c0561</span>	<span class="number">0x41ebd5b7dde00000</span>(<span class="number">0xdeadbeef</span>的<span class="type">double</span>表示)</span><br><span class="line">pwndbg&gt; job <span class="number">0x41ebd5b7dde00000</span></span><br><span class="line">Smi: <span class="number">0x41ebd5b7</span> (<span class="number">1105974711</span>)</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><p> 结构如下</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">  C[&quot;Pointer (63 bit)｜ 1&quot;]  --&gt; D[&quot;Map* | HashField｜Length｜String[0:8]｜String[8:16]&quot;] </span><br></pre></td></tr></table></figure></div>
+
+<p>举个例子🌰</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr =[<span class="string">&quot;passion&quot;</span>,<span class="string">&quot;free&quot;</span>,<span class="string">&quot;sloth&quot;</span>];</span><br><span class="line">%<span class="title class_">DebugPrint</span>(arr);</span><br><span class="line">%<span class="title class_">SystemBreak</span>();</span><br><span class="line"><span class="comment">//output</span></span><br><span class="line"><span class="number">0x20c46b60dda1</span> &lt;<span class="title class_">JSArray</span>[<span class="number">3</span>]&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>查看这块内存,跟进真正的array</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; x/<span class="number">4</span>gx <span class="number">0x20c46b60dda1</span><span class="number">-1</span></span><br><span class="line"><span class="number">0x20c46b60dda0</span>:	<span class="number">0x00001f8f0c182f79</span>	<span class="number">0x000028e799a40c71</span></span><br><span class="line"><span class="number">0x20c46b60ddb0</span>:	<span class="number">0x000020c46b60dd01</span>	<span class="number">0x0000000300000000</span></span><br><span class="line">pwndbg&gt; x/<span class="number">6</span>gx <span class="number">0x000020c46b60dd01</span><span class="number">-1</span></span><br><span class="line"><span class="number">0x20c46b60dd00</span>:	<span class="number">0x000028e799a40851</span>(Map*)	<span class="number">0x0000000300000000</span></span><br><span class="line"><span class="number">0x20c46b60dd10</span>:	<span class="number">0x00001fa5bd15f229</span>(<span class="string">&quot;passion&quot;</span>)	<span class="number">0x00001fa5bd15f241</span>(<span class="string">&quot;free&quot;</span>)</span><br><span class="line"><span class="number">0x20c46b60dd20</span>:	<span class="number">0x00001fa5bd15f259</span>(<span class="string">&quot;sloth&quot;</span>)	<span class="number">0x000028e799a40851</span></span><br><span class="line">pwndbg&gt; job <span class="number">0x00001fa5bd15f229</span></span><br><span class="line"><span class="meta">#passion</span></span><br><span class="line">pwndbg&gt; job <span class="number">0x00001fa5bd15f241</span></span><br><span class="line"><span class="meta">#free</span></span><br><span class="line">pwndbg&gt; job <span class="number">0x00001fa5bd15f259</span></span><br><span class="line"><span class="meta">#sloth</span></span><br></pre></td></tr></table></figure></div>
+
+<p>跟进第一个字符串passion</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; x/<span class="number">10</span>gx <span class="number">0x00001fa5bd15f229</span><span class="number">-1</span></span><br><span class="line"><span class="number">0x1fa5bd15f228</span>:	<span class="number">0x000028e799a40461</span>(map*)	<span class="number">0x00000007a35b4466</span>(前四字节是length <span class="number">7</span>，后四字节是HashField)</span><br><span class="line"><span class="number">0x1fa5bd15f238</span>:	<span class="number">0x006e6f6973736170</span>(<span class="string">&quot;passion&quot;</span>)	<span class="number">0x000028e799a40461</span>(map*)</span><br><span class="line"><span class="number">0x1fa5bd15f248</span>:	<span class="number">0x0000000401ff50c2</span>(length <span class="number">7</span> HashField)	<span class="number">0x0000000065657266</span>(<span class="string">&quot;free&quot;</span>)</span><br><span class="line"><span class="number">0x1fa5bd15f258</span>:	<span class="number">0x000028e799a40461</span>(map*)	<span class="number">0x00000005a5bcda06</span>(length <span class="number">6</span> HashField)</span><br><span class="line"><span class="number">0x1fa5bd15f268</span>:	<span class="number">0x00000068746f6c73</span>(<span class="string">&quot;sloth&quot;</span>)	<span class="number">0x000028e799a40461</span></span><br><span class="line">pwndbg&gt; <span class="function">python <span class="title">print</span><span class="params">(bytes.fromhex(<span class="string">&quot;6e6f6973736170&quot;</span>).decode(<span class="string">&#x27;ascii&#x27;</span>))</span></span></span><br><span class="line"><span class="function">noissap</span></span><br><span class="line"><span class="function">pwndbg&gt; python <span class="title">print</span><span class="params">(bytes.fromhex(<span class="string">&quot;65657266&quot;</span>).decode(<span class="string">&#x27;ascii&#x27;</span>))</span></span></span><br><span class="line"><span class="function">eerf</span></span><br><span class="line"><span class="function">pwndbg&gt; python <span class="title">print</span><span class="params">(bytes.fromhex(<span class="string">&quot;68746f6c73&quot;</span>).decode(<span class="string">&#x27;ascii&#x27;</span>))</span></span></span><br><span class="line"><span class="function">htols</span></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>倒着存</p>
+</blockquote>
+<h3 id="JSObject"><a href="#JSObject" class="headerlink" title="JSObject"></a>JSObject</h3><ul>
+<li>继承⾃Object，HeapObject，JSReceiver</li>
+<li>Properties通过⼀个FixedArray(定⻓数组）保存所有的命名属性</li>
+<li>Elements通过⼀个FixedArray保存所有的数字索引的属性</li>
+</ul>
+<p>结构如下</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">  C[&quot;Pointer (63 bit)｜ 1&quot;]  --&gt; D[&quot;Map* | Properties* ｜ Elements*&quot;] </span><br></pre></td></tr></table></figure></div>
+
+<h3 id="JSArray"><a href="#JSArray" class="headerlink" title="JSArray"></a>JSArray</h3><p>继承Object, HeapObject, JSReceiver, JSObject，结构如下</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    A[&quot;Pointer (63 bit) | 1&quot;] --&gt; B[JSArray]</span><br><span class="line">    B --&gt; C[Map*]</span><br><span class="line">    B --&gt; D[Properties*]</span><br><span class="line">    B --&gt; E[Elements*]</span><br><span class="line">    B --&gt; F[Length]</span><br><span class="line">    E --&gt; G[FixedArray]</span><br><span class="line">    G --&gt; H[Map*]</span><br><span class="line">    G --&gt; I[Length]</span><br><span class="line">    G --&gt; J[&quot;Elements[0]&quot;]</span><br><span class="line">    G --&gt; K[&quot;Elements[1]&quot;]</span><br><span class="line">    G --&gt; M[&quot;....&quot;]</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>JSArray中Elements的类型</p>
+<ul>
+<li><a class="link"   target="_blank" rel="noopener" href="https://v8.dev/blog/elements-kinds" >https://v8.dev/blog/elements-kinds <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>⼩整数，也称为 Smi</li>
+<li>Double，⽤于不能表⽰为 Smi 的浮点数和整数。</li>
+<li>常规元素，⽤于⽆法表⽰为Smi或double的值。</li>
+</ul>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> array = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="comment">// elements kind: PACKED_SMI_ELEMENTS</span></span><br><span class="line">array.<span class="title function_">push</span>(<span class="number">4.56</span>);</span><br><span class="line"><span class="comment">// elements kind: PACKED_DOUBLE_ELEMENTS</span></span><br><span class="line">array.<span class="title function_">push</span>(<span class="string">&#x27;x&#x27;</span>);</span><br><span class="line"><span class="comment">// elements kind: PACKED_ELEMENTS</span></span><br><span class="line">array.<span class="property">length</span>; <span class="comment">// 5</span></span><br><span class="line">array[<span class="number">9</span>] = <span class="number">1</span>; <span class="comment">// array[5] until array[8] are now holes</span></span><br><span class="line"><span class="comment">//array[5] -- array[8] :elements kind: HOLEY_ELEMENTS</span></span><br></pre></td></tr></table></figure></div>
+
+<p>举个例子🌰</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">1.1</span>];</span><br><span class="line">%<span class="title class_">DebugPrint</span>(arr);</span><br><span class="line">%<span class="title class_">SystemBreak</span>();</span><br><span class="line"><span class="comment">//output</span></span><br><span class="line"><span class="number">0x08e88570ddc9</span> &lt;<span class="title class_">JSArray</span>[<span class="number">2</span>]&gt;</span><br><span class="line">pwndbg&gt; job <span class="number">0x08e88570ddc9</span></span><br><span class="line"><span class="number">0x8e88570ddc9</span>: [<span class="title class_">JSArray</span>]</span><br><span class="line"> - <span class="attr">map</span>: <span class="number">0x2e172c042ed9</span> &lt;<span class="title class_">Map</span>(<span class="variable constant_">PACKED_DOUBLE_ELEMENTS</span>)&gt; [<span class="title class_">FastProperties</span>]</span><br><span class="line"> - <span class="attr">prototype</span>: <span class="number">0x0afb86dd1111</span> &lt;<span class="title class_">JSArray</span>[<span class="number">0</span>]&gt;</span><br><span class="line"> - <span class="attr">elements</span>: <span class="number">0x08e88570dda9</span> &lt;<span class="title class_">FixedDoubleArray</span>[<span class="number">2</span>]&gt; [<span class="variable constant_">PACKED_DOUBLE_ELEMENTS</span>]</span><br><span class="line"> - <span class="attr">length</span>: <span class="number">2</span></span><br><span class="line"> - <span class="attr">properties</span>: <span class="number">0x17eb01180c71</span> &lt;<span class="title class_">FixedArray</span>[<span class="number">0</span>]&gt; &#123;</span><br><span class="line">    #<span class="attr">length</span>: <span class="number">0x07cfb6f401a9</span> &lt;<span class="title class_">AccessorInfo</span>&gt; (<span class="keyword">const</span> accessor descriptor)</span><br><span class="line"> &#125;</span><br><span class="line"> - <span class="attr">elements</span>: <span class="number">0x08e88570dda9</span> &lt;<span class="title class_">FixedDoubleArray</span>[<span class="number">2</span>]&gt; &#123;</span><br><span class="line">           <span class="number">0</span>: <span class="number">1</span></span><br><span class="line">           <span class="number">1</span>: <span class="number">1.1</span></span><br><span class="line"> &#125;</span><br><span class="line">pwndbg&gt; x/4gx <span class="number">0x08e88570ddc9</span>-<span class="number">1</span></span><br><span class="line"><span class="number">0x8e88570ddc8</span>:	<span class="number">0x00002e172c042ed9</span>	<span class="number">0x000017eb01180c71</span></span><br><span class="line"><span class="number">0x8e88570ddd8</span>:	<span class="number">0x000008e88570dda9</span>	<span class="number">0x0000000200000000</span></span><br><span class="line">pwndbg&gt; x/10gx <span class="number">0x000008e88570dda9</span>-<span class="number">1</span></span><br><span class="line"><span class="number">0x8e88570dda8</span>:	<span class="number">0x000017eb011814f9</span>	<span class="number">0x0000000200000000</span></span><br><span class="line"><span class="number">0x8e88570ddb8</span>:	<span class="number">0x3ff0000000000000</span>(<span class="number">1</span>)	<span class="number">0x3ff199999999999a</span>(<span class="number">1.1</span>的hex表示)</span><br><span class="line"><span class="number">0x8e88570ddc8</span>:	<span class="number">0x00002e172c042ed9</span>	<span class="number">0x000017eb01180c71</span></span><br><span class="line"><span class="number">0x8e88570ddd8</span>:	<span class="number">0x000008e88570dda9</span>	<span class="number">0x0000000200000000</span></span><br><span class="line"><span class="number">0x8e88570dde8</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000000000</span></span><br><span class="line">pwndbg&gt; job <span class="number">0x000008e88570dda9</span></span><br><span class="line"><span class="number">0x8e88570dda9</span>: [<span class="title class_">FixedDoubleArray</span>]</span><br><span class="line"> - <span class="attr">map</span>: <span class="number">0x17eb011814f9</span> &lt;<span class="title class_">Map</span>&gt;</span><br><span class="line"> - <span class="attr">length</span>: <span class="number">2</span></span><br><span class="line">           <span class="number">0</span>: <span class="number">1</span></span><br><span class="line">           <span class="number">1</span>: <span class="number">1.1</span></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>可以看到这里1.1没有用HeapNumber，double值在double array里是直接存的，可以节省内存空间</p>
+</blockquote>
+<p>稍微修改一下变成object array</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">let arr = [<span class="number">1</span>, <span class="number">1.1</span>];</span><br><span class="line">%<span class="built_in">DebugPrint</span>(arr);</span><br><span class="line">%<span class="built_in">SystemBreak</span>();</span><br><span class="line"><span class="comment">//output</span></span><br><span class="line"><span class="number">0x17dcd1e4ddf9</span> &lt;JSArray[<span class="number">3</span>]&gt;</span><br><span class="line">pwndbg&gt; x/<span class="number">8</span>gx <span class="number">0x17dcd1e4dd99</span><span class="number">-1</span></span><br><span class="line"><span class="number">0x17dcd1e4dd98</span>:	<span class="number">0x000004fddb340801</span>	<span class="number">0x0000000300000000</span></span><br><span class="line"><span class="number">0x17dcd1e4dda8</span>:	<span class="number">0x0000000100000000</span>(<span class="number">1</span>)	<span class="number">0x00003aaf2dc1f2f9</span>(HeapNumber Pointer)</span><br><span class="line"><span class="number">0x17dcd1e4ddb8</span>:	<span class="number">0x000017dcd1e4ddc1</span>	<span class="number">0x0000376224680459</span></span><br><span class="line"><span class="number">0x17dcd1e4ddc8</span>:	<span class="number">0x000004fddb340c71</span>	<span class="number">0x000004fddb340c71</span></span><br><span class="line">pwndbg&gt; job <span class="number">0x17dcd1e4ddf9</span></span><br><span class="line"><span class="number">0x17dcd1e4ddf9</span>: [JSArray]</span><br><span class="line"> - map: <span class="number">0x376224682f79</span> &lt;<span class="built_in">Map</span>(PACKED_ELEMENTS)&gt; [FastProperties]</span><br><span class="line"> - prototype: <span class="number">0x3aaf2dc11111</span> &lt;JSArray[<span class="number">0</span>]&gt;</span><br><span class="line"> - elements: <span class="number">0x17dcd1e4dd99</span> &lt;FixedArray[<span class="number">3</span>]&gt; [PACKED_ELEMENTS]</span><br><span class="line"> - length: <span class="number">3</span></span><br><span class="line"> - properties: <span class="number">0x04fddb340c71</span> &lt;FixedArray[<span class="number">0</span>]&gt; &#123;</span><br><span class="line">    <span class="meta">#length: 0x2d9d450001a9 <span class="string">&lt;AccessorInfo&gt;</span> (const accessor descriptor)</span></span><br><span class="line"> &#125;</span><br><span class="line"> - elements: <span class="number">0x17dcd1e4dd99</span> &lt;FixedArray[<span class="number">3</span>]&gt; &#123;</span><br><span class="line">           <span class="number">0</span>: <span class="number">1</span></span><br><span class="line">           <span class="number">1</span>: <span class="number">0x3aaf2dc1f2f9</span> &lt;HeapNumber <span class="number">1.1</span>&gt;</span><br><span class="line">           <span class="number">2</span>: <span class="number">0x17dcd1e4ddc1</span> &lt;Object map = <span class="number">0x376224680459</span>&gt;</span><br><span class="line"> &#125;</span><br><span class="line">pwndbg&gt; job <span class="number">0x3aaf2dc1f2f9</span></span><br><span class="line"><span class="number">1.1</span></span><br><span class="line">pwndbg&gt; x/<span class="number">2</span>gx <span class="number">0x3aaf2dc1f2f9</span><span class="number">-1</span></span><br><span class="line"><span class="number">0x3aaf2dc1f2f8</span>:	<span class="number">0x000004fddb340561</span>	<span class="number">0x3ff199999999999a</span></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>可以看到这里1.1就变成用HeapNumber了</p>
+<p>💡可以看出double array和object array的存储方式不同，可以利用这个特性，假设有一个double array和object array的类型混淆，使得object array使用double array的方式直接把元素读出来，这样可以leak任意指针的地址&#x2F;伪造任意object</p>
+</blockquote>
+<h3 id="JSArrayBuffer"><a href="#JSArrayBuffer" class="headerlink" title="JSArrayBuffer"></a>JSArrayBuffer</h3><p>保存有⼀个被称作BackingStore的buffer的对象</p>
+<blockquote>
+<p>BackingStore 是一种用于存储数据的独立内存区域，主要用于存放 JavaScript 中 <code>TypedArray</code>、<code>ArrayBuffer</code> 这样的二进制数据。</p>
+<ul>
+<li><strong>不受 GC 管理</strong>：这块内存区域是独立分配的，不会被 V8 的 GC 自动回收,因此向BackingStore的指针不是Tagged Value（末尾不能为1）</li>
+<li>分配方式：<ul>
+<li>在 Chrome 中使用 <strong>PartitionAlloc</strong> 分配。</li>
+<li>在 d8（V8 的独立运行环境）中使用 <strong>ptmalloc</strong>（一个常见的 malloc 实现）模拟分配。</li>
+</ul>
+</li>
+<li><strong>用途</strong>：它是一种高效存储二进制数据的方法，避免了与 GC 交互时的额外开销。</li>
+</ul>
+</blockquote>
+<p>举个例子🌰</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> buf = <span class="keyword">new</span> <span class="built_in">ArrayBuffer</span>(<span class="number">0x20</span>);</span><br><span class="line">%<span class="built_in">DebugPrint</span>(buf);</span><br><span class="line">%<span class="built_in">SystemBreak</span>();</span><br><span class="line"><span class="comment">//output</span></span><br><span class="line"><span class="number">0x3d9ab9b8dd79</span> &lt;ArrayBuffer map = <span class="number">0x2027fb1021b9</span>&gt;</span><br><span class="line">pwndbg&gt; job <span class="number">0x3d9ab9b8dd79</span></span><br><span class="line"><span class="number">0x3d9ab9b8dd79</span>: [JSArrayBuffer]</span><br><span class="line"> - map: <span class="number">0x2027fb1021b9</span> &lt;<span class="built_in">Map</span>(HOLEY_ELEMENTS)&gt; [FastProperties]</span><br><span class="line"> - prototype: <span class="number">0x28593e5ce981</span> &lt;Object map = <span class="number">0x2027fb102209</span>&gt;</span><br><span class="line"> - elements: <span class="number">0x15b6957c0c71</span> &lt;FixedArray[<span class="number">0</span>]&gt; [HOLEY_ELEMENTS]</span><br><span class="line"> - embedder fields: <span class="number">2</span></span><br><span class="line"> - backing_store: <span class="number">0x559b9dc779f0</span> <span class="comment">//* 不是tagged value</span></span><br><span class="line"> - byte_length: <span class="number">32</span></span><br><span class="line"> - detachable</span><br><span class="line"> - properties: <span class="number">0x15b6957c0c71</span> &lt;FixedArray[<span class="number">0</span>]&gt; &#123;&#125;</span><br><span class="line"> - embedder fields = &#123;</span><br><span class="line">    <span class="number">0</span>, aligned pointer: (nil)</span><br><span class="line">    <span class="number">0</span>, aligned pointer: (nil)</span><br><span class="line"> &#125;</span><br><span class="line">pwndbg&gt; x/<span class="number">20</span>gx <span class="number">0x559b9dc779f0</span></span><br><span class="line"><span class="number">0x559b9dc779f0</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000000000</span></span><br><span class="line"><span class="number">0x559b9dc77a00</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000000000</span></span><br><span class="line"><span class="number">0x559b9dc77a10</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000000031</span></span><br><span class="line"><span class="number">0x559b9dc77a20</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000559b9dbef010</span></span><br><span class="line"><span class="number">0x559b9dc77a30</span>:	<span class="number">0x3031626637323032</span>	<span class="number">0x0000003e39303232</span></span><br><span class="line"><span class="number">0x559b9dc77a40</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x00000000000003c1</span></span><br><span class="line"><span class="number">0x559b9dc77a50</span>:	<span class="number">0x00007f8ec2273be0</span>	<span class="number">0x00007f8ec2273be0</span></span><br><span class="line"><span class="number">0x559b9dc77a60</span>:	<span class="number">0x0000559b694a8081</span>	<span class="number">0x0000000100440000</span></span><br><span class="line"><span class="number">0x559b9dc77a70</span>:	<span class="number">0x0072005000000008</span>	<span class="number">0x0000559b9dc77a30</span></span><br><span class="line"><span class="number">0x559b9dc77a80</span>:	<span class="number">0x0000559b9dc83e80</span>	<span class="number">0x0000000000000000</span></span><br><span class="line">pwndbg&gt; x/<span class="number">20</span>gx <span class="number">0x559b9dc779f0</span><span class="number">-0x10</span></span><br><span class="line"><span class="number">0x559b9dc779e0</span>:	<span class="number">0x0000082856788f19</span>	<span class="number">0x0000000000000031</span>  (meta头)</span><br><span class="line"><span class="number">0x559b9dc779f0</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000000000</span></span><br><span class="line"><span class="number">0x559b9dc77a00</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000000000</span></span><br><span class="line"><span class="number">0x559b9dc77a10</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000000000000031</span></span><br><span class="line"><span class="number">0x559b9dc77a20</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x0000559b9dbef010</span></span><br><span class="line"><span class="number">0x559b9dc77a30</span>:	<span class="number">0x3031626637323032</span>	<span class="number">0x0000003e39303232</span></span><br><span class="line"><span class="number">0x559b9dc77a40</span>:	<span class="number">0x0000000000000000</span>	<span class="number">0x00000000000003c1</span></span><br><span class="line"><span class="number">0x559b9dc77a50</span>:	<span class="number">0x00007f8ec2273be0</span>	<span class="number">0x00007f8ec2273be0</span></span><br><span class="line"><span class="number">0x559b9dc77a60</span>:	<span class="number">0x0000559b694a8081</span>	<span class="number">0x0000000100440000</span></span><br><span class="line"><span class="number">0x559b9dc77a70</span>:	<span class="number">0x0072005000000008</span>	<span class="number">0x0000559b9dc77a30</span></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>带meta头，可见是ptmalloc分配出来的</p>
+<ul>
+<li><strong>虽然在</strong>ArrayBuffer中描述了⼤⼩，但如果将此值重写为较⼤的值，就可以越界读写了。</li>
+<li>同样，可以<strong>重写</strong>BackingStore指针，则可以读取和写⼊任意内存地址</li>
+</ul>
+<p>JSArrayBuffer结构如下</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    A[&quot;Pointer (63 bit) | 1&quot;] --&gt; B[JSArrayBuffer]</span><br><span class="line">    B --&gt; C[Map*]</span><br><span class="line">    B --&gt; D[Properties*]</span><br><span class="line">    B --&gt; E[Elements*]</span><br><span class="line">    B --&gt; F[ByteLength]</span><br><span class="line">    B --&gt; G[BackingStore*]</span><br><span class="line">    B --&gt; H[BitField]</span><br><span class="line">    G[BackingStore*] --&gt;I1[BackingStore]</span><br></pre></td></tr></table></figure></div>
+
+
+</blockquote>
+<h3 id="JSTypedArray"><a href="#JSTypedArray" class="headerlink" title="JSTypedArray"></a>JSTypedArray</h3><p>JSArrayBuffer只是个buffer，在js的设计⾥，对<code>BackStore</code>的读写需要依赖于<code>TypedArray</code>或者<code>DataView</code></p>
+<p>结构如下</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    A[&quot;Pointer (63 bit) | 1&quot;] --&gt;B1[JSTypedArray]</span><br><span class="line">    B1[JSTypedArray]--&gt;B2[Map*]</span><br><span class="line">    B1[JSTypedArray]--&gt;B3[Properties*]</span><br><span class="line">    B1[JSTypedArray]--&gt;B4[Elements*]</span><br><span class="line">     B1[JSTypedArray]--&gt;B5[Buffer*]</span><br><span class="line">     B1[JSTypedArray]--&gt;B6[BufferOffset]</span><br><span class="line">       B1[JSTypedArray]--&gt;B7[ByteLength]</span><br><span class="line">      B1[JSTypedArray]--&gt;B8[Length]</span><br><span class="line">      B1[JSTypedArray]--&gt;B9[ExternalPointer*]</span><br><span class="line">      B1[JSTypedArray]--&gt;B10[BasePointer*]</span><br><span class="line">    B5[Buffer*]--&gt; B[JSArrayBuffer]</span><br><span class="line">    B --&gt; C[Map*]</span><br><span class="line">    B --&gt; D[Properties*]</span><br><span class="line">    B --&gt; E[Elements*]</span><br><span class="line">    B --&gt; F[ByteLength]</span><br><span class="line">    B --&gt; G[BackingStore*]</span><br><span class="line">    B --&gt; H[BitField]</span><br><span class="line">    G[BackingStore*] --&gt;I1[BackingStore]</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p><code>JSTypedArray</code>在漏洞利⽤中的⼀种常⻅⽤途，由于两个不同的<code>TypedArray</code>可以共享同样的<code>ArrayBuffer</code>，所以实际上如果我们⽤⼀个<code>Float64Array</code>去向<code>ArrayBuffer</code>⾥写⼊⼀个double值（8字节），然后⽤<code>Uint32Array</code>读取出来，就可以读出两个4字节的unsigned integer，并拼凑成8字节的unsigned integer，这样就实现了double到整形的转换；同理，可以反过来这样将⼀个整形转换为double</p>
+<p>💡由于js对浮点数的精度问题，对于⼤于 2^53-1 的数据，这样转换可能会造成细微的偏差</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> buf = <span class="keyword">new</span> <span class="title class_">ArrayBuffer</span>(<span class="number">8</span>);</span><br><span class="line"><span class="keyword">const</span> f64 = <span class="keyword">new</span> <span class="title class_">Float64Array</span>(buf);</span><br><span class="line"><span class="keyword">const</span> u32 = <span class="keyword">new</span> <span class="title class_">Uint32Array</span>(buf);</span><br><span class="line"><span class="comment">//f64和u32共享同一个ArrayBuffer</span></span><br><span class="line"><span class="comment">// Floating point to 64-bit unsigned integer</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">d2u</span>(<span class="params">val</span>) &#123;</span><br><span class="line">  f64[<span class="number">0</span>] = val;</span><br><span class="line">  <span class="keyword">let</span> tmp = <span class="title class_">Array</span>.<span class="title function_">from</span>(u32);</span><br><span class="line">  <span class="keyword">return</span> tmp[<span class="number">1</span>] * <span class="number">0x100000000</span> + tmp[<span class="number">0</span>]; <span class="comment">//&lt;&lt;4</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 64-bit unsigned integer to Floating point</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">u2d</span>(<span class="params">val</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> tmp = [];</span><br><span class="line">  tmp[<span class="number">0</span>] = <span class="built_in">parseInt</span>(val % <span class="number">0x100000000</span>);</span><br><span class="line">  tmp[<span class="number">1</span>] = <span class="built_in">parseInt</span>((val - tmp[<span class="number">0</span>]) / <span class="number">0x100000000</span>); </span><br><span class="line">  u32.<span class="title function_">set</span>(tmp);</span><br><span class="line">  <span class="keyword">return</span> f64[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">hex</span>(<span class="params">i</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&quot;0x&quot;</span> + i.<span class="title function_">toString</span>(<span class="number">16</span>).<span class="title function_">padStart</span>(<span class="number">8</span>,<span class="string">&quot;0&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">print</span>(<span class="title function_">hex</span>(<span class="title function_">d2u</span>(<span class="number">1.1</span>)));</span><br><span class="line"><span class="title function_">print</span>(<span class="title function_">u2d</span>(<span class="number">0x3ff199999999999a</span>));</span><br><span class="line">----&gt;</span><br><span class="line"><span class="number">0x3ff1999999999a00</span></span><br><span class="line"><span class="number">1.1000000000000227</span></span><br></pre></td></tr></table></figure></div>
+</blockquote>
+<h3 id="JSDataView"><a href="#JSDataView" class="headerlink" title="JSDataView"></a>JSDataView</h3><p>也是⽤来读写ArrayBuffer的BackingStore的内容的对象，常⽤于最后的任意地址读写原语的构造</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    A[&quot;Pointer (63 bit) | 1&quot;] --&gt;B1[JSDataView]</span><br><span class="line">    B1--&gt;B2[Map*]</span><br><span class="line">    B1--&gt;B3[Properties*]</span><br><span class="line">    B1--&gt;B4[Elements*]</span><br><span class="line">     B1--&gt;B5[Buffer*]</span><br><span class="line">     B1--&gt;B6[BufferOffset]</span><br><span class="line">       B1--&gt;B7[ByteLength]</span><br><span class="line">      B1--&gt;B10[DataPointer*]</span><br><span class="line">    B5[Buffer*]--&gt; B[JSArrayBuffer]</span><br><span class="line">    B --&gt; C[Map*]</span><br><span class="line">    B --&gt; D[Properties*]</span><br><span class="line">    B --&gt; E[Elements*]</span><br><span class="line">    B --&gt; F[ByteLength]</span><br><span class="line">    B --&gt; G[BackingStore*]</span><br><span class="line">    B --&gt; H[BitField]</span><br><span class="line">    G[BackingStore*] --&gt;I1[BackingStore]</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="0x04-V8特性"><a href="#0x04-V8特性" class="headerlink" title="0x04 V8特性"></a>0x04 V8特性</h2><h3 id="Hidden-Class"><a href="#Hidden-Class" class="headerlink" title="Hidden Class"></a>Hidden Class</h3><p>从一个最简单的对象开始分析</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj = &#123;<span class="attr">a</span>: <span class="string">&quot;foo&quot;</span>, <span class="attr">b</span>: <span class="string">&quot;bar&quot;</span>&#125;;</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>a和b叫命名属性(name properties，后面简称为property)，没有任何整数索引<ul>
+<li>整数索引，数组 <code>[&quot;foo&quot;,&quot;bar&quot;]</code>有两个整数索引属性：0，值为“foo”，1，值为“bar”。整数索引属性也叫元素element</li>
+</ul>
+</li>
+</ul>
+<p>在JS Object的结构中，element和property存储在两个独⽴的FixedArray中</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/image-20241115181225550.png"
+                      alt="image-20241115181225550"
+                ><figcaption>image-20241115181225550</figcaption></figure></p>
+<blockquote>
+<p>elements的key就是在Object的属性数组中的对应位置的索引</p>
+<p>而property的key通常是字符串，无法简单地通过key来判断某个property在属性数组中的对应位置</p>
+<p>💡Tips：在js中，以下两个obj的属性数组不同，即属性结构不同</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj1= &#123;<span class="attr">a</span>: <span class="string">&quot;foo&quot;</span>, <span class="attr">b</span>: <span class="string">&quot;bar&quot;</span>&#125;;</span><br><span class="line"><span class="keyword">let</span> obj2= &#123;<span class="attr">b</span>: <span class="string">&quot;bar&quot;</span>, <span class="attr">a</span>: <span class="string">&quot;foo&quot;</span>&#125;;</span><br></pre></td></tr></table></figure></div>
+</blockquote>
+<p>🤔那么怎么解决property位置的问题？V8中使用<code>Hidden Class</code>来描述，每个js Object都有关联的<code>Hidden Class</code>，也就是之前画的HeapObject结构中排第一个的<code>Map*</code></p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/image-20241115181237410.png"
+                      alt="image-20241115181237410"
+                ><figcaption>image-20241115181237410</figcaption></figure></p>
+<p>HiddenClasses的基本假设：具有相同属性结构的对象共享同一个HiddenClass</p>
+<p>举个例子🌰</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> o1 = &#123;<span class="attr">a</span>: <span class="string">&quot;foo&quot;</span>,<span class="attr">b</span>:<span class="string">&quot;bar&quot;</span>&#125;;</span><br><span class="line">%<span class="title class_">DebugPrint</span>(o1);</span><br><span class="line"><span class="keyword">let</span> o2 = &#123;<span class="attr">a</span>: <span class="string">&quot;foo1&quot;</span>,<span class="attr">b</span>:<span class="string">&quot;bar2&quot;</span>&#125;;</span><br><span class="line">%<span class="title class_">DebugPrint</span>(o2);</span><br><span class="line">%<span class="title class_">SystemBreak</span>();</span><br><span class="line"><span class="comment">//output</span></span><br><span class="line"><span class="number">0x296e53ccdda1</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x14378b9cab89</span>&gt;</span><br><span class="line"><span class="number">0x296e53ccde41</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x14378b9cab89</span>&gt;</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>可以看到map是相同的</p>
+</blockquote>
+<p>再看一下连续添加属性的过程中map的变化</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> o1 = &#123;<span class="attr">a</span>: <span class="string">&quot;foo&quot;</span>&#125;;</span><br><span class="line">%<span class="title class_">DebugPrint</span>(o1);</span><br><span class="line"><span class="keyword">let</span> o2 = &#123;<span class="attr">a</span>: <span class="string">&quot;foo1&quot;</span>&#125;;</span><br><span class="line">%<span class="title class_">DebugPrint</span>(o2);</span><br><span class="line">o1.<span class="property">b</span> = <span class="string">&quot;bar&quot;</span>;</span><br><span class="line">%<span class="title class_">DebugPrint</span>(o1);</span><br><span class="line">o2.<span class="property">d</span> = <span class="string">&quot;bar2&quot;</span>;</span><br><span class="line">%<span class="title class_">DebugPrint</span>(o2);</span><br><span class="line">o1.<span class="property">c</span> = <span class="string">&quot;baz&quot;</span>;</span><br><span class="line">%<span class="title class_">DebugPrint</span>(o1);</span><br><span class="line">o2.<span class="property">c</span> = <span class="string">&quot;baz2&quot;</span>;</span><br><span class="line">%<span class="title class_">DebugPrint</span>(o2);</span><br><span class="line">%<span class="title class_">SystemBreak</span>();</span><br><span class="line"><span class="comment">//output</span></span><br><span class="line"><span class="number">0x2d3b7204de11</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x218575f4ab39</span>&gt;</span><br><span class="line"><span class="number">0x2d3b7204de61</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x218575f4ab39</span>&gt;</span><br><span class="line"><span class="number">0x2d3b7204de11</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x218575f4ab89</span>&gt;</span><br><span class="line"><span class="number">0x2d3b7204de61</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x218575f4abd9</span>&gt;</span><br><span class="line"><span class="number">0x2d3b7204de11</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x218575f4ac29</span>&gt;</span><br><span class="line"><span class="number">0x2d3b7204de61</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x218575f4ac79</span>&gt;</span><br><span class="line">  </span><br><span class="line">pwndbg&gt; job <span class="number">0x218575f4ab39</span> <span class="comment">//看看HC1</span></span><br><span class="line"><span class="number">0x218575f4ab39</span>: [<span class="title class_">Map</span>]</span><br><span class="line"> - <span class="attr">type</span>: <span class="variable constant_">JS_OBJECT_TYPE</span></span><br><span class="line"> - instance <span class="attr">size</span>: <span class="number">32</span></span><br><span class="line"> - inobject <span class="attr">properties</span>: <span class="number">1</span></span><br><span class="line"> - elements <span class="attr">kind</span>: <span class="variable constant_">HOLEY_ELEMENTS</span></span><br><span class="line"> - unused property <span class="attr">fields</span>: <span class="number">0</span></span><br><span class="line"> - enum <span class="attr">length</span>: invalid</span><br><span class="line"> - back <span class="attr">pointer</span>: <span class="number">0x218575f4aae9</span> &lt;<span class="title class_">Map</span>(<span class="variable constant_">HOLEY_ELEMENTS</span>)&gt;</span><br><span class="line"> - prototype_validity <span class="attr">cell</span>: <span class="number">0x2379e4b40609</span> &lt;<span class="title class_">Cell</span> value= <span class="number">1</span>&gt;</span><br><span class="line"> - instance descriptors #<span class="number">1</span>: <span class="number">0x2d3b7204df61</span> &lt;<span class="title class_">DescriptorArray</span>[<span class="number">3</span>]&gt;</span><br><span class="line"> - layout <span class="attr">descriptor</span>: (nil)</span><br><span class="line"> - transitions #<span class="number">2</span>: <span class="number">0x39b2971dfa91</span> &lt;<span class="title class_">TransitionArray</span>[<span class="number">6</span>]&gt;<span class="title class_">Transition</span> array #<span class="number">2</span>: <span class="comment">//v8维护的transition tree</span></span><br><span class="line">     #<span class="attr">b</span>: (transition <span class="title function_">to</span> (<span class="keyword">const</span> data field, <span class="attr">attrs</span>: [<span class="variable constant_">WEC</span>]) @ <span class="title class_">Any</span>) -&gt; <span class="number">0x218575f4ab89</span> &lt;<span class="title class_">Map</span>(<span class="variable constant_">HOLEY_ELEMENTS</span>)&gt; <span class="comment">//属性为a,b的map</span></span><br><span class="line">     #<span class="attr">d</span>: (transition <span class="title function_">to</span> (<span class="keyword">const</span> data field, <span class="attr">attrs</span>: [<span class="variable constant_">WEC</span>]) @ <span class="title class_">Any</span>) -&gt; <span class="number">0x218575f4abd9</span> &lt;<span class="title class_">Map</span>(<span class="variable constant_">HOLEY_ELEMENTS</span>)&gt; <span class="comment">//属性为a,d的map</span></span><br><span class="line"></span><br><span class="line"> - <span class="attr">prototype</span>: <span class="number">0x39b2971c2091</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x218575f40229</span>&gt;</span><br><span class="line"> - <span class="attr">constructor</span>: <span class="number">0x39b2971c20c9</span> &lt;<span class="title class_">JSFunction</span> <span class="title class_">Object</span> (sfi = <span class="number">0x2379e4b457e9</span>)&gt;</span><br><span class="line"> - dependent <span class="attr">code</span>: <span class="number">0x1a62eb8002c1</span> &lt;<span class="title class_">Other</span> heap <span class="title function_">object</span> (<span class="variable constant_">WEAK_FIXED_ARRAY_TYPE</span>)&gt;</span><br><span class="line"> - construction <span class="attr">counter</span>: <span class="number">0</span></span><br></pre></td></tr></table></figure></div>
+
+<p>可以用以下流程图（也表示transition tree结构）来表示map(HiddenClass)的变化</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    A[HC 0] --&gt;|&quot;Add &#x27;a&#x27;&quot;| B[HC 1]</span><br><span class="line">    B --&gt;|&quot;Add &#x27;b&#x27;&quot;| C[HC 2]</span><br><span class="line">    C --&gt;|&quot;Add &#x27;c&#x27;&quot;| D[HC 3]</span><br><span class="line">    B --&gt;|&quot;Add &#x27;d&#x27;&quot;| E[HC 4]</span><br><span class="line">    E --&gt;|&quot;Add &#x27;c&#x27;&quot;| F[HC 5]</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>再举一个例子🌰，看看Descriptor,这里o1 o2一开始属性一样，共享HiddenClass，后面加入不同属性，transition tree产生了分支</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> o1 = &#123;<span class="attr">a</span>: <span class="string">&quot;foo&quot;</span>&#125;;</span><br><span class="line">%<span class="title class_">DebugPrint</span>(o1);</span><br><span class="line"><span class="keyword">let</span> o2 = &#123;<span class="attr">a</span>: <span class="string">&quot;foo1&quot;</span>&#125;;</span><br><span class="line">%<span class="title class_">DebugPrint</span>(o2);</span><br><span class="line">o1.<span class="property">b</span> = <span class="string">&quot;bar&quot;</span>;</span><br><span class="line">%<span class="title class_">DebugPrint</span>(o1);</span><br><span class="line">o2.<span class="property">d</span> = <span class="string">&quot;bar2&quot;</span>;</span><br><span class="line">%<span class="title class_">DebugPrint</span>(o2);</span><br><span class="line">%<span class="title class_">SystemBreak</span>();</span><br><span class="line"><span class="comment">//output</span></span><br><span class="line"><span class="number">0x35d08114ddd1</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x3a1af794ab39</span>&gt;</span><br><span class="line"><span class="number">0x35d08114de21</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x3a1af794ab39</span>&gt;</span><br><span class="line"><span class="number">0x35d08114ddd1</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x3a1af794ab89</span>&gt;</span><br><span class="line"><span class="number">0x35d08114de21</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x3a1af794abd9</span>&gt;</span><br><span class="line">pwndbg&gt; job <span class="number">0x3a1af794ab89</span> <span class="comment">//看看o1的Hidden Class</span></span><br><span class="line"><span class="number">0x3a1af794ab89</span>: [<span class="title class_">Map</span>]</span><br><span class="line"> - <span class="attr">type</span>: <span class="variable constant_">JS_OBJECT_TYPE</span></span><br><span class="line"> - instance <span class="attr">size</span>: <span class="number">32</span></span><br><span class="line"> - inobject <span class="attr">properties</span>: <span class="number">1</span></span><br><span class="line"> - elements <span class="attr">kind</span>: <span class="variable constant_">HOLEY_ELEMENTS</span></span><br><span class="line"> - unused property <span class="attr">fields</span>: <span class="number">2</span></span><br><span class="line"> - enum <span class="attr">length</span>: invalid</span><br><span class="line"> - stable_map</span><br><span class="line"> - back <span class="attr">pointer</span>: <span class="number">0x3a1af794ab39</span> &lt;<span class="title class_">Map</span>(<span class="variable constant_">HOLEY_ELEMENTS</span>)&gt;</span><br><span class="line"> - prototype_validity <span class="attr">cell</span>: <span class="number">0x30dcecd9f9f1</span> &lt;<span class="title class_">Cell</span> value= <span class="number">0</span>&gt;</span><br><span class="line"> - instance <span class="title function_">descriptors</span> (own) #<span class="number">2</span>: <span class="number">0x35d08114de41</span> &lt;<span class="title class_">DescriptorArray</span>[<span class="number">2</span>]&gt; <span class="comment">//这里存储Descriptor</span></span><br><span class="line"> - layout <span class="attr">descriptor</span>: (nil)</span><br><span class="line"> - <span class="attr">prototype</span>: <span class="number">0x30dcecd82091</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x3a1af7940229</span>&gt;</span><br><span class="line"> - <span class="attr">constructor</span>: <span class="number">0x30dcecd820c9</span> &lt;<span class="title class_">JSFunction</span> <span class="title class_">Object</span> (sfi = <span class="number">0x3d338a2857e9</span>)&gt;</span><br><span class="line"> - dependent <span class="attr">code</span>: <span class="number">0x0f08ee9c02c1</span> &lt;<span class="title class_">Other</span> heap <span class="title function_">object</span> (<span class="variable constant_">WEAK_FIXED_ARRAY_TYPE</span>)&gt;</span><br><span class="line"> - construction <span class="attr">counter</span>: <span class="number">0</span></span><br><span class="line">pwndbg&gt; job <span class="number">0x35d08114de41</span> <span class="comment">//跟进DescriptorArray</span></span><br><span class="line"><span class="number">0x35d08114de41</span>: [<span class="title class_">DescriptorArray</span>]</span><br><span class="line"> - <span class="attr">map</span>: <span class="number">0x0f08ee9c0271</span> &lt;<span class="title class_">Map</span>&gt;</span><br><span class="line"> - <span class="attr">enum_cache</span>: empty</span><br><span class="line"> - nof slack <span class="attr">descriptors</span>: <span class="number">0</span></span><br><span class="line"> - nof <span class="attr">descriptors</span>: <span class="number">2</span></span><br><span class="line"> - raw marked <span class="attr">descriptors</span>: mc epoch <span class="number">0</span>, marked <span class="number">0</span></span><br><span class="line">  [<span class="number">0</span>]: #<span class="title function_">a</span> (<span class="keyword">const</span> data field <span class="number">0</span>:h, <span class="attr">p</span>: <span class="number">0</span>, <span class="attr">attrs</span>: [<span class="variable constant_">WEC</span>]) @ <span class="title class_">Any</span>  <span class="comment">//#a a是key，data field后面的0是在原属性数组中的位置索引</span></span><br><span class="line">  [<span class="number">1</span>]: #<span class="title function_">b</span> (<span class="keyword">const</span> data field <span class="number">1</span>:h, <span class="attr">p</span>: <span class="number">1</span>, <span class="attr">attrs</span>: [<span class="variable constant_">WEC</span>]) @ <span class="title class_">Any</span></span><br></pre></td></tr></table></figure></div>
+
+<p> transition tree中的所有HiddenClass(Map)不会被移除，因为将来遇到相同结构还会复用，举个例子🌰</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> o1 = &#123;<span class="attr">a</span>: <span class="string">&quot;foo&quot;</span>&#125;;</span><br><span class="line">%<span class="title class_">DebugPrint</span>(o1);</span><br><span class="line"><span class="keyword">let</span> o2 = &#123;<span class="attr">a</span>: <span class="string">&quot;foo1&quot;</span>&#125;;</span><br><span class="line">%<span class="title class_">DebugPrint</span>(o2);</span><br><span class="line">o1.<span class="property">b</span> = <span class="string">&quot;bar&quot;</span>;</span><br><span class="line">%<span class="title class_">DebugPrint</span>(o1);</span><br><span class="line">o2.<span class="property">d</span> = <span class="string">&quot;bar2&quot;</span>;</span><br><span class="line">%<span class="title class_">DebugPrint</span>(o2);</span><br><span class="line"><span class="keyword">let</span> o3 = &#123;<span class="attr">a</span>: <span class="string">&quot;foo2&quot;</span>&#125;;</span><br><span class="line">%<span class="title class_">DebugPrint</span>(o3);</span><br><span class="line">%<span class="title class_">SystemBreak</span>();</span><br><span class="line"><span class="comment">//output</span></span><br><span class="line"><span class="number">0x2301f01cddf9</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x3dcc32d4ab39</span>&gt;<span class="comment">//*</span></span><br><span class="line"><span class="number">0x2301f01cde49</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x3dcc32d4ab39</span>&gt;<span class="comment">//*</span></span><br><span class="line"><span class="number">0x2301f01cddf9</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x3dcc32d4ab89</span>&gt;</span><br><span class="line"><span class="number">0x2301f01cde49</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x3dcc32d4abd9</span>&gt;</span><br><span class="line"><span class="number">0x2301f01cdf49</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x3dcc32d4ab39</span>&gt;<span class="comment">//map复用</span></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>💡属性名称一样但顺序不同的话，map也不同</p>
+</blockquote>
+<h3 id="property"><a href="#property" class="headerlink" title="property"></a>property</h3><p>property⼜分为in-object property和普通的property</p>
+<ul>
+<li><p>in-object property,直接保存在js object⾥的property</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> o1 = &#123;&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i &lt;<span class="number">4</span>; i++)&#123;</span><br><span class="line">o1[<span class="string">&quot;p&quot;</span> + i.<span class="title function_">toString</span>()] = i;</span><br><span class="line">&#125;</span><br><span class="line">%<span class="title class_">DebugPrint</span>(o1);</span><br><span class="line">%<span class="title class_">SystemBreak</span>();</span><br><span class="line"><span class="comment">//output</span></span><br><span class="line"><span class="number">0x3794877cdd99</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x3f3bffd4abd9</span>&gt;</span><br><span class="line">pwndbg&gt; job <span class="number">0x3794877cdd99</span></span><br><span class="line"><span class="number">0x3794877cdd99</span>: [<span class="variable constant_">JS_OBJECT_TYPE</span>]</span><br><span class="line"> - <span class="attr">map</span>: <span class="number">0x3f3bffd4abd9</span> &lt;<span class="title class_">Map</span>(<span class="variable constant_">HOLEY_ELEMENTS</span>)&gt; [<span class="title class_">FastProperties</span>]</span><br><span class="line"> - <span class="attr">prototype</span>: <span class="number">0x0de3c5002091</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x3f3bffd40229</span>&gt;</span><br><span class="line"> - <span class="attr">elements</span>: <span class="number">0x38e8d9140c71</span> &lt;<span class="title class_">FixedArray</span>[<span class="number">0</span>]&gt; [<span class="variable constant_">HOLEY_ELEMENTS</span>]</span><br><span class="line"> - <span class="attr">properties</span>: <span class="number">0x38e8d9140c71</span> &lt;<span class="title class_">FixedArray</span>[<span class="number">0</span>]&gt; &#123; <span class="comment">//4个property直接内嵌在object中，本来用于放property的FixedArray大小为0</span></span><br><span class="line">    #<span class="attr">p0</span>: <span class="number">0</span> (<span class="keyword">const</span> data field <span class="number">0</span>)</span><br><span class="line">    #<span class="attr">p1</span>: <span class="number">1</span> (<span class="keyword">const</span> data field <span class="number">1</span>)</span><br><span class="line">    #<span class="attr">p2</span>: <span class="number">2</span> (<span class="keyword">const</span> data field <span class="number">2</span>)</span><br><span class="line">    #<span class="attr">p3</span>: <span class="number">3</span> (<span class="keyword">const</span> data field <span class="number">3</span>)</span><br><span class="line"> &#125;</span><br><span class="line">pwndbg&gt; x/8gx  <span class="number">0x3794877cdd99</span>-<span class="number">1</span></span><br><span class="line"><span class="number">0x3794877cdd98</span>:	<span class="number">0x00003f3bffd4abd9</span>	<span class="number">0x000038e8d9140c71</span></span><br><span class="line"><span class="number">0x3794877cdda8</span>:	<span class="number">0x000038e8d9140c71</span>	<span class="number">0x0000000000000000</span> <span class="comment">//0</span></span><br><span class="line"><span class="number">0x3794877cddb8</span>:	<span class="number">0x0000000100000000</span>	<span class="number">0x0000000200000000</span> <span class="comment">//1   2</span></span><br><span class="line"><span class="number">0x3794877cddc8</span>:	<span class="number">0x0000000300000000</span>	<span class="number">0x000038e8d9141f49</span> <span class="comment">//3   </span></span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>普通的property：给object的property超过一定数量后，后面的property就会存到PropertyArray中</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> o1 = &#123;&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i &lt;<span class="number">8</span>; i++)&#123;</span><br><span class="line">o1[<span class="string">&quot;p&quot;</span> + i.<span class="title function_">toString</span>()] = i;</span><br><span class="line">&#125;</span><br><span class="line">%<span class="title class_">DebugPrint</span>(o1);</span><br><span class="line">%<span class="title class_">SystemBreak</span>();</span><br><span class="line"><span class="comment">//output</span></span><br><span class="line"><span class="number">0x1e9b0634dd99</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x1501a910ad19</span>&gt;</span><br><span class="line">pwndbg&gt; job <span class="number">0x1e9b0634dd99</span> <span class="comment">//看看Object</span></span><br><span class="line"><span class="number">0x1e9b0634dd99</span>: [<span class="variable constant_">JS_OBJECT_TYPE</span>]</span><br><span class="line"> - <span class="attr">map</span>: <span class="number">0x1501a910ad19</span> &lt;<span class="title class_">Map</span>(<span class="variable constant_">HOLEY_ELEMENTS</span>)&gt; [<span class="title class_">FastProperties</span>]</span><br><span class="line"> - <span class="attr">prototype</span>: <span class="number">0x31170e202091</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x1501a9100229</span>&gt;</span><br><span class="line"> - <span class="attr">elements</span>: <span class="number">0x0a7913900c71</span> &lt;<span class="title class_">FixedArray</span>[<span class="number">0</span>]&gt; [<span class="variable constant_">HOLEY_ELEMENTS</span>]</span><br><span class="line"> - <span class="attr">properties</span>: <span class="number">0x1e9b0634e331</span> &lt;<span class="title class_">PropertyArray</span>[<span class="number">6</span>]&gt; &#123;<span class="comment">//前面4个是in-object property，后面就是普通的property</span></span><br><span class="line">    #<span class="attr">p0</span>: <span class="number">0</span> (<span class="keyword">const</span> data field <span class="number">0</span>)</span><br><span class="line">    #<span class="attr">p1</span>: <span class="number">1</span> (<span class="keyword">const</span> data field <span class="number">1</span>)</span><br><span class="line">    #<span class="attr">p2</span>: <span class="number">2</span> (<span class="keyword">const</span> data field <span class="number">2</span>)</span><br><span class="line">    #<span class="attr">p3</span>: <span class="number">3</span> (<span class="keyword">const</span> data field <span class="number">3</span>)</span><br><span class="line">    #<span class="attr">p4</span>: <span class="number">4</span> (<span class="keyword">const</span> data field <span class="number">4</span>) properties[<span class="number">0</span>]</span><br><span class="line">    #<span class="attr">p5</span>: <span class="number">5</span> (<span class="keyword">const</span> data field <span class="number">5</span>) properties[<span class="number">1</span>]</span><br><span class="line">    #<span class="attr">p6</span>: <span class="number">6</span> (<span class="keyword">const</span> data field <span class="number">6</span>) properties[<span class="number">2</span>]</span><br><span class="line">    #<span class="attr">p7</span>: <span class="number">7</span> (<span class="keyword">const</span> data field <span class="number">7</span>) properties[<span class="number">3</span>]</span><br><span class="line"> &#125;</span><br><span class="line">pwndbg&gt; job <span class="number">0x1e9b0634e331</span> <span class="comment">//看看PropertyArray</span></span><br><span class="line"><span class="number">0x1e9b0634e331</span>: [<span class="title class_">PropertyArray</span>]</span><br><span class="line"> - <span class="attr">map</span>: <span class="number">0x0a7913901909</span> &lt;<span class="title class_">Map</span>&gt;</span><br><span class="line"> - <span class="attr">length</span>: <span class="number">6</span></span><br><span class="line"> - <span class="attr">hash</span>: <span class="number">0</span></span><br><span class="line">           <span class="number">0</span>: <span class="number">4</span></span><br><span class="line">           <span class="number">1</span>: <span class="number">5</span></span><br><span class="line">           <span class="number">2</span>: <span class="number">6</span></span><br><span class="line">           <span class="number">3</span>: <span class="number">7</span></span><br><span class="line">         <span class="number">4</span>-<span class="number">5</span>: <span class="number">0x0a79139004d1</span> &lt;<span class="literal">undefined</span>&gt;</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>🤔PropertyArray的空间似乎是按3的倍数来，后来试试一个有12个属性的object，去掉4个in-object property，剩下8个，但是创建了一个大小为9的PropertyArray</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> o1 = &#123;&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i &lt;<span class="number">12</span>; i++)&#123;</span><br><span class="line">o1[<span class="string">&quot;p&quot;</span> + i.<span class="title function_">toString</span>()] = i;</span><br><span class="line">&#125;</span><br><span class="line">%<span class="title class_">DebugPrint</span>(o1);</span><br><span class="line">%<span class="title class_">SystemBreak</span>();</span><br><span class="line"><span class="comment">//output</span></span><br><span class="line"><span class="number">0x005b0240dd99</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x1c32d7d8ae59</span>&gt;</span><br><span class="line">pwndbg&gt; job <span class="number">0x005b0240dd99</span></span><br><span class="line"><span class="number">0x5b0240dd99</span>: [<span class="variable constant_">JS_OBJECT_TYPE</span>]</span><br><span class="line"> - <span class="attr">map</span>: <span class="number">0x1c32d7d8ae59</span> &lt;<span class="title class_">Map</span>(<span class="variable constant_">HOLEY_ELEMENTS</span>)&gt; [<span class="title class_">FastProperties</span>]</span><br><span class="line"> - <span class="attr">prototype</span>: <span class="number">0x330042642091</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x1c32d7d80229</span>&gt;</span><br><span class="line"> - <span class="attr">elements</span>: <span class="number">0x139f6b440c71</span> &lt;<span class="title class_">FixedArray</span>[<span class="number">0</span>]&gt; [<span class="variable constant_">HOLEY_ELEMENTS</span>]</span><br><span class="line"> - <span class="attr">properties</span>: <span class="number">0x005b0240e5f9</span> &lt;<span class="title class_">PropertyArray</span>[<span class="number">9</span>]&gt; &#123;</span><br><span class="line">    #<span class="attr">p0</span>: <span class="number">0</span> (<span class="keyword">const</span> data field <span class="number">0</span>)</span><br><span class="line">    #<span class="attr">p1</span>: <span class="number">1</span> (<span class="keyword">const</span> data field <span class="number">1</span>)</span><br><span class="line">    #<span class="attr">p2</span>: <span class="number">2</span> (<span class="keyword">const</span> data field <span class="number">2</span>)</span><br><span class="line">    #<span class="attr">p3</span>: <span class="number">3</span> (<span class="keyword">const</span> data field <span class="number">3</span>)</span><br><span class="line">    #<span class="attr">p4</span>: <span class="number">4</span> (<span class="keyword">const</span> data field <span class="number">4</span>) properties[<span class="number">0</span>]</span><br><span class="line">    #<span class="attr">p5</span>: <span class="number">5</span> (<span class="keyword">const</span> data field <span class="number">5</span>) properties[<span class="number">1</span>]</span><br><span class="line">    #<span class="attr">p6</span>: <span class="number">6</span> (<span class="keyword">const</span> data field <span class="number">6</span>) properties[<span class="number">2</span>]</span><br><span class="line">    #<span class="attr">p7</span>: <span class="number">7</span> (<span class="keyword">const</span> data field <span class="number">7</span>) properties[<span class="number">3</span>]</span><br><span class="line">    #<span class="attr">p8</span>: <span class="number">8</span> (<span class="keyword">const</span> data field <span class="number">8</span>) properties[<span class="number">4</span>]</span><br><span class="line">    #<span class="attr">p9</span>: <span class="number">9</span> (<span class="keyword">const</span> data field <span class="number">9</span>) properties[<span class="number">5</span>]</span><br><span class="line">    #<span class="attr">p10</span>: <span class="number">10</span> (<span class="keyword">const</span> data field <span class="number">10</span>) properties[<span class="number">6</span>]</span><br><span class="line">    #<span class="attr">p11</span>: <span class="number">11</span> (<span class="keyword">const</span> data field <span class="number">11</span>) properties[<span class="number">7</span>]</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></div></blockquote>
+</li>
+</ul>
+<h3 id="fast-property-amp-slow-property"><a href="#fast-property-amp-slow-property" class="headerlink" title="fast property&amp;slow property"></a>fast property&amp;slow property</h3><p>propert也可以分为fast property和slow property</p>
+<ul>
+<li><p>fast property：保存在线性排序的数组⾥的property，前面提到的在PropertyArray中的都是fast property</p>
+</li>
+<li><p>slow property：为了支持频繁地添加&#x2F;删除属性而不更新HiddenClass与DescriptorArray，v8支持slow property，有slow property的Object有一个自包含的属性字典来存储属性信息</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/image-20241115181255404.png"
+                      alt="image-20241115181255404"
+                ><figcaption>image-20241115181255404</figcaption></figure></p>
+</li>
+</ul>
+<p>举个例子🌰添加100次属性</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> o1 = &#123;&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i &lt;<span class="number">100</span>; i++)&#123;</span><br><span class="line">o1[<span class="string">&quot;p&quot;</span> + i.<span class="title function_">toString</span>()] = i;</span><br><span class="line">&#125;</span><br><span class="line">%<span class="title class_">DebugPrint</span>(o1);</span><br><span class="line">%<span class="title class_">SystemBreak</span>();</span><br><span class="line"><span class="comment">//output</span></span><br><span class="line"><span class="number">0x2d695c28dd99</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x3221bcb463a9</span>&gt;</span><br><span class="line">pwndbg&gt; job <span class="number">0x2d695c28dd99</span></span><br><span class="line"><span class="number">0x2d695c28dd99</span>: [<span class="variable constant_">JS_OBJECT_TYPE</span>]</span><br><span class="line"> - <span class="attr">map</span>: <span class="number">0x3221bcb463a9</span> &lt;<span class="title class_">Map</span>(<span class="variable constant_">HOLEY_ELEMENTS</span>)&gt; [<span class="title class_">DictionaryProperties</span>]</span><br><span class="line"> - <span class="attr">prototype</span>: <span class="number">0x31c8c1a42091</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x3221bcb40229</span>&gt;</span><br><span class="line"> - <span class="attr">elements</span>: <span class="number">0x151002c00c71</span> &lt;<span class="title class_">FixedArray</span>[<span class="number">0</span>]&gt; [<span class="variable constant_">HOLEY_ELEMENTS</span>]</span><br><span class="line"> - <span class="attr">properties</span>: <span class="number">0x2d695c290969</span> &lt;<span class="title class_">NameDictionary</span>[<span class="number">773</span>]&gt; &#123; <span class="comment">//这个时候再看已经变成了NameDictionary</span></span><br><span class="line">   #<span class="attr">p67</span>: <span class="number">67</span> (data, <span class="attr">dict_index</span>: <span class="number">68</span>, <span class="attr">attrs</span>: [<span class="variable constant_">WEC</span>])</span><br><span class="line">   #<span class="attr">p96</span>: <span class="number">96</span> (data, <span class="attr">dict_index</span>: <span class="number">97</span>, <span class="attr">attrs</span>: [<span class="variable constant_">WEC</span>])</span><br><span class="line">   #<span class="attr">p36</span>: <span class="number">36</span> (data, <span class="attr">dict_index</span>: <span class="number">37</span>, <span class="attr">attrs</span>: [<span class="variable constant_">WEC</span>])</span><br><span class="line">   #<span class="attr">p98</span>: <span class="number">98</span> (data, <span class="attr">dict_index</span>: <span class="number">99</span>, <span class="attr">attrs</span>: [<span class="variable constant_">WEC</span>])</span><br><span class="line">   <span class="comment">//......</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Map结构"><a href="#Map结构" class="headerlink" title="Map结构"></a>Map结构</h3><p>可以看一下src&#x2F;objects&#x2F;map.h中的注释</p>
+<p>主要关注4个连续的Int</p>
+<ul>
+<li>第一个int值主要是一些大小相关，instance_size..</li>
+<li>🌟第二个int值比较关键，代表了type，描述map对应的object的类型</li>
+<li>第三个int值主要是一些descriptors，比如前面说的properties长度之类的</li>
+<li>第四个int值主要是64相关的一些额外信息，不太重要</li>
+</ul>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// All heap objects have a Map that describes their structure.</span></span><br><span class="line"><span class="comment">//  A Map contains information about:</span></span><br><span class="line"><span class="comment">//  - Size information about the object</span></span><br><span class="line"><span class="comment">//  - How to iterate over an object (for garbage collection)</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Map layout:</span></span><br><span class="line"><span class="comment">// +---------------+---------------------------------------------+</span></span><br><span class="line"><span class="comment">// |   _ Type _    | _ Description _                             |</span></span><br><span class="line"><span class="comment">// +---------------+---------------------------------------------+</span></span><br><span class="line"><span class="comment">// | TaggedPointer | map - Always a pointer to the MetaMap root  |</span></span><br><span class="line"><span class="comment">// +---------------+---------------------------------------------+</span></span><br><span class="line"><span class="comment">// | Int           | The first int field                         |</span></span><br><span class="line"><span class="comment">//  `---+----------+---------------------------------------------+</span></span><br><span class="line"><span class="comment">//      | Byte     | [instance_size]                             |</span></span><br><span class="line"><span class="comment">//      +----------+---------------------------------------------+</span></span><br><span class="line"><span class="comment">//      | Byte     | If Map for a primitive type:                |</span></span><br><span class="line"><span class="comment">//      |          |   native context index for constructor fn   |</span></span><br><span class="line"><span class="comment">//      |          | If Map for an Object type:                  |</span></span><br><span class="line"><span class="comment">//      |          |   inobject properties start offset in words |</span></span><br><span class="line"><span class="comment">//      +----------+---------------------------------------------+</span></span><br><span class="line"><span class="comment">//      | Byte     | [used_or_unused_instance_size_in_words]     |</span></span><br><span class="line"><span class="comment">//      |          | For JSObject in fast mode this byte encodes |</span></span><br><span class="line"><span class="comment">//      |          | the size of the object that includes only   |</span></span><br><span class="line"><span class="comment">//      |          | the used property fields or the slack size  |</span></span><br><span class="line"><span class="comment">//      |          | in properties backing store.                |</span></span><br><span class="line"><span class="comment">//      +----------+---------------------------------------------+</span></span><br><span class="line"><span class="comment">//      | Byte     | [visitor_id]                                |</span></span><br><span class="line"><span class="comment">// +----+----------+---------------------------------------------+</span></span><br><span class="line"><span class="comment">// | Int           | The second int field                        |🌟</span></span><br><span class="line"><span class="comment">//  `---+----------+---------------------------------------------+</span></span><br><span class="line"><span class="comment">//      | Short    | [instance_type]                             |</span></span><br><span class="line"><span class="comment">//      +----------+---------------------------------------------+</span></span><br><span class="line"><span class="comment">//      | Byte     | [bit_field]                                 |</span></span><br><span class="line"><span class="comment">//      |          |   - has_non_instance_prototype (bit 0)      |</span></span><br><span class="line"><span class="comment">//      |          |   - is_callable (bit 1)                     |</span></span><br><span class="line"><span class="comment">//      |          |   - has_named_interceptor (bit 2)           |</span></span><br><span class="line"><span class="comment">//      |          |   - has_indexed_interceptor (bit 3)         |</span></span><br><span class="line"><span class="comment">//      |          |   - is_undetectable (bit 4)                 |</span></span><br><span class="line"><span class="comment">//      |          |   - is_access_check_needed (bit 5)          |</span></span><br><span class="line"><span class="comment">//      |          |   - is_constructor (bit 6)                  |</span></span><br><span class="line"><span class="comment">//      |          |   - has_prototype_slot (bit 7)              |</span></span><br><span class="line"><span class="comment">//      +----------+---------------------------------------------+</span></span><br><span class="line"><span class="comment">//      | Byte     | [bit_field2]                                |</span></span><br><span class="line"><span class="comment">//      |          |   - is_extensible (bit 0)                   |</span></span><br><span class="line"><span class="comment">//      |          |   - is_prototype_map (bit 1)                |</span></span><br><span class="line"><span class="comment">//      |          |   - is_in_retained_map_list (bit 2)         |</span></span><br><span class="line"><span class="comment">//      |          |   - elements_kind (bits 3..7)               |</span></span><br><span class="line"><span class="comment">// +----+----------+---------------------------------------------+</span></span><br><span class="line"><span class="comment">// | Int           | [bit_field3]                                |</span></span><br><span class="line"><span class="comment">// |               |   - enum_length (bit 0..9)                  |</span></span><br><span class="line"><span class="comment">// |               |   - number_of_own_descriptors (bit 10..19)  |</span></span><br><span class="line"><span class="comment">// |               |   - is_dictionary_map (bit 20)              |</span></span><br><span class="line"><span class="comment">// |               |   - owns_descriptors (bit 21)               |</span></span><br><span class="line"><span class="comment">// |               |   - has_hidden_prototype (bit 22)           |</span></span><br><span class="line"><span class="comment">// |               |   - is_deprecated (bit 23)                  |</span></span><br><span class="line"><span class="comment">// |               |   - is_unstable (bit 24)                    |</span></span><br><span class="line"><span class="comment">// |               |   - is_migration_target (bit 25)            |</span></span><br><span class="line"><span class="comment">// |               |   - is_immutable_proto (bit 26)             |</span></span><br><span class="line"><span class="comment">// |               |   - new_target_is_base (bit 27)             |</span></span><br><span class="line"><span class="comment">// |               |   - may_have_interesting_symbols (bit 28)   |</span></span><br><span class="line"><span class="comment">// |               |   - construction_counter (bit 29..31)       |</span></span><br><span class="line"><span class="comment">// |               |                                             |</span></span><br><span class="line"><span class="comment">// +*************************************************************+</span></span><br><span class="line"><span class="comment">// | Int           | On systems with 64bit pointer types, there  |</span></span><br><span class="line"><span class="comment">// |               | is an unused 32bits after bit_field3        |</span></span><br><span class="line"><span class="comment">// +*************************************************************+</span></span><br><span class="line"><span class="comment">// | TaggedPointer | [prototype]                                 |</span></span><br><span class="line"><span class="comment">// +---------------+---------------------------------------------+</span></span><br><span class="line"><span class="comment">// | TaggedPointer | [constructor_or_backpointer]                |</span></span><br><span class="line"><span class="comment">// +---------------+---------------------------------------------+</span></span><br><span class="line"><span class="comment">// | TaggedPointer | If Map is a prototype map:                  |</span></span><br><span class="line"><span class="comment">// |               |   [prototype_info]                          |</span></span><br><span class="line"><span class="comment">// |               | Else:                                       |</span></span><br><span class="line"><span class="comment">// |               |   [raw_transitions]                         |</span></span><br><span class="line"><span class="comment">// +---------------+---------------------------------------------+</span></span><br><span class="line"><span class="comment">// | TaggedPointer | [instance_descriptors]                      |</span></span><br><span class="line"><span class="comment">// +*************************************************************+</span></span><br><span class="line"><span class="comment">// ! TaggedPointer ! [layout_descriptors]                        !</span></span><br><span class="line"><span class="comment">// !               ! Field is only present if compile-time flag  !</span></span><br><span class="line"><span class="comment">// !               ! FLAG_unbox_double_fields is enabled         !</span></span><br><span class="line"><span class="comment">// !               ! (basically on 64 bit architectures)         !</span></span><br><span class="line"><span class="comment">// +*************************************************************+</span></span><br><span class="line"><span class="comment">// | TaggedPointer | [dependent_code]                            |</span></span><br><span class="line"><span class="comment">// +---------------+---------------------------------------------+</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> V8-pwn入门(1)——对象模型、特性</li>
+        <li><strong>作者:</strong> Sl0th</li>
+        <li><strong>创建于
+                :</strong> 2024-11-12 21:21:50</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2024-11-21 16:01:10
+            </li>
+        
+        <li>
+            <strong>链接:</strong> http://sl0th.top/2024/11/12/V8-pwn入门-1-——对象模型、特性/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/js-engine/">#js-engine</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/v8/">#v8</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2024/11/14/V8-pwn%E5%85%A5%E9%97%A8-2-%E2%80%94%E2%80%94-CTF-oob/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">V8-pwn入门(2)——[*CTF]oob</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2023/11/02/entry-java-%E5%87%BA%E9%A2%98%E8%AE%B0%E5%BD%95-wp/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">entry_java-出题记录/wp</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          reaction: false,
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">目录</div>
+        <div class="page-title">V8-pwn入门(1)——对象模型、特性</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-%E5%89%8D%E8%A8%80%F0%9F%92%AC"><span class="nav-text">0x00 前言💬</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E5%9F%BA%E7%A1%80%F0%9F%AA%A8"><span class="nav-text">0x01 基础🪨</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JS-Engine-CTF%E7%9A%84%E5%B8%B8%E8%A7%81%E6%A8%A1%E5%BC%8F"><span class="nav-text">JS Engine CTF的常见模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-V8%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B%E2%9A%99%EF%B8%8F"><span class="nav-text">0x02 V8对象模型⚙️</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#objects-h"><span class="nav-text">objects.h</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#V8-Object%E5%88%86%E7%B1%BB"><span class="nav-text">V8-Object分类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E5%85%B3%E9%94%AE%E7%9A%84HeapObject%F0%9F%A7%90"><span class="nav-text">0x03 关键的HeapObject🧐</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HeapNumber"><span class="nav-text">HeapNumber</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String"><span class="nav-text">String</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSObject"><span class="nav-text">JSObject</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSArray"><span class="nav-text">JSArray</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSArrayBuffer"><span class="nav-text">JSArrayBuffer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSTypedArray"><span class="nav-text">JSTypedArray</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSDataView"><span class="nav-text">JSDataView</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-V8%E7%89%B9%E6%80%A7"><span class="nav-text">0x04 V8特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hidden-Class"><span class="nav-text">Hidden Class</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#property"><span class="nav-text">property</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fast-property-amp-slow-property"><span class="nav-text">fast property&amp;slow property</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Map%E7%BB%93%E6%9E%84"><span class="nav-text">Map结构</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Sl0th</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 47 篇文章
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.7.3</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+</body>
+</html>

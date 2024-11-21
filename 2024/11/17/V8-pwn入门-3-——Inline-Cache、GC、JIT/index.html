@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Sl0th">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://sloth31.github.io/2024/11/17/v8-pwn入门-3-——inline-cache、gc、jit/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="0x00 Inline Cache🗺️概念Inline Cache 是一种基于历史访问模式的缓存技术，主要用于加速以下操作：  属性访问（如 obj.prop） 方法调用（如 obj.method()） 属性设置（如 obj.prop &#x3D; value） 全局变量访问  那么这种缓存是怎么实现的？🤔其实就是之前提到的Hidden Class(也就是Map)，以属性访问为例，对于一个obj的map">
+<meta property="og:type" content="article">
+<meta property="og:title" content="V8-pwn入门(3)——Inline-Cache、GC、JIT">
+<meta property="og:url" content="http://sloth31.github.io/2024/11/17/V8-pwn%E5%85%A5%E9%97%A8-3-%E2%80%94%E2%80%94Inline-Cache%E3%80%81GC%E3%80%81JIT/index.html">
+<meta property="og:site_name" content="Sl0th&#39;s Blog">
+<meta property="og:description" content="0x00 Inline Cache🗺️概念Inline Cache 是一种基于历史访问模式的缓存技术，主要用于加速以下操作：  属性访问（如 obj.prop） 方法调用（如 obj.method()） 属性设置（如 obj.prop &#x3D; value） 全局变量访问  那么这种缓存是怎么实现的？🤔其实就是之前提到的Hidden Class(也就是Map)，以属性访问为例，对于一个obj的map">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://sloth31.github.io/images/image-20241117180023224.png">
+<meta property="og:image" content="http://sloth31.github.io/images/image-20241117175832676.png">
+<meta property="og:image" content="http://sloth31.github.io/images/image-20241117175902132.png">
+<meta property="og:image" content="http://sloth31.github.io/images/image-20241117175913086.png">
+<meta property="og:image" content="http://sloth31.github.io/images/image-20241117175920222.png">
+<meta property="og:image" content="http://sloth31.github.io/images/image-20241117175928650.png">
+<meta property="article:published_time" content="2024-11-17T14:18:16.000Z">
+<meta property="article:modified_time" content="2024-11-21T08:10:48.286Z">
+<meta property="article:author" content="Sl0th">
+<meta property="article:tag" content="js-engine">
+<meta property="article:tag" content="v8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://sloth31.github.io/images/image-20241117180023224.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/fav.ico" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/fav.ico">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/fav.ico">
+    <!--- Page Info-->
+    
+    <title>
+        
+            V8-pwn入门(3)——Inline-Cache、GC、JIT | Sl0th&#39;s Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"sloth31.github.io","root":"/","language":"zh-CN","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/night.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/day.jpg","dark":"/images/night.jpg"},"title":"Welcome to Sl0th's Blog","subtitle":{"text":["There is no royal road to learning"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#4D5356","dark":"#fff"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":"enable","style":"default","links":{"github":"https://github.com/sloth31","instagram":null,"zhihu":null,"twitter":null,"email":"z694081360@gmail.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.7.3","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/sloth31","Blog":"http://sl0th.top/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container flex flex-col justify-between min-h-dvh">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+                <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
+                    <img src="/images/fav.ico" class="w-full h-full rounded-sm">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                Sl0th&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-regular fa-tags fa-fw"></i>
+                                    标签
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a href="/about">
+                                                    ME
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://github.com/sloth31">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="http://sl0th.top/">
+                                                    BLOG
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                标签
+                            </span>
+                            
+                                <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/about">ME</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://github.com/sloth31">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="http://sl0th.top/">BLOG</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">29</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">12</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">47</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">V8-pwn入门(3)——Inline-Cache、GC、JIT</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/avatar.JPG">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Sl0th</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-11-17 22:18:16</span>
+        <span class="mobile">2024-11-17 22:18:16</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-11-21 16:10:48</span>
+            <span class="mobile">2024-11-21 16:10:48</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/js-engine/">js-engine</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/v8/">v8</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="0x00-Inline-Cache🗺️"><a href="#0x00-Inline-Cache🗺️" class="headerlink" title="0x00 Inline Cache🗺️"></a>0x00 Inline Cache🗺️</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>Inline Cache 是一种基于历史访问模式的缓存技术，主要用于加速以下操作：</p>
+<ul>
+<li><strong>属性访问</strong>（如 <code>obj.prop</code>）</li>
+<li><strong>方法调用</strong>（如 <code>obj.method()</code>）</li>
+<li><strong>属性设置</strong>（如 <code>obj.prop = value</code>）</li>
+<li><strong>全局变量访问</strong></li>
+</ul>
+<p>那么这种缓存是怎么实现的？🤔其实就是之前提到的Hidden Class(也就是Map)，以属性访问为例，对于一个obj的map，如果想访问<code>obj.X</code>，我们可以缓存obj的Map，而<code>obj.X</code>作为一个name property在Map中properties array的偏移是固定的，因此可以直接取出，不用再用<code>X</code>这个key去Map中的properties array检索，从而加速属性访问</p>
+<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><ul>
+<li>0 uninitialized：未初始化</li>
+<li>. premonomorphic：单态之前</li>
+<li>1 monomorphic：单态</li>
+<li>^ recompute handler：重新计算处理器</li>
+<li>P polymorphic：多态</li>
+<li>N megamorphic：巨型缓存状态</li>
+<li>G generic：通用</li>
+</ul>
+<h3 id="基本过程"><a href="#基本过程" class="headerlink" title="基本过程"></a>基本过程</h3><p>具体可参考<a class="link"   target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/mbJJAiGz0OAd2IOc8K5Mkg" >https://mp.weixin.qq.com/s/mbJJAiGz0OAd2IOc8K5Mkg <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>?</p>
+<p>简单来说，只有在第二次访问<code>obj.X</code>时（第二次产生IC-Miss），会编译生成<code>IC-Hit Handler</code>，把<code>IC-Hit Handler</code>和<code>Map</code>加入缓存，之后第三次访问<code>obj.X</code>速度会大大提升。</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/image-20241117180023224.png"
+                      alt="image-20241117180023224"
+                ><figcaption>image-20241117180023224</figcaption></figure></p>
+<h3 id="Monomorphic-单态）"><a href="#Monomorphic-单态）" class="headerlink" title="Monomorphic(单态）"></a>Monomorphic(单态）</h3><p>此时需要缓存的只有一种map，也就是说一个object被定义后，不会添加&#x2F;删除property，也就不会改变Hidden Class(Map)</p>
+<p>举个例子🌰</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 利用--print-bytecode可以看字节码</span></span><br><span class="line"><span class="keyword">let</span> o = &#123;sloth : <span class="number">1440</span>&#125;;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getSloth</span>(<span class="params">obj</span>) &#123;</span><br><span class="line">	<span class="keyword">return</span> obj.<span class="property">sloth</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;<span class="number">20</span>;i++)<span class="comment">//触发inline Cache</span></span><br><span class="line">	<span class="title function_">getSloth</span>(o);</span><br><span class="line">%<span class="title class_">DebugPrint</span>(getSloth);</span><br><span class="line">%<span class="title class_">SystemBreak</span>();</span><br><span class="line"><span class="comment">//output</span></span><br><span class="line">[generated bytecode <span class="keyword">for</span> <span class="attr">function</span>: getSloth]</span><br><span class="line"><span class="title class_">Parameter</span> count <span class="number">2</span></span><br><span class="line"><span class="title class_">Register</span> count <span class="number">0</span></span><br><span class="line"><span class="title class_">Frame</span> size <span class="number">0</span></span><br><span class="line">   <span class="number">41</span> E&gt; <span class="number">0x1ebf58a1fb42</span> @    <span class="number">0</span> : a5                <span class="title class_">StackCheck</span></span><br><span class="line">   <span class="number">61</span> S&gt; <span class="number">0x1ebf58a1fb43</span> @    <span class="number">1</span> : <span class="number">28</span> <span class="number">02</span> <span class="number">00</span> <span class="number">00</span>       <span class="title class_">LdaNamedProperty</span> a0, [<span class="number">0</span>], [<span class="number">0</span>]</span><br><span class="line">   <span class="number">67</span> S&gt; <span class="number">0x1ebf58a1fb47</span> @    <span class="number">5</span> : a9                <span class="title class_">Return</span></span><br><span class="line"><span class="title class_">Constant</span> <span class="title function_">pool</span> (size = <span class="number">1</span>)</span><br><span class="line"><span class="number">0x1ebf58a1faf1</span>: [<span class="title class_">FixedArray</span>] <span class="keyword">in</span> <span class="title class_">OldSpace</span></span><br><span class="line"> - <span class="attr">map</span>: <span class="number">0x336a62180801</span> &lt;<span class="title class_">Map</span>&gt;</span><br><span class="line"> - <span class="attr">length</span>: <span class="number">1</span></span><br><span class="line">           <span class="number">0</span>: <span class="number">0x1ebf58a1f229</span> &lt;<span class="title class_">String</span>[#<span class="number">5</span>]: sloth&gt;</span><br><span class="line"><span class="title class_">Handler</span> <span class="title class_">Table</span> (size = <span class="number">0</span>)</span><br><span class="line"><span class="number">0x1ebf58a1f611</span> &lt;<span class="title class_">JSFunction</span> <span class="title function_">getSloth</span> (sfi = <span class="number">0x1ebf58a1f371</span>)&gt;</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>可以看到生成的字节码很简单，就是用一个<code>LdaNamedProperty</code></p>
+<p>在V8源码src&#x2F;interpreter&#x2F;interpreter-gengerator.cc有解释<code>LdaNamedProperty</code>的使用规范</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// LdaNamedProperty &lt;object&gt; &lt;name_index&gt; &lt;slot&gt;</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Calls the LoadIC at FeedBackVector slot &lt;slot&gt; for &lt;object&gt; and the name at</span></span><br><span class="line"><span class="comment">// constant pool entry &lt;name_index&gt;.</span></span><br></pre></td></tr></table></figure></div>
+
+<p>具体来说第一个参数就是要访问的object，第二个是name object的name在常量池中的index，第三个参数是个slot，主要是指明调用<code> FeedBackVector</code>中的哪个LoadIC</p>
+<p>我们可以跟进一下看看这个<code>FeedBackVector</code></p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; job <span class="number">0x1ebf58a1f611</span> <span class="comment">//先看看Function</span></span><br><span class="line"><span class="number">0x1ebf58a1f611</span>: [<span class="title class_">Function</span>] <span class="keyword">in</span> <span class="title class_">OldSpace</span></span><br><span class="line"> - <span class="attr">map</span>: <span class="number">0x0058089003b9</span> &lt;<span class="title class_">Map</span>(<span class="variable constant_">HOLEY_ELEMENTS</span>)&gt; [<span class="title class_">FastProperties</span>]</span><br><span class="line"> - <span class="attr">prototype</span>: <span class="number">0x1ebf58a02109</span> &lt;<span class="title class_">JSFunction</span> (sfi = <span class="number">0x76000683b29</span>)&gt;</span><br><span class="line"> - <span class="attr">elements</span>: <span class="number">0x336a62180c71</span> &lt;<span class="title class_">FixedArray</span>[<span class="number">0</span>]&gt; [<span class="variable constant_">HOLEY_ELEMENTS</span>]</span><br><span class="line"> - <span class="keyword">function</span> <span class="attr">prototype</span>:</span><br><span class="line"> - <span class="attr">initial_map</span>:</span><br><span class="line"> - <span class="attr">shared_info</span>: <span class="number">0x1ebf58a1f371</span> &lt;<span class="title class_">SharedFunctionInfo</span> getSloth&gt;</span><br><span class="line"> - <span class="attr">name</span>: <span class="number">0x1ebf58a1f241</span> &lt;<span class="title class_">String</span>[#<span class="number">8</span>]: getSloth&gt;</span><br><span class="line"> - <span class="attr">formal_parameter_count</span>: <span class="number">1</span></span><br><span class="line"> - <span class="attr">kind</span>: <span class="title class_">NormalFunction</span></span><br><span class="line"> - <span class="attr">context</span>: <span class="number">0x1ebf58a1f5d9</span> &lt;<span class="title class_">ScriptContext</span>[<span class="number">5</span>]&gt;</span><br><span class="line"> - <span class="attr">code</span>: <span class="number">0x176fcf304101</span> &lt;<span class="title class_">Code</span> <span class="variable constant_">BUILTIN</span> <span class="title class_">InterpreterEntryTrampoline</span>&gt;</span><br><span class="line"> - interpreted</span><br><span class="line"> - <span class="attr">bytecode</span>: <span class="number">0x1ebf58a1fb09</span> &lt;<span class="title class_">BytecodeArray</span>[<span class="number">6</span>]&gt;</span><br><span class="line"> - source <span class="attr">code</span>: (obj) &#123;</span><br><span class="line">	<span class="keyword">return</span> obj.<span class="property">sloth</span>;</span><br><span class="line">&#125;</span><br><span class="line"> - <span class="attr">properties</span>: <span class="number">0x336a62180c71</span> &lt;<span class="title class_">FixedArray</span>[<span class="number">0</span>]&gt; &#123;</span><br><span class="line">    #<span class="attr">length</span>: <span class="number">0x0760006804b9</span> &lt;<span class="title class_">AccessorInfo</span>&gt; (<span class="keyword">const</span> accessor descriptor)</span><br><span class="line">    #<span class="attr">name</span>: <span class="number">0x076000680449</span> &lt;<span class="title class_">AccessorInfo</span>&gt; (<span class="keyword">const</span> accessor descriptor)</span><br><span class="line">    #<span class="attr">arguments</span>: <span class="number">0x076000680369</span> &lt;<span class="title class_">AccessorInfo</span>&gt; (<span class="keyword">const</span> accessor descriptor)</span><br><span class="line">    #<span class="attr">caller</span>: <span class="number">0x0760006803d9</span> &lt;<span class="title class_">AccessorInfo</span>&gt; (<span class="keyword">const</span> accessor descriptor)</span><br><span class="line">    #<span class="attr">prototype</span>: <span class="number">0x076000680529</span> &lt;<span class="title class_">AccessorInfo</span>&gt; (<span class="keyword">const</span> accessor descriptor)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> - feedback <span class="attr">vector</span>: <span class="number">0x1ebf58a1fb79</span>: [<span class="title class_">FeedbackVector</span>] <span class="keyword">in</span> <span class="title class_">OldSpace</span> <span class="comment">//🌟跟进</span></span><br><span class="line"> - <span class="attr">map</span>: <span class="number">0x336a62180c11</span> &lt;<span class="title class_">Map</span>&gt;</span><br><span class="line"> - <span class="attr">length</span>: <span class="number">2</span></span><br><span class="line"> - shared <span class="keyword">function</span> <span class="attr">info</span>: <span class="number">0x1ebf58a1f371</span> &lt;<span class="title class_">SharedFunctionInfo</span> getSloth&gt;</span><br><span class="line"> - optimized code/<span class="attr">marker</span>: <span class="title class_">OptimizationMarker</span>::kNone</span><br><span class="line"> - invocation <span class="attr">count</span>: <span class="number">20</span></span><br><span class="line"> - profiler <span class="attr">ticks</span>: <span class="number">0</span></span><br><span class="line"> - slot #<span class="number">0</span> <span class="title class_">LoadProperty</span> <span class="variable constant_">MONOMORPHIC</span> &#123;</span><br><span class="line">     [<span class="number">0</span>]: [weak] <span class="number">0x00580890ab39</span> &lt;<span class="title class_">Map</span>(<span class="variable constant_">HOLEY_ELEMENTS</span>)&gt;</span><br><span class="line">     [<span class="number">1</span>]: <span class="number">836</span></span><br><span class="line">  &#125;</span><br><span class="line">pwndbg&gt; job  <span class="number">0x1ebf58a1fb79</span> <span class="comment">//看看FeedbackVector</span></span><br><span class="line"><span class="number">0x1ebf58a1fb79</span>: [<span class="title class_">FeedbackVector</span>] <span class="keyword">in</span> <span class="title class_">OldSpace</span></span><br><span class="line"> - <span class="attr">map</span>: <span class="number">0x336a62180c11</span> &lt;<span class="title class_">Map</span>&gt;</span><br><span class="line"> - <span class="attr">length</span>: <span class="number">2</span></span><br><span class="line"> - shared <span class="keyword">function</span> <span class="attr">info</span>: <span class="number">0x1ebf58a1f371</span> &lt;<span class="title class_">SharedFunctionInfo</span> getSloth&gt;</span><br><span class="line"> - optimized code/<span class="attr">marker</span>: <span class="title class_">OptimizationMarker</span>::kNone</span><br><span class="line"> - invocation <span class="attr">count</span>: <span class="number">20</span></span><br><span class="line"> - profiler <span class="attr">ticks</span>: <span class="number">0</span></span><br><span class="line"> - slot #<span class="number">0</span> <span class="title class_">LoadProperty</span> <span class="variable constant_">MONOMORPHIC</span> &#123; </span><br><span class="line">     [<span class="number">0</span>]: [weak] <span class="number">0x00580890ab39</span> &lt;<span class="title class_">Map</span>(<span class="variable constant_">HOLEY_ELEMENTS</span>)&gt; <span class="comment">//最后被调用的LoadIC，其实是个Map</span></span><br><span class="line">     [<span class="number">1</span>]: <span class="number">836</span></span><br><span class="line">  &#125;</span><br><span class="line">pwndbg&gt; job <span class="number">0x00580890ab39</span> <span class="comment">//看看Map，可以发现是某个Object的map</span></span><br><span class="line"><span class="number">0x580890ab39</span>: [<span class="title class_">Map</span>]</span><br><span class="line"> - <span class="attr">type</span>: <span class="variable constant_">JS_OBJECT_TYPE</span></span><br><span class="line"> - instance <span class="attr">size</span>: <span class="number">32</span></span><br><span class="line"> - inobject <span class="attr">properties</span>: <span class="number">1</span></span><br><span class="line"> - elements <span class="attr">kind</span>: <span class="variable constant_">HOLEY_ELEMENTS</span></span><br><span class="line"> - unused property <span class="attr">fields</span>: <span class="number">0</span></span><br><span class="line"> - enum <span class="attr">length</span>: invalid</span><br><span class="line"> - stable_map</span><br><span class="line"> - back <span class="attr">pointer</span>: <span class="number">0x00580890aae9</span> &lt;<span class="title class_">Map</span>(<span class="variable constant_">HOLEY_ELEMENTS</span>)&gt;</span><br><span class="line"> - prototype_validity <span class="attr">cell</span>: <span class="number">0x076000680609</span> &lt;<span class="title class_">Cell</span> value= <span class="number">1</span>&gt;</span><br><span class="line"> - instance <span class="title function_">descriptors</span> (own) #<span class="number">1</span>: <span class="number">0x14305458ddf9</span> &lt;<span class="title class_">DescriptorArray</span>[<span class="number">1</span>]&gt; 🌟</span><br><span class="line"> - layout <span class="attr">descriptor</span>: (nil)</span><br><span class="line"> - <span class="attr">prototype</span>: <span class="number">0x1ebf58a02091</span> &lt;<span class="title class_">Object</span> map = <span class="number">0x5808900229</span>&gt;</span><br><span class="line"> - <span class="attr">constructor</span>: <span class="number">0x1ebf58a020c9</span> &lt;<span class="title class_">JSFunction</span> <span class="title class_">Object</span> (sfi = <span class="number">0x760006857e9</span>)&gt;</span><br><span class="line"> - dependent <span class="attr">code</span>: <span class="number">0x336a621802c1</span> &lt;<span class="title class_">Other</span> heap <span class="title function_">object</span> (<span class="variable constant_">WEAK_FIXED_ARRAY_TYPE</span>)&gt;</span><br><span class="line"> - construction <span class="attr">counter</span>: <span class="number">0</span></span><br><span class="line">pwndbg&gt; job <span class="number">0x14305458ddf9</span> <span class="comment">//看看descriptors ，也就是存property的地方</span></span><br><span class="line"><span class="number">0x14305458ddf9</span>: [<span class="title class_">DescriptorArray</span>]</span><br><span class="line"> - <span class="attr">map</span>: <span class="number">0x336a62180271</span> &lt;<span class="title class_">Map</span>&gt;</span><br><span class="line"> - <span class="attr">enum_cache</span>: empty</span><br><span class="line"> - nof slack <span class="attr">descriptors</span>: <span class="number">0</span></span><br><span class="line"> - nof <span class="attr">descriptors</span>: <span class="number">1</span></span><br><span class="line"> - raw marked <span class="attr">descriptors</span>: mc epoch <span class="number">0</span>, marked <span class="number">0</span></span><br><span class="line">  [<span class="number">0</span>]: #<span class="title function_">sloth</span> (<span class="keyword">const</span> data field <span class="number">0</span>:s, <span class="attr">p</span>: <span class="number">0</span>, <span class="attr">attrs</span>: [<span class="variable constant_">WEC</span>]) @ <span class="title class_">Any</span> <span class="comment">//就是我们访问的那个obj，属性是sloth</span></span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>可以发现<code>FeedBackVector</code>的slot中其实就是存储了一个个缓存的Map，<code>LdaNamedProperty </code>调用slot中的[0]，也就对应了触发Inline Cache的<code>obj.sloth</code>的这个<code>obj</code>的Map</li>
+<li>同时<code>FeedBackVector</code>的slot中还有一个元素<code>slto[1]:836</code>，前面说到触发Inline Cache后，会把<code>IC-Hit Handler</code>和<code>Map</code>加入缓存，这个836就是<code>IC-Hit Handler</code>（Handler是V8封装的指针）<ul>
+<li><strong>IC-Hit Handler</strong> 是指当 Inline Cache机制匹配上之前缓存的信息时，直接触发执行的处理逻辑</li>
+<li>如果当前操作模式和缓存的信息匹配（<strong>IC hit</strong>），V8 会直接使用缓存的 Handler 来执行该操作，而不是重新进行属性查找或类型判断。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h4 id="触发JIT的情况"><a href="#触发JIT的情况" class="headerlink" title="触发JIT的情况"></a>触发JIT的情况</h4><p>把循环次数加大到一定数量，就会触发JIT优化，会将hot code直接转换成汇编</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> o = &#123;sloth : <span class="number">1440</span>&#125;;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getSloth</span>(<span class="params">obj</span>) &#123;</span><br><span class="line">	<span class="keyword">return</span> obj.<span class="property">sloth</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;<span class="number">100000</span>;i++)<span class="comment">//触发inline Cache &amp; JIT</span></span><br><span class="line">	<span class="title function_">getSloth</span>(o);</span><br></pre></td></tr></table></figure></div>
+
+<p>具体汇编逻辑类似</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">      mov ecx, &quot;sloth&quot;</span><br><span class="line">      mov eax, obj</span><br><span class="line">      cmp [eax + kMapOffset], &lt;cached map of obj&gt; # 首先比较传入函数的object的Map是否与Cache中的Map一致</span><br><span class="line">      jne miss</span><br><span class="line">      mov eax, [eax + kPropertiesOffset] </span><br><span class="line">      mov eax, [eax + &lt;cached offset of property sloth&gt;] #直接根据offset访问property</span><br><span class="line">      jmp done</span><br><span class="line">miss:</span><br><span class="line">			call IC_Miss</span><br><span class="line">done:</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="polymorphic（多态）"><a href="#polymorphic（多态）" class="headerlink" title="polymorphic（多态）"></a>polymorphic（多态）</h3><p>简单来说就是上面的getSloth函数被多次调用，但每次传入的obj的properties都和上次不一致（对标2-4个Map的情况），下面的例子是map1-&gt;map2-&gt;map1-&gt;map2，那么就要生成一系列的map check比较，以判断选择哪个map的Inline Cache</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> o = &#123;sloth : <span class="number">1440</span>&#125;;</span><br><span class="line"><span class="keyword">let</span> o1 = &#123;<span class="attr">passion</span>:<span class="number">1</span>, sloth : <span class="number">1440</span>&#125;;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getSloth</span>(<span class="params">obj</span>) &#123;</span><br><span class="line">	<span class="keyword">return</span> obj.<span class="property">sloth</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;<span class="number">100000</span>;i++)&#123;<span class="comment">//触发inline Cache &amp; JIT</span></span><br><span class="line">	<span class="title function_">getSloth</span>(o);</span><br><span class="line">	<span class="title function_">getSloth</span>(o1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>生成的汇编逻辑类似</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">    mov ecx, &quot;sloth&quot;</span><br><span class="line">    mov eax, obj</span><br><span class="line">    call IC_Polymorphic_sloth</span><br><span class="line"></span><br><span class="line">IC_Monomorphic_sloth: #单态情况</span><br><span class="line">    cmp [eax], &lt;map&gt;</span><br><span class="line">    jne miss</span><br><span class="line">    mov eax, [eax + 4]</span><br><span class="line">    mov eax, [eax + &lt;sloth_offset&gt;]</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">miss:</span><br><span class="line">    jmp IC_Miss</span><br><span class="line"></span><br><span class="line">IC_Polymorphic_sloth: #多态情况</span><br><span class="line">    cmp [eax], &lt;map1&gt; #先比较map1</span><br><span class="line">    jne check2</span><br><span class="line">    mov eax, [eax + 4] #32位下property对应的偏移</span><br><span class="line">    mov eax, [eax + &lt;sloth_offset1&gt;] </span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">check2:</span><br><span class="line">    cmp [eax], &lt;map2&gt; #再比较map2</span><br><span class="line">    jne miss</span><br><span class="line">    mov eax, [eax + 4]</span><br><span class="line">    mov eax, [eax + &lt;sloth_offset2&gt;]</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">miss:</span><br><span class="line">    jmp IC_Miss</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Megamorphic（超态）"><a href="#Megamorphic（超态）" class="headerlink" title="Megamorphic（超态）"></a>Megamorphic（超态）</h3><p>超过了4个Map（或引擎设计的多态缓存的容量），V8懒得管理了，此时缓存机制切换为通用查找，而非特定类型优化</p>
+<h3 id="一些特殊情况——访问一个继承的property"><a href="#一些特殊情况——访问一个继承的property" class="headerlink" title="一些特殊情况——访问一个继承的property"></a>一些特殊情况——访问一个继承的property</h3><p>术语补充：</p>
+<ul>
+<li><strong>Receiver</strong> 是执行属性访问或方法调用时，实际的目标对象</li>
+<li><strong>Holder</strong> 是实际存储目标属性的对象。它表示属性访问时的查找终点</li>
+</ul>
+<p>举个例子，下面的js code中，以访问<code>obj2.X</code>为例，<strong>实际进⾏属性访问的对象</strong>obj2是receiver<strong>，⽽真正持有属性</strong>X的对象obj<strong>是</strong>holder<strong>。</strong></p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj = &#123;X : <span class="number">1</span>&#125;;</span><br><span class="line"><span class="keyword">let</span> obj1 = &#123;&#125;;</span><br><span class="line"><span class="keyword">let</span> obj2 = &#123;&#125;;</span><br><span class="line">obj2.<span class="property">__proto__</span> = obj1;</span><br><span class="line">obj1.<span class="property">__proto__</span> = obj;</span><br><span class="line"><span class="title function_">print</span>(obj2.<span class="property">X</span>);</span><br><span class="line"><span class="comment">//output： 1</span></span><br><span class="line"><span class="comment">//protochain：obj-&gt;obj1-&gt;obj2</span></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>💡学过Web的js原型连污染的应该对这个很熟悉了，js中可以通过设置对象的 <code>__proto__</code> 属性来动态调整对象的原型链，从而设置或更改一个对象的“父对象”（即它的原型对象）。</p>
+<p>因此如果访问obj2的X属性，实际上需要顺着obj2的原型链向上一直找到obj这个holder，而inline Cache也得遵循这个逻辑，所以<u>obj2的inline Cache必须沿着protochain，对链上的每个map都进⾏check。</u></p>
+</blockquote>
+<h3 id="Inline-Cache相关CVE"><a href="#Inline-Cache相关CVE" class="headerlink" title="Inline Cache相关CVE"></a>Inline Cache相关CVE</h3><p>CVE-2022-1134</p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://github.blog/2022-06-29-the-chromium-super-inline-cache-type-confusion/" >https://github.blog/2022-06-29-the-chromium-super-inline-cache-type-confusion/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>CVE-2021-38001</p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://bugs.chromium.org/p/chromium/issues/detail?id=1260577" >https://bugs.chromium.org/p/chromium/issues/detail?id=1260577 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://github.com/vngkv123/articles/blob/main/CVE-2021-38001.md" >https://github.com/vngkv123/articles/blob/main/CVE-2021-38001.md <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>漏洞根因：Inline Cache的处理程序（也就是IC Handler）在创建时会基于某些假设（例如对象结构Map、原型链状态等）生成优化的代码，因此有机会造成一些类型混淆漏洞。（JIT中也有类似）</p>
+<p>🧠TODO：先挖个坑，后面有时间再进行调试分析</p>
+<h2 id="0x01-垃圾回收-GC-🗑️"><a href="#0x01-垃圾回收-GC-🗑️" class="headerlink" title="0x01 垃圾回收(GC)🗑️"></a>0x01 垃圾回收(GC)🗑️</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>V8中的垃圾回收（GC）与Java的GC类似，都是通过自动内存管理来回收不再使用的对象（也就是HeapObject）。</p>
+<blockquote>
+<p>相较于传统的<code>glibc</code>中的heap管理方式（malloc、free）不一样，V8使⽤mmap来拓展堆空间</p>
+</blockquote>
+<h3 id="GC空间划分"><a href="#GC空间划分" class="headerlink" title="GC空间划分"></a>GC空间划分</h3><p>主要是3块</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">  A[&quot;Young Generation&quot;] </span><br><span class="line">  B[&quot;Old Generation&quot;]</span><br><span class="line">  C[&quot;Other&quot;] </span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>根据Object的存活时间，分为Young&#x2F;Old Generation，除此之外的Other区域不属于任何一个Generation，老版本中Other区域其实是Large Object Space，放一些大小超过一定阈值的Object</p>
+</blockquote>
+<h3 id="Young-Generation"><a href="#Young-Generation" class="headerlink" title="Young Generation"></a>Young Generation</h3><p>结构如下</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    A[Young Generation] --&gt; B[New Space]</span><br><span class="line">    B --&gt; C[To Space]</span><br><span class="line">    B --&gt; D[From Space]</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li><p>New Space</p>
+<ul>
+<li>新创建的object都会被放入这里面（除了code object，map object和large object）并受GC管理</li>
+</ul>
+</li>
+<li><p>这块区域使用的GC算法是Cheney’s algorithm（<strong>实际上是Cheney’s GC复制算法的改版，From&#x2F;To Space的功能和原版不一样，源码里相关函数叫Scavenge</strong>），需要使用到To Space和From Space，其实这个算法很好理解：</p>
+<ul>
+<li><p>每一个新创建的Object最开始都会被放入To Space </p>
+</li>
+<li><p>假设出现memory exhaustion（空间耗尽）：To Space已经满了，现在新创建了一个object-sloth，To Space内部如下</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">To: obj-a | obj-b | obj-c | ... | obj-end |        </span><br><span class="line">From: Empty</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>显然To Space放不下了，因此把To Space的内容和From Space交换(因为From Space是空的，相当于清空ToSpace)，然后在From Space中依次判断每个Object是否存活，比如：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">To: Empty</span><br><span class="line">From: obj-a(alive,root) | obj-b(dead❌) | obj-c(alive,noroot) | ... | obj-end(alive) | </span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>把From Space中alive的Object复制到To Space中，清空From space，然后再重新分配刚刚创建的obj-sloth</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">To: obj-a | obj-c | ... | obj-end | obj-sloth |     </span><br><span class="line">From: Empty</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>怎么判断object是否是alive？🤔</p>
+<ul>
+<li>首先root objects肯定是alive的，主要包括global objects, built-in objects, local objects within the scope of living等</li>
+<li>从Old Space（这块在Old Generation中，后面会提到）中可以访问的object也是alive的</li>
+</ul>
+</blockquote>
+<h3 id="Old-Generation"><a href="#Old-Generation" class="headerlink" title="Old Generation"></a>Old Generation</h3><p>结构如下</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    A[Old Generation] --&gt; B[Old Space]</span><br><span class="line">    A --&gt; C[Code Space]</span><br><span class="line">    A --&gt; D[Map Space]</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li><p>Old Space主要用来存放长期alive的Object</p>
+<ul>
+<li>在Young Generation的New Space中，经过两次GC仍保留的object就会存到old space中</li>
+<li>old space发生GC的频率比new space小很多，因此后面构造exp的时候用于内存布局的object可以先放到old space中（之前写*CTF oob exp中先进行两次GC的原因）</li>
+</ul>
+</li>
+<li><p>Code Space</p>
+<ul>
+<li>主要是放code object的，<strong>Code Object</strong> 是 V8 中用于存储<strong>生成的机器代码</strong>的数据结构</li>
+<li>可能新手看到这里会有疑问🤔，为什么V8要设计一个存储机器代码的object，这个主要涉及JIT优化，V8会将JavaScript函数（一般是hot code）编译为字节码，优化为机器码后（JIT优化），这些代码片段会被存储为 Code Object，之后再遇到该函数调用可以直接运行机器码，速度更快。</li>
+<li>这里面的code object主要是JIT优化产生的，由于是JIT优化都是运行时的，所以对应的code object所在内存区域也需要有<strong>rwx权限</strong></li>
+</ul>
+</li>
+<li><p>Map Space</p>
+<ul>
+<li>Map Object就是之前提到的Hidden Class(Map)</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Old generation中GC使用的是Mark-Sweep-Compact算法，但后续利用中不涉及，感兴趣可以看</p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://fa1lr4in.com/2021/12/09/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E4%B8%8E%E5%AE%9E%E7%8E%B0/" >https://fa1lr4in.com/2021/12/09/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E4%B8%8E%E5%AE%9E%E7%8E%B0/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+</blockquote>
+<h3 id="Other"><a href="#Other" class="headerlink" title="Other"></a>Other</h3><p>里面是一个Large Object Space，放600KB及以上的object</p>
+<blockquote>
+<p>这些Large Object有以下特点</p>
+<ul>
+<li>不是通过Heap分配的，而是mmap直接分配的</li>
+<li>内存位置是固定的，在垃圾回收（GC）过程中，普通Object可能会被复制或移动到新的内存位置以进行整理，而Large Object由于体积庞大，因此它们<strong>不参与移动</strong>。</li>
+<li>如果 Large Object Space 中需要存放多个对象，这些内存块会使用链表进行管理</li>
+</ul>
+</blockquote>
+<h3 id="Write-Barrier-amp-Remember-Set"><a href="#Write-Barrier-amp-Remember-Set" class="headerlink" title="Write Barrier &amp; Remember Set"></a>Write Barrier &amp; Remember Set</h3><p>🤔想象这样一种情况，我们已经知道Old Generation中放的是长期存活的Object(为了方便，后面就称这类object为<code>old-obj</code>)，但如果我们现在触发了GC，需要回收在Young Generation的一个<code>young-obj</code>，而恰好有一个<code>old-obj</code>引用了这个<code>young-obj</code>。</p>
+<p>那么为了防止悬挂指针(Dangling Pointer)，也就是<code>young-obj</code>已经被回收了，而那个<code>old-obj</code>的引用指针仍然指向已被清理的内存空间，因此需要更新<code>old-obj</code>的引用指针。</p>
+<blockquote>
+<p>🧠这里可能有个疑问，Old Generation中不都是经过2轮GC存活下来的object吗，怎么还会指向新创建的在Young Generation中的新object，这里其实就是一个<strong>跨代引用</strong></p>
+<h4 id="跨代引用"><a href="#跨代引用" class="headerlink" title="跨代引用"></a>跨代引用</h4><p>在 JavaScript 程序中，运行时可能会修改对象的属性或结构，导致 Old Generation 的对象持有 Young Generation 的引用。例如：</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> oldObj = &#123;&#125;; </span><br><span class="line"><span class="comment">//....some code 导致 oldObj 最终被提升到 Old Generation</span></span><br><span class="line"><span class="keyword">let</span> youngObj = &#123; <span class="attr">key</span>: <span class="string">&#x27;value&#x27;</span> &#125;; <span class="comment">// youngObj 位于 Young Generation</span></span><br><span class="line">oldObj.<span class="property">ref</span> = youngObj; <span class="comment">// Old Generation 的对象引用了 Young Generation 的对象</span></span><br></pre></td></tr></table></figure></div>
+</blockquote>
+<p>除了回收这个<code>young-obj</code>的情况需要更新对应<code>old-obj</code>的引用指针外，其实只要发生GC，也可能移动这个<code>young-obj</code>(可能是简单的From-&gt;To，也可能是发生了”晋升”)，导致改变其实际内存地址。</p>
+<blockquote>
+<p>💡”晋升”🔝是指在Young Generation中的<code>young-obj</code>经历过的GC轮数达到设定的阈值，可以被认为是长期存活的object，因此移入Old Generation</p>
+</blockquote>
+<p>那么针对上面说的这类现象，我们在对Young Generation进行GC回收对象时，还需要访问Old Generation来更新<code>old-obj</code>的引用指针，这似乎违背了这种分代设计的初衷，🤔之所以要分成Young Generation和Old Generation就是为了减少object的扫描次数从而加快GC效率，因此为了解决跨代引用更新的问题，引入了一个叫记录集(Remember Set)的概念。</p>
+<p>什么是记录集？可以简单理解为，记录集内记录了所有<code>old-obj</code>指向<code>young-obj</code>的情况，具体实现中记录集内就是一组指向有跨代引用的<code>old-obj</code>的指针。因此我们在对Young Generation进行GC时，可以通过访问记录集来快速修改引用情况，下图是一个更新跨代引用的示例(同时发生了<code>young-obj</code>的”晋升”🔝)</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/image-20241117175832676.png"
+                      alt="image-20241117175832676"
+                ><figcaption>image-20241117175832676</figcaption></figure></p>
+<p>我们也可以用下面的流程图来表示这个过程</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    A[触发新生代GC] --&gt; B[扫描记录集]</span><br><span class="line">    B --&gt; C[将记录集中的老年代对象作为根对象]</span><br><span class="line">    C --&gt; D[检查老年代对象引用的新生代对象]</span><br><span class="line">    D --&gt; E&#123;目标对象存活状态&#125;</span><br><span class="line">    </span><br><span class="line">    E --&gt;|存活| F[复制到新生代的To-Space]</span><br><span class="line">    E --&gt;|已晋升| G[更新到老年代]</span><br><span class="line">    E --&gt;|未存活| H[回收目标对象]</span><br><span class="line">    </span><br><span class="line">    F --&gt; I[更新老年代对象的引用指针]</span><br><span class="line">    H --&gt; I</span><br><span class="line">    G --&gt; I</span><br><span class="line">    I --&gt; J[完成引用关系更新]</span><br><span class="line">    J --&gt; K[回收新生代的未引用对象]</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>🤓👆🏻那么现在还有一个问题，我们该怎么形成这个记录集🤔，这里就又要引入一个写入屏障(Write Barrier)的概念，在更新对象间的指针时候(发生引用关系变化，比如执行<code>obj.x=...</code>)，就会触发write_barrier，其实现的代码逻辑如下</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">write_barrier</span>(obj, field, new_obj)&#123;</span><br><span class="line"><span class="keyword">if</span>(obj &gt;= $old_start &amp;&amp; new_obj &lt; $old_start &amp;&amp; obj.remembered == FALSE)&#123;</span><br><span class="line">    $rs[$rs_index] = obj</span><br><span class="line">    $rs_index++</span><br><span class="line">    obj.remembered = TRUE</span><br><span class="line">  &#125;</span><br><span class="line">  *field = new_obj</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>参数 obj 是发出引⽤的对象，obj 内存在要更新的指针，⽽ field 指的就是 obj 内的域，new_obj 是在指针更新后成为引⽤⽬标的对象。</p>
+<p>三个判断条件</p>
+<ul>
+<li>发出引⽤的对象是不是<code>old-obj</code></li>
+<li>指针更新后的引⽤的⽬标对象是不是<code>young-obj</code></li>
+<li>发出引⽤的对象是否还没有被记录到记录集中</li>
+</ul>
+<p>如果这些条件都满⾜，就将<code>old-obj</code>写⼊到记录集⾥，最后<code>*field = new_obj</code>更新指针</p>
+<p>💡这里可以发现这个指针更新的操作是一定发生的(在if条件外)，因此有个比较典型的漏洞，<strong>在更新指针的时候，错误的消除了</strong>Write Barrier，即只更新指针，不检查是否该把<code>old-obj</code>写⼊到记录集⾥（这样就会导致后面发生GC时不更新这个<code>old-obj</code>的引用关系，发生UAF）。</p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://bugs.chromium.org/p/chromium/issues/detail?id=791245" >https://bugs.chromium.org/p/chromium/issues/detail?id=791245 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>其实就是JIT的锅，因为V8中Object还有smi的存在，所以JIT认为smi不用写屏障(因为它就没有property，也不能进行<code>obj.x=...</code>的操作)</p>
+<div class="highlight-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [&#123;&#125;];</span><br><span class="line"><span class="keyword">var</span> v; <span class="comment">// should be var</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">700000</span>; i++) &#123;</span><br><span class="line">    arr[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    v = i + -<span class="number">0</span>;</span><br><span class="line">    arr[<span class="number">0</span>] = v;<span class="comment">//更新arr这个obj的引用关系，但是JIT把这里的写屏障消除了</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">print</span>(arr[<span class="number">0</span>] === v) <span class="comment">// true</span></span><br><span class="line"><span class="title function_">gc</span>();<span class="comment">//gc之后arr[0]-&gt;v的引用丢失了，原来指的那个v已经被移动了，但没更新arr对v的引用</span></span><br><span class="line"><span class="title function_">print</span>(arr[<span class="number">0</span>] === v) <span class="comment">// false</span></span><br></pre></td></tr></table></figure></div>
+</blockquote>
+<h2 id="0x02-编译优化⏩"><a href="#0x02-编译优化⏩" class="headerlink" title="0x02 编译优化⏩"></a>0x02 编译优化⏩</h2><h3 id="JIT概述"><a href="#JIT概述" class="headerlink" title="JIT概述"></a>JIT概述</h3><p>参考<a class="link"   target="_blank" rel="noopener" href="https://hacks.mozilla.org/2017/02/a-crash-course-in-just-in-time-jit-compilers/" >https://hacks.mozilla.org/2017/02/a-crash-course-in-just-in-time-jit-compilers/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 以类型保护为例，V8中Js code的执行流程图类似下图</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    A[JavaScript Source Code] --&gt; B[Parser]</span><br><span class="line">    B --&gt; C[Abstract Syntax Tree]</span><br><span class="line">    C --&gt; D[Interpreter Ignition]</span><br><span class="line">    E[&quot;Compiler TurboFan(JIT)🌟&quot;]</span><br><span class="line">    D --&gt; F[Bytecode]</span><br><span class="line">    E --&gt; G[Optimized Machine Code]</span><br><span class="line">    D -.-&gt; E</span><br><span class="line">    G -.-&gt; F</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>js是动态类型语言，变量只有在运行时才能确定类型，因此需要做很多类型检查(如下图)，JIT会参与其中的优化。</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/image-20241117175902132.png"
+                      alt="image-20241117175902132"
+                ><figcaption>image-20241117175902132</figcaption></figure></p>
+<h4 id="什么时候优化？"><a href="#什么时候优化？" class="headerlink" title="什么时候优化？"></a>什么时候优化？</h4><p>当某行代码被重复执行(或执行次数达到一定阈值)后，代码会被传给JIT compiler进行优化。</p>
+<h4 id="怎么优化？"><a href="#怎么优化？" class="headerlink" title="怎么优化？"></a>怎么优化？</h4><p>JIT会对这些变量的类型做出假设，删除冗余的类型检查，只保留与假设对应的，同时也上了“保险🔒”（类型保护），假设不成立的话就打回到优化前的版本（可能是解释器&#x2F;其他baseline compiler）</p>
+<h4 id="怎么做合理的假设？"><a href="#怎么做合理的假设？" class="headerlink" title="怎么做合理的假设？"></a>怎么做合理的假设？</h4><p>与“概率”有关，JIT通过对<strong>多次执行的代码的编译结果的存储，来实现对变量类型的合理推测</strong>，原文⬇️</p>
+<blockquote>
+<p>The optimizing compiler <strong>uses the information the monitor has gathered by watching code execution to make these judgments</strong>. If something has been true for all previous passes through a loop, it assumes it will continue to be true.</p>
+</blockquote>
+<p>🤔也许使用循环可能可以“欺骗”JIT做出一些优化，我猜测FuzzJIT(Security’23)的作者灵感也来源于此。</p>
+<h3 id="TurboFan-Pipeline（V8中的JIT-承担主要的编译优化工作）"><a href="#TurboFan-Pipeline（V8中的JIT-承担主要的编译优化工作）" class="headerlink" title="TurboFan Pipeline（V8中的JIT 承担主要的编译优化工作）"></a>TurboFan Pipeline（V8中的JIT 承担主要的编译优化工作）</h3><p>如下图</p>
+<ul>
+<li>首先构造AST、Bytecode，然后inline它们的JavaScript Graph</li>
+<li>简化得到的Graph，同时进行一个静态的类型分析，包括类型推断等</li>
+<li>进行类型优化，再简化Graph</li>
+<li>再进行一些其他优化（比如冗余节点消除、循环不变量外提等）</li>
+</ul>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/image-20241117175913086.png"
+                      alt="image-20241117175913086"
+                ><figcaption>image-20241117175913086</figcaption></figure></p>
+<h3 id="Turbolizer"><a href="#Turbolizer" class="headerlink" title="Turbolizer"></a>Turbolizer</h3><p>V8的IR是一种图IR，这个工具可以将其可视化</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/image-20241117175920222.png"
+                      alt="image-20241117175920222"
+                ><figcaption>image-20241117175920222</figcaption></figure></p>
+<p>V8的图IR结合的控制流与数据流，有多种edge</p>
+<ul>
+<li><p>value edges，比如可以表示函数传参关系，类似数据流分析中DFG的edge</p>
+</li>
+<li><p>control edges，类似控制流分析中CFG的edge</p>
+</li>
+<li><p>effect edges比较特殊，表示“副作用”，以下图为例，虚线部分就是之前说的inline Cache，在检查是否可以命中缓存中的Map</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/image-20241117175928650.png"
+                      alt="image-20241117175928650"
+                ><figcaption>image-20241117175928650</figcaption></figure></p>
+</li>
+</ul>
+<blockquote>
+<p>副作用操作（如内存读写）之间可能有依赖关系。Effect Edges 表示这些依赖，帮助编译器识别哪些操作可以重排、哪些不能。</p>
+</blockquote>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> V8-pwn入门(3)——Inline-Cache、GC、JIT</li>
+        <li><strong>作者:</strong> Sl0th</li>
+        <li><strong>创建于
+                :</strong> 2024-11-17 22:18:16</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2024-11-21 16:10:48
+            </li>
+        
+        <li>
+            <strong>链接:</strong> http://sl0th.top/2024/11/17/V8-pwn入门-3-——Inline-Cache、GC、JIT/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/js-engine/">#js-engine</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/v8/">#v8</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/11/14/V8-pwn%E5%85%A5%E9%97%A8-2-%E2%80%94%E2%80%94-CTF-oob/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">V8-pwn入门(2)——[*CTF]oob</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          reaction: false,
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">目录</div>
+        <div class="page-title">V8-pwn入门(3)——Inline-Cache、GC、JIT</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-Inline-Cache%F0%9F%97%BA%EF%B8%8F"><span class="nav-text">0x00 Inline Cache🗺️</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5"><span class="nav-text">概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%B1%BB"><span class="nav-text">分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%BF%87%E7%A8%8B"><span class="nav-text">基本过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Monomorphic-%E5%8D%95%E6%80%81%EF%BC%89"><span class="nav-text">Monomorphic(单态）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#polymorphic%EF%BC%88%E5%A4%9A%E6%80%81%EF%BC%89"><span class="nav-text">polymorphic（多态）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Megamorphic%EF%BC%88%E8%B6%85%E6%80%81%EF%BC%89"><span class="nav-text">Megamorphic（超态）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E7%89%B9%E6%AE%8A%E6%83%85%E5%86%B5%E2%80%94%E2%80%94%E8%AE%BF%E9%97%AE%E4%B8%80%E4%B8%AA%E7%BB%A7%E6%89%BF%E7%9A%84property"><span class="nav-text">一些特殊情况——访问一个继承的property</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Inline-Cache%E7%9B%B8%E5%85%B3CVE"><span class="nav-text">Inline Cache相关CVE</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6-GC-%F0%9F%97%91%EF%B8%8F"><span class="nav-text">0x01 垃圾回收(GC)🗑️</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GC%E7%A9%BA%E9%97%B4%E5%88%92%E5%88%86"><span class="nav-text">GC空间划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Young-Generation"><span class="nav-text">Young Generation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Old-Generation"><span class="nav-text">Old Generation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Other"><span class="nav-text">Other</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Write-Barrier-amp-Remember-Set"><span class="nav-text">Write Barrier &amp; Remember Set</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E2%8F%A9"><span class="nav-text">0x02 编译优化⏩</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JIT%E6%A6%82%E8%BF%B0"><span class="nav-text">JIT概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TurboFan-Pipeline%EF%BC%88V8%E4%B8%AD%E7%9A%84JIT-%E6%89%BF%E6%8B%85%E4%B8%BB%E8%A6%81%E7%9A%84%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%B7%A5%E4%BD%9C%EF%BC%89"><span class="nav-text">TurboFan Pipeline（V8中的JIT 承担主要的编译优化工作）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Turbolizer"><span class="nav-text">Turbolizer</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Sl0th</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 47 篇文章
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.7.3</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+</body>
+</html>
